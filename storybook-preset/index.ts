@@ -38,6 +38,7 @@ export function withDockerHmr(
   config?: StorybookConfig['viteFinal']
 ): StorybookConfig['viteFinal'] {
   return async (viteConfig, options) => {
+    // Docker環境向けHMR設定
     viteConfig.server = {
       ...viteConfig.server,
       host: '0.0.0.0',
@@ -45,6 +46,21 @@ export function withDockerHmr(
         host: 'localhost',
       },
     }
+
+    // @/ エイリアスをui-catalogのルートに設定（stories/test用）
+    const { resolve, dirname } = await import('path')
+    const { fileURLToPath } = await import('url')
+    const __dirname = dirname(fileURLToPath(import.meta.url))
+    const uiCatalogRoot = resolve(__dirname, '..')
+
+    viteConfig.resolve = {
+      ...viteConfig.resolve,
+      alias: {
+        ...(viteConfig.resolve?.alias as Record<string, string> | undefined),
+        '@/': `${uiCatalogRoot}/`,
+      },
+    }
+
     if (typeof config === 'function') {
       return config(viteConfig, options)
     }

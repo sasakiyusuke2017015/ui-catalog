@@ -5,7 +5,7 @@
  * storybook-preset の createPreview を使用
  */
 import '../styles/globals.css'
-import { createPreview } from '../storybook-preset/preview'
+import { createPreview } from '../storybook-preset/preview.tsx'
 
 const preview = createPreview()
 
