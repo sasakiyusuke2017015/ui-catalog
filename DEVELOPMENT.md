@@ -57,12 +57,13 @@ packages:
 > **Note**: 初回セットアップは手動で実行します。
 > `git subtree add` は一度きりの操作のため、npm script 化しません。
 
+### Bash (Linux/Mac/Git Bash)
+
 ```bash
 # 1. subtree として追加（初回のみ・手動実行）
 git subtree add --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash
 
-# 2. pnpm-workspace.yaml に packages/* を追加
-#    ファイルがなければ作成、あれば packages/* を追記
+# 2. pnpm-workspace.yaml を作成
 cat > pnpm-workspace.yaml << 'EOF'
 packages:
   - 'apps/*'
@@ -70,7 +71,6 @@ packages:
 EOF
 
 # 3. 使用するアプリの package.json に依存関係を追加
-#    アプリのディレクトリに移動して実行
 npm pkg set dependencies.@ui-catalog/core="workspace:*"
 
 # 4. ルートの package.json に npm script を追加（日常の同期用）
@@ -82,6 +82,34 @@ pnpm install
 
 # 6. Claude Code コマンドを追加（オプション）
 mkdir -p .claude/commands && cp packages/ui-catalog/commands/ui-catalog.md .claude/commands/
+```
+
+### PowerShell (Windows)
+
+```powershell
+# 1. subtree として追加（初回のみ・手動実行）
+git subtree add --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash
+
+# 2. pnpm-workspace.yaml を作成
+@"
+packages:
+  - 'apps/*'
+  - 'packages/*'
+"@ | Out-File -FilePath pnpm-workspace.yaml -Encoding UTF8
+
+# 3. 使用するアプリの package.json に依存関係を追加
+npm pkg set dependencies.@ui-catalog/core="workspace:*"
+
+# 4. ルートの package.json に npm script を追加（日常の同期用）
+npm pkg set scripts.ui:push="git subtree push --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main"
+npm pkg set scripts.ui:pull="git subtree pull --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash"
+
+# 5. 依存関係をインストール
+pnpm install
+
+# 6. Claude Code コマンドを追加（オプション）
+New-Item -ItemType Directory -Force -Path .claude/commands | Out-Null
+Copy-Item packages/ui-catalog/commands/ui-catalog.md .claude/commands/
 ```
 
 ### 日常の同期（npm script）
