@@ -92,22 +92,21 @@ cd new-project
 git subtree add --prefix=packages/ui-catalog \
   https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash
 
-# 2. pnpm-workspace.yaml に追加（なければ作成）
-cat >> pnpm-workspace.yaml << 'EOF'
+# 2. pnpm-workspace.yaml を作成（なければ）
+cat > pnpm-workspace.yaml << 'EOF'
 packages:
   - 'apps/*'
   - 'packages/*'
 EOF
 
-# 3. 使用するアプリの package.json に依存関係を追加
-# apps/web/package.json の dependencies に:
-# "@ui-catalog/core": "workspace:*"
+# 3. アプリの package.json に依存関係を追加
+cd apps/web
+npm pkg set dependencies.@ui-catalog/core="workspace:*"
+cd ../..
 
 # 4. ルートの package.json に npm script を追加（日常の同期用）
-# "scripts": {
-#   "ui:push": "git subtree push --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main",
-#   "ui:pull": "git subtree pull --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash"
-# }
+npm pkg set scripts.ui:push="git subtree push --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main"
+npm pkg set scripts.ui:pull="git subtree pull --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash"
 
 # 5. 依存関係をインストール
 pnpm install
