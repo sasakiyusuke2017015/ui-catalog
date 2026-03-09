@@ -61,11 +61,16 @@ packages:
 # 1. subtree として追加（初回のみ・手動実行）
 git subtree add --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash
 
-# 2. pnpm-workspace.yaml に packages/* を追加（なければ作成）
-# 例: packages: ['apps/*', 'packages/*']
+# 2. pnpm-workspace.yaml に packages/* を追加
+#    ファイルがなければ作成、あれば packages/* を追記
+cat > pnpm-workspace.yaml << 'EOF'
+packages:
+  - 'apps/*'
+  - 'packages/*'
+EOF
 
 # 3. 使用するアプリの package.json に依存関係を追加
-# アプリのディレクトリに移動して実行
+#    アプリのディレクトリに移動して実行
 npm pkg set dependencies.@ui-catalog/core="workspace:*"
 
 # 4. ルートの package.json に npm script を追加（日常の同期用）
