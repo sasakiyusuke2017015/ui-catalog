@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import Button from '../atoms/Button';
-import { ICON_NAMES } from '../constants';
+
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -91,7 +91,7 @@ const PWAInstallPrompt: FC = () => {
             variant="primary"
             size="small"
             onClick={handleInstallClick}
-            leftIcon={ICON_NAMES.REGULAR.CHECK_CIRCLE}
+            leftIcon={'check-circle'}
             enableHopEffect={false}
           >
             インストール

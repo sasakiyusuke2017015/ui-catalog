@@ -2,7 +2,7 @@
 import { FC } from 'react';
 
 import Icon from '../atoms/Icon';
-import { ICON_NAMES, type IconName, type LoadingIconName } from '../constants';
+import { type IconName, type LoadingIconName } from '../constants';
 import { cn } from '../utils/cn';
 
 export type StepStatus = 'completed' | 'in_progress' | 'pending';
@@ -95,7 +95,7 @@ const StepIndicator: FC<StepIndicatorProps> = ({
       <div className="flex items-center justify-between">
         {steps.map((step, index) => {
           const isLast = index === steps.length - 1;
-          const loadingIcon = step.loadingIcon || ICON_NAMES.LOADING.SPINNER;
+          const loadingIcon = step.loadingIcon || 'spinner';
 
           // 次のステップの状態に基づいてコネクターの色を決定
           const nextStep = steps[index + 1];

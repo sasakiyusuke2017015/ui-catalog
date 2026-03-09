@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ICON_NAMES } from '@/constants/icons';
+
 
 import Button from './Button';
 
@@ -529,7 +529,7 @@ const ShakeEffectComponent = () => {
         variant="success"
         triggerShake={isShaking}
         onClick={handleClick}
-        leftIcon={ICON_NAMES.REGULAR.UNLOCK}
+        leftIcon={'unlock'}
       >
         認証完了
       </Button>
@@ -575,7 +575,7 @@ const LoginSuccessComponent = () => {
         triggerShake={isSuccess}
         onClick={handleLogin}
         disabled={isLoading}
-        leftIcon={isSuccess ? ICON_NAMES.REGULAR.LOCK : undefined}
+        leftIcon={isSuccess ? 'lock' : undefined}
       >
         {isLoading ? 'ログイン中...' : isSuccess ? 'ログイン成功' : 'ログイン'}
       </Button>
@@ -604,7 +604,7 @@ export const LoginSuccess = {
 export const WithLeftIcon = {
   args: {
     variant: 'primary',
-    leftIcon: ICON_NAMES.REGULAR.ARROW_IN,
+    leftIcon: 'arrow-in',
     children: '追加',
   },
   parameters: {
@@ -614,9 +614,9 @@ export const WithLeftIcon = {
       },
       source: {
         code: `import Button from './Button/Button';
-import { ICON_NAMES } from '@/constants/icons';
 
-<Button variant="primary" leftIcon={ICON_NAMES.REGULAR.ARROW_IN}>追加</Button>`,
+
+<Button variant="primary" leftIcon={'arrow-in'}>追加</Button>`,
       },
     },
   },
@@ -626,7 +626,7 @@ import { ICON_NAMES } from '@/constants/icons';
 export const WithRightIcon = {
   args: {
     variant: 'default',
-    rightIcon: ICON_NAMES.REGULAR.CHEVRON_RIGHT,
+    rightIcon: 'chevron-right',
     children: '次へ',
   },
   parameters: {
@@ -636,9 +636,9 @@ export const WithRightIcon = {
       },
       source: {
         code: `import Button from './Button/Button';
-import { ICON_NAMES } from '@/constants/icons';
 
-<Button variant="default" rightIcon={ICON_NAMES.REGULAR.CHEVRON_RIGHT}>次へ</Button>`,
+
+<Button variant="default" rightIcon={'chevron-right'}>次へ</Button>`,
       },
     },
   },
@@ -648,8 +648,8 @@ import { ICON_NAMES } from '@/constants/icons';
 export const WithBothIcons = {
   args: {
     variant: 'secondary',
-    leftIcon: ICON_NAMES.REGULAR.ARROW_IN,
-    rightIcon: ICON_NAMES.REGULAR.CHEVRON_DOWN,
+    leftIcon: 'arrow-in',
+    rightIcon: 'chevron-down',
     children: 'ダウンロード',
   },
   parameters: {
@@ -659,9 +659,9 @@ export const WithBothIcons = {
       },
       source: {
         code: `import Button from './Button/Button';
-import { ICON_NAMES } from '@/constants/icons';
 
-<Button variant="secondary" leftIcon={ICON_NAMES.REGULAR.ARROW_IN} rightIcon={ICON_NAMES.REGULAR.CHEVRON_DOWN}>ダウンロード</Button>`,
+
+<Button variant="secondary" leftIcon={'arrow-in'} rightIcon={'chevron-down'}>ダウンロード</Button>`,
       },
     },
   },
@@ -672,22 +672,22 @@ export const IconVariations = {
   args: {},
   render: () => (
     <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-      <Button variant="primary" leftIcon={ICON_NAMES.REGULAR.ARROW_IN}>
+      <Button variant="primary" leftIcon={'arrow-in'}>
         追加
       </Button>
-      <Button variant="danger" leftIcon={ICON_NAMES.REGULAR.X}>
+      <Button variant="danger" leftIcon={'x'}>
         削除
       </Button>
-      <Button variant="success" leftIcon={ICON_NAMES.REGULAR.INFO_CIRCLE}>
+      <Button variant="success" leftIcon={'info-circle'}>
         完了
       </Button>
-      <Button variant="default" leftIcon={ICON_NAMES.REGULAR.GEAR}>
+      <Button variant="default" leftIcon={'gear'}>
         編集
       </Button>
-      <Button variant="outline" leftIcon={ICON_NAMES.REGULAR.MAGNIFYING_GLASS}>
+      <Button variant="outline" leftIcon={'magnifying-glass'}>
         検索
       </Button>
-      <Button variant="primary" rightIcon={ICON_NAMES.REGULAR.CHEVRON_RIGHT}>
+      <Button variant="primary" rightIcon={'chevron-right'}>
         次へ
       </Button>
     </div>

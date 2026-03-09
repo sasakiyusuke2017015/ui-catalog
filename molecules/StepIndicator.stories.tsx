@@ -1,7 +1,7 @@
 // src/components/common/molecules/StepIndicator.stories.tsx
 import { useState, useEffect } from 'react';
 
-import { ICON_NAMES } from '@/constants/icons';
+
 
 import StepIndicator, { type Step, type StepStatus } from './StepIndicator';
 
@@ -51,7 +51,7 @@ type Story = StoryObj<typeof StepIndicator>;
 // 基本的なステップ
 const basicSteps: Step[] = [
   { label: '回答', status: 'completed' },
-  { label: '分析中', status: 'in_progress', loadingIcon: ICON_NAMES.LOADING.DNA },
+  { label: '分析中', status: 'in_progress', loadingIcon: 'loading-dna' },
   { label: '確認', status: 'pending' },
   { label: '完了', status: 'pending' },
 ];
@@ -66,7 +66,7 @@ const allCompletedSteps: Step[] = [
 
 // 最初のステップ
 const firstStepSteps: Step[] = [
-  { label: '入力', status: 'in_progress', loadingIcon: ICON_NAMES.LOADING.SPINNER },
+  { label: '入力', status: 'in_progress', loadingIcon: 'spinner' },
   { label: '確認', status: 'pending' },
   { label: '完了', status: 'pending' },
 ];
@@ -130,7 +130,7 @@ export const VariousLoadingIcons: Story = {
         title="🧬 DNA"
         steps={[
           { label: '完了', status: 'completed' },
-          { label: '分析中', status: 'in_progress', loadingIcon: ICON_NAMES.LOADING.DNA },
+          { label: '分析中', status: 'in_progress', loadingIcon: 'loading-dna' },
           { label: '待機', status: 'pending' },
         ]}
       />
@@ -138,7 +138,7 @@ export const VariousLoadingIcons: Story = {
         title="🌀 Orbit"
         steps={[
           { label: '完了', status: 'completed' },
-          { label: '処理中', status: 'in_progress', loadingIcon: ICON_NAMES.LOADING.ORBIT },
+          { label: '処理中', status: 'in_progress', loadingIcon: 'loading-orbit' },
           { label: '待機', status: 'pending' },
         ]}
       />
@@ -146,7 +146,7 @@ export const VariousLoadingIcons: Story = {
         title="⚛️ Atom"
         steps={[
           { label: '完了', status: 'completed' },
-          { label: '計算中', status: 'in_progress', loadingIcon: ICON_NAMES.LOADING.ATOM },
+          { label: '計算中', status: 'in_progress', loadingIcon: 'loading-atom' },
           { label: '待機', status: 'pending' },
         ]}
       />
@@ -154,7 +154,7 @@ export const VariousLoadingIcons: Story = {
         title="⚙️ Gears"
         steps={[
           { label: '完了', status: 'completed' },
-          { label: '構築中', status: 'in_progress', loadingIcon: ICON_NAMES.LOADING.GEARS },
+          { label: '構築中', status: 'in_progress', loadingIcon: 'loading-gears' },
           { label: '待機', status: 'pending' },
         ]}
       />
@@ -162,7 +162,7 @@ export const VariousLoadingIcons: Story = {
         title="📡 Ripple"
         steps={[
           { label: '完了', status: 'completed' },
-          { label: '送信中', status: 'in_progress', loadingIcon: ICON_NAMES.LOADING.RIPPLE },
+          { label: '送信中', status: 'in_progress', loadingIcon: 'loading-ripple' },
           { label: '待機', status: 'pending' },
         ]}
       />
@@ -180,7 +180,7 @@ export const UseCases: Story = {
         steps={[
           { label: '注文受付', status: 'completed' },
           { label: '決済完了', status: 'completed' },
-          { label: '発送準備', status: 'in_progress', loadingIcon: ICON_NAMES.LOADING.GEARS },
+          { label: '発送準備', status: 'in_progress', loadingIcon: 'loading-gears' },
           { label: '配送中', status: 'pending' },
           { label: '配達完了', status: 'pending' },
         ]}
@@ -193,7 +193,7 @@ export const UseCases: Story = {
         title="📝 会員登録"
         steps={[
           { label: '基本情報', status: 'completed' },
-          { label: '詳細情報', status: 'in_progress', loadingIcon: ICON_NAMES.LOADING.SPINNER },
+          { label: '詳細情報', status: 'in_progress', loadingIcon: 'spinner' },
           { label: '確認', status: 'pending' },
           { label: '完了', status: 'pending' },
         ]}
@@ -207,7 +207,7 @@ export const UseCases: Story = {
         steps={[
           { label: 'データ取得', status: 'completed' },
           { label: '前処理', status: 'completed' },
-          { label: '分析中', status: 'in_progress', loadingIcon: ICON_NAMES.LOADING.DNA },
+          { label: '分析中', status: 'in_progress', loadingIcon: 'loading-dna' },
           { label: 'レポート生成', status: 'pending' },
         ]}
         completedColor="purple"
@@ -220,7 +220,7 @@ export const UseCases: Story = {
         steps={[
           { label: '要件定義', status: 'completed' },
           { label: '設計', status: 'completed' },
-          { label: '実装中', status: 'in_progress', loadingIcon: ICON_NAMES.LOADING.CUBE3D },
+          { label: '実装中', status: 'in_progress', loadingIcon: 'loading-cube3d' },
           { label: 'テスト', status: 'pending' },
           { label: 'リリース', status: 'pending' },
         ]}
@@ -254,7 +254,7 @@ export const AnimationDemo: Story = {
       return {
         label,
         status,
-        loadingIcon: ICON_NAMES.LOADING.DNA,
+        loadingIcon: 'loading-dna',
       };
     });
 

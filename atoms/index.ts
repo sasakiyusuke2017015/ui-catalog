@@ -49,4 +49,3 @@ export type {
   IconSvgProps,
   IconAnimationConfig,
 } from './Icon'
-

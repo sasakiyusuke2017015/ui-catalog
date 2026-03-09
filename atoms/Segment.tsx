@@ -40,8 +40,8 @@ export interface SegmentProps<T extends string> {
  *   value={viewMode}
  *   onChange={setViewMode}
  *   options={[
- *     { value: 'table', label: 'テーブル', icon: ICON_NAMES.REGULAR.LIST },
- *     { value: 'card', label: 'カード', icon: ICON_NAMES.REGULAR.DASHBOARD },
+ *     { value: 'table', label: 'テーブル', icon: 'list' },
+ *     { value: 'card', label: 'カード', icon: 'dashboard' },
  *   ]}
  *   size="medium"
  * />

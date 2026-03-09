@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { ICON_NAMES } from '@/constants/icons';
+
 
 import MenuItem from './MenuItem';
 
@@ -20,7 +20,7 @@ describe('MenuItem', () => {
 
   it('アイコン名（文字列）を渡すとIconコンポーネントがレンダリングされる', () => {
     const { container } = render(
-      <MenuItem icon={ICON_NAMES.REGULAR.GEAR} label="設定" />
+      <MenuItem icon={'gear'} label="設定" />
     );
     // Icon コンポーネントは svg 要素としてレンダリングされる
     expect(container.querySelector('svg')).toBeInTheDocument();

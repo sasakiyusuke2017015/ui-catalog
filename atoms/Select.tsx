@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 
-import { ICON_NAMES } from '../constants';
+
 import { cn } from '../utils/cn';
 
 import Checkbox from './Checkbox';
@@ -347,7 +347,7 @@ const Select = <T extends string | number = string>(props: SelectProps<T>) => {
         {/* Arrow icon */}
         <div className={cn('pointer-events-none absolute top-1/2 -translate-y-1/2 transform', size === 'small' ? 'right-2' : 'right-3')}>
           <Icon
-            name={ICON_NAMES.REGULAR.CHEVRON_DOWN}
+            name={'chevron-down'}
             size={sizeStyle.icon}
             className={cn('text-gray-400 transition-transform duration-200', isOpen && 'rotate-180')}
           />

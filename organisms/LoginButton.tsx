@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 import Button from '../atoms/Button';
 import Icon from '../atoms/Icon';
-import { ICON_NAMES } from '../constants';
+
 
 export type LoginButtonVariant =
   | 'primary'
@@ -150,7 +150,7 @@ const LoginButton = ({
       <div className="relative flex items-center justify-center px-12">
         {/* 左アイコン - 固定位置 */}
         <div className="absolute left-4 top-1/2 z-10 -translate-y-1/2 transform">
-          <Icon name={ICON_NAMES.REGULAR.LOCK} className="h-5 w-5" />
+          <Icon name={'lock'} className="h-5 w-5" />
         </div>
 
         {/* 中央テキスト */}
@@ -164,7 +164,7 @@ const LoginButton = ({
       <div className="relative flex items-center justify-center px-12">
         {/* 左アイコン - 固定位置 */}
         <div className="absolute left-4 top-1/2 z-10 -translate-y-1/2 transform">
-          <Icon name={ICON_NAMES.REGULAR.LOCK} className="h-5 w-5" />
+          <Icon name={'lock'} className="h-5 w-5" />
         </div>
 
         {/* 中央テキスト */}
@@ -172,7 +172,7 @@ const LoginButton = ({
 
         {/* 右アイコン - 固定位置 */}
         <div className="absolute right-4 top-1/2 z-10 -translate-y-1/2 transform">
-          <Icon name={ICON_NAMES.LOADING.BARS} className="h-5 w-5" />
+          <Icon preset="interview" className="h-5 w-5" />
         </div>
       </div>
     );
@@ -184,7 +184,7 @@ const LoginButton = ({
         {/* 左アイコン - 固定位置(アニメーション付き) */}
         <div className="absolute left-4 top-1/2 z-10 -translate-y-1/2 transform">
           <Icon
-            name={ICON_NAMES.REGULAR.UNLOCK}
+            name={'unlock'}
             className="h-5 w-5"
             animationTrigger="condition"
             condition={true}

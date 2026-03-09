@@ -2,7 +2,7 @@ import { useState, ReactNode } from 'react';
 
 import { Animated } from '../atoms/Animated';
 import Icon from '../atoms/Icon';
-import { ICON_NAMES } from '../constants';
+
 
 interface ToggleableSectionProps {
   /** タイトル文字列、またはカスタムヘッダー要素 */
@@ -79,7 +79,7 @@ const ToggleableSection: React.FC<ToggleableSectionProps> = ({
       >
         <Animated type="rotate" show={isOpen} className="mr-2 flex-shrink-0">
           <Icon
-            name={ICON_NAMES.REGULAR.CHEVRON_DOWN}
+            name={'chevron-down'}
             size={24}
             style={colorValue ? { color: colorValue } : undefined}
             className={isTailwindClass ? borderColor.replace('border-', 'text-') : undefined}

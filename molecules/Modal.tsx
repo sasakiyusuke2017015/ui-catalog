@@ -2,7 +2,7 @@
 import { FC, ReactNode, useEffect } from 'react';
 
 import Icon from '../atoms/Icon';
-import { ICON_NAMES } from '../constants';
+
 
 interface ModalProps {
   isOpen: boolean;
@@ -108,7 +108,7 @@ const Modal: FC<ModalProps> = ({
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700"
           >
-            <Icon name={ICON_NAMES.REGULAR.X} size={24} />
+            <Icon name={'x'} size={24} />
           </button>
         </div>
 

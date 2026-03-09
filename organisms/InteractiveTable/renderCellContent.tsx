@@ -9,7 +9,7 @@ import type { ReactNode } from 'react';
 
 import Icon from '../../atoms/Icon';
 import InternalLink from '../../atoms/InternalLink';
-import { ICON_NAMES } from '../../constants';
+
 import { isNullish } from '../../utils';
 
 import type {
@@ -106,7 +106,7 @@ export const createRenderCellContent = ({
           title={`リンクを開く: ${linkData.url}`}
         >
           <Icon
-            name={ICON_NAMES.REGULAR.ARROW_UP_RIGHT}
+            name={'arrow-up-right'}
             size={12}
             className="mr-1"
           />

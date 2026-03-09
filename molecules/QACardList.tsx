@@ -2,7 +2,7 @@
 import { FC } from 'react';
 
 import Icon from '../atoms/Icon';
-import { ICON_NAMES } from '../constants';
+
 
 export interface QACardItem {
   question: string;
@@ -49,7 +49,7 @@ const QACardList: FC<QACardListProps> = ({
       {infoMessage && (
         <div className={`rounded-lg border p-3 ${infoBoxStyle}`}>
           <p className="text-fluid-sm">
-            <Icon name={ICON_NAMES.REGULAR.INFO_CIRCLE} size={16} className="mr-1 inline" />
+            <Icon name={'info-circle'} size={16} className="mr-1 inline" />
             {infoMessage}
           </p>
         </div>
@@ -60,7 +60,7 @@ const QACardList: FC<QACardListProps> = ({
         <div className="rounded-xl bg-gradient-to-r from-purple-50 to-indigo-50 p-4 shadow-sm border border-purple-200">
           <div className="flex items-center gap-2 mb-3">
             <Icon
-              name={aiCommentStreaming ? ICON_NAMES.LOADING.DNA : ICON_NAMES.REGULAR.DIAMOND}
+              name={aiCommentStreaming ? 'loading-dna' : 'diamond'}
               size={20}
               stroke="purple"
               className={aiCommentStreaming ? 'animate-spin' : ''}

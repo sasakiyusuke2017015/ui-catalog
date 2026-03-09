@@ -2,11 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 
 import { type ColorTheme, type IconName } from '../constants';
 import Icon from '../atoms/Icon';
+import type { LoadingPreset } from '../atoms/Icon/types';
 
 interface LoadingOverlayProps {
   message?: string;
-  /** カスタムアイコン（未指定時はスピナーを表示） */
+  /** @deprecated preset を使用してください */
   icon?: IconName;
+  /** ローディングプリセット（iconより優先） */
+  preset?: LoadingPreset;
   /** アイコンサイズ（デフォルト: 64） */
   iconSize?: number;
   /** カラーテーマ（未指定時はグローバルテーマを使用） - 現在は未使用 */
@@ -24,6 +27,7 @@ interface LoadingOverlayProps {
 export default function LoadingOverlay({
   message = "データを読み込んでいます...",
   icon,
+  preset,
   iconSize = 64,
   isVisible = true,
   minDisplayTime = 500,
@@ -73,11 +77,12 @@ export default function LoadingOverlay({
     <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center" style={{ zIndex: 10000 }} data-component="loading-overlay">
       <div className="bg-white bg-opacity-90 rounded-lg p-8 shadow-xl">
         <div className="flex flex-col items-center">
-          {icon ? (
+          {preset || icon ? (
             <Icon
-              name={icon}
+              preset={preset}
+              name={!preset ? icon : undefined}
               size={iconSize}
-              className="mb-4 animate-pulse"
+              className="mb-4"
               style={{ color: accentBgColor }}
             />
           ) : (

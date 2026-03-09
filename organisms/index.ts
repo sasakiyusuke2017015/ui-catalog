@@ -15,8 +15,15 @@ export { default as TabBar } from './TabBar'
 // Data Display
 export { default as InteractiveTable } from './InteractiveTable'
 export type { InteractiveTableProps } from './InteractiveTable'
-export { default as StatisticPanel } from './StatisticPanel'
 export { default as TrendChart } from './TrendChart'
+export { default as StatisticPanel } from './StatisticPanel'
+export type {
+  StatisticPanelProps,
+  StatisticPanelItem,
+  StatusDefinition,
+  StatusColorKey,
+  StatusColorValue,
+} from './StatisticPanel'
 
 // Form
 export { default as SortableToggleList } from './SortableToggleList'

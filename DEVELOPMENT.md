@@ -7,39 +7,146 @@
 
 ---
 
-## Origin
+## 前提条件
 
-- **Source**: ui-catalog
-- **Fork date**: -
-- **Last sync**: -
+ui-catalog は以下の構成を前提としています。
 
-> コピー先で上記を更新することで、マージ時の追跡が容易になります。
+### 構成
 
----
+```
+project-root/
+├── pnpm-workspace.yaml
+├── packages/
+│   └── ui-catalog/        ← この位置に配置
+└── apps/
+    └── web/
+        └── package.json   ← "@ui-catalog/core": "workspace:*"
+```
 
-## 新規プロジェクトへの導入
+### pnpm-workspace.yaml
 
-### 方法 A: Git リポジトリ参照
+```yaml
+packages:
+  - 'apps/*'
+  - 'packages/*'
+```
+
+### 使用側の package.json
 
 ```json
-// package.json
 {
   "dependencies": {
-    "@ui-catalog/core": "git+ssh://git@github.com:org/ui-catalog.git#v1.0.0"
+    "@ui-catalog/core": "workspace:*"
   }
 }
 ```
 
-### 方法 B: パッケージをコピー
+---
+
+## Origin
+
+- **Repository**: `https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git`
+- **管理方式**: git subtree
+
+> 各プロジェクトで `git subtree pull/push` を使って同期します。
+
+---
+
+## 複数プロジェクトでの共有（git subtree）
+
+ui-catalog は独立リポジトリとして管理し、各プロジェクトで git subtree として取り込みます。
+
+### 構成
+
+```
+GitHub/GitLab
+├── org/ui-catalog     ← 独立リポジトリ（本家）
+├── org/1on1           ← subtree で参照
+├── org/pleasync       ← subtree で参照
+└── org/meetscribe     ← subtree で参照
+```
+
+### 初回セットアップ（本家から切り出し）
 
 ```bash
-# 1. ui-catalog をコピー
-cp -r packages/ui-catalog /path/to/new-project/packages/
+# 1. ui-catalog リポジトリを GitHub/GitLab で新規作成
 
-# 2. pnpm-workspace.yaml に追加
-echo '  - "packages/ui-catalog"' >> /path/to/new-project/pnpm-workspace.yaml
+# 2. 1on1 から ui-catalog を切り出して push
+cd 1on1
+git subtree split -P packages/ui-catalog -b ui-catalog-split
+git push https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git ui-catalog-split:main
+git branch -D ui-catalog-split
+```
 
-# 3. DEVELOPMENT.md の Origin セクションを更新
+### 新規プロジェクトへの導入
+
+```bash
+cd new-project
+
+# subtree として追加
+git subtree add --prefix=packages/ui-catalog \
+  https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash
+
+# pnpm workspace に追加（pnpm-workspace.yaml）
+# packages:
+#   - 'packages/*'
+
+# 依存関係に追加（apps/web/package.json）
+# "@ui-catalog/core": "workspace:*"
+
+pnpm install
+```
+
+### 日常の同期
+
+```bash
+# ui-catalog の更新を取り込む
+git subtree pull --prefix=packages/ui-catalog \
+  https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash
+
+# ローカルの変更を ui-catalog に push
+git subtree push --prefix=packages/ui-catalog \
+  https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main
+```
+
+### エイリアス設定（推奨）
+
+頻繁に使うので .gitconfig にエイリアスを設定：
+
+```bash
+git config alias.ui-pull '!git subtree pull --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash'
+git config alias.ui-push '!git subtree push --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main'
+```
+
+使用：
+```bash
+git ui-pull   # 最新を取り込む
+git ui-push   # 変更を push
+```
+
+### ブランチ戦略
+
+**main ブランチのみ**で運用します。プロジェクトごとのブランチは作りません。
+
+- 全プロジェクトが `main` に push/pull
+- 競合は Git マージで解決
+- 破壊的変更は**タグ**で管理
+
+### タグによるバージョン管理
+
+安定版をリリースする際はタグを打ちます：
+
+```bash
+# ui-catalog リポジトリでタグを作成
+git tag -a v1.0.0 -m "安定版リリース"
+git push origin v1.0.0
+```
+
+特定バージョンを取り込みたい場合：
+
+```bash
+git subtree pull --prefix=packages/ui-catalog \
+  https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git v1.0.0 --squash
 ```
 
 ---

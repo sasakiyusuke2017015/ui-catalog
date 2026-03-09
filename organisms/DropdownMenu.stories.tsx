@@ -1,5 +1,5 @@
 import MenuItemList from '../molecules/MenuItemList';
-import { ICON_NAMES } from '@/constants/icons';
+
 
 import DropdownMenu from './DropdownMenu';
 
@@ -42,7 +42,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    icon: ICON_NAMES.REGULAR.BELL,
+    icon: 'bell',
     variant: 'default',
     menuWidth: 'w-60',
     menuContent: (closeMenu: () => void) => (
@@ -60,7 +60,7 @@ export const Default: Story = {
 
 export const Outline: Story = {
   args: {
-    icon: ICON_NAMES.REGULAR.BELL,
+    icon: 'bell',
     variant: 'outline',
     menuWidth: 'w-60',
     menuContent: (closeMenu: () => void) => (
@@ -79,7 +79,7 @@ export const Outline: Story = {
 export const WithLabel: Story = {
   args: {
     label: 'ユーザー名',
-    icon: ICON_NAMES.REGULAR.PERSON,
+    icon: 'person',
     variant: 'default',
     menuWidth: 'w-64',
     menuContent: (closeMenu: () => void) => (
@@ -93,12 +93,12 @@ export const WithLabel: Story = {
         }
         menuItems={[
           {
-            icon: ICON_NAMES.REGULAR.GEAR,
+            icon: 'gear',
             label: '設定',
             onClick: () => window.alert('設定を開く'),
           },
           {
-            icon: ICON_NAMES.REGULAR.DOOR_OUT,
+            icon: 'door-out',
             label: 'ログアウト',
             onClick: () => window.alert('ログアウト'),
           },
@@ -112,7 +112,7 @@ export const WithLabel: Story = {
 export const WithLabelOutline: Story = {
   args: {
     label: 'ユーザー名',
-    icon: ICON_NAMES.REGULAR.PERSON,
+    icon: 'person',
     variant: 'outline',
     menuWidth: 'w-64',
     menuContent: (closeMenu: () => void) => (
@@ -126,12 +126,12 @@ export const WithLabelOutline: Story = {
         }
         menuItems={[
           {
-            icon: ICON_NAMES.REGULAR.GEAR,
+            icon: 'gear',
             label: '設定',
             onClick: () => window.alert('設定を開く'),
           },
           {
-            icon: ICON_NAMES.REGULAR.DOOR_OUT,
+            icon: 'door-out',
             label: 'ログアウト',
             onClick: () => window.alert('ログアウト'),
           },
@@ -150,7 +150,7 @@ export const VariousIcons: Story = {
   render: () => (
     <div className="flex gap-4">
       <DropdownMenu
-        icon={ICON_NAMES.REGULAR.BELL}
+        icon={'bell'}
         variant="default"
         menuWidth="w-60"
         menuContent={(closeMenu: () => void) => (
@@ -166,7 +166,7 @@ export const VariousIcons: Story = {
       />
 
       <DropdownMenu
-        icon={ICON_NAMES.REGULAR.GEAR}
+        icon={'gear'}
         variant="default"
         menuWidth="w-48"
         menuContent={(closeMenu: () => void) => (
@@ -182,7 +182,7 @@ export const VariousIcons: Story = {
       />
 
       <DropdownMenu
-        icon={ICON_NAMES.REGULAR.PERSON}
+        icon={'person'}
         variant="default"
         menuWidth="w-52"
         menuContent={(closeMenu: () => void) => (
@@ -211,7 +211,7 @@ export const VariantComparison: Story = {
         <h3 className="text-fluid-lg font-semibold text-white">Default Variant</h3>
         <div className="flex gap-4">
           <DropdownMenu
-            icon={ICON_NAMES.REGULAR.BELL}
+            icon={'bell'}
             variant="default"
             menuWidth="w-60"
             menuContent={(closeMenu: () => void) => (
@@ -224,7 +224,7 @@ export const VariantComparison: Story = {
 
           <DropdownMenu
             label="メニュー"
-            icon={ICON_NAMES.REGULAR.HAMBURGER}
+            icon={'hamburger'}
             variant="default"
             menuWidth="w-60"
             menuContent={(closeMenu: () => void) => (
@@ -241,7 +241,7 @@ export const VariantComparison: Story = {
         <h3 className="text-fluid-lg font-semibold text-white">Outline Variant</h3>
         <div className="flex gap-4">
           <DropdownMenu
-            icon={ICON_NAMES.REGULAR.BELL}
+            icon={'bell'}
             variant="outline"
             menuWidth="w-60"
             menuContent={(closeMenu: () => void) => (
@@ -254,7 +254,7 @@ export const VariantComparison: Story = {
 
           <DropdownMenu
             label="メニュー"
-            icon={ICON_NAMES.REGULAR.HAMBURGER}
+            icon={'hamburger'}
             variant="outline"
             menuWidth="w-60"
             menuContent={(closeMenu: () => void) => (
@@ -280,7 +280,7 @@ export const UserMenuExample: Story = {
       {/* Default スタイル */}
       <DropdownMenu
         label="山田 太郎"
-        icon={ICON_NAMES.REGULAR.PERSON}
+        icon={'person'}
         variant="default"
         menuWidth="w-64"
         menuContent={(closeMenu: () => void) => (
@@ -297,17 +297,17 @@ export const UserMenuExample: Story = {
             }
             menuItems={[
               {
-                icon: ICON_NAMES.REGULAR.PERSON,
+                icon: 'person',
                 label: 'プロフィール',
                 onClick: () => window.alert('プロフィールを表示'),
               },
               {
-                icon: ICON_NAMES.REGULAR.GEAR,
+                icon: 'gear',
                 label: '設定',
                 onClick: () => window.alert('設定を開く'),
               },
               {
-                icon: ICON_NAMES.REGULAR.DOOR_OUT,
+                icon: 'door-out',
                 label: 'ログアウト',
                 onClick: () => window.alert('ログアウト'),
               },
@@ -320,7 +320,7 @@ export const UserMenuExample: Story = {
       {/* Outline スタイル */}
       <DropdownMenu
         label="山田 太郎"
-        icon={ICON_NAMES.REGULAR.PERSON}
+        icon={'person'}
         variant="outline"
         menuWidth="w-64"
         menuContent={(closeMenu: () => void) => (
@@ -337,17 +337,17 @@ export const UserMenuExample: Story = {
             }
             menuItems={[
               {
-                icon: ICON_NAMES.REGULAR.PERSON,
+                icon: 'person',
                 label: 'プロフィール',
                 onClick: () => window.alert('プロフィールを表示'),
               },
               {
-                icon: ICON_NAMES.REGULAR.GEAR,
+                icon: 'gear',
                 label: '設定',
                 onClick: () => window.alert('設定を開く'),
               },
               {
-                icon: ICON_NAMES.REGULAR.DOOR_OUT,
+                icon: 'door-out',
                 label: 'ログアウト',
                 onClick: () => window.alert('ログアウト'),
               },
@@ -365,7 +365,7 @@ export const NotificationMenuExample: Story = {
     <div className="flex gap-4">
       {/* Default スタイル */}
       <DropdownMenu
-        icon={ICON_NAMES.REGULAR.BELL}
+        icon={'bell'}
         variant="default"
         menuWidth="w-80"
         menuContent={(closeMenu: () => void) => (
@@ -392,7 +392,7 @@ export const NotificationMenuExample: Story = {
 
       {/* Outline スタイル */}
       <DropdownMenu
-        icon={ICON_NAMES.REGULAR.BELL}
+        icon={'bell'}
         variant="outline"
         menuWidth="w-80"
         menuContent={(closeMenu: () => void) => (
@@ -428,7 +428,7 @@ export const WithCardDealAnimation: Story = {
   render: () => (
     <div className="flex gap-4">
       <DropdownMenu
-        icon={ICON_NAMES.REGULAR.BELL}
+        icon={'bell'}
         label="通知"
         variant="default"
         menuWidth="w-80"
@@ -497,7 +497,7 @@ export const UserMenuWithAnimation: Story = {
   render: () => (
     <DropdownMenu
       label="山田 太郎"
-      icon={ICON_NAMES.REGULAR.PERSON}
+      icon={'person'}
       variant="default"
       menuWidth="w-72"
       menuContent={(closeMenu: () => void) => (

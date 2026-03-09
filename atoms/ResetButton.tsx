@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { ICON_NAMES } from '../constants';
+
 
 import Button from './Button';
 
@@ -24,7 +24,7 @@ const ResetButton: FC<ResetButtonProps> = ({
       <Button
         variant="danger"
         size="small"
-        leftIcon={ICON_NAMES.REGULAR.ARROW_ROTATE}
+        leftIcon={'arrow-rotate'}
         onClick={onClick}
         enableHopEffect={false}
         disabled={disabled}

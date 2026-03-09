@@ -92,7 +92,6 @@ export const VERSION_REGISTRY = {
   LoadingOverlay: '1.0.0',
   LoginButton: '1.0.0',
   SortableToggleList: '1.0.0',
-  StatisticPanel: '1.0.0',
   TabBar: '1.1.0',
   TransferList: '1.0.0',
   TrendChart: '1.1.0',

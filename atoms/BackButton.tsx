@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { ICON_NAMES, type IconName } from '../constants';
+import { type IconName } from '../constants';
 
 import Button from './Button';
 
@@ -28,7 +28,7 @@ const BackButton: FC<BackButtonProps> = ({
   variant = 'secondary',
   size = 'small',
   className,
-  icon = ICON_NAMES.REGULAR.ARROW_U_TURN,
+  icon = 'arrow-u-turn',
 }) => {
   return (
     <span data-component="back-button">

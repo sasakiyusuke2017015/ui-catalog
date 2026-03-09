@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import Segment from './Segment';
-import { ICON_NAMES } from '@/constants/icons';
+
 
 /**
  * Segment（セグメントコントロール）コンポーネント
@@ -71,8 +71,8 @@ const BasicExample = () => {
           value={viewMode}
           onChange={setViewMode}
           options={[
-            { value: 'table', label: 'テーブル', icon: ICON_NAMES.REGULAR.LIST },
-            { value: 'card', label: 'カード', icon: ICON_NAMES.REGULAR.DASHBOARD },
+            { value: 'table', label: 'テーブル', icon: 'list' },
+            { value: 'card', label: 'カード', icon: 'dashboard' },
           ]}
           size="medium"
         />
@@ -119,9 +119,9 @@ const ThreeOptionsExample = () => {
           value={mode}
           onChange={setMode}
           options={[
-            { value: 'list', label: 'リスト', icon: ICON_NAMES.REGULAR.LIST },
-            { value: 'grid', label: 'グリッド', icon: ICON_NAMES.REGULAR.DASHBOARD },
-            { value: 'timeline', label: 'タイムライン', icon: ICON_NAMES.REGULAR.CALENDAR },
+            { value: 'list', label: 'リスト', icon: 'list' },
+            { value: 'grid', label: 'グリッド', icon: 'dashboard' },
+            { value: 'timeline', label: 'タイムライン', icon: 'calendar' },
           ]}
           size="medium"
         />
@@ -351,8 +351,8 @@ const SettingsPanelExample = () => {
             value={viewMode}
             onChange={setViewMode}
             options={[
-              { value: 'table', label: 'テーブル', icon: ICON_NAMES.REGULAR.LIST },
-              { value: 'card', label: 'カード', icon: ICON_NAMES.REGULAR.DASHBOARD },
+              { value: 'table', label: 'テーブル', icon: 'list' },
+              { value: 'card', label: 'カード', icon: 'dashboard' },
             ]}
             size="medium"
           />

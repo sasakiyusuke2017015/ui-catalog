@@ -4,7 +4,7 @@ import { FC } from 'react';
 import Badge from '../atoms/Badge';
 import Button from '../atoms/Button';
 import Icon from '../atoms/Icon';
-import { type IconName, ICON_NAMES } from '../constants';
+import { type IconName } from '../constants';
 
 export interface SurveyCardProps {
   id: string;
@@ -63,7 +63,7 @@ const SurveyCard: FC<SurveyCardProps> = ({
           {/* タイトル */}
           <h5 className="mb-2 flex items-start gap-2 text-fluid-lg font-semibold text-gray-800">
             <Icon
-              name={ICON_NAMES.REGULAR.FILE}
+              name={'file'}
               size={20}
               className="mt-1 flex-shrink-0 text-cyan-500"
             />

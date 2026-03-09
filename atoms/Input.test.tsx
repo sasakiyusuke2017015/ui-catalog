@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Input from './Input';
-import { ICON_NAMES } from '@/constants/icons';
+
 
 describe('Input', () => {
   it('入力フィールドがレンダリングされる', () => {
@@ -39,7 +39,7 @@ describe('Input', () => {
   });
 
   it('アイコンが表示される', () => {
-    const { container } = render(<Input icon={ICON_NAMES.REGULAR.PERSON} placeholder="Icon" />);
+    const { container } = render(<Input icon={'person'} placeholder="Icon" />);
     expect(container.querySelector('svg')).toBeInTheDocument();
   });
 
@@ -48,7 +48,7 @@ describe('Input', () => {
     const user = userEvent.setup();
 
     const { container } = render(
-      <Input icon={ICON_NAMES.REGULAR.PERSON} onIconClick={handleIconClick} placeholder="Icon" />
+      <Input icon={'person'} onIconClick={handleIconClick} placeholder="Icon" />
     );
 
     const icon = container.querySelector('svg');

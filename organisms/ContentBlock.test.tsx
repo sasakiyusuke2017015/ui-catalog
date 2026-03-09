@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 
-import { ICON_NAMES } from '@/constants/icons';
+
 
 import ContentBlock from './ContentBlock';
 
@@ -65,7 +65,7 @@ describe('ContentBlock', () => {
 
   it('iconType="icon" の場合、アイコンが表示される', () => {
     const { container } = render(
-      <ContentBlock iconType="icon" iconName={ICON_NAMES.REGULAR.PERSON}>
+      <ContentBlock iconType="icon" iconName={'person'}>
         <div>コンテンツ</div>
       </ContentBlock>
     );

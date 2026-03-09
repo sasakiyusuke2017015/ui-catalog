@@ -8,12 +8,13 @@ import {
   type Easing,
 } from 'framer-motion';
 
-import {
-  ICON_NAMES,
-  isLoadingIcon,
-} from '../../constants';
+import { type IconName } from '../../constants';
 
-import type { IconProps, IconSvgProps } from './types';
+import type { IconProps, IconSvgProps, LoadingPreset } from './types';
+
+// ローディングアイコン判定
+const isLoadingIcon = (iconName: string): boolean =>
+  iconName.startsWith('loading-') || iconName.startsWith('spinner');
 
 // アイコンごとのSVGパス定義を統合
 const ICON_SVG_PATHS: Record<
@@ -23,7 +24,7 @@ const ICON_SVG_PATHS: Record<
   // ========================================
   // REGULAR アイコン
   // ========================================
-  [ICON_NAMES.REGULAR.HAMBURGER]: ({ fillColor, strokeColor }) => (
+  ['hamburger']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -32,7 +33,7 @@ const ICON_SVG_PATHS: Record<
       d="M2 5h20M2 12h20M2 19h20"
     />
   ),
-  [ICON_NAMES.REGULAR.X]: ({ fillColor, strokeColor }) => (
+  ['x']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -41,7 +42,7 @@ const ICON_SVG_PATHS: Record<
       d="M4 20L20 4M4 4l16 16"
     />
   ),
-  [ICON_NAMES.REGULAR.PERSON]: ({ fillColor, strokeColor }) => (
+  ['person']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -50,7 +51,7 @@ const ICON_SVG_PATHS: Record<
       d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
     />
   ),
-  [ICON_NAMES.REGULAR.EMPLOYEE]: ({ fillColor, strokeColor }) => (
+  ['employee']: ({ fillColor, strokeColor }) => (
     <>
       {/* 頭部 - 拡大して上部余白削減 */}
       <circle
@@ -81,7 +82,7 @@ const ICON_SVG_PATHS: Record<
       />
     </>
   ),
-  [ICON_NAMES.REGULAR.CHEVRON_DOWN]: ({ fillColor, strokeColor }) => (
+  ['chevron-down']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -90,7 +91,7 @@ const ICON_SVG_PATHS: Record<
       d="M21 7l-9 9-9-9"
     />
   ),
-  [ICON_NAMES.REGULAR.CHEVRON_UP]: ({ fillColor, strokeColor }) => (
+  ['chevron-up']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -99,7 +100,7 @@ const ICON_SVG_PATHS: Record<
       d="M3 17l9-9 9 9"
     />
   ),
-  [ICON_NAMES.REGULAR.CHEVRON_LEFT]: ({ fillColor, strokeColor }) => (
+  ['chevron-left']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -108,7 +109,7 @@ const ICON_SVG_PATHS: Record<
       d="M17 21l-9-9 9-9"
     />
   ),
-  [ICON_NAMES.REGULAR.CHEVRON_RIGHT]: ({ fillColor, strokeColor }) => (
+  ['chevron-right']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -117,7 +118,7 @@ const ICON_SVG_PATHS: Record<
       d="M7 3l9 9-9 9"
     />
   ),
-  [ICON_NAMES.REGULAR.MAGNIFYING_GLASS]: ({ fillColor, strokeColor }) => (
+  ['magnifying-glass']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -126,7 +127,7 @@ const ICON_SVG_PATHS: Record<
       d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
     />
   ),
-  [ICON_NAMES.REGULAR.EYE]: ({ fillColor, strokeColor }) => (
+  ['eye']: ({ fillColor, strokeColor }) => (
     <g>
       <path
         strokeLinecap="round"
@@ -144,7 +145,7 @@ const ICON_SVG_PATHS: Record<
       />
     </g>
   ),
-  [ICON_NAMES.REGULAR.EYE_SLASHED]: ({ fillColor, strokeColor }) => (
+  ['eye-slashed']: ({ fillColor, strokeColor }) => (
     <g>
       {/* 目の外形（アーモンド型） */}
       <path
@@ -175,7 +176,7 @@ const ICON_SVG_PATHS: Record<
       />
     </g>
   ),
-  [ICON_NAMES.REGULAR.ARROW_UP_RIGHT]: ({ fillColor, strokeColor }) => (
+  ['arrow-up-right']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -184,7 +185,7 @@ const ICON_SVG_PATHS: Record<
       d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
     />
   ),
-  [ICON_NAMES.REGULAR.ARROW_IN]: ({ fillColor, strokeColor }) => (
+  ['arrow-in']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -193,7 +194,7 @@ const ICON_SVG_PATHS: Record<
       d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
     />
   ),
-  [ICON_NAMES.REGULAR.ARROW_ROTATE]: ({ strokeColor }) => (
+  ['arrow-rotate']: ({ strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -202,7 +203,7 @@ const ICON_SVG_PATHS: Record<
       d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
     />
   ),
-  [ICON_NAMES.REGULAR.ARROW_TURN_LEFT]: ({ strokeColor }) => (
+  ['arrow-turn-left']: ({ strokeColor }) => (
     <g>
       <path
         strokeLinecap="round"
@@ -220,7 +221,7 @@ const ICON_SVG_PATHS: Record<
       />
     </g>
   ),
-  [ICON_NAMES.REGULAR.ARROW_U_TURN]: ({ strokeColor }) => (
+  ['arrow-u-turn']: ({ strokeColor }) => (
     <g>
       <path
         strokeLinecap="round"
@@ -238,7 +239,7 @@ const ICON_SVG_PATHS: Record<
       />
     </g>
   ),
-  [ICON_NAMES.REGULAR.DOOR_OUT]: ({ strokeColor }) => (
+  ['door-out']: ({ strokeColor }) => (
     <g fill="none" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       {/* ドア枠 */}
       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
@@ -250,7 +251,7 @@ const ICON_SVG_PATHS: Record<
       <path d="M16 12h6m-3-3l3 3-3 3" />
     </g>
   ),
-  [ICON_NAMES.REGULAR.INFO_TRIANGLE]: ({ fillColor, strokeColor }) => (
+  ['info-triangle']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -259,7 +260,7 @@ const ICON_SVG_PATHS: Record<
       d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
     />
   ),
-  [ICON_NAMES.REGULAR.INFO_CIRCLE]: ({ fill, fillColor, strokeColor }) => (
+  ['info-circle']: ({ fill, fillColor, strokeColor }) => (
     <g>
       <circle
         cx="12"
@@ -282,7 +283,7 @@ const ICON_SVG_PATHS: Record<
       />
     </g>
   ),
-  [ICON_NAMES.REGULAR.LOCK]: ({ fillColor, strokeColor }) => (
+  ['lock']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -291,7 +292,7 @@ const ICON_SVG_PATHS: Record<
       d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
     />
   ),
-  [ICON_NAMES.REGULAR.UNLOCK]: ({ strokeColor }) => (
+  ['unlock']: ({ strokeColor }) => (
     <g>
       <path
         strokeLinecap="round"
@@ -316,7 +317,7 @@ const ICON_SVG_PATHS: Record<
       />
     </g>
   ),
-  [ICON_NAMES.REGULAR.EXPAND]: ({ strokeColor }) => (
+  ['expand']: ({ strokeColor }) => (
     <g>
       <path
         strokeLinecap="round"
@@ -327,7 +328,7 @@ const ICON_SVG_PATHS: Record<
       />
     </g>
   ),
-  [ICON_NAMES.REGULAR.CALENDAR]: ({ fillColor, strokeColor }) => (
+  ['calendar']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -336,7 +337,7 @@ const ICON_SVG_PATHS: Record<
       d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
     />
   ),
-  [ICON_NAMES.REGULAR.FUNNEL]: ({ fillColor, strokeColor }) => (
+  ['funnel']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -345,7 +346,7 @@ const ICON_SVG_PATHS: Record<
       d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V20l-4 4v-10.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
     />
   ),
-  [ICON_NAMES.REGULAR.GEAR]: ({ fillColor, strokeColor }) => (
+  ['gear']: ({ fillColor, strokeColor }) => (
     <g>
       <path
         strokeLinecap="round"
@@ -365,7 +366,7 @@ const ICON_SVG_PATHS: Record<
       />
     </g>
   ),
-  [ICON_NAMES.REGULAR.BELL]: ({ fillColor, strokeColor }) => (
+  ['bell']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -374,7 +375,7 @@ const ICON_SVG_PATHS: Record<
       d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
     />
   ),
-  [ICON_NAMES.REGULAR.HOME]: ({ fillColor, strokeColor }) => (
+  ['home']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -383,7 +384,7 @@ const ICON_SVG_PATHS: Record<
       d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
     />
   ),
-  [ICON_NAMES.REGULAR.DASHBOARD]: ({ strokeColor }) => (
+  ['dashboard']: ({ strokeColor }) => (
     <g fill="none" stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       {/* メイングリッド - 非対称レイアウト */}
       <rect x="3" y="3" width="7" height="7" rx="2" />
@@ -394,7 +395,7 @@ const ICON_SVG_PATHS: Record<
       <circle cx="6.5" cy="6.5" r="1" fill={strokeColor} stroke="none" />
     </g>
   ),
-  [ICON_NAMES.REGULAR.CHART_BAR]: ({ strokeColor }) => (
+  ['chart-bar']: ({ strokeColor }) => (
     <g fill="none" stroke={strokeColor} strokeWidth="1.5">
       <rect x="4" y="14" width="4" height="7" rx="1" />
       <rect x="10" y="8" width="4" height="13" rx="1" />
@@ -402,7 +403,7 @@ const ICON_SVG_PATHS: Record<
       <line x1="2" y1="22" x2="22" y2="22" />
     </g>
   ),
-  [ICON_NAMES.REGULAR.LIST]: ({ strokeColor }) => (
+  ['list']: ({ strokeColor }) => (
     <g fill="none" stroke={strokeColor} strokeWidth="1.5">
       <line x1="3" y1="4" x2="21" y2="4" strokeLinecap="square" />
       <line x1="3" y1="12" x2="21" y2="12" strokeLinecap="square" />
@@ -412,7 +413,7 @@ const ICON_SVG_PATHS: Record<
       <circle cx="3" cy="20" r="1.2" fill={strokeColor} />
     </g>
   ),
-  [ICON_NAMES.REGULAR.FILE]: ({ fillColor, strokeColor }) => (
+  ['file']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -421,7 +422,7 @@ const ICON_SVG_PATHS: Record<
       d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zM14 2v6h6M16 13H8m8 4H8m2-8H8"
     />
   ),
-  [ICON_NAMES.REGULAR.SURVEY]: ({ strokeColor }) => (
+  ['survey']: ({ strokeColor }) => (
     <g fill="none" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       {/* 用紙 */}
       <rect x="4" y="3" width="16" height="18" rx="2" />
@@ -429,7 +430,7 @@ const ICON_SVG_PATHS: Record<
       <path d="M8 12l3 3 5-6" />
     </g>
   ),
-  [ICON_NAMES.REGULAR.COMMENT_CHECK]: ({ strokeColor }) => (
+  ['comment-check']: ({ strokeColor }) => (
     <g fill="none" stroke={strokeColor}>
       {/* 吹き出し本体 */}
       <rect
@@ -458,7 +459,7 @@ const ICON_SVG_PATHS: Record<
       />
     </g>
   ),
-  [ICON_NAMES.REGULAR.CHECK_CIRCLE]: ({ fill, fillColor, strokeColor }) => (
+  ['check-circle']: ({ fill, fillColor, strokeColor }) => (
     <g>
       <circle
         cx="12"
@@ -477,7 +478,7 @@ const ICON_SVG_PATHS: Record<
       />
     </g>
   ),
-  [ICON_NAMES.REGULAR.KEYBOARD]: ({ strokeColor }) => (
+  ['keyboard']: ({ strokeColor }) => (
     <g fill="none" stroke={strokeColor}>
       {/* キーボード本体 */}
       <rect
@@ -508,7 +509,7 @@ const ICON_SVG_PATHS: Record<
       <rect x="6" y="14.5" width="12" height="2.5" rx="0.5" strokeWidth="1.2" />
     </g>
   ),
-  [ICON_NAMES.REGULAR.PALETTE]: ({ fillColor, strokeColor }) => (
+  ['palette']: ({ fillColor, strokeColor }) => (
     <g fill={fillColor} stroke={strokeColor} strokeWidth="1.5">
       {/* パレット本体 */}
       <path
@@ -523,7 +524,7 @@ const ICON_SVG_PATHS: Record<
       <circle cx="17.5" cy="11" r="1.5" fill={strokeColor} stroke="none" />
     </g>
   ),
-  [ICON_NAMES.REGULAR.BRUSH]: ({ fillColor, strokeColor }) => (
+  ['brush']: ({ fillColor, strokeColor }) => (
     <g fill={fillColor} stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       {/* ブラシの毛先 */}
       <path d="M3 21c0 0 1-2 3-4s6-4 8-6c2-2 6-8 8-10s-2 0-4 2s-8 6-10 8s-4 6-4 8s-1 2-1 2z" />
@@ -531,7 +532,7 @@ const ICON_SVG_PATHS: Record<
       <path d="M14 10l6-6" strokeWidth="2" />
     </g>
   ),
-  [ICON_NAMES.REGULAR.SLIDERS]: ({ strokeColor }) => (
+  ['sliders']: ({ strokeColor }) => (
     <g fill="none" stroke={strokeColor} strokeWidth="2" strokeLinecap="round">
       {/* 左のスライダー */}
       <line x1="4" y1="21" x2="4" y2="14" />
@@ -547,7 +548,7 @@ const ICON_SVG_PATHS: Record<
       <circle cx="20" cy="8" r="2" fill={strokeColor} />
     </g>
   ),
-  [ICON_NAMES.REGULAR.DIAMOND]: ({ fillColor, strokeColor }) => (
+  ['diamond']: ({ fillColor, strokeColor }) => (
     <g fill={fillColor} stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       {/* ダイヤモンドの上部 */}
       <polygon points="12,2 2,9 12,22 22,9" />
@@ -559,7 +560,7 @@ const ICON_SVG_PATHS: Record<
       <line x1="16" y1="9" x2="12" y2="22" />
     </g>
   ),
-  [ICON_NAMES.REGULAR.PAINT_ROLLER]: ({ fillColor, strokeColor }) => (
+  ['paint-roller']: ({ fillColor, strokeColor }) => (
     <g fill={fillColor} stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       {/* ローラー本体 */}
       <rect x="2" y="3" width="14" height="6" rx="1" />
@@ -572,7 +573,7 @@ const ICON_SVG_PATHS: Record<
       <line x1="12" y1="12" x2="12" y2="21" strokeWidth="2" />
     </g>
   ),
-  [ICON_NAMES.REGULAR.CHAT]: ({ fillColor, strokeColor }) => (
+  ['chat']: ({ fillColor, strokeColor }) => (
     <g fill={fillColor} stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       {/* メインの吹き出し */}
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -581,7 +582,7 @@ const ICON_SVG_PATHS: Record<
       <line x1="7" y1="12" x2="13" y2="12" strokeWidth="2" />
     </g>
   ),
-  [ICON_NAMES.REGULAR.CLOCK]: ({ fillColor, strokeColor }) => (
+  ['clock']: ({ fillColor, strokeColor }) => (
     <g fill={fillColor} stroke={strokeColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       {/* 時計の文字盤 */}
       <circle cx="12" cy="12" r="10" fill="none" />
@@ -593,13 +594,13 @@ const ICON_SVG_PATHS: Record<
       <circle cx="12" cy="12" r="1" fill={strokeColor} stroke="none" />
     </g>
   ),
-  [ICON_NAMES.REGULAR.FOLDER]: ({ fillColor, strokeColor }) => (
+  ['folder']: ({ fillColor, strokeColor }) => (
     <g fill={fillColor} stroke={strokeColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       {/* フォルダ本体 */}
       <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
     </g>
   ),
-  [ICON_NAMES.REGULAR.USERS_GROUP]: ({ fillColor, strokeColor }) => (
+  ['users-group']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -610,7 +611,7 @@ const ICON_SVG_PATHS: Record<
   ),
 
   // トレンドアイコン（変化矢印）
-  [ICON_NAMES.REGULAR.TREND_UP]: ({ fillColor, strokeColor }) => (
+  ['trend-up']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -619,7 +620,7 @@ const ICON_SVG_PATHS: Record<
       d="M12 4v16m0-16l-4 4m4-4l4 4"
     />
   ),
-  [ICON_NAMES.REGULAR.TREND_UP_RIGHT]: ({ fillColor, strokeColor }) => (
+  ['trend-up-right']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -628,7 +629,7 @@ const ICON_SVG_PATHS: Record<
       d="M7 17L17 7m0 0H9m8 0v8"
     />
   ),
-  [ICON_NAMES.REGULAR.TREND_RIGHT]: ({ fillColor, strokeColor }) => (
+  ['trend-right']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -637,7 +638,7 @@ const ICON_SVG_PATHS: Record<
       d="M4 12h16m0 0l-4-4m4 4l-4 4"
     />
   ),
-  [ICON_NAMES.REGULAR.TREND_DOWN_RIGHT]: ({ fillColor, strokeColor }) => (
+  ['trend-down-right']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -646,7 +647,7 @@ const ICON_SVG_PATHS: Record<
       d="M7 7l10 10m0 0V9m0 8H9"
     />
   ),
-  [ICON_NAMES.REGULAR.TREND_DOWN]: ({ fillColor, strokeColor }) => (
+  ['trend-down']: ({ fillColor, strokeColor }) => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -659,7 +660,7 @@ const ICON_SVG_PATHS: Record<
   // ========================================
   // LOADING アイコン
   // ========================================
-  [ICON_NAMES.LOADING.SPINNER]: ({ fillColor, strokeColor }) => (
+  ['spinner']: ({ fillColor, strokeColor }) => (
     <g>
       <circle
         className="opacity-25"
@@ -677,7 +678,7 @@ const ICON_SVG_PATHS: Record<
       ></path>
     </g>
   ),
-  [ICON_NAMES.LOADING.SPINNER_THIN]: ({ fillColor, strokeColor }) => (
+  ['spinner-thin']: ({ fillColor, strokeColor }) => (
     <g>
       <circle
         opacity="0.1"
@@ -694,7 +695,7 @@ const ICON_SVG_PATHS: Record<
       />
     </g>
   ),
-  [ICON_NAMES.LOADING.SPINNER_THICK]: ({ fillColor, strokeColor }) => (
+  ['spinner-thick']: ({ fillColor, strokeColor }) => (
     <g>
       <circle
         opacity="0.3"
@@ -711,7 +712,7 @@ const ICON_SVG_PATHS: Record<
       />
     </g>
   ),
-  [ICON_NAMES.LOADING.DOTS]: ({ fillColor }) => (
+  ['loading-dots']: ({ fillColor }) => (
     <g>
       <circle cx="4" cy="12" r="1.5" fill={fillColor}>
         <animate
@@ -742,7 +743,7 @@ const ICON_SVG_PATHS: Record<
       </circle>
     </g>
   ),
-  [ICON_NAMES.LOADING.DOTS_FADE]: ({ fillColor, strokeColor }) => (
+  ['loading-dots-fade']: ({ fillColor, strokeColor }) => (
     <g>
       <circle
         cx="4"
@@ -812,7 +813,7 @@ const ICON_SVG_PATHS: Record<
       </circle>
     </g>
   ),
-  [ICON_NAMES.LOADING.PULSE]: ({ strokeColor }) => (
+  ['loading-pulse']: ({ strokeColor }) => (
     <circle
       cx="12"
       cy="12"
@@ -823,7 +824,7 @@ const ICON_SVG_PATHS: Record<
       opacity="0.5"
     />
   ),
-  [ICON_NAMES.LOADING.PULSE_RING]: ({ fillColor, strokeColor }) => (
+  ['loading-pulse-ring']: ({ fillColor, strokeColor }) => (
     <g>
       <circle
         cx="12"
@@ -861,7 +862,7 @@ const ICON_SVG_PATHS: Record<
       </circle>
     </g>
   ),
-  [ICON_NAMES.LOADING.BARS]: ({ fillColor }) => (
+  ['loading-bars']: ({ fillColor }) => (
     <g>
       <rect x="11" y="1" width="2" height="6" fill={fillColor} rx="1">
         <animateTransform
@@ -925,67 +926,7 @@ const ICON_SVG_PATHS: Record<
       </rect>
     </g>
   ),
-  [ICON_NAMES.LOADING.BARS_WAVE]: ({ fillColor, strokeColor }) => (
-    <g>
-      {/* 5本の均等バー - 丸みを帯びたデザイン */}
-      <rect
-        x="2"
-        y="10"
-        width="3"
-        height="4"
-        rx="1.5"
-        fill={fillColor !== 'none' ? fillColor : strokeColor}
-      >
-        <animate attributeName="height" values="4;14;4" dur="1s" repeatCount="indefinite" begin="0s" />
-        <animate attributeName="y" values="10;5;10" dur="1s" repeatCount="indefinite" begin="0s" />
-      </rect>
-      <rect
-        x="6.5"
-        y="8"
-        width="3"
-        height="8"
-        rx="1.5"
-        fill={fillColor !== 'none' ? fillColor : strokeColor}
-      >
-        <animate attributeName="height" values="8;16;8" dur="1s" repeatCount="indefinite" begin="0.1s" />
-        <animate attributeName="y" values="8;4;8" dur="1s" repeatCount="indefinite" begin="0.1s" />
-      </rect>
-      <rect
-        x="11"
-        y="6"
-        width="3"
-        height="12"
-        rx="1.5"
-        fill={fillColor !== 'none' ? fillColor : strokeColor}
-      >
-        <animate attributeName="height" values="12;18;12" dur="1s" repeatCount="indefinite" begin="0.2s" />
-        <animate attributeName="y" values="6;3;6" dur="1s" repeatCount="indefinite" begin="0.2s" />
-      </rect>
-      <rect
-        x="15.5"
-        y="8"
-        width="3"
-        height="8"
-        rx="1.5"
-        fill={fillColor !== 'none' ? fillColor : strokeColor}
-      >
-        <animate attributeName="height" values="8;16;8" dur="1s" repeatCount="indefinite" begin="0.3s" />
-        <animate attributeName="y" values="8;4;8" dur="1s" repeatCount="indefinite" begin="0.3s" />
-      </rect>
-      <rect
-        x="20"
-        y="10"
-        width="3"
-        height="4"
-        rx="1.5"
-        fill={fillColor !== 'none' ? fillColor : strokeColor}
-      >
-        <animate attributeName="height" values="4;14;4" dur="1s" repeatCount="indefinite" begin="0.4s" />
-        <animate attributeName="y" values="10;5;10" dur="1s" repeatCount="indefinite" begin="0.4s" />
-      </rect>
-    </g>
-  ),
-  [ICON_NAMES.LOADING.BOUNCE]: ({ fillColor }) => (
+  ['loading-bounce']: ({ fillColor }) => (
     <g>
       <circle cx="6" cy="12" r="2" fill={fillColor}>
         <animateTransform
@@ -1019,7 +960,7 @@ const ICON_SVG_PATHS: Record<
       </circle>
     </g>
   ),
-  [ICON_NAMES.LOADING.CLOCK]: ({ fillColor, strokeColor }) => (
+  ['loading-clock']: ({ fillColor, strokeColor }) => (
     <g>
       <circle
         cx="12"
@@ -1056,7 +997,7 @@ const ICON_SVG_PATHS: Record<
       />
     </g>
   ),
-  [ICON_NAMES.LOADING.WIFI]: ({ fillColor, strokeColor }) => (
+  ['loading-wifi']: ({ fillColor, strokeColor }) => (
     <g>
       <path
         d="M5 12.55a11.8 11.8 0 0 1 14 0"
@@ -1104,7 +1045,7 @@ const ICON_SVG_PATHS: Record<
       </circle>
     </g>
   ),
-  [ICON_NAMES.LOADING.ORBIT]: ({ fillColor, strokeColor }) => (
+  ['loading-orbit']: ({ fillColor, strokeColor }) => (
     <g>
       <circle
         cx="12"
@@ -1142,7 +1083,7 @@ const ICON_SVG_PATHS: Record<
       </circle>
     </g>
   ),
-  [ICON_NAMES.LOADING.MORPH]: ({ fillColor, strokeColor }) => (
+  ['loading-morph']: ({ fillColor, strokeColor }) => (
     <rect
       x="6"
       y="6"
@@ -1167,7 +1108,7 @@ const ICON_SVG_PATHS: Record<
       />
     </rect>
   ),
-  [ICON_NAMES.LOADING.PROGRESS]: ({ fillColor, strokeColor }) => (
+  ['loading-progress']: ({ fillColor, strokeColor }) => (
     <g>
       <rect
         x="0"
@@ -1195,7 +1136,7 @@ const ICON_SVG_PATHS: Record<
       </rect>
     </g>
   ),
-  [ICON_NAMES.LOADING.HALF]: ({ fillColor, strokeColor }) => (
+  ['loading-half']: ({ fillColor, strokeColor }) => (
     <g>
       <circle
         opacity="0.15"
@@ -1221,7 +1162,7 @@ const ICON_SVG_PATHS: Record<
       </path>
     </g>
   ),
-  [ICON_NAMES.LOADING.DASH]: ({ strokeColor }) => (
+  ['loading-dash']: ({ strokeColor }) => (
     <circle
       cx="12"
       cy="12"
@@ -1246,7 +1187,7 @@ const ICON_SVG_PATHS: Record<
       />
     </circle>
   ),
-  [ICON_NAMES.LOADING.SCALE_PULSE]: ({ fillColor, strokeColor }) => (
+  ['loading-scale-pulse']: ({ fillColor, strokeColor }) => (
     <g>
       <circle
         cx="12"
@@ -1307,7 +1248,7 @@ const ICON_SVG_PATHS: Record<
       </circle>
     </g>
   ),
-  [ICON_NAMES.LOADING.FLIP]: ({ fillColor, strokeColor }) => (
+  ['loading-flip']: ({ fillColor, strokeColor }) => (
     <rect
       x="8"
       y="8"
@@ -1330,7 +1271,7 @@ const ICON_SVG_PATHS: Record<
       />
     </rect>
   ),
-  [ICON_NAMES.LOADING.SQUARE]: ({ strokeColor }) => (
+  ['loading-square']: ({ strokeColor }) => (
     <rect
       x="4"
       y="4"
@@ -1356,7 +1297,7 @@ const ICON_SVG_PATHS: Record<
       />
     </rect>
   ),
-  [ICON_NAMES.LOADING.TRIANGLE]: ({ fillColor, strokeColor }) => (
+  ['loading-triangle']: ({ fillColor, strokeColor }) => (
     <g>
       <polygon
         points="12,2 22,20 2,20"
@@ -1381,7 +1322,7 @@ const ICON_SVG_PATHS: Record<
       />
     </g>
   ),
-  [ICON_NAMES.LOADING.CROSS]: ({ strokeColor }) => (
+  ['loading-cross']: ({ strokeColor }) => (
     <g>
       <line
         x1="12"
@@ -1421,7 +1362,7 @@ const ICON_SVG_PATHS: Record<
       </line>
     </g>
   ),
-  [ICON_NAMES.LOADING.STAR]: ({ fillColor, strokeColor }) => (
+  ['loading-star']: ({ fillColor, strokeColor }) => (
     <g>
       {/* 外側の星 - 時計回り */}
       <polygon
@@ -1452,7 +1393,7 @@ const ICON_SVG_PATHS: Record<
       </circle>
     </g>
   ),
-  [ICON_NAMES.LOADING.HEXAGON]: ({ fillColor, strokeColor }) => (
+  ['loading-hexagon']: ({ fillColor, strokeColor }) => (
     <g>
       {/* 最外側の六角形 - ゆっくり回転 */}
       <polygon
@@ -1493,7 +1434,7 @@ const ICON_SVG_PATHS: Record<
   // ========================================
   // 新デザイン ローディングアイコン
   // ========================================
-  [ICON_NAMES.LOADING.DNA]: ({ fillColor, strokeColor }) => (
+  ['loading-dna']: ({ fillColor, strokeColor }) => (
     <g>
       {/* 左のらせん */}
       <ellipse cx="8" cy="4" rx="2" ry="1.5" fill={fillColor !== 'none' ? fillColor : strokeColor}>
@@ -1516,7 +1457,7 @@ const ICON_SVG_PATHS: Record<
       </line>
     </g>
   ),
-  [ICON_NAMES.LOADING.RIPPLE]: ({ strokeColor }) => (
+  ['loading-ripple']: ({ strokeColor }) => (
     <g fill="none" stroke={strokeColor} strokeWidth="2">
       <circle cx="12" cy="12" r="1">
         <animate attributeName="r" values="1;10" dur="1.5s" repeatCount="indefinite" />
@@ -1532,7 +1473,7 @@ const ICON_SVG_PATHS: Record<
       </circle>
     </g>
   ),
-  [ICON_NAMES.LOADING.INFINITY]: ({ strokeColor }) => (
+  ['loading-infinity']: ({ strokeColor }) => (
     <g fill="none" stroke={strokeColor} strokeWidth="2" strokeLinecap="round">
       {/* 無限マークのパス */}
       <path d="M12 12c-2-2-4-4-6-4s-4 2-4 4 2 4 4 4c2 0 4-2 6-4s4-4 6-4 4 2 4 4-2 4-4 4c-2 0-4-2-6-4" opacity="0.2" />
@@ -1542,7 +1483,7 @@ const ICON_SVG_PATHS: Record<
       </circle>
     </g>
   ),
-  [ICON_NAMES.LOADING.ATOM]: ({ fillColor, strokeColor }) => (
+  ['loading-atom']: ({ fillColor, strokeColor }) => (
     <g>
       {/* 核 */}
       <circle cx="12" cy="12" r="3" fill={fillColor !== 'none' ? fillColor : strokeColor}>
@@ -1571,7 +1512,7 @@ const ICON_SVG_PATHS: Record<
       </circle>
     </g>
   ),
-  [ICON_NAMES.LOADING.HEARTBEAT]: ({ strokeColor }) => (
+  ['loading-heartbeat']: ({ strokeColor }) => (
     <g fill="none" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       {/* ベースライン */}
       <line x1="2" y1="12" x2="22" y2="12" opacity="0.2" />
@@ -1582,7 +1523,7 @@ const ICON_SVG_PATHS: Record<
       </polyline>
     </g>
   ),
-  [ICON_NAMES.LOADING.HOURGLASS]: ({ fillColor, strokeColor }) => (
+  ['loading-hourglass']: ({ fillColor, strokeColor }) => (
     <g fill="none" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       {/* 砂時計フレーム */}
       <path d="M5 3h14M5 21h14" />
@@ -1596,7 +1537,7 @@ const ICON_SVG_PATHS: Record<
       <animateTransform attributeName="transform" type="rotate" values="0 12 12;0 12 12;180 12 12;180 12 12;360 12 12" dur="4s" repeatCount="indefinite" keyTimes="0;0.4;0.5;0.9;1" />
     </g>
   ),
-  [ICON_NAMES.LOADING.GEARS]: ({ fillColor, strokeColor }) => (
+  ['loading-gears']: ({ fillColor, strokeColor }) => (
     <g fill={fillColor} stroke={strokeColor} strokeWidth="1">
       {/* 大歯車 */}
       <g>
@@ -1618,7 +1559,7 @@ const ICON_SVG_PATHS: Record<
       </g>
     </g>
   ),
-  [ICON_NAMES.LOADING.WAVE]: ({ strokeColor }) => (
+  ['loading-wave']: ({ strokeColor }) => (
     <g fill="none" stroke={strokeColor} strokeWidth="2" strokeLinecap="round">
       <path d="M2 12 Q 6 6, 12 12 T 22 12" opacity="0.3" />
       <path d="M2 12 Q 6 6, 12 12 T 22 12">
@@ -1633,7 +1574,7 @@ const ICON_SVG_PATHS: Record<
       </circle>
     </g>
   ),
-  [ICON_NAMES.LOADING.RADAR]: ({ fillColor, strokeColor }) => (
+  ['loading-radar']: ({ fillColor, strokeColor }) => (
     <g>
       {/* レーダー円 */}
       <circle cx="12" cy="12" r="10" fill="none" stroke={strokeColor} strokeWidth="1" opacity="0.2" />
@@ -1650,7 +1591,7 @@ const ICON_SVG_PATHS: Record<
       </path>
     </g>
   ),
-  [ICON_NAMES.LOADING.CUBE3D]: ({ strokeColor }) => (
+  ['loading-cube3d']: ({ strokeColor }) => (
     <g fill="none" stroke={strokeColor} strokeWidth="1.5" strokeLinejoin="round">
       {/* 3Dキューブ */}
       <polygon points="12,2 20,7 20,17 12,22 4,17 4,7" opacity="0.3" />
@@ -1663,7 +1604,36 @@ const ICON_SVG_PATHS: Record<
       <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="4s" repeatCount="indefinite" />
     </g>
   ),
-  [ICON_NAMES.LOADING.RINGS]: ({ strokeColor }) => (
+  ['loading-cube3d-glow']: ({ strokeColor }) => (
+    <g fill="none" stroke={strokeColor} strokeWidth="1.5">
+      {/* Phase 1: キューブ */}
+      <g opacity="0">
+        <animate attributeName="opacity" values="1;1;0;0;0;0;1" dur="6s" repeatCount="indefinite" />
+        <polygon points="12,2 20,7 20,17 12,22 4,17 4,7" strokeLinejoin="round" />
+        <line x1="12" y1="2" x2="12" y2="12" />
+        <line x1="12" y1="12" x2="4" y2="17" />
+        <line x1="12" y1="12" x2="20" y2="17" />
+        <polygon points="12,2 20,7 12,12 4,7" fill={strokeColor} opacity="0.3" strokeLinejoin="round" />
+      </g>
+      {/* Phase 2: 原子（軌道＋核） */}
+      <g opacity="0">
+        <animate attributeName="opacity" values="0;0;1;1;0;0;0" dur="6s" repeatCount="indefinite" />
+        <ellipse cx="12" cy="12" rx="9" ry="4" />
+        <ellipse cx="12" cy="12" rx="9" ry="4" transform="rotate(60 12 12)" />
+        <ellipse cx="12" cy="12" rx="9" ry="4" transform="rotate(120 12 12)" />
+        <circle cx="12" cy="12" r="2.5" fill={strokeColor} />
+      </g>
+      {/* Phase 3: 同心円リング */}
+      <g opacity="0">
+        <animate attributeName="opacity" values="0;0;0;0;1;1;0" dur="6s" repeatCount="indefinite" />
+        <circle cx="12" cy="12" r="3" />
+        <circle cx="12" cy="12" r="6" opacity="0.7" />
+        <circle cx="12" cy="12" r="9" opacity="0.4" />
+        <circle cx="12" cy="12" r="2" fill={strokeColor} />
+      </g>
+    </g>
+  ),
+  ['loading-rings']: ({ strokeColor }) => (
     <g fill="none" strokeWidth="2">
       {/* 外リング */}
       <circle cx="12" cy="12" r="10" stroke={strokeColor} opacity="0.2" />
@@ -1682,22 +1652,22 @@ const ICON_SVG_PATHS: Record<
       </circle>
     </g>
   ),
-  [ICON_NAMES.LOADING.ECLIPSE]: ({ fillColor, strokeColor }) => (
+  ['loading-eclipse']: ({ fillColor, strokeColor }) => (
     <g>
-      {/* 太陽/月 */}
+      {/* 太陽本体（背景の光） */}
       <circle cx="12" cy="12" r="6" fill={fillColor !== 'none' ? fillColor : strokeColor} opacity="0.3" />
-      {/* 影（月食エフェクト） */}
+      {/* 月の影（左右に移動） */}
       <circle cx="12" cy="12" r="6" fill={strokeColor}>
-        <animate attributeName="cx" values="6;12;18;12;6" dur="3s" repeatCount="indefinite" />
+        <animate attributeName="cx" values="7;12;17;12;7" dur="3s" repeatCount="indefinite" />
       </circle>
-      {/* 光輪 */}
+      {/* 外輪（コロナリング） */}
       <circle cx="12" cy="12" r="8" fill="none" stroke={strokeColor} strokeWidth="1" opacity="0.5">
         <animate attributeName="r" values="8;9;8" dur="1.5s" repeatCount="indefinite" />
         <animate attributeName="opacity" values="0.5;0.2;0.5" dur="1.5s" repeatCount="indefinite" />
       </circle>
     </g>
   ),
-  [ICON_NAMES.LOADING.INTERVIEW]: ({ fillColor, strokeColor }) => (
+  ['loading-interview']: ({ fillColor, strokeColor }) => (
     <g>
       {/* 左の人（頭だけ上下に伸びる、足元は固定） */}
       <g>
@@ -1812,10 +1782,6 @@ const ICON_ANIMATION_CONFIG: Record<
     animation: { rotate: [0, 360] },
     transition: { repeat: Infinity, duration: 0.8, ease: 'linear' },
   },
-  'loading-bars-wave': {
-    animation: { scaleY: [0.3, 1, 0.3] },
-    transition: { repeat: Infinity, duration: 1.2, ease: 'easeInOut' },
-  },
   'loading-bounce': {
     animation: { y: [0, -8, 0] },
     transition: { repeat: Infinity, duration: 0.6, ease: 'easeInOut' },
@@ -1911,7 +1877,11 @@ const ICON_ANIMATION_CONFIG: Record<
   },
   'loading-cube3d': {
     animation: { rotate: [0, 360] },
-    transition: { repeat: Infinity, duration: 4, ease: 'linear' },
+    transition: { repeat: Infinity, duration: 5, ease: 'linear' },
+  },
+  'loading-cube3d-glow': {
+    animation: { rotate: [0, 360] },
+    transition: { repeat: Infinity, duration: 8, ease: 'linear' },
   },
   'loading-rings': {
     animation: { rotate: [0, 360] },
@@ -1932,15 +1902,36 @@ const ICON_ANIMATION_CONFIG: Record<
 };
 
 // ========================================
+// プリセットマッピング
+// ========================================
+const PRESET_MAP: Record<LoadingPreset, { name: IconName; useFill?: boolean }> = {
+  spinner: { name: 'spinner' },
+  dots: { name: 'loading-dots', useFill: true },
+  pulse: { name: 'loading-pulse' },
+  cube: { name: 'loading-cube3d' },
+  'cube-glow': { name: 'loading-cube3d-glow' },
+  interview: { name: 'loading-interview', useFill: true },
+  dna: { name: 'loading-dna' },
+  atom: { name: 'loading-atom' },
+  rings: { name: 'loading-rings' },
+  gears: { name: 'loading-gears' },
+  hourglass: { name: 'loading-hourglass' },
+  wave: { name: 'loading-wave' },
+  radar: { name: 'loading-radar', useFill: true },
+  eclipse: { name: 'loading-eclipse', useFill: true },
+};
+
+// ========================================
 // Iconコンポーネント本体
 // ========================================
 const Icon: React.FC<IconProps> = ({
-  name,
+  name: nameProp,
+  preset,
   size = 24,
   className = '',
   style,
-  fill = 'none',
-  stroke = 'currentColor',
+  fill: fillProp,
+  stroke: strokeProp = 'currentColor',
   strokeWidth = 2,
   dot = false,
   shake = false,
@@ -1957,6 +1948,11 @@ const Icon: React.FC<IconProps> = ({
   delay,
   onClick,
 }) => {
+  // presetからnameとfillを解決
+  const presetConfig = preset ? PRESET_MAP[preset] : undefined;
+  const name = (nameProp ?? presetConfig?.name ?? '') as IconName;
+  const fill = fillProp ?? (presetConfig?.useFill ? strokeProp : 'none');
+  const stroke = strokeProp;
   // ========================================
   // 内部処理
   // ========================================

@@ -3,7 +3,7 @@
  */
 import { FC, memo } from 'react';
 import Icon from '../../atoms/Icon';
-import { ICON_NAMES } from '../../constants';
+
 import { NAV_ICON_SIZES } from './constants';
 import type { DatePickerSize } from './types';
 
@@ -32,7 +32,7 @@ export const NavigationButton: FC<Props> = memo(({ direction, size, borderRadius
     aria-label={direction === 'prev' ? '前月' : '次月'}
   >
     <Icon
-      name={direction === 'prev' ? ICON_NAMES.REGULAR.CHEVRON_LEFT : ICON_NAMES.REGULAR.CHEVRON_RIGHT}
+      name={direction === 'prev' ? 'chevron-left' : 'chevron-right'}
       size={NAV_ICON_SIZES[size]}
       className="transition-colors duration-200"
     />

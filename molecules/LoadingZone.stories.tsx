@@ -1,7 +1,4 @@
-import {
-  LOADING_ICON_TYPES,
-  ICON_NAMES,
-} from '@/constants/icons';
+import { LOADING_ICON_TYPES } from '@/constants/icons';
 
 import LoadingZone from './LoadingZone';
 
@@ -69,7 +66,7 @@ export const Default: Story = {
   args: {
     variant: 'simple',
     message: 'データを読み込み中...',
-    iconName: ICON_NAMES.LOADING.SPINNER,
+    iconName: 'spinner',
     size: 32,
     color: 'text-indigo-600',
   },
@@ -102,7 +99,7 @@ export const AllTypes: Story = {
                 variant={variant}
                 height={variant === 'inline' ? 'auto' : '200px'}
                 message={`${variant}タイプのローディング表示`}
-                iconName={ICON_NAMES.LOADING.SPINNER}
+                iconName={'spinner'}
               />
             </div>
           </div>
@@ -116,12 +113,12 @@ export const DifferentIcons: Story = {
   args: {},
   render: () => {
     const iconNames = [
-      ICON_NAMES.LOADING.SPINNER,
-      ICON_NAMES.LOADING.DOTS_FADE,
-      ICON_NAMES.LOADING.BARS_WAVE,
-      ICON_NAMES.LOADING.CLOCK,
-      ICON_NAMES.LOADING.WIFI,
-      ICON_NAMES.LOADING.ORBIT,
+      'spinner',
+      'loading-dots-fade',
+      'loading-wave',
+      'loading-clock',
+      'loading-wifi',
+      'loading-orbit',
     ];
 
     return (
@@ -148,7 +145,7 @@ export const TableLoading: Story = {
     variant: 'table',
     height: '400px',
     message: 'テーブルデータを読み込み中...',
-    iconName: ICON_NAMES.LOADING.BARS_WAVE,
+    iconName: 'loading-wave',
     size: 48,
   },
 };
@@ -158,7 +155,7 @@ export const CardLoading: Story = {
     variant: 'card',
     height: '200px',
     message: 'カードデータを読み込み中...',
-    iconName: ICON_NAMES.LOADING.PULSE_RING,
+    iconName: 'loading-pulse-ring',
     size: 40,
     color: 'text-blue-500',
   },
@@ -169,7 +166,7 @@ export const ListLoading: Story = {
     variant: 'list',
     height: '300px',
     message: 'リストデータを読み込み中...',
-    iconName: ICON_NAMES.LOADING.DOTS_FADE,
+    iconName: 'loading-dots-fade',
     size: 32,
     color: 'text-gray-400',
   },
@@ -180,7 +177,7 @@ export const SimpleLoading: Story = {
     variant: 'simple',
     height: '150px',
     message: 'シンプルローディング',
-    iconName: ICON_NAMES.LOADING.BOUNCE,
+    iconName: 'loading-bounce',
     size: 32,
     color: 'text-green-500',
   },
@@ -190,7 +187,7 @@ export const InlineLoading: Story = {
   args: {
     variant: 'inline',
     message: 'インラインローディング',
-    iconName: ICON_NAMES.LOADING.DOTS_FADE,
+    iconName: 'loading-dots-fade',
     size: 16,
     color: 'text-gray-600',
   },
@@ -209,7 +206,7 @@ export const OverlayLoading: Story = {
       <LoadingZone
         variant="overlay"
         message="処理中です..."
-        iconName={ICON_NAMES.LOADING.ORBIT}
+        iconName={'loading-orbit'}
         size={48}
         color="text-indigo-600"
       />
@@ -232,7 +229,7 @@ export const CustomSizes: Story = {
                 variant="simple"
                 height="120px"
                 message={`${size}px`}
-                iconName={ICON_NAMES.LOADING.CLOCK}
+                iconName={'loading-clock'}
                 size={size}
               />
             </div>
@@ -265,7 +262,7 @@ export const CustomColors: Story = {
                 variant="simple"
                 height="120px"
                 message={color.name}
-                iconName={ICON_NAMES.LOADING.WIFI}
+                iconName={'loading-wifi'}
                 size={32}
                 color={color.class}
               />
@@ -296,7 +293,7 @@ export const SpeedVariations: Story = {
                 variant="simple"
                 height="120px"
                 message={`${speed.label} (${speed.duration}s)`}
-                iconName={ICON_NAMES.LOADING.STAR}
+                iconName={'loading-star'}
                 size={32}
                 duration={speed.duration}
               />
@@ -320,7 +317,7 @@ export const UsageExamples: Story = {
           variant="table"
           height="300px"
           message="従業員データを読み込み中..."
-          iconName={ICON_NAMES.LOADING.BARS_WAVE}
+          iconName={'loading-wave'}
           size={48}
         />
       </div>
@@ -341,7 +338,7 @@ export const UsageExamples: Story = {
           <LoadingZone
             variant="overlay"
             message="送信中..."
-            iconName={ICON_NAMES.LOADING.ORBIT}
+            iconName={'loading-orbit'}
             size={40}
           />
         </div>
@@ -355,7 +352,7 @@ export const UsageExamples: Story = {
             <LoadingZone
               variant="inline"
               message="更新中..."
-              iconName={ICON_NAMES.LOADING.DOTS_FADE}
+              iconName={'loading-dots-fade'}
               size={16}
             />
           </div>
@@ -364,7 +361,7 @@ export const UsageExamples: Story = {
             <LoadingZone
               variant="inline"
               message="アップロード中..."
-              iconName={ICON_NAMES.LOADING.PROGRESS}
+              iconName={'loading-progress'}
               size={16}
             />
           </div>

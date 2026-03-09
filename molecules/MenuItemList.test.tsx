@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { ICON_NAMES } from '@/constants/icons';
+
 
 import MenuItemList from './MenuItemList';
 
@@ -22,8 +22,8 @@ describe('MenuItemList', () => {
 
   it('menuItems 配列（旧方式）でメニューアイテムが表示される', () => {
     const menuItems = [
-      { label: '項目1', icon: ICON_NAMES.REGULAR.GEAR },
-      { label: '項目2', icon: ICON_NAMES.REGULAR.PERSON },
+      { label: '項目1', icon: 'gear' },
+      { label: '項目2', icon: 'person' },
     ];
     render(<MenuItemList menuItems={menuItems} />);
 

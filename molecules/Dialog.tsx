@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 
 import Button from '../atoms/Button';
 import Icon from '../atoms/Icon';
-import { ICON_NAMES } from '../constants';
+
 
 export type DialogType = 'info' | 'warning' | 'error' | 'success' | 'danger';
 
@@ -43,31 +43,31 @@ export type DialogProps = AlertDialogProps | ConfirmDialogProps;
 // タイプ別のアイコンと色設定
 const typeConfig = {
   info: {
-    icon: ICON_NAMES.REGULAR.INFO_CIRCLE,
+    icon: 'info-circle',
     iconColor: 'text-blue-500',
     headerBg: 'bg-blue-50',
   },
   warning: {
-    icon: ICON_NAMES.REGULAR.INFO_TRIANGLE,
+    icon: 'info-triangle',
     iconColor: 'text-yellow-500',
     headerBg: 'bg-yellow-50',
   },
   error: {
-    icon: ICON_NAMES.REGULAR.INFO_CIRCLE,
+    icon: 'info-circle',
     iconColor: 'text-red-500',
     headerBg: 'bg-red-50',
   },
   success: {
-    icon: ICON_NAMES.REGULAR.CHECK_CIRCLE,
+    icon: 'check-circle',
     iconColor: 'text-green-500',
     headerBg: 'bg-green-50',
   },
   danger: {
-    icon: ICON_NAMES.REGULAR.INFO_TRIANGLE,
+    icon: 'info-triangle',
     iconColor: 'text-red-500',
     headerBg: 'bg-red-50',
   },
-};
+} as const;
 
 /**
  * 汎用ダイアログコンポーネント

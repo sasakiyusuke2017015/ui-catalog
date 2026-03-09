@@ -3,7 +3,7 @@
  */
 import { FC, memo, useMemo } from 'react';
 import Icon from '../../atoms/Icon';
-import { ICON_NAMES } from '../../constants';
+
 import { WEEKDAYS } from './constants';
 import { isDateObjInRange } from './validation';
 
@@ -48,11 +48,11 @@ export const CalendarGrid: FC<Props> = memo(({
     <>
       <div className="flex items-center justify-between px-3 py-3" style={{ backgroundColor: primaryBgColor }}>
         <button type="button" onClick={() => onNavigate('prev')} className="p-1.5 hover:bg-white/20 transition-colors" style={{ borderRadius }} aria-label="前月">
-          <Icon name={ICON_NAMES.REGULAR.CHEVRON_LEFT} size={16} stroke="white" />
+          <Icon name={'chevron-left'} size={16} stroke="white" />
         </button>
         <span className="text-white font-semibold text-fluid-base">{`${viewDate.getFullYear()}年${viewDate.getMonth() + 1}月`}</span>
         <button type="button" onClick={() => onNavigate('next')} className="p-1.5 hover:bg-white/20 transition-colors" style={{ borderRadius }} aria-label="次月">
-          <Icon name={ICON_NAMES.REGULAR.CHEVRON_RIGHT} size={16} stroke="white" />
+          <Icon name={'chevron-right'} size={16} stroke="white" />
         </button>
       </div>
       <div className="p-3">

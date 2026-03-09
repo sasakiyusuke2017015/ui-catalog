@@ -38,10 +38,11 @@ export function withDockerHmr(
   config?: StorybookConfig['viteFinal']
 ): StorybookConfig['viteFinal'] {
   return async (viteConfig, options) => {
-    // Docker環境向けHMR設定
+    // Docker環境向けHMR設定（リモートアクセス許可）
     viteConfig.server = {
       ...viteConfig.server,
       host: '0.0.0.0',
+      allowedHosts: true,
       hmr: {
         host: 'localhost',
       },

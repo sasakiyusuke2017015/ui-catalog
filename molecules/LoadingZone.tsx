@@ -3,11 +3,8 @@
 import { FC, useState, useEffect, useRef } from 'react';
 
 import Icon, { type AnimationEase } from '../atoms/Icon';
-import { type ColorTheme } from '../constants';
-import {
-  type LoadingIconName,
-  ICON_NAMES,
-} from '../constants';
+import type { LoadingPreset } from '../atoms/Icon/types';
+import { type ColorTheme, type LoadingIconName } from '../constants';
 import { cn } from '../utils/cn';
 
 export type LoadingZoneName =
@@ -29,7 +26,10 @@ interface LoadingZoneProps {
   duration?: number;
   repeat?: number;
   delay?: number;
+  /** @deprecated preset を使用してください */
   iconName?: LoadingIconName;
+  /** ローディングプリセット（iconNameより優先） */
+  preset?: LoadingPreset;
   size?: number;
   color?: string;
   fill?: string;
@@ -54,7 +54,8 @@ const LoadingZone: FC<LoadingZoneProps> = ({
   duration,
   repeat,
   delay,
-  iconName = ICON_NAMES.LOADING.HALF,
+  iconName,
+  preset,
   size = 32,
   color,
   fill,
@@ -277,7 +278,8 @@ const LoadingZone: FC<LoadingZoneProps> = ({
             <div className="p-4 text-center">
               <div className="flex justify-center">
                 <Icon
-                  name={iconName}
+                  preset={preset}
+                  name={!preset ? iconName : undefined}
                   size={size}
                   style={{ color: iconColor }}
                   duration={duration}
@@ -302,7 +304,8 @@ const LoadingZone: FC<LoadingZoneProps> = ({
             <div className="text-center">
               <div className="mb-2 flex justify-center">
                 <Icon
-                  name={iconName}
+                  preset={preset}
+                  name={!preset ? iconName : undefined}
                   size={size}
                   style={{ color: iconColor }}
                   duration={duration}
@@ -327,7 +330,8 @@ const LoadingZone: FC<LoadingZoneProps> = ({
             <div className="rounded-lg bg-white p-8 text-center shadow-xl">
               <div className="mb-4 flex justify-center">
                 <Icon
-                  name={iconName}
+                  preset={preset}
+                  name={!preset ? iconName : undefined}
                   size={size}
                   style={{ color: iconColor }}
                   duration={duration}
@@ -347,7 +351,8 @@ const LoadingZone: FC<LoadingZoneProps> = ({
           <div className={cn("flex items-center space-x-3", className)} data-component="loading-zone" data-variant={variant}>
             <div className="flex-shrink-0">
               <Icon
-                name={iconName}
+                preset={preset}
+                name={!preset ? iconName : undefined}
                 size={size}
                 style={{ color: iconColor }}
                 duration={duration}

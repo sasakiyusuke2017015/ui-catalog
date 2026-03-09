@@ -4,7 +4,7 @@ import { FC, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import Icon from '../atoms/Icon';
-import { ICON_NAMES } from '../constants';
+
 
 export interface ToastProps {
   isOpen: boolean;
@@ -69,26 +69,26 @@ const Toast: FC<ToastProps> = ({
   // タイプ別の設定
   const typeConfig = {
     info: {
-      icon: ICON_NAMES.REGULAR.INFO_CIRCLE,
+      icon: 'info-circle',
       bgColor: 'bg-blue-500',
       borderColor: 'border-blue-600',
     },
     warning: {
-      icon: ICON_NAMES.REGULAR.INFO_TRIANGLE,
+      icon: 'info-triangle',
       bgColor: 'bg-yellow-500',
       borderColor: 'border-yellow-600',
     },
     error: {
-      icon: ICON_NAMES.REGULAR.INFO_CIRCLE,
+      icon: 'info-circle',
       bgColor: 'bg-red-500',
       borderColor: 'border-red-600',
     },
     success: {
-      icon: ICON_NAMES.REGULAR.CHECK_CIRCLE,
+      icon: 'check-circle',
       bgColor: 'bg-green-500',
       borderColor: 'border-green-600',
     },
-  };
+  } as const;
 
   const config = typeConfig[type];
 
@@ -131,7 +131,7 @@ const Toast: FC<ToastProps> = ({
           className="ml-2 text-white/80 hover:text-white transition-colors"
           aria-label="閉じる"
         >
-          <Icon name={ICON_NAMES.REGULAR.X} size={16} stroke="currentColor" />
+          <Icon name={'x'} size={16} stroke="currentColor" />
         </button>
       </div>
     </div>,

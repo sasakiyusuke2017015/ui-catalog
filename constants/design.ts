@@ -522,3 +522,58 @@ export function getBackgroundStyle(theme: BackgroundTheme): React.CSSProperties 
   }
 }
 
+// ============================================
+// セマンティックカラー
+// ============================================
+
+/**
+ * セマンティックカラー定義
+ *
+ * UIコンポーネント全体で使用する意味のある色名とその実際の色値のマッピング
+ * Tailwind CSSの色と整合性を保つ
+ */
+export const SEMANTIC_COLORS = {
+  /** プライマリ（インディゴ系） - メインのアクション用 */
+  primary: '#6366F1',
+  /** インフォ（ブルー系） - 情報表示用 */
+  info: '#3B82F6',
+  /** サクセス（グリーン系） - 成功・完了状態用 */
+  success: '#10B981',
+  /** ワーニング（アンバー系） - 警告・注意用 */
+  warning: '#F59E0B',
+  /** デンジャー（レッド系） - エラー・危険用 */
+  danger: '#EF4444',
+  /** ダーク（グレー系） - 暗いテキスト・ボーダー用 */
+  dark: '#1F2937',
+  /** ライト（グレー系） - 明るい背景・ボーダー用 */
+  light: '#F3F4F6',
+  /** ミュート（グレー系） - 無効・非アクティブ用 */
+  muted: '#9CA3AF',
+} as const;
+
+/** セマンティックカラーのキー型 */
+export type SemanticColorKey = keyof typeof SEMANTIC_COLORS;
+
+/** セマンティックカラーの値型 */
+export type SemanticColorValue = (typeof SEMANTIC_COLORS)[SemanticColorKey];
+
+/**
+ * セマンティックカラー名から実際の色値を取得
+ *
+ * @param colorName セマンティックカラー名
+ * @returns 色のhex値（見つからない場合はそのまま返す）
+ *
+ * @example
+ * ```typescript
+ * resolveSemanticColor('primary')  // '#6366F1'
+ * resolveSemanticColor('success')  // '#10B981'
+ * resolveSemanticColor('#FF0000')  // '#FF0000' (そのまま)
+ * ```
+ */
+export function resolveSemanticColor(colorName: string): string {
+  if (colorName in SEMANTIC_COLORS) {
+    return SEMANTIC_COLORS[colorName as SemanticColorKey];
+  }
+  return colorName;
+}
+

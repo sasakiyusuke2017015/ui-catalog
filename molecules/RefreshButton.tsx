@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import Icon from '../atoms/Icon';
-import { ICON_NAMES } from '../constants';
+
 
 interface RefreshButtonProps {
   /** 更新コールバック */
@@ -35,7 +35,7 @@ const RefreshButton: FC<RefreshButtonProps> = ({
       title="データを更新"
     >
       <Icon
-        name={ICON_NAMES.REGULAR.ARROW_ROTATE}
+        name={'arrow-rotate'}
         size={16}
         animationTrigger="condition"
         condition={refreshing}

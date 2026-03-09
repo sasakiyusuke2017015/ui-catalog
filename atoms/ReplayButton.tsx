@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import Button from './Button';
-import { ICON_NAMES } from '../constants';
+
 
 interface ReplayButtonProps {
   onClick: () => void;
@@ -24,7 +24,7 @@ const ReplayButton: FC<ReplayButtonProps> = ({
     <Button
       size={size}
       variant={variant}
-      leftIcon={ICON_NAMES.REGULAR.ARROW_ROTATE}
+      leftIcon={'arrow-rotate'}
       onClick={onClick}
     >
       {label}

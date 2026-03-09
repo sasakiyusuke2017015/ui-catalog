@@ -12,8 +12,31 @@ export type AnimationTrigger = 'hover' | 'tap' | 'condition' | 'none';
 
 export type AnimationDuration = number;
 
+/**
+ * ローディングプリセット
+ * preset を指定すると name, stroke, fill が自動設定される
+ */
+export type LoadingPreset =
+  | 'spinner'
+  | 'dots'
+  | 'pulse'
+  | 'cube'
+  | 'cube-glow'
+  | 'interview'
+  | 'dna'
+  | 'atom'
+  | 'rings'
+  | 'gears'
+  | 'hourglass'
+  | 'wave'
+  | 'radar'
+  | 'eclipse';
+
 export interface IconProps {
-  name: IconName;
+  /** アイコン名（presetを使う場合は省略可） */
+  name?: IconName;
+  /** ローディングプリセット（指定するとnameが自動設定される） */
+  preset?: LoadingPreset;
   size?: number;
   className?: string;
   style?: React.CSSProperties;

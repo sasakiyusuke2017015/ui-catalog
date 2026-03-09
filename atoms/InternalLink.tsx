@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { useLink } from '../adapters/RouterContext';
-import { ICON_NAMES } from '../constants';
+
 
 import Icon from './Icon';
 
@@ -158,7 +158,7 @@ const InternalLink: React.FC<InternalLinkProps> = ({
     >
       {showIcon && (
         <Icon
-          name={ICON_NAMES.REGULAR.ARROW_IN}
+          name={'arrow-in'}
           size={20}
           className="transition-transform duration-200 group-hover:translate-x-1"
         />

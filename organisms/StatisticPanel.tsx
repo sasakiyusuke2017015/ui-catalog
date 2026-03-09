@@ -1,14 +1,42 @@
-// src/components/common/organisms/StatisticPanel.tsx
 import React, { useMemo } from 'react';
 
-import LoadingZone from '../molecules/LoadingZone';
-import PieChart from '../molecules/PieChart';
-import StatisticList, {
-  type StatisticListProps,
-} from '../molecules/StatisticList';
-import { COLOR_MAP, type LoadingIconName } from '../constants';
+import { LoadingZone, PieChart, StatisticList } from '../molecules';
+import type { StatisticListProps } from '../molecules/StatisticList';
+import type { LoadingIconName } from '../constants';
+import type { LoadingPreset } from '../atoms/Icon';
 
-/** ステータス定義の型（SCHEMASのStatusItemと互換） */
+// ===========================
+// ステータス色定義（デフォルト）
+// ===========================
+
+/**
+ * デフォルトのステータス色マップ
+ * gray, green, blue, yellow, orange, red をサポート
+ */
+const DEFAULT_COLOR_MAP = {
+  gray: { bg: 'bg-gray-400', text: 'text-gray-600', hex: '#9CA3AF' },
+  green: { bg: 'bg-green-500', text: 'text-green-700', hex: '#10B981' },
+  blue: { bg: 'bg-blue-600', text: 'text-blue-700', hex: '#2563EB' },
+  yellow: { bg: 'bg-yellow-400', text: 'text-yellow-700', hex: '#FBBF24' },
+  orange: { bg: 'bg-orange-500', text: 'text-orange-700', hex: '#F97316' },
+  red: { bg: 'bg-red-500', text: 'text-red-700', hex: '#EF4444' },
+} as const;
+
+export type StatusColorKey = keyof typeof DEFAULT_COLOR_MAP;
+export type StatusColorValue = { bg: string; text: string; hex: string };
+
+/**
+ * デフォルトの色解決関数
+ */
+const defaultGetStatusColor = (colorKey: string): StatusColorValue => {
+  return DEFAULT_COLOR_MAP[colorKey as StatusColorKey] || DEFAULT_COLOR_MAP.gray;
+};
+
+// ===========================
+// 型定義
+// ===========================
+
+/** ステータス定義の型 */
 export interface StatusDefinition {
   value: number;
   color: string;
@@ -16,8 +44,8 @@ export interface StatusDefinition {
   shortLabel: string;
 }
 
-/** 統計アイテムの型（簡易版） */
-export interface StatisticItem {
+/** 統計パネルアイテムの型 */
+export interface StatisticPanelItem {
   statusDef: StatusDefinition;
   value: number;
   /** ラベル上書き（指定しない場合はstatusDefのshortLabelを使用） */
@@ -25,8 +53,8 @@ export interface StatisticItem {
 }
 
 export interface StatisticPanelProps {
-  /** 統計アイテム配列（新しい簡易API） */
-  items?: StatisticItem[];
+  /** 統計アイテム配列 */
+  items?: StatisticPanelItem[];
   /** PieChartのデータ（オプション、後方互換性のため残す） */
   pieChartData?: Array<{ name: string; value: number; color: string }>;
   /** 統計項目のリスト（後方互換性のため残す） */
@@ -41,7 +69,9 @@ export interface StatisticPanelProps {
   unit?: string;
   /** ローディング状態 */
   loading?: boolean;
-  /** ローディングアイコンの名前 */
+  /** ローディングプリセット（iconNameより優先） */
+  loadingPreset?: LoadingPreset;
+  /** @deprecated loadingPreset を使用してください */
   loadingIconName?: LoadingIconName;
   /** ローディングアイコンのサイズ */
   loadingIconSize?: number;
@@ -49,6 +79,8 @@ export interface StatisticPanelProps {
   loadingIconColor?: string;
   /** データがない場合のメッセージ */
   emptyMessage?: string;
+  /** カスタム色解決関数（デフォルトの色マップを上書き） */
+  getStatusColor?: (colorKey: string) => StatusColorValue;
 }
 
 /**
@@ -64,10 +96,12 @@ const StatisticPanel: React.FC<StatisticPanelProps> = ({
   totalUnit,
   unit = '名',
   loading = false,
+  loadingPreset,
   loadingIconName,
   loadingIconSize = 40,
   loadingIconColor,
   emptyMessage = '該当データなし',
+  getStatusColor = defaultGetStatusColor,
 }) => {
   // itemsが渡された場合、pieChartDataとstatisticsItemsを自動生成
   // 値が0の項目は表示しない
@@ -78,21 +112,18 @@ const StatisticPanel: React.FC<StatisticPanelProps> = ({
         .map(({ statusDef, value, label }) => ({
           name: label ?? statusDef.shortLabel,
           value,
-          color: COLOR_MAP[statusDef.color as keyof typeof COLOR_MAP]?.hex || '#cccccc',
+          color: getStatusColor(statusDef.color).hex,
         }));
     }
     return pieChartDataProp;
-  }, [items, pieChartDataProp]);
+  }, [items, pieChartDataProp, getStatusColor]);
 
   const statisticsItems = useMemo(() => {
     if (items) {
       return items
         .filter(({ value }) => value > 0)
         .map(({ statusDef, value, label }) => {
-          const colorMap = COLOR_MAP[statusDef.color as keyof typeof COLOR_MAP] || {
-            bg: 'bg-gray-100',
-            text: 'text-gray-800',
-          };
+          const colorMap = getStatusColor(statusDef.color);
           return {
             dotColor: colorMap.bg,
             label: label ?? statusDef.label,
@@ -103,7 +134,7 @@ const StatisticPanel: React.FC<StatisticPanelProps> = ({
         });
     }
     return statisticsItemsProp;
-  }, [items, statisticsItemsProp, unit]);
+  }, [items, statisticsItemsProp, unit, getStatusColor]);
 
   const hasData = totalValue !== undefined && totalValue > 0;
 
@@ -111,7 +142,8 @@ const StatisticPanel: React.FC<StatisticPanelProps> = ({
     <LoadingZone
       loading={loading}
       variant="inline"
-      iconName={loadingIconName}
+      preset={loadingPreset}
+      iconName={!loadingPreset ? loadingIconName : undefined}
       size={loadingIconSize}
       fill={loadingIconColor}
     >

@@ -3,11 +3,7 @@ import React from 'react';
 import Icon, { type AnimationEase } from '../atoms/Icon';
 import Media from '../atoms/Media';
 import LoadingZone from '../molecules/LoadingZone';
-import {
-  type LoadingIconName,
-  type IconName,
-  ICON_NAMES,
-} from '../constants';
+import { type LoadingIconName, type IconName } from '../constants';
 
 export type IconType = 'none' | 'icon' | 'media';
 
@@ -63,7 +59,7 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
 
   // アイコン/メディア関連
   iconType = 'none',
-  iconName = ICON_NAMES.REGULAR.PERSON,
+  iconName = 'person',
   logoSrc,
   logoAlt = 'Logo',
   size = 48,
@@ -74,7 +70,7 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
   loading = false,
   loadingMessage = '読み込み中...',
   loadingHeight = '200px',
-  loadingIconName = ICON_NAMES.LOADING.HALF,
+  loadingIconName = 'loading-half',
   loadingSize = 32,
   loadingColor = 'text-indigo-600',
   loadingFill,

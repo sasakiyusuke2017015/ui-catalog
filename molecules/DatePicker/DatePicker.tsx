@@ -3,7 +3,7 @@
  */
 import { FC, useRef, useState, useEffect, useCallback, useMemo } from 'react';
 import Icon from '../../atoms/Icon';
-import { ICON_NAMES } from '../../constants';
+
 import { useAlert } from '../../hooks/ui';
 import AlertDialog from '../AlertDialog';
 
@@ -172,7 +172,7 @@ const DatePicker: FC<DatePickerProps> = ({
                 }`}
                 title="日付をクリア"
               >
-                <Icon name={ICON_NAMES.REGULAR.X} size={ICON_SIZES[size] - 2} interactive />
+                <Icon name={'x'} size={ICON_SIZES[size] - 2} interactive />
               </button>
             )}
             <button
@@ -185,7 +185,7 @@ const DatePicker: FC<DatePickerProps> = ({
               }`}
               title="カレンダーを開く"
             >
-              <Icon name={ICON_NAMES.REGULAR.CALENDAR} size={ICON_SIZES[size]} interactive />
+              <Icon name={'calendar'} size={ICON_SIZES[size]} interactive />
             </button>
           </div>
 
@@ -214,7 +214,7 @@ const DatePicker: FC<DatePickerProps> = ({
                     className={`w-full py-2 flex items-center justify-center transition-colors ${canNavigateYear('prev') ? 'hover:bg-gray-100 text-gray-600' : 'text-gray-300 cursor-not-allowed'}`}
                     aria-label="前年"
                   >
-                    <Icon name={ICON_NAMES.REGULAR.CHEVRON_UP} size={20} />
+                    <Icon name={'chevron-up'} size={20} />
                   </button>
 
                   <div className="relative overflow-hidden" style={{ minHeight: '180px' }}>
@@ -270,7 +270,7 @@ const DatePicker: FC<DatePickerProps> = ({
                     className={`w-full py-2 flex items-center justify-center transition-colors ${canNavigateYear('next') ? 'hover:bg-gray-100 text-gray-600' : 'text-gray-300 cursor-not-allowed'}`}
                     aria-label="次年"
                   >
-                    <Icon name={ICON_NAMES.REGULAR.CHEVRON_DOWN} size={20} />
+                    <Icon name={'chevron-down'} size={20} />
                   </button>
                 </>
               )}

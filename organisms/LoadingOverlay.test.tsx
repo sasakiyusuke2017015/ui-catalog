@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 
-import { ICON_NAMES } from '@/constants/icons';
+
 
 import LoadingOverlay from './LoadingOverlay';
 
@@ -28,7 +28,7 @@ describe('LoadingOverlay', () => {
 
   it('icon が指定された場合、Icon コンポーネントが表示される', () => {
     const { container } = render(
-      <LoadingOverlay isVisible={true} icon={ICON_NAMES.LOADING.SPINNER} />
+      <LoadingOverlay isVisible={true} icon={'spinner'} />
     );
     // Icon コンポーネントは svg 要素
     expect(container.querySelector('svg')).toBeInTheDocument();
@@ -44,7 +44,7 @@ describe('LoadingOverlay', () => {
     const { container } = render(
       <LoadingOverlay
         isVisible={true}
-        icon={ICON_NAMES.LOADING.SPINNER}
+        icon={'spinner'}
         iconSize={100}
       />
     );

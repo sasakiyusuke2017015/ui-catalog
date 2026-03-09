@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { ICON_NAMES } from '@/constants/icons';
+
 
 import DropdownMenu from './DropdownMenu';
 
@@ -31,7 +31,7 @@ describe('DropdownMenu', () => {
     const { container } = render(
       <DropdownMenu
         label="メニュー"
-        icon={ICON_NAMES.REGULAR.HAMBURGER}
+        icon={'hamburger'}
         menuContent={<div>コンテンツ</div>}
       />
     );

@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 
-import { ICON_NAMES } from '@/constants/icons';
+
 
 import StepIndicator, { type Step } from './StepIndicator';
 
@@ -51,7 +51,7 @@ describe('StepIndicator', () => {
 
   it('completedIcon をカスタマイズできる', () => {
     const stepsWithCustomIcon: Step[] = [
-      { label: 'カスタム', status: 'completed', completedIcon: ICON_NAMES.REGULAR.GEAR },
+      { label: 'カスタム', status: 'completed', completedIcon: 'gear' },
     ];
     const { container } = render(<StepIndicator steps={stepsWithCustomIcon} />);
     // カスタムアイコンが存在することを確認（svg要素）
@@ -63,7 +63,7 @@ describe('StepIndicator', () => {
       {
         label: 'ローディング',
         status: 'in_progress',
-        loadingIcon: ICON_NAMES.LOADING.SPINNER,
+        loadingIcon: 'spinner',
       },
     ];
     const { container } = render(<StepIndicator steps={stepsWithCustomLoading} />);
