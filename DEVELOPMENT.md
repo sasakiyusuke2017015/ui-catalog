@@ -110,6 +110,10 @@ npm pkg set scripts.ui:pull="git subtree pull --prefix=packages/ui-catalog https
 
 # 5. 依存関係をインストール
 pnpm install
+
+# 6. Claude Code コマンドを追加（オプション）
+mkdir -p .claude/commands
+cp packages/ui-catalog/commands/ui-catalog.md .claude/commands/
 ```
 
 ### 日常の同期（npm script）
