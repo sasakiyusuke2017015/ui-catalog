@@ -82,10 +82,13 @@ git branch -D ui-catalog-split
 
 pleasync や meetscribe などの他プロジェクトで ui-catalog を導入する手順：
 
+> **Note**: 初回セットアップは手動で実行します。
+> `git subtree add` は一度きりの操作のため、npm script 化しません。
+
 ```bash
 cd new-project
 
-# 1. subtree として追加
+# 1. subtree として追加（初回のみ・手動実行）
 git subtree add --prefix=packages/ui-catalog \
   https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash
 
@@ -100,7 +103,7 @@ EOF
 # apps/web/package.json の dependencies に:
 # "@ui-catalog/core": "workspace:*"
 
-# 4. ルートの package.json に npm script を追加
+# 4. ルートの package.json に npm script を追加（日常の同期用）
 # "scripts": {
 #   "ui:push": "git subtree push --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main",
 #   "ui:pull": "git subtree pull --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash"
@@ -111,6 +114,8 @@ pnpm install
 ```
 
 ### 日常の同期（npm script）
+
+導入後は npm script で同期します：
 
 ```bash
 # ui-catalog の更新を取り込む
