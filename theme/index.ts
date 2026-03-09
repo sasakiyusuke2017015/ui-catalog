@@ -51,6 +51,7 @@ export {
   getStoredValue,
   setStoredValue,
   removeStoredValue,
+  atomWithStorageSync,
 } from './storage'
 
 // ============================================
@@ -104,3 +105,32 @@ export {
   // 複合
   useFullTheme,
 } from './useTheme'
+
+// ============================================
+// コンポーネント別テーマ
+// ============================================
+
+export type {
+  ThemeValue,
+  ComponentThemeConfig,
+  ComponentThemeUsage,
+  ThemeableComponent,
+  ComponentThemesMap,
+} from './componentThemes'
+
+export {
+  // カテゴリ・ラベル
+  COMPONENT_CATEGORIES,
+  COMPONENT_LABELS,
+  COMPONENT_THEME_USAGE,
+  // デフォルト
+  DEFAULT_COMPONENT_THEMES,
+  COMPONENT_THEMES_STORAGE_KEY,
+  // Atoms
+  componentThemesAtom,
+  resetComponentThemesAtom,
+  updateComponentThemeAtom,
+  // ユーティリティ
+  getComponentThemeConfig,
+  resolveComponentTheme,
+} from './componentThemes'

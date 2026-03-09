@@ -22,30 +22,7 @@ import {
   DEFAULT_ANIMATION,
   THEME_STORAGE_KEYS,
 } from './types'
-import { getStoredValue, setStoredValue, isBrowser } from './storage'
-
-// ============================================
-// localStorage 連携 atom ファクトリ
-// ============================================
-
-/**
- * localStorage 連携 atom を作成
- * 初期値を同期的に読み込み、変更時に自動保存
- */
-function atomWithStorageSync<T>(key: string, defaultValue: T) {
-  const initialValue = getStoredValue(key, defaultValue)
-  const baseAtom = atom(initialValue)
-
-  return atom(
-    (get) => get(baseAtom),
-    (_get, set, newValue: T) => {
-      set(baseAtom, newValue)
-      if (isBrowser()) {
-        setStoredValue(key, newValue)
-      }
-    }
-  )
-}
+import { atomWithStorageSync } from './storage'
 
 // ============================================
 // 基本テーマ Atoms

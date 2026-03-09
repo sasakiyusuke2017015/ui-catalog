@@ -103,14 +103,14 @@ export const DEFAULT_FULL_THEME: FullThemeSettings = {
 
 /**
  * localStorage のキー定義
- * apps 側で上書き可能にするため export
+ * 既存の apps/web との互換性を維持するためプレフィックスなし
  */
 export const THEME_STORAGE_KEYS = {
-  COLOR_THEME: 'ui-catalog:colorTheme',
-  SHAPE_THEME: 'ui-catalog:shapeTheme',
-  BACKGROUND_THEME: 'ui-catalog:backgroundTheme',
-  TABLE_ROW_ANIMATION: 'ui-catalog:tableRowAnimation',
-  CARD_ANIMATION: 'ui-catalog:cardAnimation',
-  DROP_MENU_ANIMATION: 'ui-catalog:dropMenuAnimation',
-  ANIMATION_SPEED: 'ui-catalog:animationSpeed',
+  COLOR_THEME: 'uiColorTheme',
+  SHAPE_THEME: 'uiShape',
+  BACKGROUND_THEME: 'uiBackground',
+  TABLE_ROW_ANIMATION: 'uiTableRowAnimationVariant',
+  CARD_ANIMATION: 'uiCardAnimationVariant',
+  DROP_MENU_ANIMATION: 'uiDropMenuAnimationVariant',
+  ANIMATION_SPEED: 'uiAnimationSpeed',
 } as const
