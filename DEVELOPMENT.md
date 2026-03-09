@@ -80,24 +80,47 @@ git branch -D ui-catalog-split
 
 ### 新規プロジェクトへの導入
 
+pleasync や meetscribe などの他プロジェクトで ui-catalog を導入する手順：
+
 ```bash
 cd new-project
 
-# subtree として追加
+# 1. subtree として追加
 git subtree add --prefix=packages/ui-catalog \
   https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash
 
-# pnpm workspace に追加（pnpm-workspace.yaml）
-# packages:
-#   - 'packages/*'
+# 2. pnpm-workspace.yaml に追加（なければ作成）
+cat >> pnpm-workspace.yaml << 'EOF'
+packages:
+  - 'apps/*'
+  - 'packages/*'
+EOF
 
-# 依存関係に追加（apps/web/package.json）
+# 3. 使用するアプリの package.json に依存関係を追加
+# apps/web/package.json の dependencies に:
 # "@ui-catalog/core": "workspace:*"
 
+# 4. ルートの package.json に npm script を追加
+# "scripts": {
+#   "ui:push": "git subtree push --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main",
+#   "ui:pull": "git subtree pull --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash"
+# }
+
+# 5. 依存関係をインストール
 pnpm install
 ```
 
-### 日常の同期
+### 日常の同期（npm script）
+
+```bash
+# ui-catalog の更新を取り込む
+pnpm ui:pull
+
+# ローカルの変更を ui-catalog に push
+pnpm ui:push
+```
+
+### 日常の同期（Git コマンド直接）
 
 ```bash
 # ui-catalog の更新を取り込む
@@ -107,21 +130,6 @@ git subtree pull --prefix=packages/ui-catalog \
 # ローカルの変更を ui-catalog に push
 git subtree push --prefix=packages/ui-catalog \
   https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main
-```
-
-### エイリアス設定（推奨）
-
-頻繁に使うので .gitconfig にエイリアスを設定：
-
-```bash
-git config alias.ui-pull '!git subtree pull --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash'
-git config alias.ui-push '!git subtree push --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main'
-```
-
-使用：
-```bash
-git ui-pull   # 最新を取り込む
-git ui-push   # 変更を push
 ```
 
 ### ブランチ戦略
