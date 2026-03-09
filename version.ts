@@ -133,7 +133,7 @@ export interface VersionCheckResult {
  * ```tsx
  * // apps/web/src/main.tsx
  * import { checkVersions } from '@ui-catalog/core'
- * import versions from '../seedling-ui.versions.json'
+ * import versions from '../ui-catalog.versions.json'
  *
  * if (import.meta.env.DEV) {
  *   checkVersions(versions)
@@ -230,7 +230,7 @@ function compareVersions(a: string, b: string): number {
 
 /**
  * 現在のバージョン定義を JSON 形式で取得
- * seedling-ui.versions.json の初期生成用
+ * ui-catalog.versions.json の初期生成用
  */
 export function exportVersionsAsJson(): string {
   return JSON.stringify(VERSION_REGISTRY, null, 2)
@@ -240,25 +240,25 @@ export function exportVersionsAsJson(): string {
  * versions.json の存在を必須にする
  * アプリ側で初期化時に呼び出す
  *
- * @param versionsJson アプリ側の seedling-ui.versions.json の内容
+ * @param versionsJson アプリ側の ui-catalog.versions.json の内容
  * @throws versions.json が未定義または空の場合にエラー
  *
  * @example
  * ```tsx
  * // apps/web/src/main.tsx
- * import { initSeedlingUI } from '@ui-catalog/core'
- * import versions from '../seedling-ui.versions.json'
+ * import { initUICatalog } from '@ui-catalog/core'
+ * import versions from '../ui-catalog.versions.json'
  *
- * initSeedlingUI(versions)
+ * initUICatalog(versions)
  * ```
  */
-export function initSeedlingUI(versionsJson: VersionRegistry | undefined | null): void {
+export function initUICatalog(versionsJson: VersionRegistry | undefined | null): void {
   if (!versionsJson || Object.keys(versionsJson).length === 0) {
     throw new Error(
-      `[seedling-ui] seedling-ui.versions.json が必要です。
+      `[ui-catalog] ui-catalog.versions.json が必要です。
 
 以下のコマンドで生成してください:
-  pnpm --filter @ui-catalog/core export-versions > apps/web/seedling-ui.versions.json
+  pnpm --filter @ui-catalog/core export-versions > apps/web/ui-catalog.versions.json
 
 または、手動で VERSION_REGISTRY の内容をコピーしてください。`
     )

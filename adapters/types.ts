@@ -2,7 +2,7 @@
  * RouterAdapter - ルーティングライブラリの抽象化層
  *
  * React Router と Next.js の差分を吸収するためのインターフェース。
- * seedling-ui のコンポーネントはこのインターフェース経由でルーティング機能を使用する。
+ * ui-catalog のコンポーネントはこのインターフェース経由でルーティング機能を使用する。
  */
 
 import type { ComponentType, ReactNode, MouseEvent } from 'react';

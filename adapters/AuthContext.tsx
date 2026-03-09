@@ -4,12 +4,12 @@
  * AuthContext - AuthAdapter を注入するための Context
  *
  * アプリケーションのルートで AuthProvider を使用し、
- * 適切なアダプタを注入することで、seedling-ui のコンポーネントが
+ * 適切なアダプタを注入することで、ui-catalog のコンポーネントが
  * localStorage / Cookie どちらの認証実装でも動作可能になる。
  *
  * @example
  * // apps/web (Next.js + Cookie)
- * import { AuthProvider } from 'seedling-ui/adapters';
+ * import { AuthProvider } from '@ui-catalog/core/adapters';
  * import { useAuthAdapter } from '@/lib/auth/authAdapter';
  *
  * function Providers({ children }) {
@@ -28,7 +28,7 @@ import type { AuthAdapter } from './types';
 import type { User } from '../types';
 
 /**
- * AuthContext - seedling-ui で使用する User 型を持つ AuthAdapter
+ * AuthContext - ui-catalog で使用する User 型を持つ AuthAdapter
  */
 const AuthContext = createContext<AuthAdapter<User> | null>(null);
 

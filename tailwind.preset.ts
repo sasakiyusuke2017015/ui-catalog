@@ -4,9 +4,9 @@ import type { Config } from 'tailwindcss'
  * @ui-catalog/core Tailwind CSS Preset
  *
  * 流体タイポグラフィとスペーシングを提供
- * 使用方法: tailwind.config.ts で presets: [seedlingPreset] を指定
+ * 使用方法: tailwind.config.ts で presets: [uiCatalogPreset] を指定
  */
-const seedlingPreset: Partial<Config> = {
+const uiCatalogPreset: Partial<Config> = {
   theme: {
     extend: {
       fontSize: {
@@ -34,4 +34,4 @@ const seedlingPreset: Partial<Config> = {
   },
 }
 
-export default seedlingPreset
+export default uiCatalogPreset

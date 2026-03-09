@@ -40,5 +40,5 @@ export * from './constants'
 export * from './types'
 
 // バージョン管理
-export { VERSION_REGISTRY, checkVersions, initSeedlingUI, exportVersionsAsJson } from './version'
+export { VERSION_REGISTRY, checkVersions, initUICatalog, exportVersionsAsJson } from './version'
 export type { ComponentName, VersionRegistry, VersionMismatch, VersionCheckResult } from './version'

@@ -4,13 +4,13 @@
  * RouterContext - RouterAdapter を注入するための Context
  *
  * アプリケーションのルートで RouterProvider を使用し、
- * 適切なアダプタを注入することで、seedling-ui のコンポーネントが
+ * 適切なアダプタを注入することで、ui-catalog のコンポーネントが
  * React Router / Next.js どちらでも動作可能になる。
  *
  * @example
  * // apps/web (Next.js)
- * import { RouterProvider } from 'seedling-ui/adapters';
- * import { nextAdapter } from 'seedling-ui/adapters/next';
+ * import { RouterProvider } from '@ui-catalog/core/adapters';
+ * import { nextAdapter } from '@ui-catalog/core/adapters/next';
  *
  * export default function RootLayout({ children }) {
  *   return (
@@ -22,8 +22,8 @@
  *
  * @example
  * // apps/storybook (React Router)
- * import { RouterProvider } from 'seedling-ui/adapters';
- * import { reactRouterAdapter } from 'seedling-ui/adapters/react-router';
+ * import { RouterProvider } from '@ui-catalog/core/adapters';
+ * import { reactRouterAdapter } from '@ui-catalog/core/adapters/react-router';
  *
  * <RouterProvider adapter={reactRouterAdapter}>
  *   <App />

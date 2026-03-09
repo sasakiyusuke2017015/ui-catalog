@@ -1,15 +1,15 @@
 /**
  * Router & Auth Adapters
  *
- * seedling-ui のコンポーネントが React Router と Next.js の
+ * ui-catalog のコンポーネントが React Router と Next.js の
  * どちらでも動作するようにするためのアダプタ層。
  *
  * @example
  * // Next.js アプリケーション
- * import { RouterProvider, nextAdapter, AuthProvider } from 'seedling-ui/adapters';
+ * import { RouterProvider, nextAdapter, AuthProvider } from '@ui-catalog/core/adapters';
  *
  * // React Router アプリケーション
- * import { RouterProvider, reactRouterAdapter, AuthProvider } from 'seedling-ui/adapters';
+ * import { RouterProvider, reactRouterAdapter, AuthProvider } from '@ui-catalog/core/adapters';
  */
 
 // Types
@@ -46,5 +46,5 @@ export {
 
 // Router Adapters
 export { reactRouterAdapter } from './react-router';
-// NOTE: nextAdapter は Next.js アプリから直接 'seedling-ui/adapters/next' でインポートしてください
+// NOTE: nextAdapter は Next.js アプリから直接 '@ui-catalog/core/adapters/next' でインポートしてください
 // Vite では next パッケージがバンドルされエラーになるため、ここからはエクスポートしません
