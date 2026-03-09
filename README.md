@@ -1,7 +1,33 @@
 # @ui-catalog/core
 
-UIコンポーネントカタログパッケージ。
+pnpm workspace 向け UI コンポーネントライブラリ。
 Atomic Design パターンに基づき、汎用的な UI コンポーネントとテーマ機能を提供します。
+
+## プロジェクトへの導入
+
+```bash
+cd your-project
+
+# 1. subtree として追加
+git subtree add --prefix=packages/ui-catalog \
+  https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash
+
+# 2. pnpm-workspace.yaml に packages/* を追加
+
+# 3. package.json に依存関係を追加
+#    "@ui-catalog/core": "workspace:*"
+
+# 4. ルートの package.json に npm script を追加
+#    "ui:push": "git subtree push --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main",
+#    "ui:pull": "git subtree pull --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash"
+
+# 5. インストール
+pnpm install
+```
+
+詳細は [DEVELOPMENT.md](./DEVELOPMENT.md) を参照。
+
+---
 
 ## 構造
 
