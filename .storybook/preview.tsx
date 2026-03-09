@@ -2,11 +2,15 @@
  * Storybook Preview 設定
  *
  * ui-catalog の Storybook 用プレビュー設定
- * storybook-preset の createPreview を使用
  */
-import '../styles/globals.css'
-import { createPreview } from '../storybook-preset/preview.tsx'
+import type { Preview } from '@storybook/react'
 
-const preview = createPreview()
+import '../styles/globals.css'
+import { baseDecorators, baseParameters } from '../storybook-preset/preview.tsx'
+
+const preview: Preview = {
+  decorators: baseDecorators,
+  parameters: baseParameters,
+}
 
 export default preview

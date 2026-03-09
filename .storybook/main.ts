@@ -2,12 +2,15 @@
  * Storybook Main 設定
  *
  * ui-catalog の Storybook 設定
- * storybook-preset の createStorybookConfig を使用
  */
-import { createStorybookConfig } from '../storybook-preset/index.ts'
+import type { StorybookConfig } from '@storybook/react-vite'
 
-const config = createStorybookConfig({
+import { storybookConfig, withDockerHmr } from '../storybook-preset/index.ts'
+
+const config: StorybookConfig = {
+  ...storybookConfig,
   stories: ['../**/*.stories.@(js|jsx|ts|tsx|mdx)'],
-})
+  viteFinal: withDockerHmr(undefined),
+}
 
 export default config
