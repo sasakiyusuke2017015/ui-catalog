@@ -52,35 +52,7 @@ packages:
 
 ---
 
-## 複数プロジェクトでの共有（git subtree）
-
-ui-catalog は独立リポジトリとして管理し、各プロジェクトで git subtree として取り込みます。
-
-### 構成
-
-```
-GitHub/GitLab
-├── org/ui-catalog     ← 独立リポジトリ（本家）
-├── org/1on1           ← subtree で参照
-├── org/pleasync       ← subtree で参照
-└── org/meetscribe     ← subtree で参照
-```
-
-### 初回セットアップ（本家から切り出し）
-
-```bash
-# 1. ui-catalog リポジトリを GitHub/GitLab で新規作成
-
-# 2. 1on1 から ui-catalog を切り出して push
-cd 1on1
-git subtree split -P packages/ui-catalog -b ui-catalog-split
-git push https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git ui-catalog-split:main
-git branch -D ui-catalog-split
-```
-
-### 新規プロジェクトへの導入
-
-pleasync や meetscribe などの他プロジェクトで ui-catalog を導入する手順：
+## プロジェクトへの導入
 
 > **Note**: 初回セットアップは手動で実行します。
 > `git subtree add` は一度きりの操作のため、npm script 化しません。
