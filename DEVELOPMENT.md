@@ -82,6 +82,23 @@ git branch -D ui-catalog-split
 
 pleasync や meetscribe などの他プロジェクトで ui-catalog を導入する手順：
 
+#### 方法 A: init スクリプトを使用（推奨）
+
+```bash
+cd new-project
+
+# init スクリプトを実行
+curl -sSL https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog/-/raw/main/scripts/init-in-project.sh | bash
+
+# 依存関係を追加（apps/web/package.json）
+# "@ui-catalog/core": "workspace:*"
+
+# インストール
+pnpm install
+```
+
+#### 方法 B: 手動で導入
+
 ```bash
 cd new-project
 
