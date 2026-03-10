@@ -24,7 +24,7 @@ export interface AlertDialogProps {
 }
 
 const AlertDialog: FC<AlertDialogProps> = (props) => {
-  return <Dialog variant="alert" {...props} />;
+  return <Dialog variant="alert" data-component="alert-dialog" {...props} />;
 };
 
 export default AlertDialog;

@@ -94,6 +94,7 @@ const FloatingMenuButton: React.FC<FloatingMenuButtonProps> = ({
 
   return (
     <button
+      data-component="floating-menu-button"
       onClick={onToggle}
       className={cn(
         'fixed group flex items-center justify-center rounded-full border shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out hover:shadow-xl hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-opacity-30',

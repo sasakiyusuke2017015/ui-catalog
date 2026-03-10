@@ -17,7 +17,7 @@ export default function ActionBreadcrumb({
   className,
 }: ActionBreadcrumbProps) {
   return (
-    <nav aria-label="パンくずリスト" className={cn('flex items-center gap-1 text-sm', className)}>
+    <nav data-component="action-breadcrumb" aria-label="パンくずリスト" className={cn('flex items-center gap-1 text-sm', className)}>
       {items.map((item, i) => (
         <span key={i} className="flex items-center gap-1">
           {i > 0 && <span className="text-(--color-text-muted)">{separator}</span>}

@@ -37,7 +37,7 @@ export default function Tabs({
   const current = tabs.find((t) => t.id === active)
 
   return (
-    <div className={cn(className)}>
+    <div data-component="tabs" className={cn(className)}>
       <div className="flex border-b border-(--color-border)" role="tablist">
         {tabs.map((tab) => (
           <button

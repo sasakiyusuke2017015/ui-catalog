@@ -36,10 +36,10 @@ export const VERSION_REGISTRY = {
   Toggle: '1.0.0',
 
   // adapters
-  AuthContext: '1.0.0',
   RouterContext: '1.0.0',
 
   // templates
+  AppShell: '1.0.0',
   Footer: '1.0.0',
   Header: '1.0.0',
   SideNav: '1.0.0',
@@ -92,6 +92,7 @@ export const VERSION_REGISTRY = {
   LoadingOverlay: '1.0.0',
   LoginButton: '1.0.0',
   SortableToggleList: '1.0.0',
+  StatisticPanel: '1.0.0',
   TabBar: '1.1.0',
   TransferList: '1.0.0',
   TrendChart: '1.1.0',

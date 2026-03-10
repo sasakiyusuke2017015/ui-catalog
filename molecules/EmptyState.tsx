@@ -17,7 +17,7 @@ export default function EmptyState({
   className,
 }: EmptyStateProps) {
   return (
-    <div className={cn('flex flex-col items-center justify-center py-12 text-center', className)}>
+    <div data-component="empty-state" className={cn('flex flex-col items-center justify-center py-12 text-center', className)}>
       {icon && <div className="text-[32px] mb-3">{icon}</div>}
       <h3 className="text-base font-semibold text-(--color-text) mb-1">{title}</h3>
       {description && (
