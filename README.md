@@ -59,68 +59,62 @@ git push origin v1.1.0
 
 ## プロジェクトへの導入
 
-> **Note**: 初回セットアップは手動で実行します（一度きりの操作のため npm script 化しません）。
-> 日常の同期は `pnpm ui:pull` / `pnpm ui:push` を使用します。
+> **重要**: 各ステップを **1つずつ実行** してください。
 
-### Bash (Linux/Mac/Git Bash)
+### Step 1: subtree として追加
+
+プロジェクトのルートで実行：
 
 ```bash
-# 1. subtree として追加（main から取得）
 git subtree add --prefix=packages/ui-catalog \
   https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git \
   main --squash
+```
 
-# 2. pnpm-workspace.yaml を作成（なければ）
-cat > pnpm-workspace.yaml << 'EOF'
+### Step 2: pnpm-workspace.yaml を設定
+
+既存の `pnpm-workspace.yaml` に `packages/*` を追加（なければファイル作成）：
+
+```yaml
 packages:
   - 'apps/*'
-  - 'packages/*'
-EOF
+  - 'packages/*'   # ← これを追加
+  - 'libs/*'       # 既存があれば残す
+```
 
-# 3. 使用するアプリの package.json に依存関係を追加
+### Step 3: 依存関係を追加
+
+使用するアプリの `package.json` に追加：
+
+```bash
 npm pkg set dependencies.@ui-catalog/core="workspace:*"
+```
 
-# 4. ルートに npm script を追加
-#    ※ <project-name> を自分のプロジェクト名に変更
+### Step 4: npm script を追加
+
+ルートの `package.json` に追加。`<project-name>` を自分のプロジェクト名に変更：
+
+```bash
 npm pkg set scripts.ui:push="git subtree push --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git project/<project-name>"
+```
+
+```bash
 npm pkg set scripts.ui:pull="git subtree pull --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash"
+```
 
-# 5. 依存関係をインストール
+### Step 5: インストール
+
+```bash
 pnpm install
+```
 
-# 6. 初回 push（プロジェクト専用ブランチが自動作成される）
+### Step 6: 初回 push
+
+```bash
 pnpm ui:push
 ```
 
-### PowerShell (Windows)
-
-```powershell
-# 1. subtree として追加（main から取得）
-git subtree add --prefix=packages/ui-catalog `
-  https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git `
-  main --squash
-
-# 2. pnpm-workspace.yaml を作成（なければ）
-@"
-packages:
-  - 'apps/*'
-  - 'packages/*'
-"@ | Out-File -FilePath pnpm-workspace.yaml -Encoding UTF8
-
-# 3. 使用するアプリの package.json に依存関係を追加
-npm pkg set dependencies.@ui-catalog/core="workspace:*"
-
-# 4. ルートに npm script を追加
-#    ※ <project-name> を自分のプロジェクト名に変更
-npm pkg set scripts.ui:push="git subtree push --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git project/<project-name>"
-npm pkg set scripts.ui:pull="git subtree pull --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash"
-
-# 5. 依存関係をインストール
-pnpm install
-
-# 6. 初回 push（プロジェクト専用ブランチが自動作成される）
-pnpm ui:push
-```
+プロジェクト専用ブランチ（`project/<name>`）が自動作成される。
 
 ---
 
