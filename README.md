@@ -62,24 +62,7 @@ git push origin v1.1.0
 > **Note**: 初回セットアップは手動で実行します（一度きりの操作のため npm script 化しません）。
 > 日常の同期は `pnpm ui:pull` / `pnpm ui:push` を使用します。
 
-### 1. ui-catalog リポジトリでブランチ作成
-
-**初めて導入するプロジェクトの場合**、ui-catalog リポジトリで専用ブランチを作成：
-
-```bash
-# ui-catalog リポジトリをクローン
-git clone https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git
-cd ui-catalog
-
-# プロジェクト専用ブランチを作成
-git checkout main
-git checkout -b project/<project-name>
-git push origin project/<project-name>
-```
-
-### 2. プロジェクトに subtree として追加
-
-#### Bash (Linux/Mac/Git Bash)
+### Bash (Linux/Mac/Git Bash)
 
 ```bash
 # 1. subtree として追加（main から取得）
@@ -104,9 +87,12 @@ npm pkg set scripts.ui:pull="git subtree pull --prefix=packages/ui-catalog https
 
 # 5. 依存関係をインストール
 pnpm install
+
+# 6. 初回 push（プロジェクト専用ブランチが自動作成される）
+pnpm ui:push
 ```
 
-#### PowerShell (Windows)
+### PowerShell (Windows)
 
 ```powershell
 # 1. subtree として追加（main から取得）
@@ -131,6 +117,9 @@ npm pkg set scripts.ui:pull="git subtree pull --prefix=packages/ui-catalog https
 
 # 5. 依存関係をインストール
 pnpm install
+
+# 6. 初回 push（プロジェクト専用ブランチが自動作成される）
+pnpm ui:push
 ```
 
 ---
