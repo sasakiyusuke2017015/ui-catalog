@@ -1,0 +1,30 @@
+# Build outputs
+dist/
+storybook-static/
+*.tsbuildinfo
+
+# Dependencies
+node_modules/
+
+# Test results
+coverage/
+test-results/
+playwright-report/
+playwright/.cache/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
