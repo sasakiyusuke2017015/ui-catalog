@@ -2211,7 +2211,7 @@ export const Presets: Story = {
       { preset: 'pulse', desc: '脈動リング' },
       { preset: 'cube', desc: '3Dキューブ' },
       { preset: 'cube-glow', desc: '光る3Dキューブ' },
-      { preset: 'interview', desc: '1on1会話' },
+      { preset: 'interview', desc: '対話アイコン' },
       { preset: 'dna', desc: '二重螺旋' },
       { preset: 'atom', desc: '原子軌道' },
       { preset: 'rings', desc: '多重リング' },
@@ -2278,7 +2278,7 @@ export const Presets: Story = {
             </div>
             <div className="flex h-24 w-48 flex-col items-center justify-center rounded-lg border bg-emerald-50">
               <Icon preset="interview" size={48} stroke="#10B981" />
-              <span className="mt-2 text-fluid-sm text-emerald-600">1on1準備中</span>
+              <span className="mt-2 text-fluid-sm text-emerald-600">準備中</span>
             </div>
           </div>
         </div>

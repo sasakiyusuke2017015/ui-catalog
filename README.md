@@ -3,18 +3,91 @@
 pnpm workspace 向け UI コンポーネントライブラリ。
 Atomic Design パターンに基づき、汎用的な UI コンポーネントとテーマ機能を提供します。
 
+---
+
+## 運用方針
+
+### ブランチ戦略
+
+```
+ui-catalog リポジトリ
+├── main                 ← 安定版（リリース済み）
+├── project/1on1         ← 1on1 プロジェクトからの変更
+├── project/tauri-app    ← Tauri アプリからの変更
+└── project/go-app       ← Go アプリからの変更
+```
+
+| ブランチ | 用途 |
+|----------|------|
+| `main` | 安定版。各プロジェクトはここから pull |
+| `project/<name>` | プロジェクト専用。変更はここに push |
+
+### 運用フロー
+
+```
+【各プロジェクト】
+1. UI を変更（開発・Vibe Coding）
+       ↓
+2. pnpm ui:push → project/<name> ブランチへ
+
+【ui-catalog リポジトリ（Gitea）】
+3. project/<name> → main への PR 作成
+       ↓
+4. VRT でレビュー・マージ
+       ↓
+5. タグ付け（v1.2.0）
+
+【各プロジェクト】
+6. pnpm ui:pull で main（安定版）を取り込む
+```
+
+### Semver（バージョン管理）
+
+| 変更種類 | バージョン | 例 |
+|----------|-----------|-----|
+| 破壊的変更（Props 削除など） | major | v1.0.0 → v2.0.0 |
+| 機能追加（新コンポーネント） | minor | v1.0.0 → v1.1.0 |
+| バグ修正・スタイル微調整 | patch | v1.0.0 → v1.0.1 |
+
+```bash
+# ui-catalog リポジトリで（main マージ後）
+git tag -a v1.1.0 -m "feat: Button に size prop を追加"
+git push origin v1.1.0
+```
+
+---
+
 ## プロジェクトへの導入
 
 > **Note**: 初回セットアップは手動で実行します（一度きりの操作のため npm script 化しません）。
 > 日常の同期は `pnpm ui:pull` / `pnpm ui:push` を使用します。
 
-### Bash (Linux/Mac/Git Bash)
+### 1. ui-catalog リポジトリでブランチ作成
+
+**初めて導入するプロジェクトの場合**、ui-catalog リポジトリで専用ブランチを作成：
 
 ```bash
-# 1. subtree として追加
-git subtree add --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash
+# ui-catalog リポジトリをクローン
+git clone https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git
+cd ui-catalog
 
-# 2. pnpm-workspace.yaml を作成
+# プロジェクト専用ブランチを作成
+git checkout main
+git checkout -b project/<project-name>
+git push origin project/<project-name>
+```
+
+### 2. プロジェクトに subtree として追加
+
+#### Bash (Linux/Mac/Git Bash)
+
+```bash
+# 1. subtree として追加（main から取得）
+git subtree add --prefix=packages/ui-catalog \
+  https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git \
+  main --squash
+
+# 2. pnpm-workspace.yaml を作成（なければ）
 cat > pnpm-workspace.yaml << 'EOF'
 packages:
   - 'apps/*'
@@ -25,20 +98,23 @@ EOF
 npm pkg set dependencies.@ui-catalog/core="workspace:*"
 
 # 4. ルートに npm script を追加
-npm pkg set scripts.ui:push="git subtree push --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main"
+#    ※ <project-name> を自分のプロジェクト名に変更
+npm pkg set scripts.ui:push="git subtree push --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git project/<project-name>"
 npm pkg set scripts.ui:pull="git subtree pull --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash"
 
 # 5. 依存関係をインストール
 pnpm install
 ```
 
-### PowerShell (Windows)
+#### PowerShell (Windows)
 
 ```powershell
-# 1. subtree として追加
-git subtree add --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash
+# 1. subtree として追加（main から取得）
+git subtree add --prefix=packages/ui-catalog `
+  https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git `
+  main --squash
 
-# 2. pnpm-workspace.yaml を作成
+# 2. pnpm-workspace.yaml を作成（なければ）
 @"
 packages:
   - 'apps/*'
@@ -49,14 +125,33 @@ packages:
 npm pkg set dependencies.@ui-catalog/core="workspace:*"
 
 # 4. ルートに npm script を追加
-npm pkg set scripts.ui:push="git subtree push --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main"
+#    ※ <project-name> を自分のプロジェクト名に変更
+npm pkg set scripts.ui:push="git subtree push --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git project/<project-name>"
 npm pkg set scripts.ui:pull="git subtree pull --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash"
 
 # 5. 依存関係をインストール
 pnpm install
 ```
 
-詳細は [DEVELOPMENT.md](./DEVELOPMENT.md) を参照。
+---
+
+## 日常の使い方
+
+### 変更を push
+
+```bash
+pnpm ui:push
+```
+
+自分のプロジェクト専用ブランチ（`project/<name>`）に push される。
+
+### 安定版を pull
+
+```bash
+pnpm ui:pull
+```
+
+`main` ブランチ（安定版）から最新を取得。
 
 ---
 
@@ -165,7 +260,7 @@ export default {
 }
 ```
 
-## バージョン管理
+## バージョン管理（アプリ内）
 
 コンポーネントの変更を追跡するため、`ui-catalog.versions.json` を使用します。
 
