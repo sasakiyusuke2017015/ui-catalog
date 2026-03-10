@@ -26,7 +26,7 @@ export interface ConfirmDialogProps {
 }
 
 const ConfirmDialog: FC<ConfirmDialogProps> = (props) => {
-  return <Dialog variant="confirm" {...props} />;
+  return <Dialog variant="confirm" data-component="confirm-dialog" {...props} />;
 };
 
 export default ConfirmDialog;

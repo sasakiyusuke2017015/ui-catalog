@@ -17,6 +17,7 @@ export default function ChatFab({
 }: ChatFabProps) {
   return (
     <button
+      data-component="chat-fab"
       onClick={onClick}
       className={cn(
         'fixed bottom-4 right-4 z-40 w-12 h-12 rounded-full',

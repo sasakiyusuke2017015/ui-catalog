@@ -44,7 +44,7 @@ const QACardList: FC<QACardListProps> = ({
     : 'border-theme-secondary-border bg-theme-secondary-bg text-theme-secondary-text';
 
   return (
-    <div className="space-y-3 sm:space-y-4">
+    <div data-component="qa-card-list" className="space-y-3 sm:space-y-4">
       {/* 情報バナー（先頭に表示） */}
       {infoMessage && (
         <div className={`rounded-lg border p-3 ${infoBoxStyle}`}>
