@@ -60,6 +60,7 @@ export function withDockerHmr(
         ...(viteConfig.resolve?.alias as Record<string, string> | undefined),
         '@/': `${uiCatalogRoot}/`,
       },
+      dedupe: ['react', 'react-dom', 'react-router-dom'],
     }
 
     if (typeof config === 'function') {
