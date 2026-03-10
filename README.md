@@ -70,7 +70,7 @@ ui-catalog リポジトリで専用ブランチを作成：
 2. ブランチセレクタ（`main` と表示）をクリック
 3. 入力欄に `project/<project-name>` と入力して Enter
 
-### Step 2: ui-catalog を clone
+### Step 2: subtree として追加
 
 プロジェクトのルートで実行：
 
@@ -79,41 +79,7 @@ mkdir -p packages
 git clone -b project/<project-name> https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git packages/ui-catalog
 ```
 
-### Step 3: 親リポジトリの .gitignore に追加
-
-`.gitignore` に以下を追加：
-
-```
-packages/ui-catalog/
-```
-
-### Step 4: VSCode の Git 設定（推奨）
-
-VSCode で ui-catalog を独立した Git リポジトリとして認識させるため、`.vscode/settings.json` に以下を追加：
-
-```json
-{
-  "git.repositoryScanIgnoredFolders": [],
-  "git.scanRepositories": [
-    ".",
-    "packages/ui-catalog"
-  ]
-}
-```
-
-これにより、VSCode のソース管理パネルで親リポジトリと ui-catalog を別々に操作できます。
-
-### Step 5: Claude Code コマンドを配置
-
-ui-catalog 同梱の開発コマンドをプロジェクトにコピー：
-
-```bash
-cp packages/ui-catalog/commands/ui-catalog.md .claude/commands/ui-catalog.md
-```
-
-これにより `/ui-catalog` コマンドが使えるようになります（absorb, refine, status, merge, distribute）。
-
-### Step 6: pnpm-workspace.yaml を設定
+### Step 3: pnpm-workspace.yaml を設定
 
 既存の `pnpm-workspace.yaml` に `packages/*` を追加（なければファイル作成）：
 
@@ -124,7 +90,7 @@ packages:
   - 'libs/*'       # 既存があれば残す
 ```
 
-### Step 7: 依存関係を追加
+### Step 4: 依存関係を追加
 
 使用するアプリの `package.json` に追加：
 
@@ -132,11 +98,29 @@ packages:
 npm pkg set dependencies.@ui-catalog/core="workspace:*"
 ```
 
-### Step 8: インストールと確認
+### Step 5: npm script を追加
+
+ルートの `package.json` に追加。**`<project-name>` を自分のプロジェクト名に変更**：
+
+```bash
+npm pkg set scripts.ui:push="git subtree push --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git project/<project-name>"
+```
+
+```bash
+npm pkg set scripts.ui:pull="git subtree pull --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash"
+```
+
+### Step 6: インストールと確認
 
 ```bash
 pnpm install
 ```
+
+```bash
+pnpm ui:push
+```
+
+`Everything up-to-date` と表示されれば成功。
 
 ---
 
