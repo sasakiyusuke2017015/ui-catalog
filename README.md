@@ -70,16 +70,26 @@ ui-catalog リポジトリで専用ブランチを作成：
 2. ブランチセレクタ（`main` と表示）をクリック
 3. 入力欄に `project/<project-name>` と入力して Enter
 
-### Step 2: subtree として追加
+### Step 2: ui-catalog を clone
 
 プロジェクトのルートで実行：
 
 ```bash
 mkdir -p packages
-git clone -b project/<project-name> https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git packages/ui-catalog
+git clone -b project/<project-name> \
+  https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git \
+  packages/ui-catalog
 ```
 
-### Step 3: pnpm-workspace.yaml を設定
+### Step 3: 親リポジトリの .gitignore に追加
+
+`.gitignore` に以下を追加：
+
+```
+packages/ui-catalog/
+```
+
+### Step 4: pnpm-workspace.yaml を設定
 
 既存の `pnpm-workspace.yaml` に `packages/*` を追加（なければファイル作成）：
 
@@ -90,7 +100,7 @@ packages:
   - 'libs/*'       # 既存があれば残す
 ```
 
-### Step 4: 依存関係を追加
+### Step 5: 依存関係を追加
 
 使用するアプリの `package.json` に追加：
 
@@ -98,29 +108,23 @@ packages:
 npm pkg set dependencies.@ui-catalog/core="workspace:*"
 ```
 
-### Step 5: npm script を追加
+### Step 6: npm script を追加
 
 ルートの `package.json` に追加。**`<project-name>` を自分のプロジェクト名に変更**：
 
 ```bash
-npm pkg set scripts.ui:push="git subtree push --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git project/<project-name>"
+npm pkg set scripts.ui:push="cd packages/ui-catalog && git add -A && git commit -m 'sync' && git push origin project/<project-name>"
 ```
 
 ```bash
-npm pkg set scripts.ui:pull="git subtree pull --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash"
+npm pkg set scripts.ui:pull="cd packages/ui-catalog && git pull origin main"
 ```
 
-### Step 6: インストールと確認
+### Step 7: インストールと確認
 
 ```bash
 pnpm install
 ```
-
-```bash
-pnpm ui:push
-```
-
-`Everything up-to-date` と表示されれば成功。
 
 ---
 
