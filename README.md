@@ -108,19 +108,7 @@ packages:
 npm pkg set dependencies.@ui-catalog/core="workspace:*"
 ```
 
-### Step 6: npm script を追加
-
-ルートの `package.json` に追加。**`<project-name>` を自分のプロジェクト名に変更**：
-
-```bash
-npm pkg set scripts.ui:push="cd packages/ui-catalog && git add -A && git commit -m 'sync' && git push origin project/<project-name>"
-```
-
-```bash
-npm pkg set scripts.ui:pull="cd packages/ui-catalog && git pull origin main"
-```
-
-### Step 7: インストールと確認
+### Step 6: インストールと確認
 
 ```bash
 pnpm install
