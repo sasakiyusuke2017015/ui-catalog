@@ -87,7 +87,23 @@ git clone -b project/<project-name> https://1on1.sdt-autolabo.com:8929/sasaki_yu
 packages/ui-catalog/
 ```
 
-### Step 4: pnpm-workspace.yaml を設定
+### Step 4: VSCode の Git 設定（推奨）
+
+VSCode で ui-catalog を独立した Git リポジトリとして認識させるため、`.vscode/settings.json` に以下を追加：
+
+```json
+{
+  "git.repositoryScanIgnoredFolders": [],
+  "git.scanRepositories": [
+    ".",
+    "packages/ui-catalog"
+  ]
+}
+```
+
+これにより、VSCode のソース管理パネルで親リポジトリと ui-catalog を別々に操作できます。
+
+### Step 5: pnpm-workspace.yaml を設定
 
 既存の `pnpm-workspace.yaml` に `packages/*` を追加（なければファイル作成）：
 
@@ -98,7 +114,7 @@ packages:
   - 'libs/*'       # 既存があれば残す
 ```
 
-### Step 5: 依存関係を追加
+### Step 6: 依存関係を追加
 
 使用するアプリの `package.json` に追加：
 
@@ -106,7 +122,7 @@ packages:
 npm pkg set dependencies.@ui-catalog/core="workspace:*"
 ```
 
-### Step 6: インストールと確認
+### Step 7: インストールと確認
 
 ```bash
 pnpm install
