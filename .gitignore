@@ -26,5 +26,8 @@ Thumbs.db
 *.swo
 *~
 
-# Temporary files
-*.tmp
+# Claude Code
+.claude/
+
+# IDE
+.vscode/
