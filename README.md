@@ -76,9 +76,7 @@ ui-catalog リポジトリで専用ブランチを作成：
 
 ```bash
 mkdir -p packages
-git clone -b project/<project-name> \
-  https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git \
-  packages/ui-catalog
+git clone -b project/<project-name> https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git packages/ui-catalog
 ```
 
 ### Step 3: 親リポジトリの .gitignore に追加
