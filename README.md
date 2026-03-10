@@ -28,7 +28,7 @@ ui-catalog リポジトリ
 【各プロジェクト】
 1. UI を変更（開発・Vibe Coding）
        ↓
-2. pnpm ui:push → project/<name> ブランチへ
+2. cd packages/ui-catalog && git push → project/<name> ブランチへ
 
 【ui-catalog リポジトリ（Gitea）】
 3. project/<name> → main への PR 作成
@@ -38,7 +38,7 @@ ui-catalog リポジトリ
 5. タグ付け（v1.2.0）
 
 【各プロジェクト】
-6. pnpm ui:pull で main（安定版）を取り込む
+6. cd packages/ui-catalog && git pull で main（安定版）を取り込む
 ```
 
 ### Semver（バージョン管理）
@@ -108,19 +108,7 @@ packages:
 npm pkg set dependencies.@ui-catalog/core="workspace:*"
 ```
 
-### Step 6: npm script を追加
-
-ルートの `package.json` に追加。**`<project-name>` を自分のプロジェクト名に変更**：
-
-```bash
-npm pkg set scripts.ui:push="cd packages/ui-catalog && git add -A && git commit -m 'sync' && git push origin project/<project-name>"
-```
-
-```bash
-npm pkg set scripts.ui:pull="cd packages/ui-catalog && git pull origin main"
-```
-
-### Step 7: インストールと確認
+### Step 6: インストールと確認
 
 ```bash
 pnpm install
@@ -133,7 +121,10 @@ pnpm install
 ### 変更を push
 
 ```bash
-pnpm ui:push
+cd packages/ui-catalog
+git add -A
+git commit -m "変更内容"
+git push origin project/<project-name>
 ```
 
 自分のプロジェクト専用ブランチ（`project/<name>`）に push される。
@@ -141,7 +132,8 @@ pnpm ui:push
 ### 安定版を pull
 
 ```bash
-pnpm ui:pull
+cd packages/ui-catalog
+git pull origin main
 ```
 
 `main` ブランチ（安定版）から最新を取得。
