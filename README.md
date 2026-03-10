@@ -61,17 +61,35 @@ git push origin v1.1.0
 
 > **重要**: 各ステップを **1つずつ実行** してください。
 
-### Step 1: subtree として追加
+### Step 1: ui-catalog リポジトリでブランチ作成
+
+ui-catalog リポジトリで専用ブランチを作成：
+
+**Gitea UI で作成:**
+1. https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog にアクセス
+2. ブランチセレクタ（`main` と表示）をクリック
+3. 入力欄に `project/<project-name>` と入力して Enter
+
+### Step 2: ui-catalog を clone
 
 プロジェクトのルートで実行：
 
 ```bash
-git subtree add --prefix=packages/ui-catalog \
+mkdir -p packages
+git clone -b project/<project-name> \
   https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git \
-  main --squash
+  packages/ui-catalog
 ```
 
-### Step 2: pnpm-workspace.yaml を設定
+### Step 3: 親リポジトリの .gitignore に追加
+
+`.gitignore` に以下を追加：
+
+```
+packages/ui-catalog/
+```
+
+### Step 4: pnpm-workspace.yaml を設定
 
 既存の `pnpm-workspace.yaml` に `packages/*` を追加（なければファイル作成）：
 
@@ -82,7 +100,7 @@ packages:
   - 'libs/*'       # 既存があれば残す
 ```
 
-### Step 3: 依存関係を追加
+### Step 5: 依存関係を追加
 
 使用するアプリの `package.json` に追加：
 
@@ -90,31 +108,23 @@ packages:
 npm pkg set dependencies.@ui-catalog/core="workspace:*"
 ```
 
-### Step 4: npm script を追加
+### Step 6: npm script を追加
 
-ルートの `package.json` に追加。`<project-name>` を自分のプロジェクト名に変更：
+ルートの `package.json` に追加。**`<project-name>` を自分のプロジェクト名に変更**：
 
 ```bash
-npm pkg set scripts.ui:push="git subtree push --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git project/<project-name>"
+npm pkg set scripts.ui:push="cd packages/ui-catalog && git add -A && git commit -m 'sync' && git push origin project/<project-name>"
 ```
 
 ```bash
-npm pkg set scripts.ui:pull="git subtree pull --prefix=packages/ui-catalog https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git main --squash"
+npm pkg set scripts.ui:pull="cd packages/ui-catalog && git pull origin main"
 ```
 
-### Step 5: インストール
+### Step 7: インストールと確認
 
 ```bash
 pnpm install
 ```
-
-### Step 6: 初回 push
-
-```bash
-pnpm ui:push
-```
-
-プロジェクト専用ブランチ（`project/<name>`）が自動作成される。
 
 ---
 
