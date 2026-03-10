@@ -230,6 +230,7 @@ const LoginButton = ({
 
   return (
     <Button
+      data-component="login-button"
       type={type}
       disabled={finalDisabled}
       onClick={onClick}

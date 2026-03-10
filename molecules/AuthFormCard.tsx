@@ -21,7 +21,7 @@ const AuthFormCard: React.FC<AuthFormCardProps> = ({
   padding = 'px-5 py-6',
 }) => {
   return (
-    <div className={`${margin} rounded-2xl bg-white/95 backdrop-blur-sm shadow-xl ${padding}`}>
+    <div data-component="auth-form-card" className={`${margin} rounded-2xl bg-white/95 backdrop-blur-sm shadow-xl ${padding}`}>
       <div className="space-y-3 sm:space-y-6">
         {children}
       </div>

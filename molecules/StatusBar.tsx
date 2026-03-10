@@ -21,6 +21,7 @@ export default function StatusBar({
 
   return (
     <footer
+      data-component="status-bar"
       className={cn(
         'shrink-0 px-4 py-1.5 text-xs font-medium border-t',
         variantStyles[variant],
