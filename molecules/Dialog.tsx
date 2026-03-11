@@ -152,17 +152,17 @@ const Dialog: FC<DialogProps> = (props) => {
       data-variant={variant}
       data-type={type}
     >
-      <div className="w-full max-w-[90%] sm:max-w-md bg-white shadow-xl" style={{ borderRadius }}>
+      <div className="bg-white shadow-xl" style={{ borderRadius, width: 480, maxWidth: '90%' }}>
         {/* ヘッダー */}
         {title && (
-          <div className={`flex items-center gap-2 px-3 py-2 sm:gap-3 sm:px-6 sm:py-4 ${config.headerBg}`}>
+          <div className={`flex items-center gap-3 px-6 py-4 ${config.headerBg}`}>
             <Icon name={config.icon} size={24} className={config.iconColor} />
             <h3 className="text-fluid-lg font-bold text-gray-800">{title}</h3>
           </div>
         )}
 
         {/* メッセージ */}
-        <div className="px-3 py-3 sm:px-6 sm:py-4">
+        <div className="px-6 py-4">
           {!title && (
             <div className="mb-3 flex justify-center">
               <Icon name={config.icon} size={48} className={config.iconColor} />
@@ -172,7 +172,7 @@ const Dialog: FC<DialogProps> = (props) => {
         </div>
 
         {/* ボタン */}
-        <div className="flex justify-end gap-2 px-3 py-3 sm:px-6 sm:py-4">
+        <div className="flex justify-end gap-2 px-6 py-4">
           {isConfirm && (
             <Button variant="secondary" size="small" onClick={handleClose}>
               {cancelText}

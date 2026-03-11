@@ -27,7 +27,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext .ts,.tsx",
     "clean": "rm -rf node_modules/.cache storybook-static dist",
-    "storybook": "fuser -k 6006/tcp 2>/dev/null || true; storybook dev -p 6006 --no-open",
+    "storybook": "storybook dev -p 6006 --no-open",
     "storybook:build": "storybook build -o storybook-static",
     "test:storybook": "vitest --project storybook"
   },
