@@ -26,6 +26,8 @@ export const ALL_ICON_TYPES = [
   'chevron-right',
   'arrow-up-right',
   'arrow-in',
+  'sync-pull',
+  'sync-push',
   'arrow-rotate',
   'arrow-turn-left',
   'arrow-u-turn',

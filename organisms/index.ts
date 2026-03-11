@@ -30,6 +30,10 @@ export { default as SortableToggleList } from './SortableToggleList'
 export { default as TransferList } from './TransferList'
 export type { TransferListProps, TransferListItem } from './TransferList'
 
+// Layout - Detail
+export { default as DetailHeader } from './DetailHeader'
+export type { DetailHeaderProps, DetailHeaderField, DetailHeaderAction } from './DetailHeader'
+
 // Feedback
 export { default as LoadingOverlay } from './LoadingOverlay'
 
