@@ -212,6 +212,28 @@ const ICON_SVG_PATHS: Record<
       d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
     />
   ),
+  ['sync-pull']: ({ strokeColor }) => (
+    <g fill="none" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      {/* サーバー（上の横線） */}
+      <line x1="4" y1="4" x2="20" y2="4" />
+      {/* 下向き矢印 */}
+      <line x1="12" y1="7" x2="12" y2="18" />
+      <polyline points="8 14 12 18 16 14" />
+      {/* ローカル（下の横線） */}
+      <line x1="4" y1="21" x2="20" y2="21" />
+    </g>
+  ),
+  ['sync-push']: ({ strokeColor }) => (
+    <g fill="none" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      {/* ローカル（下の横線） */}
+      <line x1="4" y1="21" x2="20" y2="21" />
+      {/* 上向き矢印 */}
+      <line x1="12" y1="18" x2="12" y2="7" />
+      <polyline points="8 11 12 7 16 11" />
+      {/* サーバー（上の横線） */}
+      <line x1="4" y1="4" x2="20" y2="4" />
+    </g>
+  ),
   ['arrow-rotate']: ({ strokeColor }) => (
     <path
       strokeLinecap="round"
