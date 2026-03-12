@@ -35,6 +35,10 @@ export { default as Toggle } from './Toggle'
 export { default as LineChart } from './LineChart'
 export { default as RadarChart } from './RadarChart'
 
+// Overlay
+export { default as Tooltip } from './Tooltip'
+export type { TooltipProps } from './Tooltip'
+
 // Utility
 export { default as ReplayButton } from './ReplayButton'
 export { default as ResetButton } from './ResetButton'

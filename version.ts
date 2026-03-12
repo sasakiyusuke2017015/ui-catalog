@@ -19,7 +19,7 @@ export const VERSION_REGISTRY = {
   Card: '1.0.0',
   Checkbox: '1.0.0',
   ExternalLink: '1.0.0',
-  Icon: '1.3.0',
+  Icon: '1.4.0',
   Input: '1.0.0',
   InternalLink: '1.0.0',
   LineChart: '1.0.0',
@@ -34,6 +34,7 @@ export const VERSION_REGISTRY = {
   Slider: '1.0.0',
   TextArea: '1.0.0',
   Toggle: '1.0.0',
+  Tooltip: '1.0.0',
 
   // adapters
   RouterContext: '1.0.0',
@@ -96,6 +97,7 @@ export const VERSION_REGISTRY = {
   TabBar: '1.1.0',
   TransferList: '1.0.0',
   TrendChart: '1.1.0',
+  DetailHeader: '1.0.0',
 
   // decorations
   BackgroundTexture: '1.0.0',
