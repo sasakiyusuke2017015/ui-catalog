@@ -237,31 +237,47 @@ ui-catalog に存在するコンポーネントがアプリで活用されてい
 
 ---
 
-### `distribute` — main の変更を全 project/* に配布
+### `distribute` — 変更を全リモートに配布
 
-main ブランチの変更を全 project/* ブランチに cherry-pick で配布する。
+main ブランチの変更を全 project/* ブランチおよび全リモート（Gitea / GitHub）に配布する。
+
+**リモート構成:**
+- `origin`: Gitea (`https://1on1.sdt-autolabo.com:8929/sasaki_yusuke/ui-catalog.git`)
+- `github`: GitHub (`https://github.com/sasakiyusuke2017015/ui-catalog.git`)
+
+両リモートは対等。どちらにも main の変更を配布し、どちらからも変更を取り込める。
 
 **処理フロー:**
 
-1. `packages/ui-catalog/` で以下を実行:
+1. 全リモートから最新を取得:
    ```bash
    git fetch origin
+   git fetch github
    ```
-2. 各 `project/*` ブランチへの未配布コミットを一覧表示:
+
+2. **リモート間の差分を確認**:
    ```bash
-   # 各 project/* ブランチについて
-   git log --oneline origin/project/<name>..main
+   # GitHub → ローカル（未取り込み）
+   git log --oneline HEAD..github/main
+   # Gitea → ローカル（未取り込み）
+   git log --oneline HEAD..origin/main
    ```
+
 3. 結果を表形式で表示
 
 出力イメージ:
 ```
-📊 ui-catalog distribute — 配布状況
+📊 ui-catalog distribute — 同期状況
 
-main の未配布コミット:
-  a1b2c3d feat: Button に icon 対応を追加
-  e4f5g6h fix: Dialog の z-index 修正
+【リモート同期】
+┌──────────┬────────────┬────────────┐
+│ リモート  │ 未取り込み  │ 未配布     │
+├──────────┼────────────┼────────────┤
+│ origin   │ 0 commits  │ 2 commits  │
+│ github   │ 3 commits  │ 2 commits  │
+└──────────┴────────────┴────────────┘
 
+【project/* 配布】
 ┌──────────────────┬────────────┬────────────┐
 │ ブランチ          │ 未配布     │ 状態       │
 ├──────────────────┼────────────┼────────────┤
@@ -269,20 +285,35 @@ main の未配布コミット:
 │ project/1on1     │ 2 commits  │ 📦 配布可能 │
 └──────────────────┴────────────┴────────────┘
 
-全 project/* に配布しますか？（個別選択も可能）
+⚠️ github から 3件の未取り込みコミットがあります
 ```
 
-4. ユーザーの確認後、各ブランチに配布:
+4. **未取り込みコミットがある場合**:
+   - ユーザーに取り込み方法を確認（merge / rebase / skip）
    ```bash
-   # 各 project/* ブランチについて
+   git merge github/main
+   # または
+   git rebase github/main
+   ```
+
+5. 各 project/* ブランチに配布:
+   ```bash
    git checkout project/<name>
    git cherry-pick <commit-hash1> <commit-hash2> ...
    git push origin project/<name>
    ```
-5. コンフリクトが発生した場合:
+
+6. コンフリクトが発生した場合:
    - 対象ブランチと衝突内容を報告
    - 解決方法を提案（スキップ or 手動解決）
-6. 配布結果サマリーを表示
+
+7. **全リモートに同期**:
+   ```bash
+   git push origin --all && git push origin --tags
+   git push github --all && git push github --tags
+   ```
+
+8. 配布結果サマリーを表示
 
 ---
 
