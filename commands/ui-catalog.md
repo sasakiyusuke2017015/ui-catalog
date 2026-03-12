@@ -163,28 +163,45 @@ ui-catalog に存在するコンポーネントがアプリで活用されてい
 
 ## main ブランチ用コマンド
 
-### `merge` — project/* の変更を main に統合
+### `merge` — 全ソースから main に統合
 
-各 project/* ブランチのコミットを main に取り込む。
+project/* ブランチおよびセカンダリリモート（GitHub等）の変更を main に取り込む。
 コンポーネントの汎用性を確認しながら統合する。
 
 **処理フロー:**
 
-1. `packages/ui-catalog/` で以下を実行:
+1. 全リモートをフェッチ:
    ```bash
-   git fetch origin
+   for remote in $(git remote); do
+     git fetch $remote
+   done
    ```
-2. 各 `project/*` ブランチの未マージコミットを一覧表示:
+
+2. 未マージコミットを収集:
    ```bash
-   # 各 project/* ブランチについて
+   # project/* ブランチ（origin のみ）
    git log --oneline main..origin/project/<name>
+   # セカンダリリモートの main
+   for remote in $(git remote | grep -v origin); do
+     git log --oneline main..$remote/main
+   done
    ```
+
 3. 結果を表形式で表示し、ユーザーに統合対象を選択させる
 
 出力イメージ:
 ```
 📊 ui-catalog merge — 未マージコミット一覧
 
+【セカンダリリモート】
+┌──────────┬───────┬─────────────────────────────────────┐
+│ リモート  │ 件数  │ コミット                             │
+├──────────┼───────┼─────────────────────────────────────┤
+│ github   │ 2     │ x1y2z3a feat: Tooltip コンポーネント  │
+│          │       │ b4c5d6e fix: Card の padding 修正   │
+└──────────┴───────┴─────────────────────────────────────┘
+
+【project/* ブランチ】
 ┌──────────────────┬───────┬─────────────────────────────────────┐
 │ ブランチ          │ 件数  │ コミット                             │
 ├──────────────────┼───────┼─────────────────────────────────────┤
