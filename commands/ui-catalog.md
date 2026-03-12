@@ -258,10 +258,11 @@ project/* ブランチおよびセカンダリリモートの変更を PR（Pull
 取り込みは行わない（取り込みは `merge` で行う）。
 
 **リモート構成:**
-- `origin`: 全ブランチ + タグ
-- その他: main + タグのみ
+- `origin`: 全ブランチ + タグ（履歴あり）
+- その他: main + タグのみ（**Squash Push = 履歴なし**）
 
 リモートは `git remote -v` で動的検出。
+セカンダリリモート（GitHub等）には履歴を持たない Squash Push で配布。
 
 **処理フロー:**
 
@@ -269,7 +270,6 @@ project/* ブランチおよびセカンダリリモートの変更を PR（Pull
    ```bash
    for remote in $(git remote); do
      git fetch $remote
-     git log --oneline $remote/main..HEAD  # 未配布
    done
    ```
 
@@ -280,13 +280,13 @@ project/* ブランチおよびセカンダリリモートの変更を PR（Pull
 📊 ui-catalog distribute — 配布状況
 
 【リモート】
-┌──────────┬────────────┬─────────────┐
-│ リモート  │ 未配布     │ 同期対象     │
-├──────────┼────────────┼─────────────┤
-│ origin   │ 2 commits  │ 全ブランチ   │
-│ github   │ 2 commits  │ main のみ   │
-│ gitlab   │ 5 commits  │ main のみ   │
-└──────────┴────────────┴─────────────┘
+┌──────────┬─────────────┬─────────────┐
+│ リモート  │ 方式        │ 状態        │
+├──────────┼─────────────┼─────────────┤
+│ origin   │ 通常 push   │ 📦 配布可能  │
+│ github   │ Squash push │ 📦 配布可能  │
+│ gitlab   │ Squash push │ 📦 配布可能  │
+└──────────┴─────────────┴─────────────┘
 
 【project/*】
 ┌──────────────────┬────────────┬────────────┐
@@ -307,17 +307,26 @@ project/* ブランチおよびセカンダリリモートの変更を PR（Pull
    - 対象ブランチと衝突内容を報告
    - 解決方法を提案（スキップ or 手動解決）
 
-5. **全リモートにプッシュ**:
+5. **origin にプッシュ**（履歴あり）:
    ```bash
-   # origin: 全ブランチ + タグ
    git push origin --all && git push origin --tags
-   # その他: main + タグのみ
+   ```
+
+6. **セカンダリリモートに Squash Push**（履歴なし）:
+   ```bash
    for remote in $(git remote | grep -v origin); do
-     git push $remote main && git push $remote --tags
+     # orphan ブランチで履歴なしコミットを作成
+     git checkout --orphan _temp_squash
+     git add -A
+     git commit -m "Release: $(git describe --tags --always)"
+     git push $remote _temp_squash:main --force
+     git push $remote --tags
+     git checkout main
+     git branch -D _temp_squash
    done
    ```
 
-6. 配布結果サマリーを表示
+7. 配布結果サマリーを表示
 
 ---
 
