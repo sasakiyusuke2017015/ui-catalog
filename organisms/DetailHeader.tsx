@@ -12,8 +12,9 @@ export interface DetailHeaderField {
 export interface DetailHeaderAction {
   label: string;
   onClick: () => void;
-  variant?: "primary" | "default" | "outline";
+  variant?: "primary" | "default" | "outline" | "danger";
   icon?: React.ReactNode;
+  disabled?: boolean;
 }
 
 export interface DetailHeaderProps {
@@ -71,14 +72,21 @@ function CompactLayout({ icon, title, badge, fields, actions }: DetailHeaderProp
             <button
               key={i}
               type="button"
-              className={`px-3 py-1 text-[12px] rounded font-medium cursor-pointer transition-colors ${
-                a.variant === "primary"
-                  ? "bg-(--color-accent) text-white hover:opacity-90"
-                  : a.variant === "outline"
-                    ? "border border-(--color-border) text-(--color-text) hover:bg-(--color-hover-bg)"
-                    : "bg-(--color-bg) text-(--color-text) hover:bg-(--color-hover-bg)"
+              disabled={a.disabled}
+              className={`px-3 py-1 text-[12px] rounded font-medium transition-colors ${
+                a.disabled
+                  ? "opacity-50 cursor-not-allowed"
+                  : `cursor-pointer ${
+                      a.variant === "danger"
+                        ? "bg-(--color-error) text-white hover:opacity-90"
+                        : a.variant === "primary"
+                          ? "bg-(--color-accent) text-white hover:opacity-90"
+                          : a.variant === "outline"
+                            ? "border border-(--color-border) text-(--color-text) hover:bg-(--color-hover-bg)"
+                            : "bg-(--color-bg) text-(--color-text) hover:bg-(--color-hover-bg)"
+                    }`
               }`}
-              onClick={a.onClick}
+              onClick={a.disabled ? undefined : a.onClick}
             >
               <span className="flex items-center gap-1.5">
                 {a.icon}
@@ -133,14 +141,21 @@ function SplitLayout({ icon, title, badge, fields, actions }: DetailHeaderProps)
               <button
                 key={i}
                 type="button"
-                className={`px-3 py-1.5 text-[12px] rounded font-medium cursor-pointer transition-colors whitespace-nowrap ${
-                  a.variant === "primary"
-                    ? "bg-(--color-accent) text-white hover:opacity-90"
-                    : a.variant === "outline"
-                      ? "border border-(--color-border) text-(--color-text) hover:bg-(--color-hover-bg)"
-                      : "bg-(--color-bg) text-(--color-text) hover:bg-(--color-hover-bg)"
+                disabled={a.disabled}
+                className={`px-3 py-1.5 text-[12px] rounded font-medium transition-colors whitespace-nowrap ${
+                  a.disabled
+                    ? "opacity-50 cursor-not-allowed"
+                    : `cursor-pointer ${
+                        a.variant === "danger"
+                          ? "bg-(--color-error) text-white hover:opacity-90"
+                          : a.variant === "primary"
+                            ? "bg-(--color-accent) text-white hover:opacity-90"
+                            : a.variant === "outline"
+                              ? "border border-(--color-border) text-(--color-text) hover:bg-(--color-hover-bg)"
+                              : "bg-(--color-bg) text-(--color-text) hover:bg-(--color-hover-bg)"
+                      }`
                 }`}
-                onClick={a.onClick}
+                onClick={a.disabled ? undefined : a.onClick}
               >
                 <span className="flex items-center gap-1.5">
                   {a.icon}
@@ -170,16 +185,23 @@ function MinimalLayout({ icon, title, badge, fields, actions }: DetailHeaderProp
               <button
                 key={i}
                 type="button"
-                className={`px-2.5 py-1 text-[11px] rounded font-medium cursor-pointer transition-colors ${
-                  a.variant === "primary"
-                    ? "bg-(--color-accent) text-white hover:opacity-90"
-                    : a.variant === "outline"
-                      ? "border border-(--color-border) text-(--color-text-muted) hover:bg-(--color-hover-bg)"
-                      : "text-(--color-text-muted) hover:bg-(--color-hover-bg)"
+                disabled={a.disabled}
+                className={`group/action px-2.5 py-1 text-[11px] rounded font-medium transition-colors ${
+                  a.disabled
+                    ? "opacity-50 cursor-not-allowed"
+                    : `cursor-pointer ${
+                        a.variant === "danger"
+                          ? "bg-(--color-error) text-white hover:opacity-90"
+                          : a.variant === "primary"
+                            ? "bg-(--color-accent) text-white hover:opacity-90"
+                            : a.variant === "outline"
+                              ? "border border-(--color-border) text-(--color-text-muted) hover:bg-(--color-hover-bg)"
+                              : "text-(--color-text-muted) hover:bg-(--color-hover-bg)"
+                      }`
                 }`}
-                onClick={a.onClick}
+                onClick={a.disabled ? undefined : a.onClick}
               >
-                <span className="flex items-center gap-1">
+                <span className={`flex items-center gap-1 transition-transform ${a.disabled ? "" : "group-hover/action:scale-125"}`}>
                   {a.icon}
                   {a.label}
                 </span>
@@ -189,8 +211,8 @@ function MinimalLayout({ icon, title, badge, fields, actions }: DetailHeaderProp
         )}
       </div>
 
-      {/* フィールド: インライン */}
-      <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-[11px]">
+      {/* フィールド */}
+      <div className="flex flex-col gap-0.5 text-[11px]">
         {fields.map((f, i) => (
           <span key={i} className="flex items-baseline gap-1">
             <span className="text-(--color-text-muted)">{f.label}:</span>
