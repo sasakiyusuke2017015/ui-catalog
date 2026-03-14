@@ -5,6 +5,7 @@ import { FC, useRef, useState, useEffect, useCallback, useMemo } from 'react';
 import Icon from '../../atoms/Icon';
 
 import { useAlert } from '../../hooks/ui';
+import { useOperationLog } from '../../hooks/useOperationLog';
 import AlertDialog from '../AlertDialog';
 
 import { useDatePickerState } from './useDatePickerState';
@@ -48,6 +49,8 @@ const DatePicker: FC<DatePickerProps> = ({
   const [isFlipping, setIsFlipping] = useState(false);
   const [targetYear, setTargetYear] = useState<number | null>(null);
   const { alertState, closeAlert } = useAlert();
+
+  const log = useOperationLog('DatePicker');
 
   const {
     selectedDate, parsedSelectedDate,
@@ -115,9 +118,11 @@ const DatePicker: FC<DatePickerProps> = ({
   }, [canNavigateYear, isFlipping, viewYear, setViewYear]);
 
   const handlePopupSelect = useCallback((date: Date) => {
-    updateDate(formatDateValue(date, pickerMode), true);
+    const newValue = formatDateValue(date, pickerMode);
+    log('select', { pickerMode, value: newValue });
+    updateDate(newValue, true);
     setIsPopupOpen(false);
-  }, [pickerMode, updateDate]);
+  }, [pickerMode, updateDate, log]);
 
   const handleMonthNavigate = useCallback((direction: 'prev' | 'next') => {
     setViewDate(prev => {
@@ -128,8 +133,15 @@ const DatePicker: FC<DatePickerProps> = ({
   }, [setViewDate]);
 
   const handleClear = useCallback(() => {
+    log('clear', { pickerMode });
     updateDate('');
-  }, [updateDate]);
+  }, [updateDate, log, pickerMode]);
+
+  const handleTogglePopup = useCallback(() => {
+    const newState = !isPopupOpen;
+    log(newState ? 'open' : 'close', { pickerMode });
+    setIsPopupOpen(newState);
+  }, [isPopupOpen, log, pickerMode]);
 
   return (
     <>
@@ -177,7 +189,7 @@ const DatePicker: FC<DatePickerProps> = ({
             )}
             <button
               type="button"
-              onClick={() => setIsPopupOpen(prev => !prev)}
+              onClick={handleTogglePopup}
               className={`transition-colors ${
                 variant === 'dark'
                   ? 'text-gray-400 hover:text-white'

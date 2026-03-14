@@ -169,6 +169,91 @@ initUICatalog(versions)
 
 ---
 
+## 操作ログ（DevTools）
+
+開発環境でUIコンポーネントの操作を追跡するための仕組みです。
+
+### 設定
+
+```tsx
+// apps/web/src/main.tsx
+import { configureDevTools } from '@ui-catalog/core'
+
+if (import.meta.env.DEV) {
+  configureDevTools({
+    enabled: true,          // ログ機能を有効化
+    logOperations: true,    // 操作ログを出力
+    consoleOutput: true,    // ブラウザコンソールに出力
+    serverOutput: false,    // サーバー（Docker stdout）に出力
+    serverEndpoint: '/api/dev/log',  // サーバーログのエンドポイント
+    uidPrefix: 'myapp',     // ログのプレフィックス
+  })
+}
+```
+
+### コンポーネントへの組み込み
+
+```tsx
+import { useOperationLog } from '../hooks/useOperationLog'
+
+const MyComponent: FC<Props> = ({ label, onAction }) => {
+  const log = useOperationLog('MyComponent')
+
+  const handleClick = () => {
+    log('click', { label })
+    onAction?.()
+  }
+
+  return <button onClick={handleClick}>{label}</button>
+}
+```
+
+### アクションと絵文字マッピング
+
+| アクション | 絵文字 | 用途 |
+|-----------|-------|------|
+| click | 🖱️ | ボタンクリック |
+| change | ✏️ | 値の変更 |
+| focus | 🎯 | フォーカス取得 |
+| blur | 💨 | フォーカス喪失 |
+| submit | 📤 | フォーム送信 |
+| open | 📂 | 開く（モーダル、ドロップダウン） |
+| close | 📁 | 閉じる |
+| select | ✅ | 選択 |
+| toggle | 🔄 | トグル切り替え |
+| expand | 📂 | 展開 |
+| collapse | 📁 | 折りたたみ |
+| hover | 👆 | ホバー |
+| mount | 🔌 | マウント |
+| unmount | 🔌 | アンマウント |
+| error | ❌ | エラー |
+| success | ✅ | 成功 |
+
+### 対応済みコンポーネント
+
+- **atoms**: Button, Toggle, Select
+- **molecules**: Modal, Dialog, Tabs, ToggleableSection, FloatingMenuButton, DatePicker
+
+### サーバーログ出力（オプション）
+
+Docker stdout に出力する場合、API側にエンドポイントを追加：
+
+```typescript
+// apps/api/src/routes/dev.ts
+import { Hono } from 'hono'
+
+export const devRouter = new Hono()
+
+devRouter.post('/log', async (c) => {
+  const body = await c.req.json()
+  const { level, component, action, data, timestamp, prefix } = body
+  console.log(`${prefix} ${component}.${action}`, data, `[${timestamp}]`)
+  return c.json({ status: 'ok' })
+})
+```
+
+---
+
 ## チェックリスト
 
 ### コンポーネント作成時
@@ -179,6 +264,7 @@ initUICatalog(versions)
 - [ ] バレルエクスポートを追加したか
 - [ ] VERSION_REGISTRY に追加したか
 - [ ] data-component 属性を追加したか
+- [ ] 操作ログ（useOperationLog）を追加したか
 
 ### バージョン更新時
 

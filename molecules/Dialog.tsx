@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 
 import Button from '../atoms/Button';
 import Icon from '../atoms/Icon';
+import { useOperationLog } from '../hooks/useOperationLog';
 
 
 export type DialogType = 'info' | 'warning' | 'error' | 'success' | 'danger';
@@ -84,10 +85,19 @@ const Dialog: FC<DialogProps> = (props) => {
     borderRadius = '0.5rem', // デフォルト値
   } = props;
 
+  const log = useOperationLog('Dialog');
   const isConfirm = variant === 'confirm';
 
+  // ダイアログの開閉をログ
+  useEffect(() => {
+    if (isOpen) {
+      log('open', { variant, type, title });
+    }
+  }, [isOpen, variant, type, title, log]);
+
   // 閉じる処理
-  const handleClose = () => {
+  const handleClose = (trigger: string = 'cancel') => {
+    log('close', { variant, type, title, trigger });
     if (isConfirm) {
       (props as ConfirmDialogProps).onCancel();
     } else {
@@ -97,6 +107,7 @@ const Dialog: FC<DialogProps> = (props) => {
 
   // 確定処理
   const handleConfirm = () => {
+    log('confirm', { variant, type, title });
     if (isConfirm) {
       (props as ConfirmDialogProps).onConfirm();
     } else {
@@ -110,11 +121,11 @@ const Dialog: FC<DialogProps> = (props) => {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        handleClose();
+        handleClose('escape');
       }
       // alertの場合のみEnterで閉じる
       if (!isConfirm && event.key === 'Enter') {
-        handleClose();
+        handleClose('enter');
       }
     };
 
@@ -131,7 +142,7 @@ const Dialog: FC<DialogProps> = (props) => {
   // 背景クリックで閉じる
   const handleBackgroundClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
-      handleClose();
+      handleClose('backdrop');
     }
   };
 
@@ -142,7 +153,7 @@ const Dialog: FC<DialogProps> = (props) => {
       onClick={handleBackgroundClick}
       onKeyDown={(e) => {
         if (e.key === 'Escape') {
-          handleClose();
+          handleClose('escape');
         }
       }}
       role="button"
@@ -174,7 +185,7 @@ const Dialog: FC<DialogProps> = (props) => {
         {/* ボタン */}
         <div className="flex justify-end gap-2 px-6 py-4">
           {isConfirm && (
-            <Button variant="secondary" size="small" onClick={handleClose}>
+            <Button variant="secondary" size="small" onClick={() => handleClose('button')}>
               {cancelText}
             </Button>
           )}

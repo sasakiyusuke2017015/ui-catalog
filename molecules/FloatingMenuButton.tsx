@@ -5,6 +5,7 @@
 import React from 'react';
 
 import Icon from '../atoms/Icon';
+import { useOperationLog } from '../hooks/useOperationLog';
 import { cn } from '../utils/cn';
 import { LAYOUT_SIZES, type IconName } from '../constants';
 
@@ -69,6 +70,12 @@ const FloatingMenuButton: React.FC<FloatingMenuButtonProps> = ({
   openLabel = 'メニューを開く',
   closeLabel = 'メニューを閉じる',
 }) => {
+  const log = useOperationLog('FloatingMenuButton');
+
+  const handleToggle = () => {
+    log(isOpen ? 'close' : 'open', { position });
+    onToggle();
+  };
   // ボタンサイズとLeftPaneの中心を計算
   const buttonSize = size;
   const leftPaneCenter = LAYOUT_SIZES.LEFT_PANE_WIDTH / 2 - buttonSize / 2;
@@ -95,7 +102,7 @@ const FloatingMenuButton: React.FC<FloatingMenuButtonProps> = ({
   return (
     <button
       data-component="floating-menu-button"
-      onClick={onToggle}
+      onClick={handleToggle}
       className={cn(
         'fixed group flex items-center justify-center rounded-full border shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out hover:shadow-xl hover:opacity-90 focus:outline-none focus:ring-4 focus:ring-opacity-30',
         className

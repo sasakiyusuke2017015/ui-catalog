@@ -2,6 +2,7 @@ import { useState, ReactNode } from 'react';
 
 import { Animated } from '../atoms/Animated';
 import Icon from '../atoms/Icon';
+import { useOperationLog } from '../hooks/useOperationLog';
 
 
 interface ToggleableSectionProps {
@@ -47,6 +48,7 @@ const ToggleableSection: React.FC<ToggleableSectionProps> = ({
   const [internalIsOpen, setInternalIsOpen] = useState(defaultOpen);
   const isOpen = isControlled ? controlledIsOpen : internalIsOpen;
   const [contentKey, setContentKey] = useState(0);
+  const log = useOperationLog('ToggleableSection');
 
   // borderColorがTailwindクラス形式かCSS色値かを判定
   const isTailwindClass = borderColor.startsWith('border-');
@@ -56,6 +58,8 @@ const ToggleableSection: React.FC<ToggleableSectionProps> = ({
 
   const handleToggle = () => {
     const newIsOpen = !isOpen;
+    const titleText = typeof title === 'string' ? title : 'section';
+    log(newIsOpen ? 'expand' : 'collapse', { title: titleText });
     if (!isControlled) {
       setInternalIsOpen(newIsOpen);
     }

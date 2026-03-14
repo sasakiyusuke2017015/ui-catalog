@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 
+import { useOperationLog } from '../../hooks/useOperationLog';
+import { cn } from '../../utils/cn';
 
-import { cn } from '../utils/cn';
-
-import Checkbox from './Checkbox';
-import Icon from './Icon';
+import Checkbox from '../Checkbox';
+import Icon from '../Icon';
 
 interface SelectOption<T = string | number> {
   value: T;
@@ -112,6 +112,8 @@ const Select = <T extends string | number = string>(props: SelectProps<T>) => {
     allowEmpty = true,
     borderRadius = '0.375rem',
   } = props;
+
+  const log = useOperationLog('Select');
 
   // サイズ別スタイル（Inputコンポーネントと統一）
   const sizeStyles = {
@@ -264,6 +266,8 @@ const Select = <T extends string | number = string>(props: SelectProps<T>) => {
   };
 
   const handleSingleOptionClick = (optionValue: T) => {
+    const selectedLabel = options.find((opt) => opt.value === optionValue)?.label;
+    log('select', { value: optionValue, label: selectedLabel, multiple: false });
     (props as SingleSelectProps<T>).onChange(optionValue);
     setIsOpen(false);
   };
@@ -271,9 +275,12 @@ const Select = <T extends string | number = string>(props: SelectProps<T>) => {
   const handleMultipleOptionClick = (optionValue: T) => {
     const multiProps = props as MultipleSelectProps<T>;
     const currentValues = multiProps.value;
-    const newValues = currentValues.includes(optionValue)
+    const isDeselect = currentValues.includes(optionValue);
+    const newValues = isDeselect
       ? currentValues.filter((v) => v !== optionValue)
       : [...currentValues, optionValue];
+    const selectedLabel = options.find((opt) => opt.value === optionValue)?.label;
+    log(isDeselect ? 'deselect' : 'select', { value: optionValue, label: selectedLabel, multiple: true, count: newValues.length });
     multiProps.onChange(newValues);
   };
 
@@ -324,7 +331,12 @@ const Select = <T extends string | number = string>(props: SelectProps<T>) => {
         ref={buttonRef}
         type="button"
         id={selectId}
-        onClick={() => !disabled && setIsOpen(!isOpen)}
+        onClick={() => {
+          if (!disabled) {
+            log(isOpen ? 'close' : 'open', { label });
+            setIsOpen(!isOpen);
+          }
+        }}
         onKeyDown={handleKeyDown}
         disabled={disabled}
         className={cn(
