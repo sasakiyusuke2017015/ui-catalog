@@ -181,24 +181,43 @@ project/* ブランチから main への Pull Request を作成する。
 **処理フロー:**
 
 1. 現在のブランチを確認（project/* であること）
-2. main との差分を確認:
+2. **未コミット変更をチェック**:
+   ```bash
+   git status --porcelain
+   ```
+   - 未コミット変更がある場合:
+     - 変更内容を表示
+     - コミットメッセージを入力させる
+     - `git add -A && git commit -m "<message>"` でコミット
+3. main との差分を確認:
    ```bash
    git fetch origin main
    git log --oneline origin/main..HEAD
    ```
-3. 差分がある場合、PR を作成:
+4. 差分がある場合、PR を作成:
    ```bash
    # Gitea CLI または API で PR 作成
    # base: main ← head: project/<name>
    ```
-4. PR の URL を表示
+5. PR の URL を表示
 
 出力イメージ:
 ```
 📊 ui-catalog pr — PR 作成
 
 ブランチ: project/pleasync
-main との差分: 3 commits
+
+【未コミット変更を検出】
+  M src/atoms/Button.tsx
+  M src/molecules/Dialog.tsx
+  A src/atoms/Tooltip.tsx
+
+コミットメッセージを入力してください: feat: Tooltip コンポーネントを追加
+
+✅ コミットしました: a1b2c3d feat: Tooltip コンポーネントを追加
+
+main との差分: 4 commits
+  a1b2c3d feat: Tooltip コンポーネントを追加
   89d4449 feat: DetailHeader に danger variant と disabled 対応を追加
   3abf8bf refactor: refine/status を共通コマンドに整理
   1b923f5 refactor: sync ui-catalog.md with main
