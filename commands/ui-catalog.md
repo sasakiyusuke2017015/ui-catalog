@@ -186,9 +186,12 @@ project/* ブランチから main への Pull Request を作成する。
    git status --porcelain
    ```
    - 未コミット変更がある場合:
-     - 変更内容を表示
-     - コミットメッセージを入力させる
-     - `git add -A && git commit -m "<message>"` でコミット
+     - 変更内容をファイル単位で表示
+     - コミット方法を選択させる:
+       - **一括コミット**: 全変更を1コミットにまとめる
+       - **ファイル別コミット**: ファイルごとに個別コミット
+       - **手動選択**: ユーザーがファイルをグループ化して複数コミット
+     - 選択に応じてコミットを実行
 3. main との差分を確認:
    ```bash
    git fetch origin main
@@ -207,20 +210,37 @@ project/* ブランチから main への Pull Request を作成する。
 
 ブランチ: project/pleasync
 
-【未コミット変更を検出】
+【未コミット変更を検出: 5ファイル】
   M src/atoms/Button.tsx
+  M src/atoms/Card.tsx
   M src/molecules/Dialog.tsx
   A src/atoms/Tooltip.tsx
+  A src/atoms/Badge.tsx
 
-コミットメッセージを入力してください: feat: Tooltip コンポーネントを追加
+コミット方法を選択:
+  [1] 一括コミット（全て1コミット）
+  [2] ファイル別コミット（5コミット）
+  [3] 手動選択（グループ化）
 
-✅ コミットしました: a1b2c3d feat: Tooltip コンポーネントを追加
+選択: 3
 
-main との差分: 4 commits
-  a1b2c3d feat: Tooltip コンポーネントを追加
-  89d4449 feat: DetailHeader に danger variant と disabled 対応を追加
-  3abf8bf refactor: refine/status を共通コマンドに整理
-  1b923f5 refactor: sync ui-catalog.md with main
+ファイルをグループ化してください（カンマ区切り、空行で次のグループ）:
+> 1,2     # Button, Card
+メッセージ: refactor: Button と Card のスタイル調整
+
+> 3       # Dialog
+メッセージ: fix: Dialog の z-index 修正
+
+> 4,5     # Tooltip, Badge
+メッセージ: feat: Tooltip と Badge コンポーネントを追加
+
+✅ 3件のコミットを作成しました:
+  a1b2c3d feat: Tooltip と Badge コンポーネントを追加
+  b2c3d4e fix: Dialog の z-index 修正
+  c3d4e5f refactor: Button と Card のスタイル調整
+
+main との差分: 6 commits
+  ...
 
 PR を作成しますか？ (y/n)
 
