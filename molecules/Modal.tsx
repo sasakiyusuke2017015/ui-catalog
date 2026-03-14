@@ -2,6 +2,7 @@
 import { FC, ReactNode, useEffect } from 'react';
 
 import Icon from '../atoms/Icon';
+import { useOperationLog } from '../hooks/useOperationLog';
 
 
 interface ModalProps {
@@ -27,6 +28,14 @@ const Modal: FC<ModalProps> = ({
   maxHeight = 'max-h-[80vh]',
   borderRadius = '0.5rem', // デフォルト値
 }) => {
+  const log = useOperationLog('Modal');
+
+  // モーダルの開閉をログ
+  useEffect(() => {
+    if (isOpen) {
+      log('open', { title });
+    }
+  }, [isOpen, title, log]);
 
   // モーダルが開いている時に背景スクロールを無効化
   useEffect(() => {
@@ -59,7 +68,7 @@ const Modal: FC<ModalProps> = ({
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        onClose();
+        handleEscapeClose();
       }
     };
 
@@ -78,8 +87,21 @@ const Modal: FC<ModalProps> = ({
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     if (event.target === event.currentTarget) {
+      log('close', { title, trigger: 'backdrop' });
       onClose();
     }
+  };
+
+  // 閉じるボタンクリック
+  const handleCloseClick = () => {
+    log('close', { title, trigger: 'button' });
+    onClose();
+  };
+
+  // Escキーで閉じる
+  const handleEscapeClose = () => {
+    log('close', { title, trigger: 'escape' });
+    onClose();
   };
 
   return (
@@ -89,7 +111,7 @@ const Modal: FC<ModalProps> = ({
       onClick={handleBackgroundClick}
       onKeyDown={(e) => {
         if (e.key === 'Escape') {
-          onClose();
+          handleEscapeClose();
         }
       }}
       role="button"
@@ -105,7 +127,7 @@ const Modal: FC<ModalProps> = ({
         <div className="flex items-center justify-between border-b border-gray-200 px-3 py-2 sm:px-6 sm:py-4">
           <h3 className="text-fluid-xl font-bold text-gray-800">{title}</h3>
           <button
-            onClick={onClose}
+            onClick={handleCloseClick}
             className="text-gray-500 hover:text-gray-700"
           >
             <Icon name={'x'} size={24} />
