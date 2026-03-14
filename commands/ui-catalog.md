@@ -427,10 +427,14 @@ project/* ブランチおよびセカンダリリモートの変更を PR（Pull
    done
    ```
    - PR の URL を表示
-   - ユーザーが Web UI でレビュー・マージ
-   - マージ後、sync/from-local ブランチは削除される
+   - **ds はここで終了**（PR 作成まで）
 
 6. 配布結果サマリーを表示
+
+**マージは `/ui-catalog mg` で実行:**
+- `mg` で既存 PR 一覧を確認
+- Web UI または `mg` 経由でマージ
+- マージ後、sync/from-local ブランチは自動削除（GitHub/Gitea の設定による）
 
 ---
 
