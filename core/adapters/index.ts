@@ -1,0 +1,23 @@
+/**
+ * @ui-catalog/core/core/adapters
+ *
+ * ルーティングの抽象化層
+ */
+
+export type {
+  RouterAdapter,
+  LinkProps,
+  NavigateFunction,
+} from './types'
+
+export {
+  RouterProvider,
+  RouterContext,
+  useRouterAdapter,
+  useNavigate,
+  usePathname,
+  useLink,
+  RouterLink,
+} from './RouterContext'
+
+export { reactRouterAdapter } from './react-router'
