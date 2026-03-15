@@ -5,8 +5,8 @@
  */
 import type { Preview } from '@storybook/react'
 
-import '../styles/globals.css'
-import { baseDecorators, baseParameters } from '../storybook-preset/preview.tsx'
+import '../core/styles/globals.css'
+import { baseDecorators, baseParameters } from '../infra/storybook'
 
 const preview: Preview = {
   decorators: baseDecorators,
