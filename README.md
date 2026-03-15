@@ -269,6 +269,65 @@ export default {
 }
 ```
 
+### 操作ログ（DevTools）
+
+開発環境でUIコンポーネントの操作を追跡できます。
+
+```tsx
+// apps/web/src/main.tsx
+import { configureDevTools } from '@ui-catalog/core'
+
+if (import.meta.env.DEV) {
+  configureDevTools({
+    enabled: true,
+    logOperations: true,
+    consoleOutput: true,    // ブラウザコンソールに出力
+    serverOutput: false,    // サーバー（Docker stdout）に出力
+    uidPrefix: 'myapp',     // ログのプレフィックス
+  })
+}
+```
+
+ブラウザのDevToolsコンソールに以下のようなログが出力されます：
+
+```
+[myapp] 🖱️ Button.click { variant: 'primary', size: 'medium' }
+[myapp] 📂 Modal.open { title: '確認' }
+[myapp] ✅ Select.select { value: '1', label: 'オプション1' }
+[myapp] 🔄 Toggle.toggle { label: '通知', checked: true }
+[myapp] 📂 ToggleableSection.expand { title: '詳細設定' }
+```
+
+#### 対応コンポーネント
+
+| コンポーネント | ログアクション |
+|---------------|---------------|
+| Button | click |
+| Modal | open, close (button/backdrop/escape) |
+| Dialog | open, close, confirm |
+| Select | open, close, select, deselect |
+| Toggle | toggle |
+| Tabs | select |
+| ToggleableSection | expand, collapse |
+| FloatingMenuButton | open, close |
+| DatePicker | open, close, select, clear |
+
+#### カスタムコンポーネントでの使用
+
+```tsx
+import { useOperationLog } from '@ui-catalog/core/hooks'
+
+function MyComponent() {
+  const log = useOperationLog('MyComponent')
+
+  const handleClick = () => {
+    log('click', { customData: 'value' })
+  }
+
+  return <button onClick={handleClick}>Click me</button>
+}
+```
+
 ## バージョン管理（アプリ内）
 
 コンポーネントの変更を追跡するため、`ui-catalog.versions.json` を使用します。

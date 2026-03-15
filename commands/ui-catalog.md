@@ -181,27 +181,66 @@ project/* ブランチから main への Pull Request を作成する。
 **処理フロー:**
 
 1. 現在のブランチを確認（project/* であること）
-2. main との差分を確認:
+2. **未コミット変更をチェック**:
+   ```bash
+   git status --porcelain
+   ```
+   - 未コミット変更がある場合:
+     - 変更内容をファイル単位で表示
+     - コミット方法を選択させる:
+       - **一括コミット**: 全変更を1コミットにまとめる
+       - **ファイル別コミット**: ファイルごとに個別コミット
+       - **手動選択**: ユーザーがファイルをグループ化して複数コミット
+     - 選択に応じてコミットを実行
+3. main との差分を確認:
    ```bash
    git fetch origin main
    git log --oneline origin/main..HEAD
    ```
-3. 差分がある場合、PR を作成:
+4. 差分がある場合、PR を作成:
    ```bash
    # Gitea CLI または API で PR 作成
    # base: main ← head: project/<name>
    ```
-4. PR の URL を表示
+5. PR の URL を表示
 
 出力イメージ:
 ```
 📊 ui-catalog pr — PR 作成
 
 ブランチ: project/pleasync
-main との差分: 3 commits
-  89d4449 feat: DetailHeader に danger variant と disabled 対応を追加
-  3abf8bf refactor: refine/status を共通コマンドに整理
-  1b923f5 refactor: sync ui-catalog.md with main
+
+【未コミット変更を検出: 5ファイル】
+  M src/atoms/Button.tsx
+  M src/atoms/Card.tsx
+  M src/molecules/Dialog.tsx
+  A src/atoms/Tooltip.tsx
+  A src/atoms/Badge.tsx
+
+コミット方法を選択:
+  [1] 一括コミット（全て1コミット）
+  [2] ファイル別コミット（5コミット）
+  [3] 手動選択（グループ化）
+
+選択: 3
+
+ファイルをグループ化してください（カンマ区切り、空行で次のグループ）:
+> 1,2     # Button, Card
+メッセージ: refactor: Button と Card のスタイル調整
+
+> 3       # Dialog
+メッセージ: fix: Dialog の z-index 修正
+
+> 4,5     # Tooltip, Badge
+メッセージ: feat: Tooltip と Badge コンポーネントを追加
+
+✅ 3件のコミットを作成しました:
+  a1b2c3d feat: Tooltip と Badge コンポーネントを追加
+  b2c3d4e fix: Dialog の z-index 修正
+  c3d4e5f refactor: Button と Card のスタイル調整
+
+main との差分: 6 commits
+  ...
 
 PR を作成しますか？ (y/n)
 
@@ -296,7 +335,16 @@ project/* ブランチおよびセカンダリリモートの変更を PR（Pull
    - 汎用性を確認（アプリ固有のロジックが含まれていないか）
    - 問題なければマージ（Squash Merge 推奨）
 
-6. **クロスプロジェクト統合・分割判断**:
+6. **sync/* ブランチの削除**（マージ後）:
+   ```bash
+   # sync/from-* ブランチは一時的なものなので削除
+   git push origin --delete sync/from-local
+   git push github --delete sync/from-local
+   ```
+   - **sync/* ブランチ**: 削除する（一時的な PR 用）
+   - **project/* ブランチ**: 削除しない（継続的に使用）
+
+7. **クロスプロジェクト統合・分割判断**:
    - 複数の project/* から類似の変更がないか確認
    - **統合候補**: 同じコンポーネントへの類似拡張 → 1つに統合
    - **分割候補**: 肥大化したコンポーネント → 分離
@@ -315,9 +363,9 @@ project/* ブランチおよびセカンダリリモートの変更を PR（Pull
      └─────────────────────────────────────────────────┘
      ```
 
-7. `VERSION_REGISTRY` の整合性を確認
+8. `VERSION_REGISTRY` の整合性を確認
 
-8. 変更サマリーを報告
+9. 変更サマリーを報告
 
 ---
 
@@ -388,10 +436,14 @@ project/* ブランチおよびセカンダリリモートの変更を PR（Pull
    done
    ```
    - PR の URL を表示
-   - ユーザーが Web UI でレビュー・マージ
-   - マージ後、sync/from-local ブランチは削除される
+   - **ds はここで終了**（PR 作成まで）
 
 6. 配布結果サマリーを表示
+
+**マージは `/ui-catalog mg` で実行:**
+- `mg` で既存 PR 一覧を確認
+- Web UI または `mg` 経由でマージ
+- マージ後、sync/from-local ブランチは自動削除（GitHub/Gitea の設定による）
 
 ---
 

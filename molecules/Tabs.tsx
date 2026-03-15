@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from 'react'
 import { cn } from '../utils/cn'
+import { useOperationLog } from '../hooks/useOperationLog'
 
 export interface Tab {
   id: string
@@ -28,8 +29,11 @@ export default function Tabs({
 }: TabsProps) {
   const [internalActive, setInternalActive] = useState(defaultTab ?? tabs[0]?.id)
   const active = controlledActive ?? internalActive
+  const log = useOperationLog('Tabs')
 
   function handleSelect(id: string) {
+    const tab = tabs.find((t) => t.id === id)
+    log('select', { tabId: id, tabLabel: tab?.label })
     if (!controlledActive) setInternalActive(id)
     onTabChange?.(id)
   }
