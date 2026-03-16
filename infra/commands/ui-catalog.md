@@ -186,13 +186,21 @@ project/* ブランチから main への Pull Request を作成する。
 **処理フロー:**
 
 1. 現在のブランチを確認（project/* であること）
-2. main との差分を確認:
+2. 未コミットの変更を確認:
+   ```bash
+   git status --porcelain
+   ```
+3. 未コミットの変更がある場合:
+   - 変更内容を表示し、先にコミットを促す
+   - ユーザーがコミット内容を確認・承認後、コミットを実行
+   - コミット後、リモートに push
+4. main との差分を確認:
    ```bash
    git fetch origin main
    git log --oneline origin/main..HEAD
    ```
-3. 差分がない場合は終了
-4. 差分がある場合、GitHub API で PR を作成:
+5. 差分がない場合は終了
+6. 差分がある場合、GitHub API で PR を作成:
    ```bash
    # リモート URL からトークンを抽出
    REMOTE_URL=$(git remote get-url origin)
@@ -212,7 +220,7 @@ project/* ブランチから main への Pull Request を作成する。
        "body": "## Summary\n- ...\n\n## Test plan\n- [ ] ..."
      }'
    ```
-5. PR の URL を表示
+7. PR の URL を表示
 
 出力イメージ:
 ```
