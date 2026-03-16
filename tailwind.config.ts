@@ -24,6 +24,8 @@ const config: Config = {
         'shimmer-slide':
           'shimmer-slide var(--speed) ease-in-out infinite alternate',
         'spin-around': 'spin-around calc(var(--speed) * 2) infinite linear',
+        'bounce-once': 'bounce-once 0.5s ease-out',
+        'success-flash': 'success-flash 0.6s ease-out',
       },
       keyframes: {
         'shimmer-slide': {
@@ -43,6 +45,28 @@ const config: Config = {
           },
           '100%': {
             transform: 'translateZ(0) rotate(360deg)',
+          },
+        },
+        'bounce-once': {
+          '0%, 100%': {
+            transform: 'translateY(0)',
+          },
+          '30%': {
+            transform: 'translateY(-8px)',
+          },
+          '60%': {
+            transform: 'translateY(-4px)',
+          },
+        },
+        'success-flash': {
+          '0%': {
+            boxShadow: '0 0 0 0 rgba(52, 211, 153, 0.7)',
+          },
+          '50%': {
+            boxShadow: '0 0 20px 10px rgba(52, 211, 153, 0.3)',
+          },
+          '100%': {
+            boxShadow: '0 0 0 0 rgba(52, 211, 153, 0)',
           },
         },
       },
