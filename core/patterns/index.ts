@@ -46,7 +46,6 @@ export { default as KeyButton } from './KeyButton/KeyButton'
 export { default as RefreshButton } from './RefreshButton/RefreshButton'
 export { default as LoginButton } from './LoginButton/LoginButton'
 export type { LoginButtonState } from './LoginButton/LoginButton'
-export { shimmerCSS as loginButtonShimmerCSS } from './LoginButton/LoginButton'
 export { default as StarRating } from './StarRating/StarRating'
 export { default as SortableToggleList } from './SortableToggleList/SortableToggleList'
 
