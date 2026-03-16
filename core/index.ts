@@ -1,5 +1,5 @@
 /**
- * @ui-catalog/core/core
+ * @ui-catalog/core
  *
  * 純粋UI層 - ビジネスロジックゼロ
  *

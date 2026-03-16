@@ -5,7 +5,7 @@
 このパッケージは **VibeCoding で育てる** ことを前提に設計されています。
 各プロジェクトにコピーして独自に育てることを想定しています。
 
-導入手順・運用方針については [README.md](./README.md) を参照してください。
+導入手順・運用方針については [README.md](../README.md) を参照してください。
 
 ---
 
@@ -13,23 +13,36 @@
 
 ```
 packages/ui-catalog/
-├── atoms/              # 基本UI部品（Button, Input, Icon など）
-├── molecules/          # atomsの組み合わせ（DatePicker, Dialog など）
-├── organisms/          # 複雑なUI（InteractiveTable, TrendChart など）
-├── templates/          # ページレイアウト（Header, Footer, SideNav）
-├── decorations/        # 装飾コンポーネント
-├── magicui/            # アニメーションコンポーネント
-├── theme/              # テーマ機能（ThemeProvider, useTheme）
-├── hooks/              # カスタムフック
-├── utils/              # ユーティリティ関数
-├── adapters/           # 外部依存の抽象化（Router, Auth）
-├── constants/          # 定数定義（icons, design, animations）
-├── types/              # 型定義
-├── styles/             # グローバルスタイル
-├── storybook-preset/   # Storybook 設定プリセット
-├── e2e/                # VRT（Visual Regression Test）
-├── version.ts          # バージョン管理
-└── index.ts            # エントリポイント
+├── core/                    # 純粋UI（ビジネスロジックゼロ）
+│   ├── tokens/              #   デザイントークン
+│   ├── primitives/          #   最小単位UI（Box, Text, Stack, Icon, Animated）
+│   ├── components/          #   汎用コンポーネント（Button, Input, Card 等）
+│   ├── patterns/            #   組み合わせパターン（Modal, Dialog, Tabs 等）
+│   ├── layouts/             #   レイアウト（Header, Footer, AppShell 等）
+│   ├── adapters/            #   ルーター抽象化（RouterContext）
+│   ├── constants/           #   定数定義
+│   ├── types/               #   共通型定義
+│   ├── hooks/               #   UIフック（useDevice, useDisclosure 等）
+│   ├── utils/               #   ユーティリティ（cn, isNullish 等）
+│   ├── styles/              #   グローバルCSS
+│   ├── decorations/         #   背景装飾
+│   └── magicui/             #   アニメーション
+│
+├── extensions/              # プロジェクト拡張用
+│   ├── 1on1/                #   1on1 プロジェクト固有
+│   └── shared/              #   複数プロジェクトで使えそうなもの（昇格候補）
+│
+├── infra/                   # 育成・観測の仕組み
+│   ├── devtools/            #   操作ログ、デバッグツール
+│   ├── version/             #   バージョン管理（VERSION_REGISTRY）
+│   ├── theme/               #   テーマ機能
+│   └── storybook/           #   Storybook 設定
+│
+├── scripts/                 # ツールスクリプト
+│   └── sync-versions.ts     #   VERSION_REGISTRY → versions.json 同期
+│
+├── docs/                    # ドキュメント
+└── index.ts                 # エントリポイント
 ```
 
 ---
@@ -38,21 +51,26 @@ packages/ui-catalog/
 
 | パス | 内容 |
 |------|------|
-| `@ui-catalog/core` | ルートエクスポート |
-| `@ui-catalog/core/atoms` | 基本UI部品 |
-| `@ui-catalog/core/molecules` | 複合UI部品 |
-| `@ui-catalog/core/organisms` | 複雑なUI |
-| `@ui-catalog/core/templates` | レイアウト |
-| `@ui-catalog/core/decorations` | 装飾 |
-| `@ui-catalog/core/magicui` | アニメーション |
-| `@ui-catalog/core/theme` | テーマ機能 |
-| `@ui-catalog/core/hooks` | カスタムフック |
-| `@ui-catalog/core/utils` | ユーティリティ |
+| `@ui-catalog/core` | ルートエクスポート（全体） |
+| `@ui-catalog/core/tokens` | デザイントークン |
+| `@ui-catalog/core/primitives` | 最小単位UI |
+| `@ui-catalog/core/components` | 汎用コンポーネント |
+| `@ui-catalog/core/patterns` | 組み合わせパターン |
+| `@ui-catalog/core/layouts` | レイアウト |
 | `@ui-catalog/core/adapters` | アダプター |
 | `@ui-catalog/core/constants` | 定数 |
 | `@ui-catalog/core/types` | 型定義 |
-| `@ui-catalog/core/storybook-preset` | Storybook main.ts 用 |
-| `@ui-catalog/core/storybook-preset/preview` | Storybook preview.tsx 用 |
+| `@ui-catalog/core/hooks` | カスタムフック |
+| `@ui-catalog/core/utils` | ユーティリティ |
+| `@ui-catalog/core/styles` | グローバルCSS |
+| `@ui-catalog/core/decorations` | 装飾 |
+| `@ui-catalog/core/magicui` | アニメーション |
+| `@ui-catalog/core/infra` | infra/ 全体 |
+| `@ui-catalog/core/infra/devtools` | 操作ログ・デバッグ |
+| `@ui-catalog/core/infra/version` | バージョン管理 |
+| `@ui-catalog/core/extensions` | extensions/ 全体 |
+| `@ui-catalog/core/extensions/1on1` | 1on1 プロジェクト固有 |
+| `@ui-catalog/core/extensions/shared` | 共有拡張（昇格候補） |
 | `@ui-catalog/core/tailwind-preset` | Tailwind プリセット |
 
 ---
@@ -143,18 +161,17 @@ atoms → molecules      ❌ 禁止（逆方向）
 
 ## バージョン管理
 
-### ui-catalog.versions.json
+### VERSION_REGISTRY（唯一のソースオブトゥルース）
 
-アプリ側でライブラリのバージョン変更を検知するための仕組みです。
+`infra/version/registry.ts` の `VERSION_REGISTRY` がコンポーネントバージョンの正規データ。
+`ui-catalog.versions.json` は VERSION_REGISTRY から自動生成される派生ファイル（手動編集禁止）。
 
-**配置場所:** `apps/web/ui-catalog.versions.json`
+```bash
+# versions.json を VERSION_REGISTRY から生成
+pnpm sync:versions
 
-```json
-{
-  "Button": "1.0.0",
-  "Input": "1.0.0",
-  "DatePicker": "1.0.0"
-}
+# 同期状態を検証（CI 用、差分があれば exit 1）
+pnpm check:versions
 ```
 
 ### 初期化
@@ -162,7 +179,7 @@ atoms → molecules      ❌ 禁止（逆方向）
 ```tsx
 // apps/web/src/main.tsx
 import { initUICatalog } from '@ui-catalog/core'
-import versions from '../ui-catalog.versions.json'
+import versions from '../../packages/ui-catalog/ui-catalog.versions.json'
 
 initUICatalog(versions)
 ```
@@ -270,3 +287,4 @@ devRouter.post('/log', async (c) => {
 
 - [ ] 後方互換性は保たれているか
 - [ ] VERSION_REGISTRY のバージョンを上げたか
+- [ ] `pnpm sync:versions` を実行したか

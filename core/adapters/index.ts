@@ -1,5 +1,5 @@
 /**
- * @ui-catalog/core/core/adapters
+ * @ui-catalog/core/adapters
  *
  * ルーティングの抽象化層
  */

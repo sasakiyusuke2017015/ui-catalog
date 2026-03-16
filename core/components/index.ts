@@ -1,5 +1,5 @@
 /**
- * @ui-catalog/core/core/components
+ * @ui-catalog/core/components
  *
  * 汎用UIコンポーネント（意味を持つUI）
  */
