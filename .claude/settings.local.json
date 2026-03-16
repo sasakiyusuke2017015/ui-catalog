@@ -56,7 +56,8 @@
       "Bash(done)",
       "Bash(git rebase:*)",
       "Bash(git rm:*)",
-      "Bash(git remote set-url:*)"
+      "Bash(git remote set-url:*)",
+      "Bash(gh pr:*)"
     ],
     "deny": [],
     "ask": []
