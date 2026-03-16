@@ -177,6 +177,11 @@ ui-catalog に存在するコンポーネントがアプリで活用されてい
 ### `pr` (pull-request) — main への PR を作成
 
 project/* ブランチから main への Pull Request を作成する。
+**GitHub API を直接使用**（gh CLI 不要）。
+
+**前提:**
+- リモート URL からトークンを取得: `git remote get-url origin`
+- URL 形式: `https://<user>:<token>@github.com/<owner>/<repo>.git`
 
 **処理フロー:**
 
@@ -186,27 +191,41 @@ project/* ブランチから main への Pull Request を作成する。
    git fetch origin main
    git log --oneline origin/main..HEAD
    ```
-3. 差分がある場合、PR を作成:
+3. 差分がない場合は終了
+4. 差分がある場合、GitHub API で PR を作成:
    ```bash
-   # Gitea CLI または API で PR 作成
-   # base: main ← head: project/<name>
+   # リモート URL からトークンを抽出
+   REMOTE_URL=$(git remote get-url origin)
+   TOKEN=$(echo "$REMOTE_URL" | sed -n 's/.*:\([^@]*\)@github.com.*/\1/p')
+   OWNER=$(echo "$REMOTE_URL" | sed -n 's/.*github.com[:/]\([^/]*\)\/.*/\1/p')
+   REPO=$(echo "$REMOTE_URL" | sed -n 's/.*\/\([^/]*\)\.git/\1/p')
+   BRANCH=$(git branch --show-current)
+
+   # PR 作成
+   curl -s -X POST "https://api.github.com/repos/$OWNER/$REPO/pulls" \
+     -H "Authorization: token $TOKEN" \
+     -H "Accept: application/vnd.github.v3+json" \
+     -d '{
+       "title": "<コミットメッセージから生成>",
+       "head": "'"$BRANCH"'",
+       "base": "main",
+       "body": "## Summary\n- ...\n\n## Test plan\n- [ ] ..."
+     }'
    ```
-4. PR の URL を表示
+5. PR の URL を表示
 
 出力イメージ:
 ```
 📊 ui-catalog pr — PR 作成
 
-ブランチ: project/pleasync
-main との差分: 3 commits
-  89d4449 feat: DetailHeader に danger variant と disabled 対応を追加
-  3abf8bf refactor: refine/status を共通コマンドに整理
-  1b923f5 refactor: sync ui-catalog.md with main
+ブランチ: project/1on1
+main との差分: 1 commit
+  a7bfd4e refactor: LoginButtonをShimmerButtonベースに刷新
 
 PR を作成しますか？ (y/n)
 
-✅ PR #15 を作成しました
-   http://gitea.example.com/ui-catalog/pulls/15
+✅ PR #1 を作成しました
+   https://github.com/sasakiyusuke2017015/ui-catalog/pull/1
 ```
 
 ---
@@ -277,16 +296,26 @@ project/* ブランチおよびセカンダリリモートの変更を PR（Pull
 
 4. **PR を作成**（未作成のブランチについて）:
    - ユーザーが選択したブランチについて PR を作成
+   - **GitHub API を使用**（gh CLI 不要）
    - **project/* の場合**: 各リモートに PR を作成
      ```bash
-     # base: main ← head: project/<name>
+     # リモート URL からトークンを抽出
+     REMOTE_URL=$(git remote get-url origin)
+     TOKEN=$(echo "$REMOTE_URL" | sed -n 's/.*:\([^@]*\)@github.com.*/\1/p')
+     OWNER=$(echo "$REMOTE_URL" | sed -n 's/.*github.com[:/]\([^/]*\)\/.*/\1/p')
+     REPO=$(echo "$REMOTE_URL" | sed -n 's/.*\/\([^/]*\)\.git/\1/p')
+
+     curl -s -X POST "https://api.github.com/repos/$OWNER/$REPO/pulls" \
+       -H "Authorization: token $TOKEN" \
+       -H "Accept: application/vnd.github.v3+json" \
+       -d '{"title": "...", "head": "project/<name>", "base": "main", "body": "..."}'
      ```
    - **他リモートの場合**: sync ブランチ経由で各リモートに PR
      ```bash
      for target in $(git remote); do
        # 他リモートの変更を sync ブランチとして push
        git push $target $source/main:sync/from-$source
-       # PR 作成
+       # GitHub API で PR 作成
        # base: main ← head: sync/from-$source
      done
      ```
@@ -377,14 +406,24 @@ project/* ブランチおよびセカンダリリモートの変更を PR（Pull
    - 対象ブランチと衝突内容を報告
    - 解決方法を提案（スキップ or 手動解決）
 
-5. **全リモートに PR 作成**:
+5. **全リモートに PR 作成**（GitHub API 使用）:
    ```bash
    for remote in $(git remote); do
      # sync ブランチを push
      git push $remote main:sync/from-local
      git push $remote --tags
-     # PR 作成（GitHub CLI / Gitea API 等）
-     # base: main ← head: sync/from-local
+
+     # リモート URL からトークンを抽出
+     REMOTE_URL=$(git remote get-url $remote)
+     TOKEN=$(echo "$REMOTE_URL" | sed -n 's/.*:\([^@]*\)@github.com.*/\1/p')
+     OWNER=$(echo "$REMOTE_URL" | sed -n 's/.*github.com[:/]\([^/]*\)\/.*/\1/p')
+     REPO=$(echo "$REMOTE_URL" | sed -n 's/.*\/\([^/]*\)\.git/\1/p')
+
+     # GitHub API で PR 作成
+     curl -s -X POST "https://api.github.com/repos/$OWNER/$REPO/pulls" \
+       -H "Authorization: token $TOKEN" \
+       -H "Accept: application/vnd.github.v3+json" \
+       -d '{"title": "sync: main からの配布", "head": "sync/from-local", "base": "main", "body": "..."}'
    done
    ```
    - PR の URL を表示
