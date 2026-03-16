@@ -350,7 +350,7 @@ export * from './core'        // core/ 全体
 export * from './extensions'  // extensions/ 全体
 export * from './infra'       // infra/ 全体
 
-// core/ バレルエクスポート（@ui-catalog/core/components 等でアクセス）
+// @ui-catalog/core/<layer> - サブパスエクスポート
 export * from './tokens'
 export * from './primitives'
 export * from './components'
