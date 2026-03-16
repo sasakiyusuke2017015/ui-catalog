@@ -350,7 +350,7 @@ export * from './core'        // core/ 全体
 export * from './extensions'  // extensions/ 全体
 export * from './infra'       // infra/ 全体
 
-// @ui-catalog/core/core - core/ バレルエクスポート
+// core/ バレルエクスポート（@ui-catalog/core/components 等でアクセス）
 export * from './tokens'
 export * from './primitives'
 export * from './components'
@@ -381,9 +381,9 @@ export * from './theme'
 import { Button, useDisclosure, cn, RouterProvider } from '@ui-catalog/core'
 
 // 明示的なパス指定
-import { Button } from '@ui-catalog/core/core/components'
-import { useDisclosure } from '@ui-catalog/core/core/hooks/ui'
-import { RouterProvider } from '@ui-catalog/core/core/adapters'
+import { Button } from '@ui-catalog/core/components'
+import { useDisclosure } from '@ui-catalog/core/hooks'
+import { RouterProvider } from '@ui-catalog/core/adapters'
 
 // 拡張コンポーネント
 import { SurveyCard } from '@ui-catalog/core/extensions/1on1'

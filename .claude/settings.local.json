@@ -57,9 +57,20 @@
       "Bash(git rebase:*)",
       "Bash(git rm:*)",
       "Bash(git remote set-url:*)",
-      "Bash(gh pr:*)"
+      "Bash(gh pr:*)",
+      "Read(//c/Users/NT-210174/.claude/**)",
+      "Bash(grep -r \"exportVersionsAsJson\\\\|export-versions\" . --include=*.ts --include=*.tsx --include=*.js)",
+      "Bash(grep -r export-versions . --include=*.ts --include=*.tsx --include=*.js --include=*.json)",
+      "Bash(cat EOF Checking for any CI/CD or automation scripts EOF find . -name *.yml -o -name *.yaml -o -name *.sh)",
+      "Bash(npx tsx:*)",
+      "Bash(ls -d */)",
+      "Bash(node -e \":*)"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "additionalDirectories": [
+      "c:\\Users\\NT-210174\\Desktop\\projects\\github\\ui-catalog",
+      "c:\\Users\\NT-210174\\.claude"
+    ]
   }
 }

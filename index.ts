@@ -10,9 +10,9 @@
  *
  * 推奨インポート:
  * ```typescript
- * import { Button, Input } from '@ui-catalog/core/core/components'
- * import { Modal, Dialog } from '@ui-catalog/core/core/patterns'
- * import { Header, AppShell } from '@ui-catalog/core/core/layouts'
+ * import { Button, Input } from '@ui-catalog/core/components'
+ * import { Modal, Dialog } from '@ui-catalog/core/patterns'
+ * import { Header, AppShell } from '@ui-catalog/core/layouts'
  * import { InteractiveTable } from '@ui-catalog/core/extensions/shared'
  * import { Question } from '@ui-catalog/core/extensions/1on1'
  * ```
