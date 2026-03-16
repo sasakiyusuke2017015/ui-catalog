@@ -3,7 +3,7 @@ import { FC, CSSProperties, ReactNode } from 'react'
 import styles from './Badge.module.scss'
 
 export type BadgeAppearance = 'default' | 'metric' | 'score' | 'status'
-export type BadgeStyleVariant = 'solid' | 'gradient' | 'compact'
+export type BadgeStyleVariant = 'solid' | 'gradient' | 'compact' | 'outline'
 export type BadgeSemanticVariant =
   | 'default'
   | 'success'
@@ -63,10 +63,13 @@ const Badge: FC<BadgeProps> = ({
   const Tag = appearance === 'metric' ? 'div' : 'span'
 
   // カラークラス名を生成
+  const capitalColor = resolvedColor.charAt(0).toUpperCase() + resolvedColor.slice(1)
   const colorClassName =
     styleVariant === 'gradient'
-      ? `gradient${resolvedColor.charAt(0).toUpperCase()}${resolvedColor.slice(1)}`
-      : `solid${resolvedColor.charAt(0).toUpperCase()}${resolvedColor.slice(1)}`
+      ? `gradient${capitalColor}`
+      : styleVariant === 'outline'
+        ? `outline${capitalColor}`
+        : `solid${capitalColor}`
 
   const badgeClasses = [
     styles.badge,

@@ -3,10 +3,10 @@
   "Animated": "1.0.0",
   "BackButton": "1.0.0",
   "BackgroundImage": "1.0.0",
-  "Badge": "1.0.0",
+  "Badge": "1.1.0",
   "Banner": "1.0.0",
   "Button": "1.1.0",
-  "Card": "1.0.0",
+  "Card": "1.1.0",
   "Checkbox": "1.0.0",
   "ExternalLink": "1.0.0",
   "Icon": "1.4.0",
@@ -83,5 +83,6 @@
   "BackgroundTexture": "1.0.0",
   "GradientOverlay": "1.0.0",
   "FloatingElements": "1.0.0",
-  "BlurFade": "1.0.0"
+  "BlurFade": "1.0.0",
+  "Progress": "1.0.0"
 }

@@ -15,9 +15,12 @@ export { Toggle } from './Toggle'
 export { Slider } from './Slider'
 export { Segment } from './Segment'
 
+// Feedback
+export { Progress, type ProgressProps, type ProgressSize, type ProgressColor } from './Progress'
+
 // Display
 export { Badge, type BadgeColor, type BadgeSize, type BadgeAppearance, type BadgeStyleVariant, type BadgeSemanticVariant } from './Badge'
-export { Card } from './Card'
+export { Card, CardHeader, CardContent, CardFooter } from './Card'
 export { Banner } from './Banner'
 export { Tooltip, type TooltipProps } from './Tooltip'
 

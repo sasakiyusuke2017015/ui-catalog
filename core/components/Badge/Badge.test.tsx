@@ -78,6 +78,11 @@ describe('Badge', () => {
     expect(badge).toHaveClass('shadow-lg');
   });
 
+  it('outline styleVariantが正しく適用される', () => {
+    const { container } = render(<Badge value="Outline" styleVariant="outline" />);
+    expect(container.querySelector('[data-variant="outline"]')).toBeInTheDocument();
+  });
+
   it('gradient + metric の場合、hover効果が追加される', () => {
     const { container } = render(<Badge value="Metric Gradient" appearance="metric" styleVariant="gradient" />);
     const badge = container.querySelector('[data-component="badge"]');

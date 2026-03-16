@@ -13,10 +13,10 @@ export const VERSION_REGISTRY = {
   Animated: '1.0.0',
   BackButton: '1.0.0',
   BackgroundImage: '1.0.0',
-  Badge: '1.0.0',
+  Badge: '1.1.0',
   Banner: '1.0.0',
   Button: '1.1.0',
-  Card: '1.0.0',
+  Card: '1.1.0',
   Checkbox: '1.0.0',
   ExternalLink: '1.0.0',
   Icon: '1.4.0',
@@ -35,6 +35,7 @@ export const VERSION_REGISTRY = {
   TextArea: '1.0.0',
   Toggle: '1.0.0',
   Tooltip: '1.0.0',
+  Progress: '1.0.0',
 
   // adapters
   RouterContext: '1.0.0',

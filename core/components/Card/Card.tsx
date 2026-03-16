@@ -1,10 +1,3 @@
-/**
- * Card コンポーネント
- *
- * 白背景のカードコンテナ
- * - onClick を指定するとクリッカブルなカードになる
- */
-
 import { ReactNode, KeyboardEvent } from 'react'
 
 import styles from './Card.module.scss'
@@ -47,6 +40,35 @@ export function Card({
       tabIndex={onClick ? 0 : undefined}
       data-component="card"
     >
+      {children}
+    </div>
+  )
+}
+
+export interface CardSectionProps {
+  children: ReactNode
+  className?: string
+}
+
+export function CardHeader({ children, className = '' }: CardSectionProps) {
+  return (
+    <div className={[styles.cardHeader, className].filter(Boolean).join(' ')} data-component="card-header">
+      {children}
+    </div>
+  )
+}
+
+export function CardContent({ children, className = '' }: CardSectionProps) {
+  return (
+    <div className={[styles.cardContent, className].filter(Boolean).join(' ')} data-component="card-content">
+      {children}
+    </div>
+  )
+}
+
+export function CardFooter({ children, className = '' }: CardSectionProps) {
+  return (
+    <div className={[styles.cardFooter, className].filter(Boolean).join(' ')} data-component="card-footer">
       {children}
     </div>
   )
