@@ -1,5 +1,6 @@
-import { InputHTMLAttributes, forwardRef, useState } from 'react'
+import { InputHTMLAttributes, forwardRef, useState, ChangeEvent } from 'react'
 
+import { useOperationLog } from '../../../infra/devtools'
 import styles from './Radio.module.scss'
 
 interface RadioProps
@@ -25,6 +26,7 @@ const Radio = forwardRef<HTMLInputElement, RadioProps>(
     ref
   ) => {
     const [isHovered, setIsHovered] = useState(false)
+    const log = useOperationLog('Radio')
 
     const hoverShadows = {
       default: 'inset 0 0 0 3px rgba(59, 130, 246, 0.4)',
@@ -58,6 +60,11 @@ const Radio = forwardRef<HTMLInputElement, RadioProps>(
     const hoverStyle =
       !disabled && isHovered ? { boxShadow: hoverShadows[variant] } : {}
 
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+      log('change', { checked: e.target.checked, value: e.target.value, label })
+      props.onChange?.(e)
+    }
+
     const radioElement = (
       <input
         ref={ref}
@@ -67,6 +74,7 @@ const Radio = forwardRef<HTMLInputElement, RadioProps>(
         style={hoverStyle}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        onChange={handleChange}
         data-component="radio"
         data-variant={variant}
         {...props}

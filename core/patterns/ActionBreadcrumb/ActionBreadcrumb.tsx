@@ -1,3 +1,4 @@
+import { useOperationLog } from '../../../infra/devtools'
 import { cn } from '../../utils/cn'
 
 export interface ActionBreadcrumbItem {
@@ -16,6 +17,13 @@ export default function ActionBreadcrumb({
   separator = '/',
   className,
 }: ActionBreadcrumbProps) {
+  const log = useOperationLog('ActionBreadcrumb')
+
+  const handleClick = (item: ActionBreadcrumbItem) => {
+    log('click', { label: item.label })
+    item.onClick?.()
+  }
+
   return (
     <nav data-component="action-breadcrumb" aria-label="パンくずリスト" className={cn('flex items-center gap-1 text-sm', className)}>
       {items.map((item, i) => (
@@ -23,7 +31,7 @@ export default function ActionBreadcrumb({
           {i > 0 && <span className="text-(--color-text-muted)">{separator}</span>}
           {item.onClick ? (
             <button
-              onClick={item.onClick}
+              onClick={() => handleClick(item)}
               className="text-(--color-text-muted) hover:text-(--color-accent) cursor-pointer transition-colors"
             >
               {item.label}

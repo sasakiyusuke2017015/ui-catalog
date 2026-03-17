@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, ReactNode, FC, CSSProperties } from 'react';
 
-
+import { useOperationLog } from '../../../infra/devtools';
 import { Button } from '../../components/Button';
 import Icon from '../../primitives/Icon';
 import { type ColorTheme, IconName } from '../../constants';
@@ -43,6 +43,13 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const log = useOperationLog('DropdownMenu');
+
+  const toggleMenu = () => {
+    const newState = !isOpen;
+    log(newState ? 'open' : 'close', { label });
+    setIsOpen(newState);
+  };
 
   // iconが文字列の場合はIconコンポーネントに変換
   const renderIcon = (
@@ -106,7 +113,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
         return (
           <Button
             variant="outline"
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={toggleMenu}
             leftIcon={typeof icon === 'string' ? (icon as IconName) : undefined}
             enableHopEffect={false}
             className={buttonClassName}
@@ -118,7 +125,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
       default:
         return (
           <button
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={toggleMenu}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             className={cn(

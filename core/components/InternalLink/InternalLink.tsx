@@ -3,8 +3,7 @@
 import React from 'react';
 
 import { useLink } from '../../adapters/RouterContext';
-
-
+import { useOperationLog } from '../../../infra/devtools';
 import Icon from '../../primitives/Icon';
 
 interface InternalLinkProps {
@@ -42,6 +41,7 @@ const InternalLink: React.FC<InternalLinkProps> = ({
   borderRadius = '0.375rem', // デフォルト値
 }) => {
   const Link = useLink();
+  const log = useOperationLog('InternalLink');
 
   // href を優先、なければ to を使用（後方互換性）
   const linkHref = href ?? to ?? '/';
@@ -135,6 +135,7 @@ const InternalLink: React.FC<InternalLinkProps> = ({
       event.preventDefault();
       return;
     }
+    log('click', { href: linkHref });
     onClick?.(event);
   };
 

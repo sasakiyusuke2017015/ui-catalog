@@ -3,6 +3,7 @@ import { FC } from 'react';
 
 import { Badge } from '../../../core/components/Badge';
 import { Button } from '../../../core/components/Button';
+import { useOperationLog } from '../../../infra/devtools';
 import Icon from '../../../core/primitives/Icon';
 import { type IconName } from '../../../core/constants';
 
@@ -27,6 +28,7 @@ export interface SurveyCardProps {
  * アンケート一覧で使用する再利用可能なカード
  */
 const SurveyCard: FC<SurveyCardProps> = ({
+  id,
   title,
   description,
   period,
@@ -39,6 +41,12 @@ const SurveyCard: FC<SurveyCardProps> = ({
   onClick,
   cardRadius = '0.5rem', // デフォルト値
 }) => {
+  const log = useOperationLog('SurveyCard');
+
+  const handleClick = () => {
+    log('click', { id, title, status });
+    onClick?.();
+  };
 
   return (
     <div className="col" data-component="survey-card">
@@ -82,7 +90,7 @@ const SurveyCard: FC<SurveyCardProps> = ({
             variant={buttonVariant}
             size="small"
             rightIcon={buttonIcon}
-            onClick={onClick}
+            onClick={handleClick}
           >
             {buttonText}
           </Button>

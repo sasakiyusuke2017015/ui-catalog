@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 
 import { motion } from 'framer-motion';
 
+import { useOperationLog } from '../../../infra/devtools';
 import Icon from '../../primitives/Icon';
 import { IconName } from '../../constants';
 
@@ -56,7 +57,15 @@ function Segment<T extends string>({
   className = '',
   borderRadius = '0.375rem',
 }: SegmentProps<T>) {
+  const log = useOperationLog('Segment');
   const activeIndex = options.findIndex((opt) => opt.value === value);
+
+  const handleChange = (newValue: T) => {
+    if (!disabled) {
+      log('select', { from: value, to: newValue });
+      onChange(newValue);
+    }
+  };
 
   const sizeStyles = {
     small: { container: 'p-1', button: 'py-0.5 px-2 text-fluid-xs gap-1', icon: 14, padding: 4 },
@@ -118,7 +127,7 @@ function Segment<T extends string>({
           <motion.button
             key={option.value}
             type="button"
-            onClick={() => !disabled && onChange(option.value)}
+            onClick={() => handleChange(option.value)}
             disabled={disabled}
             whileHover={!disabled ? { scale: 1.02 } : undefined}
             whileTap={!disabled ? { scale: 0.98 } : undefined}

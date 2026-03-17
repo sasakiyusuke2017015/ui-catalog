@@ -1,5 +1,6 @@
 import { FC } from 'react';
 
+import { useOperationLog } from '../../../infra/devtools';
 import Icon from '../../primitives/Icon';
 
 
@@ -26,10 +27,18 @@ const RefreshButton: FC<RefreshButtonProps> = ({
   dataUpdatedAt,
   loading = false,
   refreshing = false,
-}) => (
+}) => {
+  const log = useOperationLog('RefreshButton');
+
+  const handleRefresh = () => {
+    log('click', { dataUpdatedAt });
+    onRefresh();
+  };
+
+  return (
   <div className="flex items-center gap-1.5" data-component="refresh-button">
     <button
-      onClick={() => onRefresh()}
+      onClick={handleRefresh}
       disabled={loading || refreshing}
       className="flex items-center justify-center rounded-full p-1.5 text-gray-500 transition-all duration-200 hover:bg-gray-100 hover:text-gray-700 disabled:opacity-50"
       title="データを更新"
@@ -51,6 +60,7 @@ const RefreshButton: FC<RefreshButtonProps> = ({
         : '...'}
     </span>
   </div>
-);
+  );
+};
 
 export default RefreshButton;

@@ -4,6 +4,7 @@
  */
 import { FC, Fragment } from 'react';
 
+import { useOperationLog } from '../../../infra/devtools';
 import { cn } from '../../utils/cn';
 
 export interface TabItem {
@@ -57,9 +58,21 @@ const TabBar: FC<TabBarProps> = ({
   activeColor = 'green',
   maxLabelWidth = 150,
 }) => {
+  const log = useOperationLog('TabBar');
+
   if (tabs.length === 0) {
     return null;
   }
+
+  const handleSelectTab = (id: string, label: string) => {
+    log('select', { id, label });
+    onSelectTab(id);
+  };
+
+  const handleCloseTab = (id: string, label: string) => {
+    log('close', { id, label });
+    onCloseTab?.(id);
+  };
 
   const theme = colorThemes[activeColor];
 
@@ -84,13 +97,13 @@ const TabBar: FC<TabBarProps> = ({
                   ? theme.active
                   : 'border-transparent hover:border-gray-300 hover:bg-gray-50'
               )}
-            onClick={() => onSelectTab(tab.id)}
+            onClick={() => handleSelectTab(tab.id, tab.label)}
             role="tab"
             aria-selected={isActive}
             tabIndex={0}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
-                onSelectTab(tab.id);
+                handleSelectTab(tab.id, tab.label);
               }
             }}
           >
@@ -110,7 +123,7 @@ const TabBar: FC<TabBarProps> = ({
                 )}
                 onClick={(e) => {
                   e.stopPropagation();
-                  onCloseTab(tab.id);
+                  handleCloseTab(tab.id, tab.label);
                 }}
                 aria-label={`${tab.label}のタブを閉じる`}
               >

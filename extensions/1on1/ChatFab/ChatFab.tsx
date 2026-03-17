@@ -1,3 +1,4 @@
+import { useOperationLog } from '../../../infra/devtools'
 import { cn } from '../../../core/utils/cn'
 
 export interface ChatFabProps {
@@ -15,10 +16,17 @@ export default function ChatFab({
   className,
   ariaLabel = 'チャットを開く',
 }: ChatFabProps) {
+  const log = useOperationLog('ChatFab')
+
+  const handleClick = () => {
+    log('click', { hasMessages })
+    onClick()
+  }
+
   return (
     <button
       data-component="chat-fab"
-      onClick={onClick}
+      onClick={handleClick}
       className={cn(
         'fixed bottom-4 right-4 z-40 w-12 h-12 rounded-full',
         'bg-(--color-accent) text-white shadow-lg hover:bg-(--color-accent-hover)',

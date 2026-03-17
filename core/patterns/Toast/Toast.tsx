@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from 'react';
 
 import { createPortal } from 'react-dom';
 
+import { useOperationLog } from '../../../infra/devtools';
 import Icon from '../../primitives/Icon';
 
 
@@ -33,6 +34,7 @@ const Toast: FC<ToastProps> = ({
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+  const log = useOperationLog('Toast');
 
   // 表示アニメーション
   useEffect(() => {
@@ -58,6 +60,7 @@ const Toast: FC<ToastProps> = ({
   }, [isOpen, duration]);
 
   const handleClose = () => {
+    log('close', { type, message });
     setIsExiting(true);
     setTimeout(() => {
       onClose();

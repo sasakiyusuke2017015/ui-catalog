@@ -4,6 +4,8 @@
  */
 import { FC } from 'react';
 
+import { useOperationLog } from '../../../infra/devtools';
+
 import type { QuestionProps } from './types';
 
 /**
@@ -28,6 +30,7 @@ const Question: FC<QuestionProps> = ({
   accentContrastText = '#ffffff', // デフォルト値（white）
   secondaryBgColorHover = '#e0e7ff', // デフォルト値（indigo-100）
 }) => {
+  const log = useOperationLog('Question');
   // エラー時のボーダースタイル
   const errorBorderClass = error ? 'border-red-500' : 'border-gray-300';
 
@@ -48,6 +51,7 @@ const Question: FC<QuestionProps> = ({
   };
   // チェックボックス用のハンドラ
   const handleCheckboxChange = (option: string, checked: boolean) => {
+    log('change', { variant: 'checkbox', questionId, option, checked });
     const selectedValues = value ? value.split(',') : [];
     let newValues: string[];
     if (checked) {
@@ -61,6 +65,7 @@ const Question: FC<QuestionProps> = ({
   // 電話番号・郵便番号用のハンドラ（数字とハイフンのみ許可）
   const handleNumericChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value.replace(/[^\d-]/g, '');
+    log('change', { variant, questionId, value: newValue });
     onChange(newValue);
   };
 
@@ -75,7 +80,10 @@ const Question: FC<QuestionProps> = ({
                 type="text"
                 name={`question_${questionId}`}
                 value={value}
-                onChange={(e) => onChange(e.target.value)}
+                onChange={(e) => {
+                  log('change', { variant, questionId, value: e.target.value });
+                  onChange(e.target.value);
+                }}
                 onFocus={handleInputFocus}
                 onBlur={handleInputBlur}
                 disabled={disabled}
@@ -97,7 +105,10 @@ const Question: FC<QuestionProps> = ({
               <textarea
                 name={`question_${questionId}`}
                 value={value}
-                onChange={(e) => onChange(e.target.value)}
+                onChange={(e) => {
+                  log('change', { variant, questionId, value: e.target.value });
+                  onChange(e.target.value);
+                }}
                 onFocus={handleInputFocus}
                 onBlur={handleInputBlur}
                 disabled={disabled}
@@ -153,7 +164,10 @@ const Question: FC<QuestionProps> = ({
                         name={`question_${questionId}`}
                         value={option}
                         checked={isSelected}
-                        onChange={(e) => onChange(e.target.value)}
+                        onChange={(e) => {
+                  log('change', { variant, questionId, value: e.target.value });
+                  onChange(e.target.value);
+                }}
                         disabled={disabled}
                         className="h-4 w-4 border-gray-300 disabled:cursor-not-allowed disabled:opacity-50"
                         style={{ accentColor: accentBgColor }}
@@ -184,7 +198,10 @@ const Question: FC<QuestionProps> = ({
               <select
                 name={`question_${questionId}`}
                 value={value}
-                onChange={(e) => onChange(e.target.value)}
+                onChange={(e) => {
+                  log('change', { variant, questionId, value: e.target.value });
+                  onChange(e.target.value);
+                }}
                 onFocus={handleInputFocus}
                 onBlur={handleInputBlur}
                 disabled={disabled}

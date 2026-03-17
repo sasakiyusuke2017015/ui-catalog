@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react'
 
+import { useOperationLog } from '../../../infra/devtools'
 import styles from './TextArea.module.scss'
 
 interface TextAreaProps
@@ -56,6 +57,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
     ref
   ) => {
     const [isHovered, setIsHovered] = useState(false)
+    const log = useOperationLog('TextArea')
 
     const textareaClasses = [
       styles.textarea,
@@ -98,10 +100,19 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           style={textareaStyle}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          onChange={onChange}
+          onChange={(e) => {
+            log('change', { length: e.target.value.length })
+            onChange?.(e)
+          }}
           onKeyDown={onKeyDown}
-          onFocus={onFocus}
-          onBlur={onBlur}
+          onFocus={(e) => {
+            log('focus')
+            onFocus?.(e)
+          }}
+          onBlur={(e) => {
+            log('blur', { length: e.target.value.length })
+            onBlur?.(e)
+          }}
           rows={rows}
           {...props}
         />

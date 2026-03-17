@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { Button } from '../../../core/components/Button';
+import { useOperationLog } from '../../../infra/devtools';
 
 
 interface BeforeInstallPromptEvent extends Event {
@@ -12,6 +13,7 @@ interface BeforeInstallPromptEvent extends Event {
  * beforeinstallprompt イベントをハンドリングしてインストールボタンを表示
  */
 const PWAInstallPrompt: FC = () => {
+  const log = useOperationLog('PWAInstallPrompt');
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showPrompt, setShowPrompt] = useState(false);
 
@@ -36,6 +38,7 @@ const PWAInstallPrompt: FC = () => {
   }, []);
 
   const handleInstallClick = async () => {
+    log('install', {});
     if (!deferredPrompt) return;
 
     // インストールプロンプトを表示
@@ -44,7 +47,7 @@ const PWAInstallPrompt: FC = () => {
     // ユーザーの選択結果を待つ
     const { outcome } = await deferredPrompt.userChoice;
 
-    console.log(`PWA install outcome: ${outcome}`);
+    log('install-outcome', { outcome });
 
     // プロンプトをクリア
     setDeferredPrompt(null);
@@ -52,6 +55,7 @@ const PWAInstallPrompt: FC = () => {
   };
 
   const handleDismiss = () => {
+    log('dismiss', {});
     setShowPrompt(false);
   };
 

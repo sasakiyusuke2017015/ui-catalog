@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 
+import { useOperationLog } from '../../../infra/devtools';
 import Icon from '../../primitives/Icon';
 import { IconName } from '../../constants';
 
@@ -19,6 +20,8 @@ export default function MenuItem({
   onClick,
   onClose,
 }: MenuItemProps) {
+  const log = useOperationLog('MenuItem');
+
   // iconが文字列の場合はIconコンポーネントに変換
   const renderIcon = (iconProp?: ReactNode | IconName, size: number = 18) => {
     if (!iconProp) return null;
@@ -29,6 +32,7 @@ export default function MenuItem({
   };
 
   const handleClick = () => {
+    log('click', { label });
     onClick?.();
     onClose?.();
   };

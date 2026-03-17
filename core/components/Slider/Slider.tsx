@@ -1,6 +1,8 @@
 // src/components/common/atoms/Slider.tsx
 import { FC, ChangeEvent } from 'react';
 
+import { useOperationLog } from '../../../infra/devtools';
+
 interface SliderProps {
   /** 現在の値 */
   value: number;
@@ -36,8 +38,12 @@ const Slider: FC<SliderProps> = ({
   disabled = false,
   width = 'w-full',
 }) => {
+  const log = useOperationLog('Slider');
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange(Number(e.target.value));
+    const newValue = Number(e.target.value);
+    log('change', { value: newValue, label });
+    onChange(newValue);
   };
 
   return (

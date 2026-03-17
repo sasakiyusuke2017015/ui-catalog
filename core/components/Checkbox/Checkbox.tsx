@@ -1,5 +1,6 @@
-import { InputHTMLAttributes, forwardRef, useState } from 'react'
+import { InputHTMLAttributes, forwardRef, useState, ChangeEvent } from 'react'
 
+import { useOperationLog } from '../../../infra/devtools'
 import styles from './Checkbox.module.scss'
 
 interface CheckboxProps
@@ -27,6 +28,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     ref
   ) => {
     const [isHovered, setIsHovered] = useState(false)
+    const log = useOperationLog('Checkbox')
 
     const hoverShadows = {
       default: '0 0 0 3px rgba(59, 130, 246, 0.3), inset 0 0 0 2px rgba(59, 130, 246, 0.5)',
@@ -62,6 +64,11 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         ? { boxShadow: hoverShadows[variant] }
         : {}
 
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+      log('change', { checked: e.target.checked, label })
+      props.onChange?.(e)
+    }
+
     const checkboxElement = (
       <input
         ref={ref}
@@ -71,6 +78,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         style={hoverStyle}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        onChange={handleChange}
         data-component="checkbox"
         data-variant={variant}
         {...props}

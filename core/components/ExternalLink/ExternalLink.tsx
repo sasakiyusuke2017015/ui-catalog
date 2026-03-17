@@ -1,5 +1,6 @@
 import { FC, ReactNode, AnchorHTMLAttributes } from 'react';
 
+import { useOperationLog } from '../../../infra/devtools';
 import Icon from '../../primitives/Icon';
 
 type ExternalLinkVariant = 'default' | 'primary' | 'secondary';
@@ -24,6 +25,11 @@ const ExternalLink: FC<ExternalLinkProps> = ({
   variant = 'default',
   borderRadius = '0.375rem', // デフォルト値
 }) => {
+  const log = useOperationLog('ExternalLink');
+
+  const handleClick = () => {
+    log('click', { href });
+  };
 
   // 基本スタイル
   const baseClasses =
@@ -47,6 +53,7 @@ const ExternalLink: FC<ExternalLinkProps> = ({
       rel="noopener noreferrer"
       className={combinedClass}
       style={{ borderRadius }}
+      onClick={handleClick}
       data-component="external-link"
       data-variant={variant}
     >
