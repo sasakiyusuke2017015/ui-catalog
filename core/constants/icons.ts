@@ -41,6 +41,7 @@ export const ALL_ICON_TYPES = [
   'file',
   'survey',
   'check-circle',
+  'x-circle',
   'keyboard',
   'palette',
   'brush',

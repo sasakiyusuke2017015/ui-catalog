@@ -518,6 +518,23 @@ const ICON_SVG_PATHS: Record<
       />
     </g>
   ),
+  ['x-circle']: ({ fill, fillColor, strokeColor }) => (
+    <g>
+      <circle
+        cx="10"
+        cy="10"
+        r="8"
+        fill={fill !== 'none' ? fillColor : 'none'}
+        stroke={strokeColor}
+      />
+      <path
+        d="M7.293 6.293a1 1 0 011.414 0L10 7.586l1.293-1.293a1 1 0 111.414 1.414L11.414 9l1.293 1.293a1 1 0 01-1.414 1.414L10 10.414l-1.293 1.293a1 1 0 01-1.414-1.414L8.586 9 7.293 7.707a1 1 0 010-1.414z"
+        fill={strokeColor}
+        fillRule="evenodd"
+        clipRule="evenodd"
+      />
+    </g>
+  ),
   ['keyboard']: ({ strokeColor }) => (
     <g fill="none" stroke={strokeColor}>
       {/* キーボード本体 */}
@@ -1712,63 +1729,157 @@ const ICON_SVG_PATHS: Record<
       {/* 左の人（頭だけ上下に伸びる、足元は固定） */}
       <g>
         {/* 体（固定） */}
-        <path d="M1 19a4 4 0 018 0" fill={strokeColor} opacity="0.85" />
-        {/* 頭（上下に動く） */}
-        <circle cx="5" cy="11" r="2.5" fill={strokeColor} opacity="0.85">
-          <animate attributeName="cy" values="11;9.5;11.5;10;11" dur="2s" repeatCount="indefinite" />
+        <path d="M1 19a4 4 0 018 0" fill={strokeColor} opacity="0.9" />
+        {/* 頭（上下に動く - 黄金比 1.618s） */}
+        <circle cx="5" cy="11" r="2.5" fill={strokeColor} opacity="0.9">
+          <animate
+            attributeName="cy"
+            values="11;9.8;11.3;10.2;11"
+            dur="1.618s"
+            repeatCount="indefinite"
+            calcMode="spline"
+            keySplines="0.34 1.56 0.64 1; 0.4 0 0.6 1; 0.34 1.56 0.64 1; 0.4 0 0.6 1"
+          />
         </circle>
       </g>
       {/* 右の人（頭だけ上下に伸びる、足元は固定） */}
       <g>
         {/* 体（固定） */}
-        <path d="M15 19a4 4 0 018 0" fill={strokeColor} opacity="0.85" />
-        {/* 頭（上下に動く、タイミングずらす） */}
-        <circle cx="19" cy="11" r="2.5" fill={strokeColor} opacity="0.85">
-          <animate attributeName="cy" values="11;10;12;9.5;11" dur="2s" repeatCount="indefinite" begin="0.5s" />
+        <path d="M15 19a4 4 0 018 0" fill={strokeColor} opacity="0.9" />
+        {/* 頭（上下に動く、タイミングずらす - 黄金比の逆数 0.618s） */}
+        <circle cx="19" cy="11" r="2.5" fill={strokeColor} opacity="0.9">
+          <animate
+            attributeName="cy"
+            values="11;10.2;11.3;9.8;11"
+            dur="1.618s"
+            repeatCount="indefinite"
+            begin="0.618s"
+            calcMode="spline"
+            keySplines="0.34 1.56 0.64 1; 0.4 0 0.6 1; 0.34 1.56 0.64 1; 0.4 0 0.6 1"
+          />
         </circle>
       </g>
-      {/* 中央の吹き出し（滑らかにグネグネ） */}
+      {/* 中央の吹き出し（滑らかにグネグネ - 黄金比タイミング） */}
       <g>
         {/* 吹き出しの上部ふくらみ1（左） */}
-        <circle cx="10" cy="3" r="0.8" fill={fillColor !== 'none' ? fillColor : strokeColor} opacity="0.85">
-          <animate attributeName="cy" values="3;2.3;3.2;2.6;3.4;2.8;3" dur="3s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1" />
-          <animate attributeName="cx" values="10;9.7;10.2;9.8;10.1;9.9;10" dur="3.5s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1" />
-          <animate attributeName="r" values="0.8;0.9;0.75;0.85;0.8" dur="2s" repeatCount="indefinite" />
+        <circle cx="10" cy="3" r="0.8" fill={fillColor !== 'none' ? fillColor : strokeColor} opacity="0.9">
+          <animate
+            attributeName="cy"
+            values="3;2.5;3.2;2.7;3"
+            dur="2.618s"
+            repeatCount="indefinite"
+            calcMode="spline"
+            keySplines="0.34 1.56 0.64 1; 0.4 0 0.6 1; 0.34 1.56 0.64 1; 0.4 0 0.6 1"
+          />
+          <animate
+            attributeName="r"
+            values="0.8;0.9;0.75;0.85;0.8"
+            dur="1.618s"
+            repeatCount="indefinite"
+          />
         </circle>
         {/* 吹き出しの上部ふくらみ2（中央） */}
-        <circle cx="12" cy="2.5" r="1" fill={fillColor !== 'none' ? fillColor : strokeColor} opacity="0.9">
-          <animate attributeName="cy" values="2.5;1.8;2.8;2.2;3;2.4;2.5" dur="2.8s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1" begin="0.2s" />
-          <animate attributeName="cx" values="12;11.8;12.3;11.9;12.2;12" dur="3.2s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1" begin="0.1s" />
-          <animate attributeName="r" values="1;1.15;0.9;1.05;1" dur="2.2s" repeatCount="indefinite" begin="0.3s" />
+        <circle cx="12" cy="2.5" r="1" fill={fillColor !== 'none' ? fillColor : strokeColor} opacity="0.95">
+          <animate
+            attributeName="cy"
+            values="2.5;2;2.8;2.3;2.5"
+            dur="2.618s"
+            repeatCount="indefinite"
+            calcMode="spline"
+            keySplines="0.34 1.56 0.64 1; 0.4 0 0.6 1; 0.34 1.56 0.64 1; 0.4 0 0.6 1"
+            begin="0.382s"
+          />
+          <animate
+            attributeName="r"
+            values="1;1.1;0.95;1.05;1"
+            dur="1.618s"
+            repeatCount="indefinite"
+            begin="0.382s"
+          />
         </circle>
         {/* 吹き出しの上部ふくらみ3（右） */}
-        <circle cx="14" cy="3" r="0.8" fill={fillColor !== 'none' ? fillColor : strokeColor} opacity="0.85">
-          <animate attributeName="cy" values="3;2.4;3.3;2.7;3.1;2.5;3" dur="3.2s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1" begin="0.4s" />
-          <animate attributeName="cx" values="14;14.3;13.8;14.2;13.9;14.1;14" dur="3s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1" begin="0.3s" />
-          <animate attributeName="r" values="0.8;0.7;0.9;0.8;0.85;0.8" dur="2.4s" repeatCount="indefinite" begin="0.5s" />
+        <circle cx="14" cy="3" r="0.8" fill={fillColor !== 'none' ? fillColor : strokeColor} opacity="0.9">
+          <animate
+            attributeName="cy"
+            values="3;2.6;3.1;2.8;3"
+            dur="2.618s"
+            repeatCount="indefinite"
+            calcMode="spline"
+            keySplines="0.34 1.56 0.64 1; 0.4 0 0.6 1; 0.34 1.56 0.64 1; 0.4 0 0.6 1"
+            begin="0.618s"
+          />
+          <animate
+            attributeName="r"
+            values="0.8;0.7;0.9;0.8;0.8"
+            dur="1.618s"
+            repeatCount="indefinite"
+            begin="0.618s"
+          />
         </circle>
         {/* 吹き出しの下部ベース（横長） */}
-        <ellipse cx="12" cy="4" rx="3.5" ry="0.8" fill={fillColor !== 'none' ? fillColor : strokeColor} opacity="0.8">
-          <animate attributeName="cy" values="4;3.6;4.3;3.8;4.1;3.7;4" dur="2.6s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1" begin="0.15s" />
-          <animate attributeName="rx" values="3.5;3.3;3.7;3.4;3.6;3.5" dur="3s" repeatCount="indefinite" calcMode="spline" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1" />
-          <animate attributeName="ry" values="0.8;0.9;0.7;0.85;0.75;0.8" dur="2.8s" repeatCount="indefinite" begin="0.2s" />
+        <ellipse cx="12" cy="4" rx="3.5" ry="0.8" fill={fillColor !== 'none' ? fillColor : strokeColor} opacity="0.85">
+          <animate
+            attributeName="cy"
+            values="4;3.7;4.2;3.9;4"
+            dur="2.618s"
+            repeatCount="indefinite"
+            calcMode="spline"
+            keySplines="0.34 1.56 0.64 1; 0.4 0 0.6 1; 0.34 1.56 0.64 1; 0.4 0 0.6 1"
+            begin="0.236s"
+          />
+          <animate
+            attributeName="rx"
+            values="3.5;3.3;3.7;3.5"
+            dur="2.618s"
+            repeatCount="indefinite"
+            calcMode="spline"
+            keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1"
+          />
         </ellipse>
       </g>
-      {/* 左から雲へ飛ぶボール（弧を描く） */}
+      {/* 左から雲へ飛ぶボール（弧を描く - 黄金比 1.618s） */}
       <circle r="0.6" fill={fillColor !== 'none' ? fillColor : strokeColor} visibility="hidden">
-        <animateMotion dur="1.5s" repeatCount="indefinite" begin="0s">
+        <animateMotion dur="1.618s" repeatCount="indefinite" begin="0s">
           <mpath xlinkHref="#arcPathLeft" />
         </animateMotion>
-        <animate attributeName="visibility" values="hidden;visible;visible;hidden" dur="1.5s" repeatCount="indefinite" begin="0s" />
-        <animate attributeName="opacity" values="0;0.8;0.8;0" dur="1.5s" repeatCount="indefinite" begin="0s" />
+        <animate
+          attributeName="visibility"
+          values="hidden;visible;visible;hidden"
+          dur="1.618s"
+          repeatCount="indefinite"
+          begin="0s"
+        />
+        <animate
+          attributeName="opacity"
+          values="0;0.9;0.9;0"
+          dur="1.618s"
+          repeatCount="indefinite"
+          begin="0s"
+          calcMode="spline"
+          keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1"
+        />
       </circle>
-      {/* 右から雲へ飛ぶボール（弧を描く） */}
+      {/* 右から雲へ飛ぶボール（弧を描く - 黄金比の半分 0.809s ずらし） */}
       <circle r="0.6" fill={fillColor !== 'none' ? fillColor : strokeColor} visibility="hidden">
-        <animateMotion dur="1.5s" repeatCount="indefinite" begin="0.75s">
+        <animateMotion dur="1.618s" repeatCount="indefinite" begin="0.809s">
           <mpath xlinkHref="#arcPathRight" />
         </animateMotion>
-        <animate attributeName="visibility" values="hidden;visible;visible;hidden" dur="1.5s" repeatCount="indefinite" begin="0.75s" />
-        <animate attributeName="opacity" values="0;0.8;0.8;0" dur="1.5s" repeatCount="indefinite" begin="0.75s" />
+        <animate
+          attributeName="visibility"
+          values="hidden;visible;visible;hidden"
+          dur="1.618s"
+          repeatCount="indefinite"
+          begin="0.809s"
+        />
+        <animate
+          attributeName="opacity"
+          values="0;0.9;0.9;0"
+          dur="1.618s"
+          repeatCount="indefinite"
+          begin="0.809s"
+          calcMode="spline"
+          keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1"
+        />
       </circle>
       {/* 弧のパス定義（非表示） - 頭の上から雲へ弧を描く */}
       <defs>
@@ -1932,8 +2043,8 @@ const ICON_ANIMATION_CONFIG: Record<
     transition: { repeat: Infinity, duration: 3, ease: 'easeInOut' },
   },
   'loading-interview': {
-    animation: { opacity: [0.9, 1, 0.9] },
-    transition: { repeat: Infinity, duration: 2, ease: 'easeInOut' },
+    animation: { opacity: [0.92, 1, 0.92] },
+    transition: { repeat: Infinity, duration: 1.618, ease: 'easeInOut' },
   },
   unlock: {
     animation: { rotate: [-15, 15, -12, 12, -8, 8, -5, 5, -2, 2, 0] },

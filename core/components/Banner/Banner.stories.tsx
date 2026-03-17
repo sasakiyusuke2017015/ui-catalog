@@ -18,8 +18,9 @@ Bannerコンポーネント。以下の機能をサポート:
 
 - **4種類のバリアント**: info, warning, success, error
 - **タイトル**: オプショナルなタイトル表示
-- **メッセージ**: 必須のメッセージテキスト
-- **カスタマイズ可能**: classNameでスタイル拡張
+- **メッセージ**: 必須のメッセージテキスト（ReactNode も可）
+- **アイコン**: 各バリアントに対応したデフォルトアイコン
+- **カスタマイズ可能**: classNameでスタイル拡張、アイコン非表示、カスタムアイコン
 
 ページ上部やセクション内での通知表示に使用します。
         `,
@@ -43,6 +44,14 @@ Bannerコンポーネント。以下の機能をサポート:
     className: {
       control: { type: 'text' },
       description: '追加のクラス名',
+    },
+    showIcon: {
+      control: { type: 'boolean' },
+      description: 'アイコンを表示するか',
+    },
+    icon: {
+      control: { type: 'text' },
+      description: 'カスタムアイコン名',
     },
   },
 };
@@ -121,6 +130,39 @@ export const WithoutTitle = {
     docs: {
       description: {
         story: 'タイトルを省略したシンプルな表示。',
+      },
+    },
+  },
+};
+
+// アイコンなし
+export const WithoutIcon = {
+  args: {
+    variant: 'info',
+    message: 'アイコンなしのシンプルなバナーです。',
+    showIcon: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'showIcon={false} でアイコンを非表示にできます。',
+      },
+    },
+  },
+};
+
+// カスタムアイコン
+export const CustomIcon = {
+  args: {
+    variant: 'info',
+    title: 'カスタムアイコン',
+    message: 'デフォルト以外のアイコンを指定できます。',
+    icon: 'bell',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'icon プロパティでカスタムアイコンを指定できます。',
       },
     },
   },

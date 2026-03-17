@@ -71,7 +71,7 @@ describe('Banner', () => {
     const { container } = render(
       <Banner variant="info" message="テスト" />
     );
-    const banner = container.querySelector('[data-component="banner"]');
+    const banner = container.querySelector('[data-component="Banner"]');
     expect(banner).toBeInTheDocument();
   });
 
@@ -79,7 +79,33 @@ describe('Banner', () => {
     const { container } = render(
       <Banner variant="warning" message="テスト" />
     );
-    const banner = container.querySelector('[data-component="banner"]');
+    const banner = container.querySelector('[data-component="Banner"]');
     expect(banner).toHaveAttribute('data-variant', 'warning');
+  });
+
+  it('デフォルトでアイコンが表示される', () => {
+    const { container } = render(
+      <Banner variant="error" message="エラー" />
+    );
+    const svg = container.querySelector('svg');
+    expect(svg).toBeInTheDocument();
+  });
+
+  it('showIcon={false}でアイコンが非表示になる', () => {
+    const { container } = render(
+      <Banner variant="error" message="エラー" showIcon={false} />
+    );
+    const svg = container.querySelector('svg');
+    expect(svg).not.toBeInTheDocument();
+  });
+
+  it('ReactNodeをメッセージとして渡せる', () => {
+    render(
+      <Banner
+        variant="info"
+        message={<span data-testid="custom-message">カスタムメッセージ</span>}
+      />
+    );
+    expect(screen.getByTestId('custom-message')).toBeInTheDocument();
   });
 });
