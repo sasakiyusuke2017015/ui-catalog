@@ -1,7 +1,8 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 
 import { ShimmerButton } from '../../magicui/shimmer-button';
 import Icon from '../../primitives/Icon';
+import { debugRender, debugAction, debugStateChange } from '../../utils/debug';
 
 
 export type LoginButtonVariant =
@@ -82,6 +83,22 @@ const LoginButton = ({
   loadingText = 'Loading...',
   successState = false,
 }: LoginButtonProps) => {
+  // 前回の状態を保持（状態変化検出用）
+  const prevStateRef = useRef(state);
+
+  // マウント時のログ
+  useEffect(() => {
+    debugRender('LoginButton', { state, variant, size, disabled, loading });
+  }, []);
+
+  // 状態変化のログ
+  useEffect(() => {
+    if (prevStateRef.current !== state) {
+      debugStateChange('LoginButton', 'state', prevStateRef.current, state);
+      prevStateRef.current = state;
+    }
+  }, [state]);
+
   // 状態別設定を取得
   const getStateSettings = () => {
     switch (state) {
@@ -300,11 +317,17 @@ const LoginButton = ({
   const shimmerSettings = getShimmerSettings();
   const animationClass = getAnimationClass();
 
+  // クリックハンドラー（ログ付き）
+  const handleClick = () => {
+    debugAction('LoginButton', 'click', { state, disabled: finalDisabled });
+    onClick?.();
+  };
+
   return (
     <ShimmerButton
       type={type}
       disabled={finalDisabled}
-      onClick={onClick}
+      onClick={handleClick}
       background={getBackgroundColor()}
       shimmerColor={shimmerSettings.shimmerColor}
       shimmerSize={shimmerSettings.shimmerSize}

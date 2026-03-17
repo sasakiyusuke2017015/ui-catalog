@@ -76,3 +76,78 @@ export const debugWithTime = <T>(
   }
   return data;
 };
+
+// ─────────────────────────────────────────────────────────
+// コンポーネント操作ログ
+// ─────────────────────────────────────────────────────────
+
+/**
+ * コンポーネントのマウント/レンダリングをログ出力
+ * @example debugRender('LoginButton', { state: 'ready', variant: 'success' })
+ */
+export const debugRender = (componentName: string, props?: Record<string, unknown>) => {
+  if (import.meta.env.DEV) {
+    const time = new Date().toLocaleTimeString('ja-JP');
+    if (props) {
+      console.log(`🎨 [${componentName}] rendered (${time})`, props);
+    } else {
+      console.log(`🎨 [${componentName}] rendered (${time})`);
+    }
+  }
+};
+
+// アクション別の絵文字マッピング
+const ACTION_EMOJIS: Record<string, string> = {
+  click: '🖱️',
+  change: '✏️',
+  focus: '🎯',
+  blur: '💨',
+  submit: '📤',
+  open: '📂',
+  close: '📁',
+  select: '☑️',
+  toggle: '🔀',
+  expand: '⬇️',
+  collapse: '⬆️',
+  hover: '👆',
+  mount: '🔌',
+  unmount: '🔓',
+  error: '❌',
+  success: '✅',
+};
+
+/**
+ * ユーザーインタラクションをログ出力
+ * @example debugAction('LoginButton', 'click', { state: 'ready' })
+ */
+export const debugAction = (
+  componentName: string,
+  action: string,
+  details?: Record<string, unknown>
+) => {
+  if (import.meta.env.DEV) {
+    const time = new Date().toLocaleTimeString('ja-JP');
+    const emoji = ACTION_EMOJIS[action] ?? '🔹';
+    if (details) {
+      console.log(`${emoji} [${componentName}] ${action} (${time})`, details);
+    } else {
+      console.log(`${emoji} [${componentName}] ${action} (${time})`);
+    }
+  }
+};
+
+/**
+ * 状態変化をログ出力
+ * @example debugStateChange('LoginButton', 'state', 'ready', 'authenticating')
+ */
+export const debugStateChange = (
+  componentName: string,
+  stateName: string,
+  from: unknown,
+  to: unknown
+) => {
+  if (import.meta.env.DEV) {
+    const time = new Date().toLocaleTimeString('ja-JP');
+    console.log(`🔄 [${componentName}] ${stateName}: ${String(from)} → ${String(to)} (${time})`);
+  }
+};

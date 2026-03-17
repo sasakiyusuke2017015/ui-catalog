@@ -1,8 +1,9 @@
 // src/components/common/atoms/Banner.tsx
-import { type ReactNode } from 'react';
+import { type ReactNode, useEffect } from 'react';
 import { cn } from '../../utils/cn';
 import Icon from '../../primitives/Icon';
 import type { IconName } from '../../constants';
+import { debugRender } from '../../utils/debug';
 
 export type BannerVariant = 'info' | 'warning' | 'success' | 'error';
 
@@ -85,6 +86,11 @@ export default function Banner({
   icon,
   className,
 }: BannerProps) {
+  // マウント時のログ
+  useEffect(() => {
+    debugRender('Banner', { variant, title, showIcon });
+  }, []);
+
   const styles = variantStyles[variant];
   const iconName = icon ?? styles.defaultIcon;
 

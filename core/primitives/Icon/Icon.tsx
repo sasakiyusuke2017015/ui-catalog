@@ -1738,7 +1738,7 @@ const ICON_SVG_PATHS: Record<
             dur="1.618s"
             repeatCount="indefinite"
             calcMode="spline"
-            keySplines="0.34 1.56 0.64 1; 0.4 0 0.6 1; 0.34 1.56 0.64 1; 0.4 0 0.6 1"
+            keySplines="0.34 0.96 0.64 1; 0.4 0 0.6 1; 0.34 0.96 0.64 1; 0.4 0 0.6 1"
           />
         </circle>
       </g>
@@ -1755,7 +1755,7 @@ const ICON_SVG_PATHS: Record<
             repeatCount="indefinite"
             begin="0.618s"
             calcMode="spline"
-            keySplines="0.34 1.56 0.64 1; 0.4 0 0.6 1; 0.34 1.56 0.64 1; 0.4 0 0.6 1"
+            keySplines="0.34 0.96 0.64 1; 0.4 0 0.6 1; 0.34 0.96 0.64 1; 0.4 0 0.6 1"
           />
         </circle>
       </g>
@@ -1769,7 +1769,7 @@ const ICON_SVG_PATHS: Record<
             dur="2.618s"
             repeatCount="indefinite"
             calcMode="spline"
-            keySplines="0.34 1.56 0.64 1; 0.4 0 0.6 1; 0.34 1.56 0.64 1; 0.4 0 0.6 1"
+            keySplines="0.34 0.96 0.64 1; 0.4 0 0.6 1; 0.34 0.96 0.64 1; 0.4 0 0.6 1"
           />
           <animate
             attributeName="r"
@@ -1786,7 +1786,7 @@ const ICON_SVG_PATHS: Record<
             dur="2.618s"
             repeatCount="indefinite"
             calcMode="spline"
-            keySplines="0.34 1.56 0.64 1; 0.4 0 0.6 1; 0.34 1.56 0.64 1; 0.4 0 0.6 1"
+            keySplines="0.34 0.96 0.64 1; 0.4 0 0.6 1; 0.34 0.96 0.64 1; 0.4 0 0.6 1"
             begin="0.382s"
           />
           <animate
@@ -1805,7 +1805,7 @@ const ICON_SVG_PATHS: Record<
             dur="2.618s"
             repeatCount="indefinite"
             calcMode="spline"
-            keySplines="0.34 1.56 0.64 1; 0.4 0 0.6 1; 0.34 1.56 0.64 1; 0.4 0 0.6 1"
+            keySplines="0.34 0.96 0.64 1; 0.4 0 0.6 1; 0.34 0.96 0.64 1; 0.4 0 0.6 1"
             begin="0.618s"
           />
           <animate
@@ -1824,7 +1824,7 @@ const ICON_SVG_PATHS: Record<
             dur="2.618s"
             repeatCount="indefinite"
             calcMode="spline"
-            keySplines="0.34 1.56 0.64 1; 0.4 0 0.6 1; 0.34 1.56 0.64 1; 0.4 0 0.6 1"
+            keySplines="0.34 0.96 0.64 1; 0.4 0 0.6 1; 0.34 0.96 0.64 1; 0.4 0 0.6 1"
             begin="0.236s"
           />
           <animate
