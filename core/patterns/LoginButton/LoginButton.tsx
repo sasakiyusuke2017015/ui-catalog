@@ -113,13 +113,25 @@ const LoginButton = ({
   };
 
 
+  // サイズ別アイコンサイズを取得
+  const getIconSize = () => {
+    switch (size) {
+      case 'sm':
+        return 'h-4 w-4'; // 16px
+      case 'lg':
+        return 'h-7 w-7'; // 28px
+      default: // md
+        return 'h-6 w-6'; // 24px
+    }
+  };
+
   // 状態別レンダリング関数
   const renderReadyState = () => {
     return (
       <div className="relative flex items-center justify-center px-12">
         {/* 左アイコン - 固定位置 */}
         <div className="absolute left-4 top-1/2 z-10 -translate-y-1/2 transform">
-          <Icon name={'lock'} className="h-5 w-5" />
+          <Icon name={'lock'} className={getIconSize()} />
         </div>
 
         {/* 中央テキスト */}
@@ -133,7 +145,7 @@ const LoginButton = ({
       <div className="relative flex items-center justify-center px-12">
         {/* 左アイコン - 固定位置 */}
         <div className="absolute left-4 top-1/2 z-10 -translate-y-1/2 transform">
-          <Icon name={'lock'} className="h-5 w-5" />
+          <Icon name={'lock'} className={getIconSize()} />
         </div>
 
         {/* 中央テキスト */}
@@ -141,7 +153,7 @@ const LoginButton = ({
 
         {/* 右アイコン - 固定位置 */}
         <div className="absolute right-4 top-1/2 z-10 -translate-y-1/2 transform">
-          <Icon preset="interview" className="h-5 w-5" />
+          <Icon preset="interview" className={getIconSize()} />
         </div>
       </div>
     );
@@ -154,7 +166,7 @@ const LoginButton = ({
         <div className="absolute left-4 top-1/2 z-10 -translate-y-1/2 transform">
           <Icon
             name={'unlock'}
-            className="h-5 w-5"
+            className={getIconSize()}
             animationTrigger="condition"
             condition={true}
             ease="easeOut"
@@ -193,15 +205,15 @@ const LoginButton = ({
   // 状態に応じたvariantを決定(状態のvariantが優先、次にpropsのvariant)
   const finalVariant = stateSettings.variant || variant;
 
-  // サイズに応じたスタイル
+  // サイズに応じたスタイル（8pxグリッドシステム）
   const getSizeStyles = () => {
     switch (size) {
       case 'sm':
-        return 'px-6 py-3 text-sm font-semibold';
+        return 'px-6 py-3 text-sm font-semibold'; // 変更なし
       case 'lg':
-        return 'px-10 py-5 text-lg font-bold';
+        return 'px-10 py-5 text-xl font-bold'; // text-lg → text-xl (20px)
       default: // md
-        return 'px-8 py-4 text-base font-bold';
+        return 'px-8 py-4 text-lg font-bold'; // text-base → text-lg (18px)
     }
   };
 
