@@ -1,5 +1,5 @@
 /**
- * @ui-catalog/core/core/utils
+ * @ui-catalog/core/utils
  */
 
 // Core Utils

@@ -64,9 +64,9 @@ const meta: Meta<typeof Badge> = {
       options: ['default', 'metric', 'score', 'status'],
     },
     styleVariant: {
-      description: 'スタイルバリアント（solid, gradient, compact）',
+      description: 'スタイルバリアント（solid, gradient, compact, outline）',
       control: { type: 'select' },
-      options: ['solid', 'gradient', 'compact'],
+      options: ['solid', 'gradient', 'compact', 'outline'],
     },
     variant: {
       description: 'セマンティックバリアント（色を自動設定）',
@@ -214,6 +214,24 @@ export const Colors: Story = {
           )}
         </div>
       </div>
+    </div>
+  ),
+};
+
+// Outlineバリエーション
+export const Outline: Story = {
+  render: () => (
+    <div className="flex flex-wrap gap-2">
+      {(['blue', 'green', 'red', 'yellow', 'orange', 'gray'] as const).map(
+        (color) => (
+          <Badge
+            key={color}
+            value={color}
+            color={color}
+            styleVariant="outline"
+          />
+        )
+      )}
     </div>
   ),
 };

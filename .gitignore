@@ -26,8 +26,5 @@ Thumbs.db
 *.swo
 *~
 
-# IDE
-.vscode/
-
 # Claude Code
 .claude/

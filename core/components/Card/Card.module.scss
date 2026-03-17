@@ -11,6 +11,9 @@
   background-color: $color-white;
   box-shadow: $shadow-default;
   border-radius: $border-radius-lg;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 // -----------------------------------------------------------------------------
@@ -41,4 +44,21 @@
     outline: none;
     box-shadow: $shadow-md, 0 0 0 3px rgba($color-primary-500, 0.3);
   }
+}
+
+// -----------------------------------------------------------------------------
+// Sub-components
+// -----------------------------------------------------------------------------
+.cardHeader {
+  padding: $spacing-3 $spacing-4;
+}
+
+.cardContent {
+  padding: $spacing-3 $spacing-4;
+  flex: 1;
+}
+
+.cardFooter {
+  padding: $spacing-3 $spacing-4;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
 }

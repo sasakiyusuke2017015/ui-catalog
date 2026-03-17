@@ -1,5 +1,5 @@
 /**
- * @ui-catalog/core/core/hooks
+ * @ui-catalog/core/hooks
  *
  * UIフック（純粋UI層）
  * ※ devtools は infra 層のため、@ui-catalog/core/infra/devtools から直接インポートすること

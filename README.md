@@ -80,11 +80,11 @@ ui-catalog/
 import { Button, Input, Modal, useDisclosure, cn } from '@ui-catalog/core'
 
 // 明示的なパス指定
-import { Button } from '@ui-catalog/core/core/components'
-import { Modal, Dialog } from '@ui-catalog/core/core/patterns'
-import { Header, AppShell } from '@ui-catalog/core/core/layouts'
-import { useDisclosure } from '@ui-catalog/core/core/hooks/ui'
-import { cn } from '@ui-catalog/core/core/utils'
+import { Button } from '@ui-catalog/core/components'
+import { Modal, Dialog } from '@ui-catalog/core/patterns'
+import { Header, AppShell } from '@ui-catalog/core/layouts'
+import { useDisclosure } from '@ui-catalog/core/hooks'
+import { cn } from '@ui-catalog/core/utils'
 
 // 拡張コンポーネント
 import { SurveyCard, Question } from '@ui-catalog/core/extensions/1on1'
@@ -223,6 +223,65 @@ npm pkg set dependencies.@ui-catalog/core="workspace:*"
 pnpm install
 ```
 
+### Step 6: Claude Code コマンド登録
+
+ui-catalog の育成コマンド（`/ui-catalog`）をプロジェクトで使えるようにする。
+`.claude/` は ui-catalog の `.gitignore` で除外されているため、手動コピーが必要。
+
+```bash
+# プロジェクトルートの .claude/commands/ にコピー
+mkdir -p .claude/commands
+cp packages/ui-catalog/.claude/commands/ui-catalog.md .claude/commands/
+```
+
+更新時も同様に `cp` で上書きする（ui-catalog 側の変更は `ds` で配布されるが、
+プロジェクト側の `.claude/commands/` には自動反映されない）。
+
+### Step 7: VSCode で packages/ui-catalog の Git を認識させる
+
+VSCode はデフォルトでサブディレクトリの `.git` を検出しないため、
+明示的に設定する。
+
+```bash
+mkdir -p .vscode
+```
+
+`.vscode/settings.json` に以下を追加:
+
+```json
+{
+  "git.repositoryScanMaxDepth": 3
+}
+```
+
+または、`packages/ui-catalog` を直接指定する場合:
+
+```json
+{
+  "git.scanRepositories": ["packages/ui-catalog"]
+}
+```
+
+これにより VSCode のソース管理パネルで ui-catalog のブランチ切り替え・
+コミット・push が可能になる。
+
+### Step 8: バージョン管理ファイルの配置
+
+```bash
+# VERSION_REGISTRY から ui-catalog.versions.json を生成
+cd packages/ui-catalog
+pnpm sync:versions
+```
+
+アプリ側の `main.tsx` で初期化:
+
+```tsx
+import { initUICatalog } from '@ui-catalog/core'
+import versions from '../../packages/ui-catalog/ui-catalog.versions.json'
+
+initUICatalog(versions)
+```
+
 ---
 
 ## 各層の責務
@@ -241,5 +300,5 @@ pnpm install
 
 ## 詳細ドキュメント
 
-- [ARCHITECTURE.md](./ARCHITECTURE.md) - 詳細なアーキテクチャ説明
-- [DEVELOPMENT.md](./DEVELOPMENT.md) - 開発ガイド
+- [ARCHITECTURE.md](./docs/ARCHITECTURE.md) - 詳細なアーキテクチャ説明
+- [DEVELOPMENT.md](./docs/DEVELOPMENT.md) - 開発ガイド

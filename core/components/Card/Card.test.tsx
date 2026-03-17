@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Card } from './Card';
+import { Card, CardHeader, CardContent, CardFooter } from './Card';
 
 describe('Card', () => {
   it('子要素が表示される', () => {
@@ -38,5 +38,41 @@ describe('Card', () => {
     const { container } = render(<Card className="custom-class">内容</Card>);
     const card = container.querySelector('[data-component="card"]');
     expect(card).toHaveClass('custom-class');
+  });
+});
+
+describe('CardHeader', () => {
+  it('data-component属性が設定される', () => {
+    const { container } = render(<CardHeader>ヘッダー</CardHeader>);
+    expect(container.querySelector('[data-component="card-header"]')).toBeInTheDocument();
+  });
+
+  it('子要素が表示される', () => {
+    render(<CardHeader>ヘッダー内容</CardHeader>);
+    expect(screen.getByText('ヘッダー内容')).toBeInTheDocument();
+  });
+});
+
+describe('CardContent', () => {
+  it('data-component属性が設定される', () => {
+    const { container } = render(<CardContent>コンテンツ</CardContent>);
+    expect(container.querySelector('[data-component="card-content"]')).toBeInTheDocument();
+  });
+
+  it('子要素が表示される', () => {
+    render(<CardContent>コンテンツ内容</CardContent>);
+    expect(screen.getByText('コンテンツ内容')).toBeInTheDocument();
+  });
+});
+
+describe('CardFooter', () => {
+  it('data-component属性が設定される', () => {
+    const { container } = render(<CardFooter>フッター</CardFooter>);
+    expect(container.querySelector('[data-component="card-footer"]')).toBeInTheDocument();
+  });
+
+  it('子要素が表示される', () => {
+    render(<CardFooter>フッター内容</CardFooter>);
+    expect(screen.getByText('フッター内容')).toBeInTheDocument();
   });
 });
