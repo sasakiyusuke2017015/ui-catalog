@@ -1,0 +1,54 @@
+@use '../../tokens' as *;
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+
+  &__list {
+    display: flex;
+    align-items: center;
+    gap: $spacing-2;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+  }
+
+  &__link {
+    font-size: $font-size-sm;
+
+    &:hover {
+      text-decoration: underline;
+      opacity: 0.8;
+    }
+  }
+
+  &__separator {
+    margin: 0 $spacing-2;
+    font-size: $font-size-sm;
+  }
+
+  &__current {
+    font-weight: $font-weight-semibold;
+
+    &--sm {
+      font-size: $font-size-sm;
+    }
+
+    &--md {
+      font-size: $font-size-base;
+    }
+
+    &--lg {
+      font-size: $font-size-lg;
+    }
+
+    &--xl {
+      font-size: $font-size-xl;
+    }
+  }
+}

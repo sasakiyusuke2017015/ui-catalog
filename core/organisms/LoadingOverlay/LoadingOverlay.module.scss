@@ -1,0 +1,53 @@
+@use '../../tokens' as *;
+
+.loadingOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.3);
+
+  &__card {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: $border-radius-lg;
+    padding: $spacing-8;
+    box-shadow: $shadow-xl;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__icon {
+    margin-bottom: $spacing-4;
+  }
+
+  &__spinner {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    border-bottom-width: 4px;
+    border-bottom-style: solid;
+    margin-bottom: $spacing-4;
+    animation: spin 1s linear infinite;
+  }
+
+  &__message {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-medium;
+    color: $color-gray-700;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

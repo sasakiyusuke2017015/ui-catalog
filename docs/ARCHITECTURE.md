@@ -267,10 +267,28 @@ core/primitives → core/components → core/patterns → core/layouts
 
 アプリからコンポーネントを ui-catalog に取り込む。
 
+**重要: absorb 時のビジネスロジック分離**
+
+アプリ固有の定数・型・ロジックは **props で注入** する設計にする。
+
 ```
-apps/web/src/components/SurveyCard.tsx
-    ↓ absorb
-extensions/1on1/SurveyCard/
+【悪い例】ui-catalog 内でアプリ固有の定数を参照
+import { CONSTANTS } from '@/constants/schemas'  // ❌ アプリ依存
+
+【良い例】props で注入
+interface MemberCardProps {
+  statuses: StatusItem[]  // ✅ 定義は apps 側で変換して渡す
+  definitions: Record<string, StatusDefinition>  // ✅ 定義も props で注入
+}
+```
+
+```
+apps/web/src/components/AnswerCard.tsx
+    ↓ absorb（UI のみ抽出）
+extensions/1on1/MemberCard/  ← 汎用化した Props で受け取る
+
+apps/web/src/components/AnswerCard.tsx  ← データ変換ロジックはここに残す
+    → MemberCard を使用し、CONSTANTS → MemberCardData に変換
 ```
 
 ### 2. refine（洗練）
@@ -278,8 +296,8 @@ extensions/1on1/SurveyCard/
 ビジネスロジックを除去し、汎用化する。
 
 ```
-extensions/1on1/SurveyCard/
-    ↓ refine（ビジネスロジック除去）
+extensions/1on1/MemberCard/
+    ↓ refine（さらに汎用化）
     ↓ 「DataCard」として昇格
 core/components/DataCard/
 ```

@@ -1,0 +1,36 @@
+@use '../../tokens' as *;
+
+.actionBreadcrumb {
+  display: flex;
+  align-items: center;
+  gap: $spacing-1;
+  font-size: $font-size-sm;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: $spacing-1;
+  }
+
+  &__separator {
+    color: var(--color-text-muted, $color-gray-400);
+  }
+
+  &__button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: var(--color-text-muted, $color-gray-500);
+    cursor: pointer;
+    transition: color $transition-duration-150 $transition-ease-in-out;
+
+    &:hover {
+      color: var(--color-accent, $color-primary-500);
+    }
+  }
+
+  &__current {
+    color: var(--color-text, $color-gray-900);
+    font-weight: $font-weight-medium;
+  }
+}

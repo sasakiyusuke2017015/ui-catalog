@@ -1,0 +1,68 @@
+// =============================================================================
+// Tooltip Component Styles
+// =============================================================================
+
+@use '../../tokens' as *;
+
+// -----------------------------------------------------------------------------
+// Wrapper
+// -----------------------------------------------------------------------------
+.wrapper {
+  position: relative;
+  display: inline-flex;
+
+  &:hover .tooltip {
+    opacity: 1;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Tooltip bubble
+// -----------------------------------------------------------------------------
+.tooltip {
+  position: absolute;
+  z-index: 50;
+  padding: $spacing-1 $spacing-2;
+  font-size: 11px;
+  font-weight: $font-weight-medium;
+  white-space: nowrap;
+  border-radius: $border-radius-default;
+  background-color: $color-gray-800;
+  color: $color-white;
+  opacity: 0;
+  pointer-events: none;
+  transition-property: opacity;
+  transition-duration: $transition-duration-100;
+  transition-timing-function: $transition-ease-in-out;
+}
+
+// -----------------------------------------------------------------------------
+// Positions
+// -----------------------------------------------------------------------------
+.top {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: $spacing-1;
+}
+
+.bottom {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: $spacing-1;
+}
+
+.left {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: $spacing-1;
+}
+
+.right {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: $spacing-1;
+}

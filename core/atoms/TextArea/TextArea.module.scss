@@ -1,0 +1,132 @@
+// =============================================================================
+// TextArea Component Styles
+// =============================================================================
+
+@use '../../tokens' as *;
+@use '../../styles/mixins' as *;
+
+// -----------------------------------------------------------------------------
+// Wrapper
+// -----------------------------------------------------------------------------
+.wrapper {
+  width: 100%;
+}
+
+// -----------------------------------------------------------------------------
+// Base TextArea
+// -----------------------------------------------------------------------------
+.textarea {
+  @include input-base;
+  box-shadow: $shadow-sm;
+  resize: vertical;
+
+  &:hover:not(:disabled) {
+    box-shadow: $shadow-md;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Sizes
+// -----------------------------------------------------------------------------
+.small {
+  padding: $spacing-1 $spacing-2;
+  font-size: $font-size-sm;
+}
+
+.medium {
+  padding: $spacing-2 $spacing-3;
+  font-size: $font-size-base;
+}
+
+.large {
+  padding: $spacing-3 $spacing-4;
+  font-size: $font-size-lg;
+}
+
+// -----------------------------------------------------------------------------
+// Variants
+// -----------------------------------------------------------------------------
+.default {
+  background-color: $color-white;
+  border-color: $color-border-primary;
+  color: $color-text-primary;
+
+  &::placeholder {
+    color: $color-text-muted;
+  }
+
+  &:focus {
+    border-color: #3b82f6;
+    box-shadow: $shadow-sm, 0 0 0 3px rgba(59, 130, 246, 0.2);
+  }
+}
+
+.dark {
+  background-color: $color-gray-800;
+  border-color: $color-gray-600;
+  color: $color-white;
+
+  &::placeholder {
+    color: $color-gray-400;
+  }
+
+  &:focus {
+    border-color: #3b82f6;
+    box-shadow: $shadow-sm, 0 0 0 3px rgba(59, 130, 246, 0.2);
+  }
+}
+
+.outlined {
+  background-color: transparent;
+  border: $border-width-2 solid $color-border-primary;
+  color: $color-gray-700;
+
+  &:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Error state
+// -----------------------------------------------------------------------------
+.error {
+  border: $border-width-2 solid $color-danger-500;
+
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Label
+// -----------------------------------------------------------------------------
+.label {
+  display: block;
+  margin-bottom: $spacing-2;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-gray-700;
+}
+
+.required {
+  margin-left: $spacing-1;
+  color: $color-danger-500;
+}
+
+// -----------------------------------------------------------------------------
+// Error message
+// -----------------------------------------------------------------------------
+.errorMessage {
+  margin-top: $spacing-1;
+  font-size: $font-size-sm;
+  color: $color-danger-600;
+}
+
+// -----------------------------------------------------------------------------
+// Disabled
+// -----------------------------------------------------------------------------
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

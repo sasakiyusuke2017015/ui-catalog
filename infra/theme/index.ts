@@ -72,24 +72,17 @@ export {
   useFullTheme,
 } from './useTheme'
 
-// コンポーネント別テーマ
+// コンポーネント別テーマ（汎用基盤のみ）
+// 注意: 具体的なコンポーネント名・ラベル・Atoms は apps 側で定義
 export type {
   ThemeValue,
   ComponentThemeConfig,
   ComponentThemeUsage,
-  ThemeableComponent,
   ComponentThemesMap,
 } from './componentThemes'
 
 export {
-  COMPONENT_CATEGORIES,
-  COMPONENT_LABELS,
-  COMPONENT_THEME_USAGE,
-  DEFAULT_COMPONENT_THEMES,
   COMPONENT_THEMES_STORAGE_KEY,
-  componentThemesAtom,
-  resetComponentThemesAtom,
-  updateComponentThemeAtom,
   getComponentThemeConfig,
   resolveComponentTheme,
 } from './componentThemes'

@@ -1,0 +1,8 @@
+@use '../../tokens' as *;
+
+.subHeader {
+  position: fixed;
+  right: 0;
+  z-index: 20;
+  transition: left 300ms ease-in-out;
+}

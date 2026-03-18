@@ -1,0 +1,88 @@
+@use '../../tokens' as *;
+
+.banner {
+  padding: $spacing-4;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: $border-radius-lg;
+
+  &__content {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-3;
+  }
+
+  &__icon {
+    flex-shrink: 0;
+  }
+
+  &__body {
+    flex: 1;
+  }
+
+  &__title {
+    font-weight: $font-weight-medium;
+    font-size: $font-size-sm;
+  }
+
+  &__message {
+    font-size: $font-size-sm;
+  }
+
+  // Variants
+  &--info {
+    --banner-icon-color: #3B82F6;
+    background-color: $color-blue-50;
+    border-color: $color-blue-200;
+
+    .banner__title {
+      color: $color-blue-600;
+    }
+
+    .banner__message {
+      color: $color-blue-700;
+    }
+  }
+
+  &--warning {
+    --banner-icon-color: #F59E0B;
+    background-color: $color-amber-50;
+    border-color: $color-amber-200;
+
+    .banner__title {
+      color: $color-amber-600;
+    }
+
+    .banner__message {
+      color: $color-amber-700;
+    }
+  }
+
+  &--success {
+    --banner-icon-color: #10B981;
+    background-color: $color-green-50;
+    border-color: $color-green-200;
+
+    .banner__title {
+      color: $color-green-600;
+    }
+
+    .banner__message {
+      color: $color-green-700;
+    }
+  }
+
+  &--error {
+    --banner-icon-color: #EF4444;
+    background-color: $color-red-50;
+    border-color: $color-red-200;
+
+    .banner__title {
+      color: $color-red-600;
+    }
+
+    .banner__message {
+      color: $color-red-700;
+    }
+  }
+}

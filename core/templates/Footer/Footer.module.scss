@@ -1,0 +1,11 @@
+@use '../../tokens' as *;
+
+.footer {
+  position: fixed;
+  right: 0;
+  z-index: 20;
+  border-top: 1px solid $color-gray-200;
+  background-color: $color-gray-100;
+  padding: $spacing-2;
+  transition: all $transition-duration-300;
+}

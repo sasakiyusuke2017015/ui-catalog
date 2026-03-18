@@ -1,0 +1,20 @@
+@use '../../tokens' as *;
+
+.appShell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--color-bg, $color-white);
+  color: var(--color-text, $color-gray-900);
+
+  &__body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  &__main {
+    flex: 1;
+    overflow-y: auto;
+  }
+}

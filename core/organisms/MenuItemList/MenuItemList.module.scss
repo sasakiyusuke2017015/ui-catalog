@@ -1,0 +1,43 @@
+@use '../../tokens' as *;
+
+.menuItemList {
+  &__header {
+    border-bottom: 1px solid $color-gray-200;
+    padding: $spacing-3 $spacing-4;
+  }
+
+  &__items {
+    padding: $spacing-1 0;
+  }
+}
+
+.menuItemListItem {
+  padding: $spacing-3 $spacing-4;
+  color: $color-gray-700;
+  cursor: pointer;
+  transition: all $transition-duration-150;
+  animation: menuItemSlide 500ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  opacity: 0;
+
+  &:hover {
+    background-color: $color-blue-50;
+    color: $color-blue-600;
+  }
+
+  &:focus {
+    outline: none;
+    background-color: $color-blue-50;
+    color: $color-blue-600;
+  }
+}
+
+@keyframes menuItemSlide {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

@@ -1,0 +1,14 @@
+@use '../../tokens' as *;
+
+.sideNav {
+  position: fixed;
+  bottom: 0;
+  z-index: 9999;
+  transition: all $transition-duration-300 ease-in-out;
+
+  &__content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
