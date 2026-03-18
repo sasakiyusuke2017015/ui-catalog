@@ -25,6 +25,10 @@
     "./extensions": "./extensions/index.ts",
     "./extensions/1on1": "./extensions/1on1/index.ts",
     "./extensions/calend": "./extensions/calend/index.ts",
+    "./extensions/calend/state": "./extensions/calend/state/calendar.ts",
+    "./extensions/calend/types": "./extensions/calend/types/index.ts",
+    "./extensions/calend/hooks": "./extensions/calend/hooks/index.ts",
+    "./extensions/calend/utils": "./extensions/calend/utils/index.ts",
     "./extensions/shared": "./extensions/shared/index.ts",
     "./tailwind-preset": "./tailwind.preset.ts"
   },

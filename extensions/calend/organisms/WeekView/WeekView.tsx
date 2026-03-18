@@ -1,0 +1,156 @@
+import { useAtom } from 'jotai'
+import { selectedDateAtom } from '../../state/calendar'
+import { getWeekDates, formatHour, isToday } from '../../utils/dates'
+import { DayColumn } from '../DayColumn/DayColumn'
+import { EventCard as EventCardBase } from '../../atoms/EventCard/EventCard'
+import { format } from 'date-fns'
+import { ja } from 'date-fns/locale'
+import { useCallback, useRef, useState, useEffect } from 'react'
+import type { CalendarEvent } from '../../types'
+
+const HOURS = Array.from({ length: 24 }, (_, i) => i)
+const SLOT_HEIGHT = 48
+
+function getEventsForDay(
+  events: readonly CalendarEvent[],
+  date: Date
+): readonly CalendarEvent[] {
+  const dayStart = new Date(date)
+  dayStart.setHours(0, 0, 0, 0)
+  const dayEnd = new Date(date)
+  dayEnd.setHours(23, 59, 59, 999)
+  return events.filter((e) => e.startTime <= dayEnd && e.endTime >= dayStart)
+}
+
+interface CalendarStorageProps {
+  readonly events: readonly CalendarEvent[]
+  readonly persistEvent: (event: CalendarEvent) => Promise<void>
+  readonly removeEvent: (id: string) => Promise<void>
+}
+
+export function WeekView({ events, persistEvent, removeEvent }: CalendarStorageProps) {
+  const [selectedDate] = useAtom(selectedDateAtom)
+  const weekDates = getWeekDates(selectedDate)
+
+  const dayColRef = useRef<HTMLDivElement>(null)
+  const [colWidth, setColWidth] = useState(0)
+
+  useEffect(() => {
+    if (!dayColRef.current) return
+    const measure = () => setColWidth(dayColRef.current?.offsetWidth ?? 0)
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(dayColRef.current)
+    return () => ro.disconnect()
+  }, [])
+
+  const handleDelete = useCallback(
+    async (id: string) => {
+      try {
+        await removeEvent(id)
+      } catch (error) {
+        throw new Error(`Failed to delete event: ${error}`)
+      }
+    },
+    [removeEvent]
+  )
+
+  const handleUpdate = useCallback(
+    async (event: CalendarEvent) => {
+      try {
+        await persistEvent(event)
+      } catch (error) {
+        throw new Error(`Failed to update event: ${error}`)
+      }
+    },
+    [persistEvent]
+  )
+
+  return (
+    <div className="h-full overflow-auto">
+      {/* Header */}
+      <div className="sticky top-0 bg-surface border-b border-border" style={{ zIndex: 40 }}>
+        <div className="grid grid-cols-[64px_repeat(7,1fr)]">
+          <div className="border-r border-border" />
+          {weekDates.map((date) => {
+            const today = isToday(date)
+            return (
+              <div
+                key={date.toISOString()}
+                className={`text-center py-2 border-r border-border ${
+                  today ? 'bg-primary/10' : ''
+                }`}
+              >
+                <div className="text-xs text-text-secondary">
+                  {format(date, 'E', { locale: ja })}
+                </div>
+                <div
+                  className={`text-lg font-bold ${
+                    today ? 'text-primary' : 'text-text'
+                  }`}
+                >
+                  {format(date, 'd')}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* All-day events row */}
+        {weekDates.some((d) => getEventsForDay(events, d).some((e) => e.allDay)) && (
+          <div className="grid grid-cols-[64px_repeat(7,1fr)] border-b border-border bg-surface">
+            <div className="text-[10px] text-text-secondary py-1 pr-2 text-right border-r border-border/50 select-none flex items-center justify-end">
+              終日
+            </div>
+            {weekDates.map((date) => {
+              const allDayEvents = getEventsForDay(events, date).filter((e) => e.allDay)
+              return (
+                <div key={date.toISOString()} className="flex flex-wrap gap-0.5 p-0.5 border-r border-border/50 min-h-[28px]">
+                  {allDayEvents.map((event) => (
+                    <EventCardBase
+                      key={event.id}
+                      variant="compact"
+                      title={event.title}
+                      color={event.color}
+                      onDelete={() => handleDelete(event.id)}
+                    />
+                  ))}
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* Body */}
+      <div className="grid grid-cols-[64px_repeat(7,1fr)]">
+        {/* Time labels */}
+        <div>
+          {HOURS.map((hour) => (
+            <div
+              key={hour}
+              className="text-xs text-text-secondary py-1 pr-2 text-right border-r border-b border-border/50 select-none"
+              style={{ height: `${SLOT_HEIGHT}px` }}
+            >
+              {formatHour(hour)}
+            </div>
+          ))}
+        </div>
+
+        {/* Day columns — same DayColumn as day view */}
+        {weekDates.map((date, i) => (
+          <div key={date.toISOString()} ref={i === 0 ? dayColRef : undefined}>
+            <DayColumn
+              date={date}
+              events={getEventsForDay(events, date)}
+              slotHeight={SLOT_HEIGHT}
+              columnWidth={colWidth}
+              onDeleteEvent={handleDelete}
+              onUpdateEvent={handleUpdate}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
