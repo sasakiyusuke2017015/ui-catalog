@@ -20,4 +20,6 @@ export {
   RouterLink,
 } from './RouterContext'
 
+export type { RouterProviderProps } from './RouterContext'
+
 export { reactRouterAdapter } from './react-router'

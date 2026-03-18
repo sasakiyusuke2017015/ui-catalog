@@ -78,7 +78,8 @@ packages/ui-catalog/
 │   └── utils/               #   ユーティリティ（cn, isNullish 等）
 │
 ├── extensions/              # プロジェクト拡張用
-│   └── <project>/           #   各プロジェクト固有（例: 1on1/）
+│   ├── <project>/           #   各プロジェクト固有（例: 1on1/）
+│   └── shared/              #   複数プロジェクトで使用（昇格候補）
 │
 ├── infra/                   # 育成・観測の仕組み
 │   ├── commands/            #   Claude Code コマンド
@@ -86,8 +87,6 @@ packages/ui-catalog/
 │   ├── version/             #   バージョン管理（VERSION_REGISTRY）
 │   └── theme/               #   テーマ機能
 │
-├── scripts/                 # ツールスクリプト
-│   └── sync-versions.ts     #   VERSION_REGISTRY → versions.json 同期
 │
 ├── docs/                    # ドキュメント
 └── index.ts                 # エントリポイント

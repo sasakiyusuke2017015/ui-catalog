@@ -499,6 +499,16 @@ const ICON_SVG_PATHS: Record<
       />
     </g>
   ),
+  ['check']: ({ strokeColor }) => (
+    <path
+      d="M5 12l5 5L19 7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      fill="none"
+      stroke={strokeColor}
+      strokeWidth="2"
+    />
+  ),
   ['check-circle']: ({ fill, fillColor, strokeColor }) => (
     <g>
       <circle

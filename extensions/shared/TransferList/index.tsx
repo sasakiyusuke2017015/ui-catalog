@@ -8,6 +8,7 @@
  */
 import { useState, useCallback, useMemo } from 'react';
 
+import { Checkbox } from '../../../core/atoms';
 import type { TransferListProps, TransferListItem } from './types';
 
 /**
@@ -122,20 +123,21 @@ function TransferList<T extends TransferListItem = TransferListItem>({
     const isDisabled = item.disabled || loading;
 
     return (
-      <label
+      <div
         key={item.id}
         className={`
           flex items-center gap-3 p-3 rounded-lg border transition-all
           ${isDisabled ? 'cursor-not-allowed bg-gray-50' : 'cursor-pointer hover:border-blue-300 hover:shadow-sm'}
           ${selected && !isDisabled ? 'border-blue-400 bg-blue-50' : 'border-gray-200 bg-white'}
         `}
+        onClick={() => !isDisabled && onCheck(item.id, !selected)}
       >
-        <input
-          type="checkbox"
+        <Checkbox
           checked={selected}
           disabled={isDisabled}
           onChange={(e) => onCheck(item.id, e.target.checked)}
-          className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500 disabled:opacity-50"
+          size="medium"
+          variant="primary"
         />
         <div className="flex-1 min-w-0">
           <div className="font-medium text-gray-800 truncate">{item.label}</div>
@@ -148,7 +150,7 @@ function TransferList<T extends TransferListItem = TransferListItem>({
             {item.disabledReason}
           </div>
         )}
-      </label>
+      </div>
     );
   }, [loading]);
 
@@ -177,19 +179,16 @@ function TransferList<T extends TransferListItem = TransferListItem>({
 
           {/* 全選択 */}
           {leftSelectableCount > 0 && (
-            <label className="flex items-center gap-2 mb-2 text-fluid-sm text-gray-600 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={isLeftAllSelected}
-                ref={(el) => {
-                  if (el) el.indeterminate = isLeftIndeterminate;
-                }}
+            <div className="mb-2">
+              <Checkbox
+                checked={isLeftAllSelected || isLeftIndeterminate}
                 onChange={(e) => handleLeftSelectAll(e.target.checked)}
                 disabled={loading}
-                className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                size="small"
+                variant="primary"
+                label="すべて選択"
               />
-              すべて選択
-            </label>
+            </div>
           )}
 
           {/* アイテムリスト */}
@@ -237,19 +236,16 @@ function TransferList<T extends TransferListItem = TransferListItem>({
 
           {/* 全選択 */}
           {rightSelectableCount > 0 && (
-            <label className="flex items-center gap-2 mb-2 text-fluid-sm text-gray-600 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={isRightAllSelected}
-                ref={(el) => {
-                  if (el) el.indeterminate = isRightIndeterminate;
-                }}
+            <div className="mb-2">
+              <Checkbox
+                checked={isRightAllSelected || isRightIndeterminate}
                 onChange={(e) => handleRightSelectAll(e.target.checked)}
                 disabled={loading}
-                className="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
+                size="small"
+                variant="primary"
+                label="すべて選択"
               />
-              すべて選択
-            </label>
+            </div>
           )}
 
           {/* アイテムリスト */}

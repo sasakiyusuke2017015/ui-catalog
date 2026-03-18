@@ -144,11 +144,12 @@ ui-catalog/
 │   └── index.ts             #   core/ バレルエクスポート
 │
 ├── extensions/              # プロジェクト拡張用（absorb の受け皿）
-│   └── 1on1/                #   1on1 プロジェクト固有
-│       ├── atoms/
-│       ├── molecules/
-│       ├── organisms/
-│       └── index.ts
+│   ├── 1on1/                #   1on1 プロジェクト固有
+│   │   ├── atoms/
+│   │   ├── molecules/
+│   │   ├── organisms/
+│   │   └── index.ts
+│   └── shared/              #   複数プロジェクトで使用（昇格候補）
 │
 ├── infra/                   # 育成・観測の仕組み
 │   ├── commands/            #   Claude Code コマンド

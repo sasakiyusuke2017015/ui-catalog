@@ -46,7 +46,7 @@ const StatusBadgeDisplay: FC<{ item: StatusItem }> = ({ item }) => {
 }
 
 /**
- * 選択インジケーター（丸バッジ + チェックマーク）
+ * 選択インジケーター（チェックマーク）
  */
 const SelectionIndicator: FC = () => (
   <div
@@ -54,7 +54,7 @@ const SelectionIndicator: FC = () => (
     className="absolute top-2 right-2 w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center shadow-sm"
   >
     <Icon
-      name="check-circle"
+      name="check"
       size={14}
       stroke="white"
       strokeWidth={3}
