@@ -101,6 +101,10 @@ export const VERSION_REGISTRY = {
   TrendChart: '1.1.0',
   DetailHeader: '1.0.0',
 
+  // calend
+  EventCard: '1.0.0',
+  TimeSlotRow: '1.0.0',
+
   // decorations
   BackgroundTexture: '1.0.0',
   GradientOverlay: '1.0.0',
