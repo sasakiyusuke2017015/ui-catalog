@@ -85,5 +85,6 @@
   "BackgroundTexture": "1.0.0",
   "GradientOverlay": "1.0.0",
   "FloatingElements": "1.0.0",
-  "BlurFade": "1.0.0"
+  "BlurFade": "1.0.0",
+  "CountdownRing": "1.0.0"
 }

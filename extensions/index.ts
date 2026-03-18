@@ -16,5 +16,8 @@
 // 1on1 プロジェクト固有
 export * from './1on1'
 
+// ticker プロジェクト固有
+export * from './ticker'
+
 // 複数プロジェクト共有
 export * from './shared'
