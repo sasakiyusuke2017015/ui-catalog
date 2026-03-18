@@ -1,5 +1,5 @@
 // src/components/common/molecules/AdjustmentBanner.tsx
-import Banner from '../../../core/components/Banner/Banner';
+import Banner from '../../../core/molecules/Banner/Banner';
 
 interface AdjustmentBannerProps {
   /** 説明文 */

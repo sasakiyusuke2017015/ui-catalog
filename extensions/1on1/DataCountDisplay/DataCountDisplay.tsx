@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { NumberTicker } from '../../../core/magicui';
+import { NumberTicker } from '../../../core/organisms';
 
 interface DataCountDisplayProps {
   /** 表示件数 */

@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Button } from '../../../core/components/Button';
+import { Button } from '../../../core/atoms/Button';
 import { useOperationLog } from '../../../infra/devtools';
 
 

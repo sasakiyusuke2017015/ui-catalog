@@ -4,7 +4,7 @@
  */
 import { FC } from 'react';
 
-import { Badge } from '../../../core/components/Badge'
+import { Badge } from '../../../core/atoms/Badge'
 
 type BadgeSize = 'small' | 'medium' | 'large';
 type ScoreColor = 'blue' | 'green' | 'yellow' | 'orange' | 'red';

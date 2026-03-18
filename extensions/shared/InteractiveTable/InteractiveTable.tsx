@@ -14,8 +14,8 @@ import { useState, useRef, useCallback, useEffect, useMemo, type FC } from 'reac
 
 import { motion, LayoutGroup, AnimatePresence } from 'framer-motion';
 
-import { Checkbox } from '../../../core/components/Checkbox';
-import LoadingZone from '../../../core/patterns/LoadingZone/LoadingZone';
+import { Checkbox } from '../../../core/atoms/Checkbox';
+import LoadingZone from '../../../core/organisms/LoadingZone/LoadingZone';
 import { getConditionalAnimationStyle, ANIMATIONS } from '../../../core/constants';
 import { cn } from '../../../core/utils/cn';
 

@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
 
-import { LoadingZone, PieChart } from '../../../core/patterns';
+import { LoadingZone, PieChart } from '../../../core/organisms';
 import StatisticList from '../StatisticList/StatisticList';
 import type { StatisticListProps } from '../StatisticList/StatisticList';
-import type { LoadingIconName } from '../../../core/constants';
-import type { LoadingPreset } from '../../../core/primitives/Icon';
+import type { LoadingPreset } from '../../../core/atoms/Icon';
 
 // ===========================
 // ステータス色定義（デフォルト）
@@ -70,10 +69,8 @@ export interface StatisticPanelProps {
   unit?: string;
   /** ローディング状態 */
   loading?: boolean;
-  /** ローディングプリセット（iconNameより優先） */
+  /** ローディングプリセット */
   loadingPreset?: LoadingPreset;
-  /** @deprecated loadingPreset を使用してください */
-  loadingIconName?: LoadingIconName;
   /** ローディングアイコンのサイズ */
   loadingIconSize?: number;
   /** ローディングアイコンの色 */
@@ -98,7 +95,6 @@ const StatisticPanel: React.FC<StatisticPanelProps> = ({
   unit = '名',
   loading = false,
   loadingPreset,
-  loadingIconName,
   loadingIconSize = 40,
   loadingIconColor,
   emptyMessage = '該当データなし',
@@ -144,7 +140,6 @@ const StatisticPanel: React.FC<StatisticPanelProps> = ({
       loading={loading}
       variant="inline"
       preset={loadingPreset}
-      iconName={!loadingPreset ? loadingIconName : undefined}
       size={loadingIconSize}
       fill={loadingIconColor}
     >

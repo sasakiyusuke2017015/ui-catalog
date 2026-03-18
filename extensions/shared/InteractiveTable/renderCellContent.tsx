@@ -7,8 +7,8 @@
 import type React from 'react';
 import type { ReactNode } from 'react';
 
-import Icon from '../../../core/primitives/Icon';
-import InternalLink from '../../../core/components/InternalLink/InternalLink';
+import Icon from '../../../core/atoms/Icon';
+import { InternalLink } from '../../../core/atoms/InternalLink';
 
 import { isNullish } from '../../../core/utils';
 
@@ -153,7 +153,7 @@ export const createRenderCellContent = ({
 
       return (
         <InternalLink
-          to={internalLinkData.to}
+          href={internalLinkData.to}
           variant={internalLinkData.variant}
           size={internalLinkData.size}
           color={internalLinkData.color}

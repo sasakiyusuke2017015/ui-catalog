@@ -1,7 +1,7 @@
 // src/components/project/molecules/QACardList.tsx
 import { FC } from 'react';
 
-import Icon from '../../../core/primitives/Icon';
+import Icon from '../../../core/atoms/Icon';
 
 
 export interface QACardItem {

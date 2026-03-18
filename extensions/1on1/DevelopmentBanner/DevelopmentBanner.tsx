@@ -1,5 +1,5 @@
 // src/components/common/molecules/DevelopmentBanner.tsx
-import Banner from '../../../core/components/Banner/Banner';
+import Banner from '../../../core/molecules/Banner/Banner';
 
 interface DevelopmentBannerProps {
   /** 説明文 */

@@ -1,10 +1,10 @@
 // src/components/project/molecules/SurveyCard.tsx
 import { FC } from 'react';
 
-import { Badge } from '../../../core/components/Badge';
-import { Button } from '../../../core/components/Button';
+import { Badge } from '../../../core/atoms/Badge';
+import { Button } from '../../../core/atoms/Button';
 import { useOperationLog } from '../../../infra/devtools';
-import Icon from '../../../core/primitives/Icon';
+import Icon from '../../../core/atoms/Icon';
 import { type IconName } from '../../../core/constants';
 
 export interface SurveyCardProps {

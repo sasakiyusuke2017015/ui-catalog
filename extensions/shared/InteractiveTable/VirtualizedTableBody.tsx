@@ -13,7 +13,7 @@ import { useRef, type FC, type CSSProperties, type ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useVirtualizer } from '@tanstack/react-virtual';
 
-import { Checkbox } from '../../../core/components/Checkbox';
+import { Checkbox } from '../../../core/atoms/Checkbox';
 import { cn } from '../../../core/utils/cn';
 
 import type {
