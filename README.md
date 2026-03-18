@@ -265,13 +265,9 @@ mkdir -p .vscode
 これにより VSCode のソース管理パネルで ui-catalog のブランチ切り替え・
 コミット・push が可能になる。
 
-### Step 8: バージョン管理ファイルの配置
+### Step 8: バージョン管理ファイルの初期化
 
-```bash
-# VERSION_REGISTRY から ui-catalog.versions.json を生成
-cd packages/ui-catalog
-pnpm sync:versions
-```
+`/ui-catalog rf` コマンドを実行すると、`VERSION_REGISTRY` から `ui-catalog.versions.json` が自動生成される。
 
 アプリ側の `main.tsx` で初期化:
 
