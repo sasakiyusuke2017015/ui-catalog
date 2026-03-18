@@ -62,6 +62,7 @@ export const VERSION_REGISTRY = {
   FormField: '1.0.0',
   KeyButton: '1.0.0',
   LoadingZone: '1.0.0',
+  MemberCard: '1.0.0',
   MenuItem: '1.0.0',
   MenuItemList: '1.0.0',
   Modal: '1.0.0',

@@ -55,9 +55,34 @@ $color-danger-700: #b91c1c;
 // Info (Blue)
 $color-info-50: #eff6ff;
 $color-info-100: #dbeafe;
+$color-info-200: #bfdbfe;
 $color-info-500: #3b82f6;
 $color-info-600: #2563eb;
 $color-info-700: #1d4ed8;
+
+// Blue (alias)
+$color-blue-50: $color-info-50;
+$color-blue-200: $color-info-200;
+$color-blue-600: $color-info-600;
+$color-blue-700: $color-info-700;
+
+// Amber (alias for warning)
+$color-amber-50: $color-warning-50;
+$color-amber-200: #fde68a;
+$color-amber-600: $color-warning-600;
+$color-amber-700: $color-warning-700;
+
+// Green (alias for success)
+$color-green-50: $color-success-50;
+$color-green-200: #bbf7d0;
+$color-green-600: $color-success-600;
+$color-green-700: $color-success-700;
+
+// Red (alias for danger)
+$color-red-50: $color-danger-50;
+$color-red-200: #fecaca;
+$color-red-600: $color-danger-600;
+$color-red-700: $color-danger-700;
 
 // Semantic aliases
 $color-text-primary: $color-gray-900;

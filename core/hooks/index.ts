@@ -1,8 +1,7 @@
 /**
  * @ui-catalog/core/hooks
  *
- * UIフック（純粋UI層）
- * ※ devtools は infra 層のため、@ui-catalog/core/infra/devtools から直接インポートすること
+ * カスタムフック
  */
 
 // Device & Utility
@@ -11,3 +10,6 @@ export { useRemountKey } from './useRemountKey'
 
 // UI Dialogs
 export * from './ui'
+
+// Router
+export * from './router'

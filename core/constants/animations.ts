@@ -327,14 +327,6 @@ export const ANIMATIONS = {
   framer: FRAMER_ANIMATION,
 } as const;
 
-// 後方互換性のためのエイリアス（既存コードで使用中）
-/** @deprecated Use ANIMATIONS.card.slideRight instead */
-export const CARD_ANIMATION = CARD_SLIDE_ANIMATION.slideRight;
-/** @deprecated Use ANIMATIONS.dropMenu.slideDown instead */
-export const MENU_ITEM_ANIMATION = DROP_MENU_ANIMATION.slideDown;
-/** @deprecated Use ANIMATIONS.tableRow instead */
-export { TABLE_ROW_ANIMATION };
-
 // ============================================
 // ヘルパー関数
 // ============================================

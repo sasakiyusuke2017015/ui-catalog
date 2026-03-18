@@ -1,55 +1,32 @@
 /**
  * @ui-catalog/core
  *
- * 純粋UI層 - ビジネスロジックゼロ
+ * Atomic Design ベースの汎用 UI コンポーネントライブラリ
  *
  * 構造:
- * - tokens/      デザイントークン（colors, spacing, typography等）
- * - primitives/  最小単位の視覚要素（Box, Text, Stack, Icon, Animated）
- * - components/  機能を持つUI部品（Button, Input, Modal等）
- * - patterns/    コンポーネントの組み合わせパターン
- * - layouts/     ページレイアウト
+ * - atoms/       最小単位（Button, Input, Icon, Badge 等）
+ * - molecules/   atoms の組み合わせ（FormField, MenuItem 等）
+ * - organisms/   独立したセクション（Dialog, Modal, Card 等）
+ * - templates/   ページレイアウト（AppShell, Header 等）
+ * - hooks/       カスタムフック
  * - constants/   定数定義
+ * - tokens/      デザイントークン
  * - types/       共通型定義
  * - styles/      グローバルスタイル
- * - hooks/       UIフック
- * - decorations/ 背景装飾
- * - magicui/     アニメーション
+ * - utils/       ユーティリティ
  */
 
-// Tokens
+// Atomic Design layers
+export * from './atoms'
+export * from './molecules'
+export * from './organisms'
+export * from './templates'
+
+// Foundation
 export * from './tokens'
-
-// Primitives
-export * from './primitives'
-
-// Components
-export * from './components'
-
-// Patterns
-export * from './patterns'
-
-// Layouts
-export * from './layouts'
-
-// Constants
 export * from './constants'
-
-// Types
 export * from './types'
 
-// Hooks (ui)
-export { useDevice, useRemountKey } from './hooks'
-export * from './hooks/ui'
-
-// Decorations
-export * from './decorations'
-
-// Magic UI
-export * from './magicui'
-
-// Utils
+// Utilities
+export * from './hooks'
 export * from './utils'
-
-// Adapters
-export * from './adapters'
