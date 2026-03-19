@@ -1,5 +1,5 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { selectedDateAtom, activeSlotAtom, eventModalAtom } from '../../state/calendar'
+import { selectedDateAtom, activeSlotAtom, eventModalAtom, hoveredEventAtom, anyDragActiveAtom } from '../../state/calendar'
 import {
   getMonthCalendarDates,
   isToday,
@@ -157,6 +157,8 @@ interface CalendarStorageProps {
 
 export function MonthView({ events, persistEvent, removeEvent }: CalendarStorageProps) {
   const [selectedDate, setSelectedDate] = useAtom(selectedDateAtom)
+  const setHovered = useSetAtom(hoveredEventAtom)
+  const setAnyDrag = useSetAtom(anyDragActiveAtom)
   const activeSlot = useAtomValue(activeSlotAtom)
   const setActiveSlot = useSetAtom(activeSlotAtom)
   const setModal = useSetAtom(eventModalAtom)
@@ -184,6 +186,8 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
       if (dx < DRAG_THRESHOLD && dy < DRAG_THRESHOLD) return
       ;(dragRef.current as { started: boolean }).started = true
       setDragEventId(state.event.id)
+      setHovered(null)
+      setAnyDrag(true)
       document.body.style.cursor = state.mode === 'move' ? 'grabbing' : 'ew-resize'
       document.body.style.userSelect = 'none'
     }
@@ -205,6 +209,7 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
     dropDateRef.current = null
     setDragEventId(null)
     setDropDateStr(null)
+    setAnyDrag(false)
 
     if (!state?.started || !targetStr) return
 
@@ -236,6 +241,7 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
 
   const startEventDrag = useCallback(
     (event: CalendarEvent, originDate: Date, e: React.PointerEvent, mode: MonthDragMode = 'move') => {
+      if (e.button !== 0) return
       e.stopPropagation()
       e.preventDefault()
       dragRef.current = {
@@ -253,11 +259,11 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
   )
 
   const handleEventClick = useCallback(
-    (event: CalendarEvent, e: React.MouseEvent) => {
+    (event: CalendarEvent, clickedDate: Date, e: React.MouseEvent) => {
       e.stopPropagation()
       setModal({
         isOpen: true,
-        date: event.startTime,
+        date: clickedDate,
         hour: event.startTime.getHours(),
         editingEvent: event,
       })
@@ -344,7 +350,7 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
                           borderRadius: `${continuesLeft ? 0 : 10}px ${continuesRight ? 0 : 10}px ${continuesRight ? 0 : 10}px ${continuesLeft ? 0 : 10}px`,
                           boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.2)',
                         }}
-                        onClick={(e) => handleEventClick(event, e)}
+                        onClick={(e) => handleEventClick(event, week[startCol]!, e)}
                         onPointerDown={(e) => startEventDrag(event, week[startCol]!, e)}
                       >
                         {event.title}
@@ -435,7 +441,7 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
                               opacity: isDragging ? 0.4 : 1,
                             }}
                             title={event.title}
-                            onClick={(e) => handleEventClick(event, e)}
+                            onClick={(e) => handleEventClick(event, date, e)}
                             onPointerDown={(e) => startEventDrag(event, date, e)}
                           >
                             {event.title}
@@ -446,7 +452,7 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
                             data-component="event-card"
                             className="flex items-center gap-1.5 px-1 py-0.5 rounded-lg cursor-grab hover:bg-surface-hover transition-colors truncate"
                             style={{ opacity: isDragging ? 0.4 : 1 }}
-                            onClick={(e) => handleEventClick(event, e)}
+                            onClick={(e) => handleEventClick(event, date, e)}
                             onPointerDown={(e) => startEventDrag(event, date, e)}
                           >
                             <div

@@ -1,6 +1,6 @@
 import { useRef, useCallback } from 'react'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { hoveredEventAtom } from '../../state/calendar'
+import { hoveredEventAtom, anyDragActiveAtom } from '../../state/calendar'
 import { useInfiniteTimeline } from '../../hooks/useInfiniteTimeline'
 import { formatDayHeader, isToday, coversFullDay } from '../../utils/dates'
 import { DayColumn } from '../DayColumn/DayColumn'
@@ -33,6 +33,7 @@ export function Timeline({ events, persistEvent, removeEvent }: CalendarStorageP
   const { dates } = useInfiniteTimeline(scrollRef)
   const hovered = useAtomValue(hoveredEventAtom)
   const setHovered = useSetAtom(hoveredEventAtom)
+  const anyDrag = useAtomValue(anyDragActiveAtom)
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const handleDelete = useCallback(
@@ -106,6 +107,7 @@ export function Timeline({ events, persistEvent, removeEvent }: CalendarStorageP
                     color={event.color}
                     isHovered={hovered?.event.id === event.id}
                     onMouseEnter={(e) => {
+                      if (anyDrag) return
                       if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current)
                       hoverTimerRef.current = setTimeout(() => {
                         const rect = (e.target as HTMLElement).getBoundingClientRect()

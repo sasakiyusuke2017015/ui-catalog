@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react'
 import { useSetAtom } from 'jotai'
-import { dragAtom } from '../state/calendar'
+import { dragAtom, anyDragActiveAtom, hoveredEventAtom } from '../state/calendar'
 import {
   pxToMinutes,
   snapToInterval,
@@ -22,6 +22,8 @@ interface UseDragEventOptions {
 
 export function useDragEvent({ event, slotHeight, columnWidth, onCommit, onClick }: UseDragEventOptions) {
   const setDrag = useSetAtom(dragAtom)
+  const setAnyDrag = useSetAtom(anyDragActiveAtom)
+  const setHovered = useSetAtom(hoveredEventAtom)
   const stateRef = useRef<{
     mode: 'move' | 'resize-top' | 'resize-bottom'
     startX: number
@@ -40,6 +42,8 @@ export function useDragEvent({ event, slotHeight, columnWidth, onCommit, onClick
       if (!state.started) {
         if (Math.abs(deltaY) < DRAG_THRESHOLD && Math.abs(deltaX) < DRAG_THRESHOLD) return
         state.started = true
+        setAnyDrag(true)
+        setHovered(null)
         document.body.style.cursor =
           state.mode === 'move' ? 'grabbing' : state.mode === 'resize-top' ? 'n-resize' : 's-resize'
         document.body.style.userSelect = 'none'
@@ -78,6 +82,7 @@ export function useDragEvent({ event, slotHeight, columnWidth, onCommit, onClick
       document.body.style.userSelect = ''
       document.removeEventListener('pointermove', handlePointerMove)
       document.removeEventListener('pointerup', handlePointerUp)
+      setAnyDrag(false)
 
       if (!state?.started) {
         setDrag(null)
@@ -108,6 +113,7 @@ export function useDragEvent({ event, slotHeight, columnWidth, onCommit, onClick
   const startDrag = useCallback(
     (mode: 'move' | 'resize-top' | 'resize-bottom') =>
       (e: React.PointerEvent) => {
+        if (e.button !== 0) return
         e.stopPropagation()
         e.preventDefault()
 

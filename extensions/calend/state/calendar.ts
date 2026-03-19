@@ -62,6 +62,9 @@ export interface DragState {
 
 export const dragAtom = atom<DragState | null>(null)
 
+// true when any drag operation is in progress (event drag, month drag, slot drag)
+export const anyDragActiveAtom = atom(false)
+
 export const eventModalAtom = atom<ModalState>({
   isOpen: false,
   date: new Date(),

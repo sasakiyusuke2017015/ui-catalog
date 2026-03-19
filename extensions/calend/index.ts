@@ -22,6 +22,7 @@ export {
   hoveredEventAtom,
   activeSlotAtom,
   dragAtom,
+  anyDragActiveAtom,
   eventModalAtom,
   addEventAtom,
   updateEventAtom,

@@ -3,7 +3,7 @@ import { format } from 'date-fns'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { EventCard as EventCardBase } from '../../atoms/EventCard/EventCard'
 import { useDragEvent } from '../../hooks/useDragEvent'
-import { dragAtom, hoveredEventAtom, eventModalAtom } from '../../state/calendar'
+import { dragAtom, hoveredEventAtom, eventModalAtom, anyDragActiveAtom } from '../../state/calendar'
 import type { CalendarEvent } from '../../types'
 
 interface EventCardProps {
@@ -41,11 +41,11 @@ export function EventCard({
     setHovered(null)
     setModal({
       isOpen: true,
-      date: event.startTime,
+      date: dayStart,
       hour: event.startTime.getHours(),
       editingEvent: event,
     })
-  }, [event, setHovered, setModal])
+  }, [event, dayStart, setHovered, setModal])
 
   const { handleMoveStart, handleResizeTopStart, handleResizeBottomStart } =
     useDragEvent({
@@ -56,8 +56,10 @@ export function EventCard({
       onClick: handleClick,
     })
 
+  const anyDrag = useAtomValue(anyDragActiveAtom)
+
   const handleMouseEnter = useCallback((e: React.MouseEvent) => {
-    if (drag) return
+    if (drag || anyDrag) return
     const el = e.currentTarget as HTMLElement
     hoverTimerRef.current = setTimeout(() => {
       const rect = el.getBoundingClientRect()
@@ -66,7 +68,7 @@ export function EventCard({
         rect: { top: rect.top, left: rect.left, right: rect.right, bottom: rect.bottom, width: rect.width },
       })
     }, 300)
-  }, [event, drag, setHovered])
+  }, [event, drag, anyDrag, setHovered])
 
   const handleMouseLeave = useCallback(() => {
     if (hoverTimerRef.current) {

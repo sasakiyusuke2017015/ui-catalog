@@ -74,8 +74,8 @@ function CompactEventCard({
       style={{
         backgroundColor: color,
         boxShadow: isHovered
-          ? '0 4px 12px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.3)'
-          : 'inset 0 0 0 1px rgba(255,255,255,0.2)',
+          ? '0 4px 12px rgba(0,0,0,0.2), inset 0 0 0 1.5px rgba(255,255,255,0.6)'
+          : 'inset 0 0 0 1.5px rgba(255,255,255,0.45)',
         filter: isHovered ? 'brightness(1.15)' : 'none',
       }}
       onClick={onClick}
@@ -137,8 +137,8 @@ function TimelineEventCard({
         opacity: isDragging ? 0.7 : isHovered ? 0.85 : 1,
         filter: isHovered ? 'brightness(1.2)' : 'none',
         boxShadow: isHovered
-          ? '0 4px 16px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.3)'
-          : '0 1px 3px rgba(0,0,0,0.12), inset 0 0 0 1px rgba(255,255,255,0.2)',
+          ? '0 4px 16px rgba(0,0,0,0.2), inset 0 0 0 1.5px rgba(255,255,255,0.6)'
+          : '0 1px 3px rgba(0,0,0,0.12), inset 0 0 0 1.5px rgba(255,255,255,0.45)',
         ...positionStyle,
       }}
       onClick={onClick}

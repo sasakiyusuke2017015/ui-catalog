@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react'
 import { useAtom, useSetAtom, useAtomValue } from 'jotai'
 import { eventModalAtom, activeSlotAtom, viewModeAtom } from '../../state/calendar'
 import { format } from 'date-fns'
@@ -15,10 +15,14 @@ const EVENT_COLORS = [
   { value: '#be185d', label: 'Pink' },
 ]
 
-const HOUR_OPTIONS = Array.from({ length: 24 }, (_, i) => ({
-  value: i,
-  label: `${i.toString().padStart(2, '0')}:00`,
-}))
+const TIME_OPTIONS = Array.from({ length: 96 }, (_, i) => {
+  const h = Math.floor(i / 4)
+  const m = (i % 4) * 15
+  return {
+    value: h * 60 + m,
+    label: `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`,
+  }
+})
 
 function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
@@ -43,93 +47,74 @@ export function EventModal({ persistEvent }: EventModalProps) {
   const [startDateStr, setStartDateStr] = useState('')
   const [endDateStr, setEndDateStr] = useState('')
   const [allDay, setAllDay] = useState(false)
-  const [startHour, setStartHour] = useState(9)
-  const [endHour, setEndHour] = useState(10)
+  const [startMin, setStartMin] = useState(9 * 60)
+  const [endMin, setEndMin] = useState(10 * 60)
   const [color, setColor] = useState(EVENT_COLORS[0]!.value)
   const [description, setDescription] = useState('')
-  const [panelPos, setPanelPos] = useState<{ top?: number; left?: number; right?: number } | null>(null)
+  const lockedPos = useRef<{ top?: number; left?: number; right?: number } | null>(null)
   const [posReady, setPosReady] = useState(false)
 
-  // Calculate position to avoid covering the target column
-  useEffect(() => {
+  // Calculate position once when modal opens, lock it in a ref
+  useLayoutEffect(() => {
     if (!modal.isOpen) {
-      setPanelPos(null)
+      lockedPos.current = null
       setPosReady(false)
       return
     }
-    setPosReady(false)
 
-    // Wait for panel to render so we can measure it
-    requestAnimationFrame(() => {
-      const panel = panelRef.current
-      if (!panel) return
+    const panelW = 380
+    const panelH = 550
+    const vw = window.innerWidth
+    const vh = window.innerHeight
+    const margin = 12
 
-      const panelW = panel.offsetWidth
-      const panelH = panel.offsetHeight
-      const vw = window.innerWidth
-      const vh = window.innerHeight
-      const margin = 12
+    // Always use modal.date (= the date of the clicked cell/card), not editingEvent.startTime
+    // This ensures we avoid the column where the user actually clicked
+    const targetDay = modal.date.toDateString()
 
-      // Find the column to avoid by matching the modal's target date
-      const targetDate = modal.editingEvent
-        ? modal.editingEvent.startTime
-        : modal.date
-      const targetDay = targetDate.toDateString()
+    let targetRect: DOMRect | null = null
 
-      let targetRect: DOMRect | null = null
+    // Find column by data-date attribute (week/day view)
+    for (const col of document.querySelectorAll('[data-date]')) {
+      if (new Date((col as HTMLElement).dataset.date!).toDateString() === targetDay) {
+        targetRect = col.getBoundingClientRect()
+        break
+      }
+    }
 
-      // Find column by data-date attribute (week/day view)
-      const dateCols = document.querySelectorAll('[data-date]')
-      for (const col of dateCols) {
-        const colDate = new Date((col as HTMLElement).dataset.date!)
-        if (colDate.toDateString() === targetDay) {
-          targetRect = col.getBoundingClientRect()
+    // Find cell by data-month-date attribute (month view)
+    if (!targetRect) {
+      for (const cell of document.querySelectorAll('[data-month-date]')) {
+        if (new Date((cell as HTMLElement).dataset.monthDate!).toDateString() === targetDay) {
+          targetRect = cell.getBoundingClientRect()
           break
         }
       }
+    }
 
-      // Find cell by data-month-date attribute (month view)
-      if (!targetRect) {
-        const monthCells = document.querySelectorAll('[data-month-date]')
-        for (const cell of monthCells) {
-          const cellDate = new Date((cell as HTMLElement).dataset.monthDate!)
-          if (cellDate.toDateString() === targetDay) {
-            targetRect = cell.getBoundingClientRect()
-            break
-          }
-        }
-      }
+    // Fallback: active slot border
+    if (!targetRect) {
+      const el = document.querySelector('.border-primary')
+      if (el) targetRect = el.getBoundingClientRect()
+    }
 
-      // Fallback: find active slot border
-      if (!targetRect) {
-        const activeSlotEl = document.querySelector('.border-primary')
-        if (activeSlotEl) {
-          targetRect = activeSlotEl.getBoundingClientRect()
-        }
-      }
-
-      if (!targetRect) {
-        setPanelPos(null)
-        requestAnimationFrame(() => setPosReady(true))
-        return
-      }
-
+    if (targetRect) {
       const anchorY = Math.max(margin, Math.min(targetRect.top, vh - panelH - margin))
-
-      // Try right side of target
       if (targetRect.right + margin + panelW < vw) {
-        setPanelPos({ top: anchorY, left: targetRect.right + margin })
+        lockedPos.current = { top: anchorY, left: targetRect.right + margin }
       } else if (targetRect.left - margin - panelW > 0) {
-        // Try left side of target
-        setPanelPos({ top: anchorY, right: vw - targetRect.left + margin })
+        lockedPos.current = { top: anchorY, right: vw - targetRect.left + margin }
       } else {
-        // Fallback: center
-        setPanelPos(null)
+        lockedPos.current = null
       }
+    } else {
+      lockedPos.current = null
+    }
 
-      requestAnimationFrame(() => setPosReady(true))
-    })
-  }, [modal.isOpen, modal.editingEvent, activeSlot, viewMode])
+    // Fade in on next frame
+    requestAnimationFrame(() => setPosReady(true))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modal.isOpen])
 
   useEffect(() => {
     if (modal.isOpen) {
@@ -139,8 +124,8 @@ export function EventModal({ persistEvent }: EventModalProps) {
         setStartDateStr(format(editing.startTime, 'yyyy-MM-dd'))
         setEndDateStr(format(editing.endTime, 'yyyy-MM-dd'))
         setAllDay(editing.allDay ?? false)
-        setStartHour(editing.startTime.getHours())
-        setEndHour(editing.endTime.getHours())
+        setStartMin(editing.startTime.getHours() * 60 + editing.startTime.getMinutes())
+        setEndMin(editing.endTime.getHours() * 60 + editing.endTime.getMinutes())
         setColor(editing.color)
         setDescription(editing.description ?? '')
       } else {
@@ -149,8 +134,8 @@ export function EventModal({ persistEvent }: EventModalProps) {
         setStartDateStr(d)
         setEndDateStr(d)
         setAllDay(false)
-        setStartHour(modal.hour)
-        setEndHour(modal.endHour ?? Math.min(modal.hour + 1, 23))
+        setStartMin(modal.hour * 60)
+        setEndMin((modal.endHour ?? Math.min(modal.hour + 1, 23)) * 60)
         setColor(EVENT_COLORS[0]!.value)
         setDescription('')
       }
@@ -176,8 +161,8 @@ export function EventModal({ persistEvent }: EventModalProps) {
         startTime.setHours(0, 0, 0, 0)
         endTime.setHours(23, 59, 59, 999)
       } else {
-        startTime.setHours(startHour, 0, 0, 0)
-        endTime.setHours(endHour, 0, 0, 0)
+        startTime.setHours(Math.floor(startMin / 60), startMin % 60, 0, 0)
+        endTime.setHours(Math.floor(endMin / 60), endMin % 60, 0, 0)
         if (endTime <= startTime) {
           endTime.setDate(endTime.getDate() + 1)
         }
@@ -200,7 +185,7 @@ export function EventModal({ persistEvent }: EventModalProps) {
         throw new Error(`Failed to save event: ${error}`)
       }
     },
-    [title, startDateStr, endDateStr, allDay, startHour, endHour, color, description, modal.editingEvent, persistEvent, close]
+    [title, startDateStr, endDateStr, allDay, startMin, endMin, color, description, modal.editingEvent, persistEvent, close]
   )
 
   // ESC to close
@@ -217,16 +202,17 @@ export function EventModal({ persistEvent }: EventModalProps) {
 
   // Validation
   const hasTitle = title.trim().length > 0
-  const isDateInvalid = !allDay && startDateStr === endDateStr && endHour <= startHour
+  const isDateInvalid = !allDay && startDateStr === endDateStr && endMin <= startMin
   const isDateRangeInvalid = startDateStr > endDateStr
   const canSubmit = hasTitle && !isDateInvalid && !isDateRangeInvalid
 
-  const panelStyle: React.CSSProperties = panelPos
+  const pos = lockedPos.current
+  const panelStyle: React.CSSProperties = pos
     ? {
         position: 'fixed',
-        top: panelPos.top !== undefined ? `${panelPos.top}px` : undefined,
-        left: panelPos.left !== undefined ? `${panelPos.left}px` : undefined,
-        right: panelPos.right !== undefined ? `${panelPos.right}px` : undefined,
+        top: pos.top !== undefined ? `${pos.top}px` : undefined,
+        left: pos.left !== undefined ? `${pos.left}px` : undefined,
+        right: pos.right !== undefined ? `${pos.right}px` : undefined,
         width: '380px',
         maxHeight: '80vh',
         zIndex: 10000,
@@ -343,17 +329,17 @@ export function EventModal({ persistEvent }: EventModalProps) {
                     size="small"
                   />
                   <select
-                    value={startHour}
+                    value={startMin}
                     onChange={(e) => {
-                      const h = Number(e.target.value)
-                      setStartHour(h)
-                      if (endHour <= h && startDateStr === endDateStr) {
-                        setEndHour(Math.min(h + 1, 23))
+                      const m = Number(e.target.value)
+                      setStartMin(m)
+                      if (endMin <= m && startDateStr === endDateStr) {
+                        setEndMin(Math.min(m + 60, 23 * 60 + 45))
                       }
                     }}
                     className={selectClass}
                   >
-                    {HOUR_OPTIONS.map((o) => (
+                    {TIME_OPTIONS.map((o) => (
                       <option key={o.value} value={o.value}>{o.label}</option>
                     ))}
                   </select>
@@ -370,12 +356,12 @@ export function EventModal({ persistEvent }: EventModalProps) {
                     size="small"
                   />
                   <select
-                    value={endHour}
-                    onChange={(e) => setEndHour(Number(e.target.value))}
+                    value={endMin}
+                    onChange={(e) => setEndMin(Number(e.target.value))}
                     className={selectClass}
-                    style={(isDateInvalid) ? { borderColor: '#dc2626' } : undefined}
+                    style={isDateInvalid ? { borderColor: '#dc2626' } : undefined}
                   >
-                    {HOUR_OPTIONS.map((o) => (
+                    {TIME_OPTIONS.map((o) => (
                       <option key={o.value} value={o.value}>{o.label}</option>
                     ))}
                   </select>
@@ -453,8 +439,8 @@ export function EventModal({ persistEvent }: EventModalProps) {
         position: 'fixed',
         inset: 0,
         display: 'flex',
-        alignItems: panelPos ? 'flex-start' : 'center',
-        justifyContent: panelPos ? 'flex-start' : 'center',
+        alignItems: pos ? 'flex-start' : 'center',
+        justifyContent: pos ? 'flex-start' : 'center',
         backgroundColor: posReady ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0)',
         transition: 'background-color 0.2s ease-out',
         zIndex: 10000,

@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { activeSlotAtom, eventModalAtom, dragAtom, selectedDateAtom } from '../../state/calendar'
+import { activeSlotAtom, eventModalAtom, dragAtom, selectedDateAtom, anyDragActiveAtom, hoveredEventAtom } from '../../state/calendar'
 import { formatHour, isToday, coversFullDay } from '../../utils/dates'
 import { layoutEvents } from '../../utils/layoutEvents'
 import { EventCard } from '../EventCard/EventCard'
@@ -33,6 +33,8 @@ export function DayColumn({
   const setModal = useSetAtom(eventModalAtom)
   const setSelectedDate = useSetAtom(selectedDateAtom)
   const drag = useAtomValue(dragAtom)
+  const setAnyDrag = useSetAtom(anyDragActiveAtom)
+  const setHovered = useSetAtom(hoveredEventAtom)
 
   const dateKey = date.toDateString()
   const today = isToday(date)
@@ -46,48 +48,69 @@ export function DayColumn({
   // Slot drag to create event
   const [slotDrag, setSlotDrag] = useState<{ startHour: number; currentHour: number } | null>(null)
   const slotDragRef = useRef(false)
+  const columnRef = useRef<HTMLDivElement>(null)
+
+  // Convert clientY to hour index within the column
+  const clientYToHour = useCallback((clientY: number) => {
+    const col = columnRef.current
+    if (!col) return 0
+    const rect = col.getBoundingClientRect()
+    const y = clientY - rect.top
+    return Math.max(0, Math.min(23, Math.floor(y / slotHeight)))
+  }, [slotHeight])
+
+  const handleDocPointerMove = useCallback(
+    (e: PointerEvent) => {
+      const hour = clientYToHour(e.clientY)
+      setSlotDrag((prev) => {
+        if (!prev || prev.currentHour === hour) return prev
+        slotDragRef.current = true
+        return { ...prev, currentHour: hour }
+      })
+    },
+    [clientYToHour]
+  )
+
+  const handleDocPointerUp = useCallback(
+    () => {
+      document.removeEventListener('pointermove', handleDocPointerMove)
+      document.removeEventListener('pointerup', handleDocPointerUp)
+
+      setSlotDrag((prev) => {
+        if (!prev) return null
+        const startH = Math.min(prev.startHour, prev.currentHour)
+        const endH = Math.max(prev.startHour, prev.currentHour) + 1
+
+        if (slotDragRef.current) {
+          setActiveSlot({ date: dateKey, hour: startH, endHour: Math.min(endH, 23) })
+          setModal({ isOpen: true, date, hour: startH, endHour: Math.min(endH, 23) })
+        } else {
+          const isActive = activeSlot?.date === dateKey && activeSlot.hour === prev.startHour
+          if (isActive) {
+            setModal({ isOpen: true, date, hour: prev.startHour })
+          }
+        }
+        return null
+      })
+      setAnyDrag(false)
+    },
+    [handleDocPointerMove, activeSlot, dateKey, date, setActiveSlot, setModal, setAnyDrag]
+  )
 
   const handleSlotPointerDown = useCallback(
     (hour: number, e: React.PointerEvent) => {
-      if (drag) return
+      if (e.button !== 0 || drag) return
       e.preventDefault()
       setSelectedDate(date)
       setActiveSlot({ date: dateKey, hour })
       setSlotDrag({ startHour: hour, currentHour: hour })
       slotDragRef.current = false
+      setHovered(null)
+      setAnyDrag(true)
+      document.addEventListener('pointermove', handleDocPointerMove)
+      document.addEventListener('pointerup', handleDocPointerUp)
     },
-    [drag, date, dateKey, setActiveSlot, setSelectedDate]
-  )
-
-  const handleSlotPointerMove = useCallback(
-    (hour: number) => {
-      if (!slotDrag) return
-      if (hour !== slotDrag.currentHour) {
-        slotDragRef.current = true
-        setSlotDrag((prev) => prev ? { ...prev, currentHour: hour } : null)
-      }
-    },
-    [slotDrag]
-  )
-
-  const handleSlotPointerUp = useCallback(
-    () => {
-      if (!slotDrag) return
-      const startH = Math.min(slotDrag.startHour, slotDrag.currentHour)
-      const endH = Math.max(slotDrag.startHour, slotDrag.currentHour) + 1
-
-      if (slotDragRef.current) {
-        setActiveSlot({ date: dateKey, hour: startH, endHour: Math.min(endH, 23) })
-        setModal({ isOpen: true, date, hour: startH, endHour: Math.min(endH, 23) })
-      } else {
-        const isActive = activeSlot?.date === dateKey && activeSlot.hour === slotDrag.startHour
-        if (isActive) {
-          setModal({ isOpen: true, date, hour: slotDrag.startHour })
-        }
-      }
-      setSlotDrag(null)
-    },
-    [slotDrag, activeSlot, dateKey, date, setActiveSlot, setModal]
+    [drag, date, dateKey, setActiveSlot, setSelectedDate, setHovered, setAnyDrag, handleDocPointerMove, handleDocPointerUp]
   )
 
   const eventLeft = labelWidth > 0 ? `${labelWidth + 4}px` : '0'
@@ -98,7 +121,7 @@ export function DayColumn({
 
   return (
     <div>
-      <div className="relative">
+      <div className="relative" ref={columnRef}>
         {HOURS.map((hour) => {
           const isCurrentHour = today && new Date().getHours() === hour
           const isActive = activeSlot?.date === dateKey && (
@@ -122,8 +145,6 @@ export function DayColumn({
                     : {}),
               }}
               onPointerDown={(e) => handleSlotPointerDown(hour, e)}
-              onPointerMove={() => handleSlotPointerMove(hour)}
-              onPointerUp={handleSlotPointerUp}
             >
               {labelWidth > 0 && (
                 <div className="text-xs text-text-secondary py-2 pr-3 text-right select-none">

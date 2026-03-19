@@ -1,5 +1,5 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { selectedDateAtom, eventModalAtom, hoveredEventAtom } from '../../state/calendar'
+import { selectedDateAtom, eventModalAtom, hoveredEventAtom, anyDragActiveAtom } from '../../state/calendar'
 import { getWeekDates, formatHour, isToday, coversFullDay } from '../../utils/dates'
 import { DayColumn } from '../DayColumn/DayColumn'
 import { EventCard as EventCardBase } from '../../atoms/EventCard/EventCard'
@@ -34,6 +34,7 @@ export function WeekView({ events, persistEvent, removeEvent }: CalendarStorageP
   const setModal = useSetAtom(eventModalAtom)
   const hovered = useAtomValue(hoveredEventAtom)
   const setHovered = useSetAtom(hoveredEventAtom)
+  const anyDrag = useAtomValue(anyDragActiveAtom)
   const weekDates = getWeekDates(selectedDate)
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -83,6 +84,7 @@ export function WeekView({ events, persistEvent, removeEvent }: CalendarStorageP
             const weekendClass = today ? wvStyles.todayHeader
               : dow === 0 ? wvStyles.sundayHeader
               : dow === 6 ? wvStyles.saturdayHeader
+              : dow % 2 === 0 ? wvStyles.weekdayEvenHeader
               : ''
             return (
               <div
@@ -128,12 +130,13 @@ export function WeekView({ events, persistEvent, removeEvent }: CalendarStorageP
                         e.stopPropagation()
                         setModal({
                           isOpen: true,
-                          date: event.startTime,
+                          date,
                           hour: event.startTime.getHours(),
                           editingEvent: event,
                         })
                       }}
                       onMouseEnter={(e) => {
+                        if (anyDrag) return
                         if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current)
                         hoverTimerRef.current = setTimeout(() => {
                           const rect = (e.target as HTMLElement).getBoundingClientRect()
@@ -178,7 +181,7 @@ export function WeekView({ events, persistEvent, removeEvent }: CalendarStorageP
         {/* Day columns — same DayColumn as day view */}
         {weekDates.map((date, i) => {
           const dow = date.getDay()
-          const colClass = dow === 0 ? wvStyles.sundayCol : dow === 6 ? wvStyles.saturdayCol : ''
+          const colClass = dow === 0 ? wvStyles.sundayCol : dow === 6 ? wvStyles.saturdayCol : dow % 2 === 0 ? wvStyles.weekdayEvenCol : ''
           return (
           <div key={date.toISOString()} ref={i === 0 ? dayColRef : undefined} className={`border-r border-border ${colClass}`} data-date={date.toISOString()}>
             <DayColumn
