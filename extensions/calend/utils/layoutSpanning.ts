@@ -1,4 +1,4 @@
-import { startOfDay } from 'date-fns'
+import { startOfDay, endOfDay } from 'date-fns'
 import type { CalendarEvent } from '../types'
 
 export interface SpanningEvent {
@@ -27,7 +27,12 @@ export function layoutSpanningEvents(
     const evStartMs = startOfDay(ev.startTime).getTime()
     const evEndMs = startOfDay(ev.endTime).getTime()
     if (evStartMs > weekEndMs || evEndMs < weekStartMs) return false
-    return isMultiDayEvent(ev)
+    // Multi-day events OR single-day events that cover a full day
+    if (isMultiDayEvent(ev)) return true
+    // Check if event covers full day on any day in the week
+    const dayStart = startOfDay(ev.startTime)
+    const dayEnd = endOfDay(ev.startTime)
+    return ev.startTime <= dayStart && ev.endTime >= dayEnd
   })
 
   const sorted = [...multiDay].sort((a, b) => {

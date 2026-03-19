@@ -62,8 +62,8 @@ export {
 } from './utils/dragUtils'
 
 // Organisms
-export { EventCard as EventCardOrganism } from './organisms/EventCard/EventCard'
 export { DayColumn } from './organisms/DayColumn/DayColumn'
+export { DayFrame } from './organisms/DayFrame/DayFrame'
 export { Timeline } from './organisms/Timeline/Timeline'
 export { WeekView } from './organisms/WeekView/WeekView'
 export { MonthView } from './organisms/MonthView/MonthView'

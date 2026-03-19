@@ -4,7 +4,7 @@
 import type { HTMLAttributes, FocusEvent } from 'react';
 
 export type PickerMode = 'date' | 'month';
-export type DatePickerVariant = 'default' | 'dark' | 'outlined';
+export type DatePickerVariant = 'default' | 'dark' | 'outlined' | 'minimal';
 export type DatePickerSize = 'small' | 'medium' | 'large';
 
 /** ハイライト月の指定（複数色対応） */

@@ -1,9 +1,10 @@
+import { useCallback } from 'react'
 import { format } from 'date-fns'
-import { ja } from 'date-fns/locale'
 import { useAtom } from 'jotai'
 import { viewModeAtom, selectedDateAtom } from '../../state/calendar'
 import { navigateDate } from '../../utils/dates'
 import { Button } from '@ui-catalog/core/atoms'
+import { DatePicker } from '@ui-catalog/core/molecules'
 import type { ViewMode } from '../../types'
 
 const VIEW_MODES: { readonly value: ViewMode; readonly label: string }[] = [
@@ -32,6 +33,12 @@ export function Header() {
     }
   }
 
+  const handleDateChange = useCallback((value: string) => {
+    if (value) {
+      setSelectedDate(new Date(value))
+    }
+  }, [setSelectedDate])
+
   function handlePrev() {
     setSelectedDate((prev) => navigateDate(prev, 'prev', viewMode))
   }
@@ -52,19 +59,22 @@ export function Header() {
             variant="default"
             size="small"
             onClick={handlePrev}
-            leftIcon="ChevronLeft"
+            leftIcon="chevron-left"
             iconSize={16}
           >
             {''}
           </Button>
-          <span className="text-sm text-text-secondary min-w-[100px] text-center">
-            {format(selectedDate, 'yyyy年M月d日', { locale: ja })}
-          </span>
+          <DatePicker
+            value={format(selectedDate, 'yyyy-MM-dd')}
+            onChange={handleDateChange}
+            size="small"
+            variant="minimal"
+          />
           <Button
             variant="default"
             size="small"
             onClick={handleNext}
-            leftIcon="ChevronRight"
+            leftIcon="chevron-right"
             iconSize={16}
           >
             {''}

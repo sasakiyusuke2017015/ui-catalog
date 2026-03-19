@@ -209,8 +209,9 @@ export function EventModal({ persistEvent }: EventModalProps) {
             {modal.editingEvent ? 'イベントを編集' : 'イベントを追加'}
           </h3>
           <button
+            type="button"
             onClick={close}
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', border: 'none', background: 'none', color: colors.text.secondary, cursor: 'pointer', borderRadius: '8px', fontSize: '18px' }}
+            className="flex items-center justify-center w-8 h-8 border-none bg-transparent cursor-pointer rounded-lg text-text-secondary hover:bg-surface-hover transition-colors text-lg"
           >
             &times;
           </button>
@@ -277,13 +278,7 @@ export function EventModal({ persistEvent }: EventModalProps) {
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', marginTop: '20px' }}>
               <Button variant="secondary" onClick={close}>キャンセル</Button>
-              <button
-                type="submit"
-                disabled={!canSubmit}
-                style={{ padding: '8px 24px', fontSize: '14px', fontWeight: 500, color: 'white', backgroundColor: !canSubmit ? '#a5b4fc' : '#4f46e5', borderRadius: '8px', border: 'none', cursor: !canSubmit ? 'not-allowed' : 'pointer' }}
-              >
-                保存
-              </button>
+              <Button type="submit" variant="primary" disabled={!canSubmit}>保存</Button>
             </div>
           </form>
         </div>

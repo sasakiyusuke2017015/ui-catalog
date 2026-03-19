@@ -7,7 +7,7 @@ import {
 import { format, startOfDay, differenceInCalendarDays } from 'date-fns'
 import { SpanningBar } from '../../molecules/SpanningBar/SpanningBar'
 import { MonthDayCell } from '../../molecules/MonthDayCell/MonthDayCell'
-import { layoutSpanningEvents, isMultiDayEvent } from '../../utils/layoutSpanning'
+import { layoutSpanningEvents } from '../../utils/layoutSpanning'
 import { ja } from 'date-fns/locale'
 import { useCallback, useRef, useState } from 'react'
 import type { CalendarEvent } from '../../types'
@@ -216,14 +216,14 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
         ))}
       </div>
 
-      <div className="flex-1 grid grid-rows-[repeat(auto-fill,1fr)]">
+      <div className={styles.grid}>
         {weeks.map((week, weekIdx) => {
           const { spanning, laneCount } = layoutSpanningEvents(events, week)
           const spanningIds = new Set(spanning.map((s) => s.event.id))
           const laneAreaH = laneCount * LANE_H
 
           return (
-            <div key={weekIdx} className={`grid grid-cols-7 border-b border-border/50 relative overflow-hidden ${weekIdx % 2 === 0 ? styles.weekRowEven : ''}`}>
+            <div key={weekIdx} className={`grid grid-cols-7 border-b border-border/50 relative ${weekIdx % 2 === 0 ? styles.weekRowEven : ''}`}>
               {/* Spanning event bars */}
               {spanning.map(({ event, startCol, endCol, lane, continuesLeft, continuesRight }) => (
                 <SpanningBar
@@ -256,7 +256,6 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
                   dragEventId={dragEventId}
                   todayCellClass={styles.todayCell ?? ''}
                   dropTargetClass={styles.dropTarget ?? ''}
-                  isMultiDayEvent={isMultiDayEvent}
                   onDayClick={handleDayClick}
                   onEventClick={handleEventClick}
                   onEventDragStart={startEventDrag}
