@@ -7,4 +7,6 @@ export type {
   IconSvgProps,
   IconAnimationConfig,
   LoadingPreset,
+  AnimationPreset,
+  HoverPreset,
 } from './types';

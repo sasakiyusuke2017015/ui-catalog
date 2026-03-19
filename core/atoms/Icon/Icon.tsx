@@ -9,8 +9,10 @@ import {
 } from 'framer-motion';
 
 import { type IconName } from '../../constants';
+import { cn } from '../../utils';
+import styles from './Icon.module.scss';
 
-import type { IconProps, IconSvgProps, LoadingPreset } from './types';
+import type { IconProps, IconSvgProps, LoadingPreset, AnimationPreset, HoverPreset } from './types';
 
 // ローディングアイコン判定
 const isLoadingIcon = (iconName: string): boolean =>
@@ -2090,6 +2092,106 @@ const PRESET_MAP: Record<LoadingPreset, { name: IconName; useFill?: boolean }> =
 // ========================================
 // Iconコンポーネント本体
 // ========================================
+// SCSS アニメーションプリセットからクラス名へのマッピング
+const ANIMATION_PRESET_CLASSES: Record<AnimationPreset, string> = {
+  // 基本アニメーション
+  'bounce': styles.bounce,
+  'bounce-in': styles.bounceIn,
+  'bounce-out': styles.bounceOut,
+  'bounce-horizontal': styles.bounceHorizontal,
+  'ping': styles.ping,
+  'pulse': styles.pulse,
+  'pulse-scale': styles.pulseScale,
+  'spin': styles.spin,
+  'spin-slow': styles.spinSlow,
+  'spin-fast': styles.spinFast,
+  'spin-reverse': styles.spinReverse,
+  'wiggle': styles.wiggle,
+  'wiggle-more': styles.wiggleMore,
+  'shake': styles.shake,
+  'shake-hard': styles.shakeHard,
+  'float': styles.float,
+  'float-rotate': styles.floatRotate,
+  'heartbeat': styles.heartbeat,
+  'tada': styles.tada,
+  'swing': styles.swing,
+  // 3D エフェクト
+  'flip-x': styles.flipX,
+  'flip-y': styles.flipY,
+  'rotate-3d': styles.rotate3d,
+  'flip-in': styles.flipIn,
+  'flip-out': styles.flipOut,
+  // インタラクティブ
+  'pop': styles.pop,
+  'pop-in': styles.popIn,
+  'rubber-band': styles.rubberBand,
+  'jello': styles.jello,
+  'squeeze': styles.squeeze,
+  'wobble': styles.wobble,
+  // フェードエフェクト
+  'fade-in': styles.fadeIn,
+  'fade-out': styles.fadeOut,
+  'fade-in-up': styles.fadeInUp,
+  'fade-in-down': styles.fadeInDown,
+  'zoom-in': styles.zoomIn,
+  'zoom-out': styles.zoomOut,
+  // スライドエフェクト
+  'slide-in-left': styles.slideInLeft,
+  'slide-in-right': styles.slideInRight,
+  'slide-in-up': styles.slideInUp,
+  'slide-in-down': styles.slideInDown,
+  // グロー効果
+  'glow': styles.glow,
+  'glow-strong': styles.glowStrong,
+  'glow-pulse': styles.glowPulse,
+  'glow-breathe': styles.glowBreathe,
+  'glow-rainbow': styles.glowRainbow,
+  'neon': styles.neon,
+  'color-shift': styles.colorShift,
+  'rainbow': styles.rainbow,
+  'flash': styles.flash,
+  'flicker': styles.flicker,
+  // 特殊効果
+  'sparkle': styles.sparkle,
+  'twinkle': styles.twinkle,
+  'glitch': styles.glitch,
+  'blur-pulse': styles.blurPulse,
+  'morph': styles.morph,
+  'liquid': styles.liquid,
+  'orbit': styles.orbit,
+  'ripple': styles.ripple,
+};
+
+// ホバープリセットからクラス名へのマッピング
+const HOVER_PRESET_CLASSES: Record<HoverPreset, string> = {
+  // スケール
+  'scale': styles.hoverScale,
+  'scale-large': styles.hoverScaleLarge,
+  // 回転
+  'rotate': styles.hoverRotate,
+  'rotate-full': styles.hoverRotateFull,
+  // グロー
+  'glow': styles.hoverGlow,
+  'neon': styles.hoverNeon,
+  // バウンス系
+  'bounce': styles.hoverBounce,
+  'pop': styles.hoverPop,
+  'wiggle': styles.hoverWiggle,
+  'shake': styles.hoverShake,
+  // 回転系
+  'spin': styles.hoverSpin,
+  'flip': styles.hoverFlip,
+  'flip-x': styles.hoverFlipX,
+  // 移動系
+  'float': styles.hoverFloat,
+  // 特殊効果
+  'rubber-band': styles.hoverRubberBand,
+  'jello': styles.hoverJello,
+  'tada': styles.hoverTada,
+  'heartbeat': styles.hoverHeartbeat,
+  'glitch': styles.hoverGlitch,
+};
+
 const Icon: React.FC<IconProps> = ({
   name: nameProp,
   preset,
@@ -2100,6 +2202,7 @@ const Icon: React.FC<IconProps> = ({
   stroke: strokeProp = 'currentColor',
   strokeWidth = 2,
   dot = false,
+  dotPing = false,
   shake = false,
   interactive = false,
   animationTrigger,
@@ -2113,6 +2216,13 @@ const Icon: React.FC<IconProps> = ({
   repeat,
   delay,
   onClick,
+  // SCSS ベースの新しい Props
+  animationPreset,
+  hoverPreset,
+  glow = false,
+  glowStrong = false,
+  clickable = false,
+  disabled = false,
 }) => {
   // presetからnameとfillを解決
   const presetConfig = preset ? PRESET_MAP[preset] : undefined;
@@ -2213,9 +2323,29 @@ const Icon: React.FC<IconProps> = ({
 
   const { fillColor, strokeColor } = getColorValues();
 
+  // SCSS クラス名を構築
+  const scssClasses = cn(
+    styles.icon,
+    // アニメーションプリセット
+    animationPreset && ANIMATION_PRESET_CLASSES[animationPreset],
+    // ホバープリセット
+    hoverPreset && HOVER_PRESET_CLASSES[hoverPreset],
+    // グロー効果
+    glow && styles.glow,
+    glowStrong && styles.glowStrong,
+    // インタラクティブ状態
+    clickable && styles.clickable,
+    disabled && styles.disabled,
+    // ドットスタイル
+    dot && !dotPing && styles.dot,
+    dotPing && styles.dotPing,
+    // ユーザー指定のクラス
+    className,
+  );
+
   // 共通のSVGプロパティ
   const svgProps = {
-    className,
+    className: scssClasses,
     style,
     width: size,
     height: size,
@@ -2281,19 +2411,12 @@ const Icon: React.FC<IconProps> = ({
     return null;
   };
 
-  // 右上の通知ドット
+  // 右上の通知ドット（SCSS の ::after で処理するため、SVG内には描画しない）
+  // dotPing は SCSS で ::before と ::after を使用
   const renderDot = () => {
-    if (!dot) return null;
-    return (
-      <circle
-        cx="18"
-        cy="6"
-        r="3"
-        fill="#EF4444"
-        stroke="white"
-        strokeWidth="1"
-      />
-    );
+    // SCSS ベースのドットを使用する場合は SVG 内には描画しない
+    if (dot || dotPing) return null;
+    return null;
   };
 
   // ========================================

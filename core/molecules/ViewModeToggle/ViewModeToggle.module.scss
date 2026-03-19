@@ -1,0 +1,218 @@
+// =============================================================================
+// ViewModeToggle Component Styles
+// =============================================================================
+
+@use '../../tokens' as *;
+
+// -----------------------------------------------------------------------------
+// Keyframes
+// -----------------------------------------------------------------------------
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
+  50% {
+    box-shadow: 0 0 8px 2px rgba(59, 130, 246, 0.4);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Container
+// -----------------------------------------------------------------------------
+.container {
+  display: flex;
+  align-items: center;
+  gap: $spacing-1;
+  padding: $spacing-1;
+  background-color: $color-gray-200;
+  border-radius: $border-radius-lg;
+}
+
+// -----------------------------------------------------------------------------
+// Button Base
+// -----------------------------------------------------------------------------
+.button {
+  display: flex;
+  align-items: center;
+  gap: $spacing-1;
+  padding: $spacing-1 $spacing-2;
+  border: none;
+  border-radius: $border-radius-md;
+  font-size: $font-size-sm;
+  cursor: pointer;
+  transition-property: background-color, color, box-shadow, transform;
+  transition-duration: $transition-duration-200;
+  transition-timing-function: $transition-ease-in-out;
+
+  &:focus-visible {
+    outline: 2px solid $color-primary-500;
+    outline-offset: 2px;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Inactive State
+// -----------------------------------------------------------------------------
+.inactive {
+  background-color: transparent;
+  color: $color-gray-600;
+
+  &:hover {
+    color: $color-gray-800;
+    background-color: rgba($color-gray-300, 0.5);
+    animation: pulse-glow 1.5s ease-in-out infinite;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Active State
+// -----------------------------------------------------------------------------
+.active {
+  background-color: $color-white;
+  color: $color-gray-800;
+  box-shadow: $shadow-sm;
+
+  // Shimmer effect on active
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba($color-white, 0.4) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s ease-in-out;
+    pointer-events: none;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Button with position relative for shimmer
+// -----------------------------------------------------------------------------
+.buttonWrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+// -----------------------------------------------------------------------------
+// Icon
+// -----------------------------------------------------------------------------
+.icon {
+  flex-shrink: 0;
+  transition: transform $transition-duration-200 $transition-ease-in-out;
+
+  .button:hover & {
+    transform: scale(1.1);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Label
+// -----------------------------------------------------------------------------
+.label {
+  white-space: nowrap;
+}
+
+.labelHidden {
+  @media (max-width: 1023px) {
+    display: none;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Size Variants
+// -----------------------------------------------------------------------------
+.small {
+  padding: $spacing-0-5 $spacing-1-5;
+  font-size: $font-size-xs;
+
+  .icon {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.medium {
+  padding: $spacing-1 $spacing-2;
+  font-size: $font-size-sm;
+
+  .icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.large {
+  padding: $spacing-1-5 $spacing-3;
+  font-size: $font-size-base;
+
+  .icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Variants
+// -----------------------------------------------------------------------------
+.default {
+  &.active {
+    background-color: $color-white;
+    color: $color-gray-800;
+  }
+
+  &.inactive:hover {
+    animation-name: pulse-glow;
+  }
+}
+
+.primary {
+  &.active {
+    background-color: $color-primary-500;
+    color: $color-white;
+  }
+
+  &.inactive:hover {
+    color: $color-primary-600;
+  }
+}
+
+.teal {
+  &.active {
+    background-color: #14b8a6;
+    color: $color-white;
+  }
+
+  &.inactive:hover {
+    color: #0d9488;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Active Background (for framer-motion layoutId animation)
+// -----------------------------------------------------------------------------
+.activeBackground {
+  position: absolute;
+  inset: 0;
+  background-color: $color-white;
+  border-radius: inherit;
+  box-shadow: $shadow-sm;
+  z-index: -1;
+}

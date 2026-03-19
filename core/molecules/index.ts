@@ -23,3 +23,6 @@ export * from './Tabs'
 // Indicators
 export * from './StarRating'
 export * from './StepIndicator'
+
+// Controls
+export * from './ViewModeToggle'
