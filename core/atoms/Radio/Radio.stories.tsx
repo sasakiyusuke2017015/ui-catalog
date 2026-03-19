@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Radio } from './Radio';
+import Radio from './Radio';
 
 export default {
   title: '基本入力/Radio',

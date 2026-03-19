@@ -1,4 +1,4 @@
-import MenuItemList from '../molecules/MenuItemList';
+import MenuItemList from '../MenuItemList/MenuItemList';
 
 
 import DropdownMenu from './DropdownMenu';

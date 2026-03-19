@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
 import { Animated } from './Animated'
-import ReplayButton from './ReplayButton'
-import { useRemountKey } from '../hooks/useRemountKey'
+import ReplayButton from '../ReplayButton/ReplayButton'
+import { useRemountKey } from '../../hooks/useRemountKey'
 
 const meta: Meta<typeof Animated> = {
   title: 'アニメーション/Card',

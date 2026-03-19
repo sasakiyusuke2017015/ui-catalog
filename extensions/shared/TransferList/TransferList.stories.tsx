@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 import type { Meta } from '@storybook/react';
 
-import TransferList from './TransferList';
-import type { TransferListItem } from './TransferList';
+import TransferList from '.';
+import type { TransferListItem } from './types';
 
 const meta: Meta<typeof TransferList> = {
   title: 'データ操作/TransferList',

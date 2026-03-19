@@ -1,4 +1,4 @@
-import { LOADING_ICON_TYPES } from '@/constants/icons';
+import { LOADING_ICON_TYPES } from '../../constants/icons';
 
 import LoadingZone from './LoadingZone';
 

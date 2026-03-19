@@ -2,10 +2,10 @@ import { useState } from 'react';
 
 import type { StoryFn } from '@storybook/react';
 
-import { isNullish } from '../utils';
+import { isNullish } from '../../../core/utils/isNullish';
 
 import InteractiveTable from './InteractiveTable';
-import type { InteractiveTableProps, Column, TableRowData, LinkData, InternalLinkData } from './InteractiveTable/types';
+import type { InteractiveTableProps, Column, TableRowData, LinkData, InternalLinkData } from './types';
 
 /**
  * インタラクティブテーブルコンポーネント

@@ -2,8 +2,8 @@ import {
   ALL_ICON_TYPES,
   LOADING_ICON_TYPES,
   type IconName,
-} from '@/constants/icons';
-import { SEMANTIC_COLORS } from '@/constants/design';
+} from '../../constants/icons';
+import { SEMANTIC_COLORS } from '../../constants/design';
 
 import Icon from './Icon';
 

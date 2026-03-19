@@ -1,6 +1,6 @@
 import React, { useState, type ComponentProps } from 'react';
 
-import { TextArea } from './TextArea';
+import TextArea from './TextArea';
 
 type TextAreaProps = ComponentProps<typeof TextArea>;
 

@@ -5,7 +5,7 @@
  */
 import type { StorybookConfig } from '@storybook/react-vite'
 
-import { storybookConfig, withDockerHmr } from '../infra/storybook'
+import { storybookConfig, withDockerHmr } from '../infra/storybook/preset.ts'
 
 const config: StorybookConfig = {
   ...storybookConfig,
