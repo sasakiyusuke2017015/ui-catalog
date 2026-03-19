@@ -87,5 +87,6 @@
   "FloatingElements": "1.0.0",
   "BlurFade": "1.0.0",
   "EventCard": "1.0.0",
-  "TimeSlotRow": "1.0.0"
+  "TimeSlotRow": "1.0.0",
+  "CountdownRing": "1.0.0"
 }

@@ -112,6 +112,9 @@ export const VERSION_REGISTRY = {
 
   // magicui
   BlurFade: '1.0.0',
+
+  // ticker
+  CountdownRing: '1.0.0',
 } as const
 
 export type ComponentName = keyof typeof VERSION_REGISTRY
