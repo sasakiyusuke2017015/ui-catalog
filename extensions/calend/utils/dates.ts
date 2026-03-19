@@ -134,4 +134,18 @@ export function navigateDate(
   }
 }
 
+/**
+ * その日においてイベントが全日をカバーしているか判定
+ * 例: 3/10 23:30 ~ 3/13 09:00 の場合
+ *   3/10 → false (23:30開始)
+ *   3/11 → true  (0:00~24:00カバー)
+ *   3/12 → true  (0:00~24:00カバー)
+ *   3/13 → false (09:00終了)
+ */
+export function coversFullDay(event: CalendarEvent, date: Date): boolean {
+  const dayStart = startOfDay(date)
+  const dayEnd = endOfDay(date)
+  return event.startTime <= dayStart && event.endTime >= dayEnd
+}
+
 export { isSameDay, isSameMonth, isToday, getDay }

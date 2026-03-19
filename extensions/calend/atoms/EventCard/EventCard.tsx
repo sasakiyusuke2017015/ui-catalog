@@ -8,7 +8,7 @@ interface EventCardBaseProps {
   readonly title: string
   readonly color: string
   readonly onDelete?: () => void
-  readonly onClick?: () => void
+  readonly onClick?: (e: React.MouseEvent) => void
   readonly onPointerDown?: (e: React.PointerEvent) => void
   readonly onMouseEnter?: (e: React.MouseEvent) => void
   readonly onMouseLeave?: (e: React.MouseEvent) => void
@@ -58,20 +58,30 @@ function CompactEventCard({
   onDelete,
   onClick,
   onPointerDown,
+  onMouseEnter,
+  onMouseLeave,
   isDragging = false,
+  isHovered = false,
   children,
   className = '',
 }: CompactProps) {
   return (
     <div
       data-component="event-card"
-      className={`rounded-xl px-2 py-0.5 text-white text-[10px] font-medium truncate hover:whitespace-normal hover:overflow-visible relative group transition-shadow hover:shadow-md ${
-        isDragging ? 'cursor-grabbing opacity-50' : 'cursor-default'
+      className={`rounded-xl px-2 py-0.5 text-white text-[10px] font-medium truncate relative group transition-all ${
+        isDragging ? 'cursor-grabbing opacity-50' : 'cursor-pointer'
       } ${className}`}
-      style={{ backgroundColor: color, boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.2)' }}
-      title={title}
+      style={{
+        backgroundColor: color,
+        boxShadow: isHovered
+          ? '0 4px 12px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.3)'
+          : 'inset 0 0 0 1px rgba(255,255,255,0.2)',
+        filter: isHovered ? 'brightness(1.15)' : 'none',
+      }}
       onClick={onClick}
       onPointerDown={onPointerDown}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       {title}
       {onDelete && <DeleteButton onDelete={onDelete} />}
@@ -122,7 +132,7 @@ function TimelineEventCard({
         backgroundColor: color,
         top: `${top + 1}px`,
         height: `${Math.max(height - 2, 14)}px`,
-        zIndex: isDragging ? 25 : isHovered ? 20 + zColumn : 10 + zColumn,
+        zIndex: isDragging ? 20 : isHovered ? Math.min(10 + zColumn, 19) : Math.min(1 + zColumn, 9),
         pointerEvents: 'auto',
         opacity: isDragging ? 0.7 : isHovered ? 0.85 : 1,
         filter: isHovered ? 'brightness(1.2)' : 'none',

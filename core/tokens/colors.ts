@@ -40,6 +40,13 @@ export const colors = {
     info: '#3b82f6',
   },
 
+  // Calendar
+  today: {
+    bg: 'rgba(251, 191, 36, 0.15)',
+    bgStrong: 'rgba(251, 191, 36, 0.22)',
+    border: 'rgba(251, 191, 36, 0.3)',
+  },
+
   // Base
   white: '#ffffff',
   black: '#000000',

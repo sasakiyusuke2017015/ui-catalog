@@ -1,12 +1,13 @@
-import { useAtom } from 'jotai'
-import { selectedDateAtom } from '../../state/calendar'
-import { getWeekDates, formatHour, isToday } from '../../utils/dates'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { selectedDateAtom, eventModalAtom, hoveredEventAtom } from '../../state/calendar'
+import { getWeekDates, formatHour, isToday, coversFullDay } from '../../utils/dates'
 import { DayColumn } from '../DayColumn/DayColumn'
 import { EventCard as EventCardBase } from '../../atoms/EventCard/EventCard'
 import { format } from 'date-fns'
 import { ja } from 'date-fns/locale'
 import { useCallback, useRef, useState, useEffect } from 'react'
 import type { CalendarEvent } from '../../types'
+import wvStyles from './WeekView.module.scss'
 
 const HOURS = Array.from({ length: 24 }, (_, i) => i)
 const SLOT_HEIGHT = 48
@@ -30,7 +31,11 @@ interface CalendarStorageProps {
 
 export function WeekView({ events, persistEvent, removeEvent }: CalendarStorageProps) {
   const [selectedDate] = useAtom(selectedDateAtom)
+  const setModal = useSetAtom(eventModalAtom)
+  const hovered = useAtomValue(hoveredEventAtom)
+  const setHovered = useSetAtom(hoveredEventAtom)
   const weekDates = getWeekDates(selectedDate)
+  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const dayColRef = useRef<HTMLDivElement>(null)
   const [colWidth, setColWidth] = useState(0)
@@ -77,9 +82,7 @@ export function WeekView({ events, persistEvent, removeEvent }: CalendarStorageP
             return (
               <div
                 key={date.toISOString()}
-                className={`text-center py-2 border-r border-border ${
-                  today ? 'bg-primary/10' : ''
-                }`}
+                className={`text-center py-2 border-r border-border ${today ? wvStyles.todayHeader : ''}`}
               >
                 <div className="text-xs text-text-secondary">
                   {format(date, 'E', { locale: ja })}
@@ -97,21 +100,48 @@ export function WeekView({ events, persistEvent, removeEvent }: CalendarStorageP
         </div>
 
         {/* All-day events row */}
-        {weekDates.some((d) => getEventsForDay(events, d).some((e) => e.allDay)) && (
+        {weekDates.some((d) => getEventsForDay(events, d).some((e) => coversFullDay(e, d))) && (
           <div className="grid grid-cols-[64px_repeat(7,1fr)] border-b border-border bg-surface">
             <div className="text-[10px] text-text-secondary py-1 pr-2 text-right border-r border-border/50 select-none flex items-center justify-end">
               終日
             </div>
             {weekDates.map((date) => {
-              const allDayEvents = getEventsForDay(events, date).filter((e) => e.allDay)
+              const allDayEvents = getEventsForDay(events, date).filter((e) => coversFullDay(e, date))
               return (
-                <div key={date.toISOString()} className="flex flex-wrap gap-0.5 p-0.5 border-r border-border/50 min-h-[28px]">
+                <div key={date.toISOString()} className="flex gap-0.5 p-0.5 border-r border-border/50 h-[28px] overflow-hidden">
                   {allDayEvents.map((event) => (
                     <EventCardBase
                       key={event.id}
                       variant="compact"
                       title={event.title}
                       color={event.color}
+                      isHovered={hovered?.event.id === event.id}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setModal({
+                          isOpen: true,
+                          date: event.startTime,
+                          hour: event.startTime.getHours(),
+                          editingEvent: event,
+                        })
+                      }}
+                      onMouseEnter={(e) => {
+                        if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current)
+                        hoverTimerRef.current = setTimeout(() => {
+                          const rect = (e.target as HTMLElement).getBoundingClientRect()
+                          setHovered({
+                            event,
+                            rect: { top: rect.top, left: rect.left, right: rect.right, bottom: rect.bottom, width: rect.width },
+                          })
+                        }, 300)
+                      }}
+                      onMouseLeave={() => {
+                        if (hoverTimerRef.current) {
+                          clearTimeout(hoverTimerRef.current)
+                          hoverTimerRef.current = null
+                        }
+                        setHovered(null)
+                      }}
                       onDelete={() => handleDelete(event.id)}
                     />
                   ))}

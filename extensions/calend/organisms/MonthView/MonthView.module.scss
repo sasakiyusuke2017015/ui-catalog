@@ -1,0 +1,9 @@
+@use '../../../../core/tokens' as *;
+
+.todayCell {
+  background-color: $color-today-bg;
+}
+
+.dropTarget {
+  background-color: $color-today-bg-strong;
+}

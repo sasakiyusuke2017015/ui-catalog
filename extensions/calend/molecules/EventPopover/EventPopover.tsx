@@ -10,9 +10,7 @@ type Placement = 'right' | 'left' | 'bottom' | 'top'
 
 const POP_W = 280
 const POP_H_EST = 180
-const ARROW_DEPTH = 12
-const ARROW_HALF = 6
-const GAP = ARROW_DEPTH - 4
+const GAP = 8
 
 function getPlacement(rect: HoveredEvent['rect']): Placement {
   const vw = window.innerWidth
@@ -82,67 +80,11 @@ function computeLayout(rect: HoveredEvent['rect'], placement: Placement) {
     }
     case 'top': {
       const popLeft = Math.max(8, Math.min(cardCenterX - POP_W / 2, window.innerWidth - POP_W - 8))
-      // Use bottom-anchored: popover bottom = card top - (GAP - ARROW_DEPTH) so arrow tip touches card
-      const popBottom = vh - rect.top + (GAP - ARROW_DEPTH)
+      const popBottom = vh - rect.top + GAP
       const arrowLeft = Math.max(16, Math.min(cardCenterX - popLeft, POP_W - 32))
       return { popLeft, popTop: undefined, popBottom, arrowTop: undefined, arrowLeft}
 
     }
-  }
-}
-
-function Arrow({ placement, arrowTop, arrowLeft }: {
-  placement: Placement
-  arrowTop?: number
-  arrowLeft?: number
-}) {
-  const base: React.CSSProperties = {
-    position: 'absolute',
-    width: 0,
-    height: 0,
-  }
-
-  switch (placement) {
-    case 'right':
-      return <div style={{
-        ...base,
-        left: -ARROW_DEPTH,
-        top: `${arrowTop}px`,
-        borderTop: `${ARROW_HALF}px solid transparent`,
-        borderBottom: `${ARROW_HALF}px solid transparent`,
-        borderRight: `${ARROW_DEPTH}px solid #e2e5eb`,
-        filter: 'drop-shadow(-2px 0 2px rgba(0,0,0,0.06))',
-      }} />
-    case 'left':
-      return <div style={{
-        ...base,
-        right: -ARROW_DEPTH,
-        top: `${arrowTop}px`,
-        borderTop: `${ARROW_HALF}px solid transparent`,
-        borderBottom: `${ARROW_HALF}px solid transparent`,
-        borderLeft: `${ARROW_DEPTH}px solid #e2e5eb`,
-        filter: 'drop-shadow(2px 0 2px rgba(0,0,0,0.06))',
-      }} />
-    case 'bottom':
-      return <div style={{
-        ...base,
-        top: -ARROW_DEPTH,
-        left: `${arrowLeft}px`,
-        borderLeft: `${ARROW_HALF}px solid transparent`,
-        borderRight: `${ARROW_HALF}px solid transparent`,
-        borderBottom: `${ARROW_DEPTH}px solid #e2e5eb`,
-        filter: 'drop-shadow(0 -2px 2px rgba(0,0,0,0.06))',
-      }} />
-    case 'top':
-      return <div style={{
-        ...base,
-        bottom: -ARROW_DEPTH,
-        left: `${arrowLeft}px`,
-        borderLeft: `${ARROW_HALF}px solid transparent`,
-        borderRight: `${ARROW_HALF}px solid transparent`,
-        borderTop: `${ARROW_DEPTH}px solid #e2e5eb`,
-        filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.06))',
-      }} />
   }
 }
 
@@ -171,9 +113,9 @@ export function EventPopover({ hovered }: EventPopoverProps) {
     position: 'fixed',
     left: `${layout.popLeft}px`,
     width: `${POP_W}px`,
-    zIndex: 28,
+    zIndex: 30,
     pointerEvents: 'none',
-    animation: 'popover-in 0.15s ease-out',
+    animation: 'popover-in 0.2s ease-out',
   }
 
   if (layout.popBottom !== undefined) {
@@ -190,8 +132,6 @@ export function EventPopover({ hovered }: EventPopoverProps) {
 
   return (
     <div style={posStyle}>
-      <Arrow placement={placement} arrowTop={layout.arrowTop} arrowLeft={layout.arrowLeft} />
-
       <div style={{
         background: '#e2e5eb',
         borderRadius: '14px',

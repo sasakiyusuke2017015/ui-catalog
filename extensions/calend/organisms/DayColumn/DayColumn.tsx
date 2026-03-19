@@ -1,10 +1,11 @@
 import { useCallback, useRef, useState } from 'react'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { activeSlotAtom, eventModalAtom, dragAtom, selectedDateAtom } from '../../state/calendar'
-import { formatHour, isToday } from '../../utils/dates'
+import { formatHour, isToday, coversFullDay } from '../../utils/dates'
 import { layoutEvents } from '../../utils/layoutEvents'
 import { EventCard } from '../EventCard/EventCard'
 import type { CalendarEvent } from '../../types'
+import dcStyles from './DayColumn.module.scss'
 
 const HOURS = Array.from({ length: 24 }, (_, i) => i)
 
@@ -39,7 +40,7 @@ export function DayColumn({
   const dayStart = new Date(date)
   dayStart.setHours(0, 0, 0, 0)
 
-  const timedEvents = events.filter((e) => !e.allDay)
+  const timedEvents = events.filter((e) => !coversFullDay(e, date))
   const layouted = layoutEvents(timedEvents as CalendarEvent[])
 
   // Slot drag to create event
@@ -111,12 +112,14 @@ export function DayColumn({
             <div
               key={hour}
               className={`border-b border-border/50 transition-colors cursor-pointer select-none ${
-                isCurrentHour ? 'bg-primary/5' : ''
-              } ${isActive && !slotDrag ? 'bg-primary/10 ring-2 ring-inset ring-primary' : ''}`}
+                isActive && !slotDrag ? 'bg-primary/10' : ''
+              } ${!inDragRange && isCurrentHour ? dcStyles.todaySlot : ''}`}
               style={{
                 height: `${slotHeight}px`,
                 ...(labelWidth > 0 ? { display: 'grid', gridTemplateColumns: `${labelWidth}px 1fr` } : {}),
-                ...(inDragRange ? { backgroundColor: 'rgba(79, 70, 229, 0.1)' } : {}),
+                ...(inDragRange
+                  ? { backgroundColor: 'rgba(79, 70, 229, 0.1)' }
+                    : {}),
               }}
               onPointerDown={(e) => handleSlotPointerDown(hour, e)}
               onPointerMove={() => handleSlotPointerMove(hour)}
@@ -132,23 +135,32 @@ export function DayColumn({
           )
         })}
 
-        {/* Drag range preview */}
-        {slotDrag && slotDragRef.current && (
-          <div
-            style={{
-              position: 'absolute',
-              top: `${dragMin * slotHeight}px`,
-              height: `${(dragMax - dragMin + 1) * slotHeight}px`,
-              left: eventLeft,
-              right: '0',
-              border: '2px solid #4f46e5',
-              borderRadius: '8px',
-              pointerEvents: 'none',
-              zIndex: 5,
-              backgroundColor: 'rgba(79, 70, 229, 0.08)',
-            }}
-          />
-        )}
+        {/* Drag range preview / Active slot overlay */}
+        {(() => {
+          const overlayMin = slotDrag && slotDragRef.current ? dragMin : (
+            activeSlot?.date === dateKey ? activeSlot.hour : -1
+          )
+          const overlayMax = slotDrag && slotDragRef.current ? dragMax : (
+            activeSlot?.date === dateKey ? (activeSlot.endHour !== undefined ? activeSlot.endHour - 1 : activeSlot.hour) : -1
+          )
+          if (overlayMin < 0) return null
+          return (
+            <div
+              style={{
+                position: 'absolute',
+                top: `${overlayMin * slotHeight}px`,
+                height: `${(overlayMax - overlayMin + 1) * slotHeight}px`,
+                left: eventLeft,
+                right: '0',
+                border: '2px solid #4f46e5',
+                borderRadius: '8px',
+                pointerEvents: 'none',
+                zIndex: 5,
+                backgroundColor: 'rgba(79, 70, 229, 0.08)',
+              }}
+            />
+          )
+        })()}
 
         {/* Events overlay + current time indicator */}
         <div
@@ -160,7 +172,7 @@ export function DayColumn({
             const nowMinutes = now.getHours() * 60 + now.getMinutes()
             const topPx = (nowMinutes / 60) * slotHeight
             return (
-              <div className="absolute left-0 right-0" style={{ top: `${topPx}px`, zIndex: 5 }}>
+              <div className="absolute left-0 right-0" style={{ top: `${topPx}px`, zIndex: 25 }}>
                 <div className="h-0.5 bg-red-500">
                   <div className="absolute -left-1 -top-1 w-2.5 h-2.5 bg-red-500 rounded-full" />
                 </div>

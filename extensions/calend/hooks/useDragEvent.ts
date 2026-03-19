@@ -17,9 +17,10 @@ interface UseDragEventOptions {
   /** Day column width in px. Required for cross-day dragging. */
   readonly columnWidth?: number
   readonly onCommit: (updated: CalendarEvent) => void
+  readonly onClick?: () => void
 }
 
-export function useDragEvent({ event, slotHeight, columnWidth, onCommit }: UseDragEventOptions) {
+export function useDragEvent({ event, slotHeight, columnWidth, onCommit, onClick }: UseDragEventOptions) {
   const setDrag = useSetAtom(dragAtom)
   const stateRef = useRef<{
     mode: 'move' | 'resize-top' | 'resize-bottom'
@@ -80,6 +81,7 @@ export function useDragEvent({ event, slotHeight, columnWidth, onCommit }: UseDr
 
       if (!state?.started) {
         setDrag(null)
+        onClick?.()
         return
       }
 

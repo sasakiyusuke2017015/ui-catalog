@@ -1,9 +1,12 @@
 import { useRef, useCallback } from 'react'
+import { useAtomValue, useSetAtom } from 'jotai'
+import { hoveredEventAtom } from '../../state/calendar'
 import { useInfiniteTimeline } from '../../hooks/useInfiniteTimeline'
-import { formatDayHeader, isToday } from '../../utils/dates'
+import { formatDayHeader, isToday, coversFullDay } from '../../utils/dates'
 import { DayColumn } from '../DayColumn/DayColumn'
 import { EventCard as EventCardBase } from '../../atoms/EventCard/EventCard'
 import type { CalendarEvent } from '../../types'
+import tlStyles from './Timeline.module.scss'
 
 const SLOT_HEIGHT = 56
 const LABEL_WIDTH = 64
@@ -28,6 +31,9 @@ interface CalendarStorageProps {
 export function Timeline({ events, persistEvent, removeEvent }: CalendarStorageProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const { dates } = useInfiniteTimeline(scrollRef)
+  const hovered = useAtomValue(hoveredEventAtom)
+  const setHovered = useSetAtom(hoveredEventAtom)
+  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const handleDelete = useCallback(
     async (id: string) => {
@@ -68,7 +74,7 @@ export function Timeline({ events, persistEvent, removeEvent }: CalendarStorageP
           >
             <div
               className={`sticky top-0 z-20 backdrop-blur-md border-b border-border py-3 px-4 ${
-                today ? 'bg-primary/10 border-primary/30' : 'bg-surface/90'
+                today ? tlStyles.todayHeader : 'bg-surface/90'
               }`}
             >
               <h2 className={`text-lg font-bold ${today ? 'text-primary' : 'text-text'}`}>
@@ -82,14 +88,32 @@ export function Timeline({ events, persistEvent, removeEvent }: CalendarStorageP
             </div>
 
             {/* All-day events */}
-            {dayEvents.some((e) => e.allDay) && (
+            {dayEvents.some((e) => coversFullDay(e, date)) && (
               <div className="flex flex-wrap gap-1 px-2 py-1 border-b border-border/50 bg-surface-hover/30" style={{ paddingLeft: `${LABEL_WIDTH + 12}px` }}>
-                {dayEvents.filter((e) => e.allDay).map((event) => (
+                {dayEvents.filter((e) => coversFullDay(e, date)).map((event) => (
                   <EventCardBase
                     key={event.id}
                     variant="compact"
                     title={event.title}
                     color={event.color}
+                    isHovered={hovered?.event.id === event.id}
+                    onMouseEnter={(e) => {
+                      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current)
+                      hoverTimerRef.current = setTimeout(() => {
+                        const rect = (e.target as HTMLElement).getBoundingClientRect()
+                        setHovered({
+                          event,
+                          rect: { top: rect.top, left: rect.left, right: rect.right, bottom: rect.bottom, width: rect.width },
+                        })
+                      }, 300)
+                    }}
+                    onMouseLeave={() => {
+                      if (hoverTimerRef.current) {
+                        clearTimeout(hoverTimerRef.current)
+                        hoverTimerRef.current = null
+                      }
+                      setHovered(null)
+                    }}
                     onDelete={() => handleDelete(event.id)}
                   />
                 ))}

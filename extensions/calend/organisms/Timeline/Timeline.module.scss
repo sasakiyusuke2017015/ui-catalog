@@ -1,0 +1,6 @@
+@use '../../../../core/tokens' as *;
+
+.todayHeader {
+  background-color: $color-today-bg;
+  border-color: $color-today-border;
+}

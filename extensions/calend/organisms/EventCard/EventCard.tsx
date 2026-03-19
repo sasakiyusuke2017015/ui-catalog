@@ -3,7 +3,7 @@ import { format } from 'date-fns'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { EventCard as EventCardBase } from '../../atoms/EventCard/EventCard'
 import { useDragEvent } from '../../hooks/useDragEvent'
-import { dragAtom, hoveredEventAtom } from '../../state/calendar'
+import { dragAtom, hoveredEventAtom, eventModalAtom } from '../../state/calendar'
 import type { CalendarEvent } from '../../types'
 
 interface EventCardProps {
@@ -34,7 +34,18 @@ export function EventCard({
   const isDragging = drag?.eventId === event.id
   const isHovered = hovered?.event.id === event.id
   const setHovered = useSetAtom(hoveredEventAtom)
+  const setModal = useSetAtom(eventModalAtom)
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const handleClick = useCallback(() => {
+    setHovered(null)
+    setModal({
+      isOpen: true,
+      date: event.startTime,
+      hour: event.startTime.getHours(),
+      editingEvent: event,
+    })
+  }, [event, setHovered, setModal])
 
   const { handleMoveStart, handleResizeTopStart, handleResizeBottomStart } =
     useDragEvent({
@@ -42,6 +53,7 @@ export function EventCard({
       slotHeight,
       columnWidth,
       onCommit: onUpdate,
+      onClick: handleClick,
     })
 
   const handleMouseEnter = useCallback((e: React.MouseEvent) => {
