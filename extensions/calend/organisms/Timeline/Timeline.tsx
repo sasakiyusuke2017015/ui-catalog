@@ -1,0 +1,54 @@
+import { useRef, useCallback } from 'react'
+import { useInfiniteTimeline } from '../../hooks/useInfiniteTimeline'
+import { DayFrame } from '../DayFrame/DayFrame'
+import type { CalendarEvent } from '../../types'
+
+interface CalendarStorageProps {
+  readonly events: readonly CalendarEvent[]
+  readonly persistEvent: (event: CalendarEvent) => Promise<void>
+  readonly removeEvent: (id: string) => Promise<void>
+}
+
+export function Timeline({ events, persistEvent, removeEvent }: CalendarStorageProps) {
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const { dates } = useInfiniteTimeline(scrollRef)
+
+  const handleDelete = useCallback(
+    async (id: string) => {
+      try {
+        await removeEvent(id)
+      } catch (error) {
+        throw new Error(`Failed to delete event: ${error}`)
+      }
+    },
+    [removeEvent]
+  )
+
+  const handleUpdate = useCallback(
+    async (event: CalendarEvent) => {
+      try {
+        await persistEvent(event)
+      } catch (error) {
+        throw new Error(`Failed to update event: ${error}`)
+      }
+    },
+    [persistEvent]
+  )
+
+  return (
+    <div
+      ref={scrollRef}
+      className="h-full overflow-y-auto"
+    >
+      {dates.map((date) => (
+        <DayFrame
+          key={date.toISOString()}
+          date={date}
+          events={events}
+          onDeleteEvent={handleDelete}
+          onUpdateEvent={handleUpdate}
+        />
+      ))}
+    </div>
+  )
+}

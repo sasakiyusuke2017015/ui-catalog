@@ -85,5 +85,7 @@
   "BackgroundTexture": "1.0.0",
   "GradientOverlay": "1.0.0",
   "FloatingElements": "1.0.0",
-  "BlurFade": "1.0.0"
+  "BlurFade": "1.0.0",
+  "EventCard": "1.0.0",
+  "TimeSlotRow": "1.0.0"
 }

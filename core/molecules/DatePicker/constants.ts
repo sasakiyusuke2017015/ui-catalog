@@ -35,6 +35,7 @@ export const VARIANT_STYLES = {
   dark: 'bg-gray-800 border border-gray-600 text-white focus:border-blue-500 focus:ring-blue-500/20',
   outlined: 'bg-transparent border-2 border-gray-300 text-gray-700 focus:border-blue-500 focus:ring-blue-500/20',
   default: 'bg-white border border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500/20',
+  minimal: 'bg-transparent border-none text-gray-700 hover:bg-gray-100 focus:ring-0',
 } as const;
 
 /** アイコンサイズ */

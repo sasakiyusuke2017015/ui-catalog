@@ -16,5 +16,8 @@
 // 1on1 プロジェクト固有
 export * from './1on1'
 
+// calend プロジェクト固有
+export * from './calend'
+
 // 複数プロジェクト共有
 export * from './shared'

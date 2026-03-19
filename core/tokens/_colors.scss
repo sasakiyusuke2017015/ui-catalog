@@ -98,3 +98,16 @@ $color-border-primary: $color-gray-300;
 $color-border-secondary: $color-gray-200;
 
 $color-focus-ring: rgba($color-primary-500, 0.5);
+
+// Calendar: today highlight
+$color-today-bg: rgba(#fbbf24, 0.15);
+$color-today-bg-strong: rgba(#fbbf24, 0.22);
+$color-today-border: rgba(#fbbf24, 0.3);
+
+// Calendar: weekend
+$color-sunday-bg: rgba(#ef4444, 0.06);
+$color-saturday-bg: rgba(#3b82f6, 0.06);
+
+// Calendar: weekday alternating
+$color-weekday-even-bg: rgba(#94a3b8, 0.08);
+$color-weekday-odd-bg: transparent;
