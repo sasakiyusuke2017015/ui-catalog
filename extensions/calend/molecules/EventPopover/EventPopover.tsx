@@ -1,5 +1,6 @@
 import { format } from 'date-fns'
 import { ja } from 'date-fns/locale'
+import { colors } from '@ui-catalog/core/tokens'
 import type { HoveredEvent } from '../../state/calendar'
 
 interface EventPopoverProps {
@@ -133,7 +134,7 @@ export function EventPopover({ hovered }: EventPopoverProps) {
   return (
     <div style={posStyle}>
       <div style={{
-        background: '#e2e5eb',
+        background: colors.surface.popover,
         borderRadius: '14px',
         boxShadow: '0 12px 40px rgba(0,0,0,0.22), 0 0 0 1px rgba(0,0,0,0.1)',
         overflow: 'hidden',
@@ -141,13 +142,13 @@ export function EventPopover({ hovered }: EventPopoverProps) {
         <div style={{ height: '4px', background: event.color }} />
 
         <div style={{ padding: '14px 18px' }}>
-          <div style={{ fontSize: '15px', fontWeight: 700, color: '#1e293b', lineHeight: 1.3, marginBottom: '10px' }}>
+          <div style={{ fontSize: '15px', fontWeight: 700, color: colors.text.primary, lineHeight: 1.3, marginBottom: '10px' }}>
             {event.title}
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{ width: '8px', height: '8px', borderRadius: '3px', background: event.color, flexShrink: 0 }} />
-            <div style={{ fontSize: '13px', color: '#64748b' }}>
+            <div style={{ fontSize: '13px', color: colors.text.secondary }}>
               {event.allDay ? (
                 sameDay ? `${startDate} 終日` : `${startDate} - ${endDate}`
               ) : (
@@ -161,11 +162,11 @@ export function EventPopover({ hovered }: EventPopoverProps) {
           {event.description && (
             <div style={{
               fontSize: '13px',
-              color: '#475569',
+              color: colors.text.muted,
               lineHeight: 1.5,
               marginTop: '10px',
               paddingTop: '10px',
-              borderTop: '1px solid #f1f5f9',
+              borderTop: `1px solid ${colors.border.light}`,
               whiteSpace: 'pre-wrap',
               maxHeight: '80px',
               overflow: 'auto',

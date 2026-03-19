@@ -1,6 +1,6 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { selectedDateAtom, eventModalAtom, hoveredEventAtom, anyDragActiveAtom } from '../../state/calendar'
-import { getWeekDates, formatHour, isToday, coversFullDay } from '../../utils/dates'
+import { getWeekDates, formatHour, isToday, coversFullDay, getEventsForDay } from '../../utils/dates'
 import { DayColumn } from '../DayColumn/DayColumn'
 import { EventCard as EventCardBase } from '../../atoms/EventCard/EventCard'
 import { format } from 'date-fns'
@@ -12,16 +12,7 @@ import wvStyles from './WeekView.module.scss'
 const HOURS = Array.from({ length: 24 }, (_, i) => i)
 const SLOT_HEIGHT = 48
 
-function getEventsForDay(
-  events: readonly CalendarEvent[],
-  date: Date
-): readonly CalendarEvent[] {
-  const dayStart = new Date(date)
-  dayStart.setHours(0, 0, 0, 0)
-  const dayEnd = new Date(date)
-  dayEnd.setHours(23, 59, 59, 999)
-  return events.filter((e) => e.startTime <= dayEnd && e.endTime >= dayStart)
-}
+
 
 interface CalendarStorageProps {
   readonly events: readonly CalendarEvent[]

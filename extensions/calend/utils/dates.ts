@@ -148,4 +148,13 @@ export function coversFullDay(event: CalendarEvent, date: Date): boolean {
   return event.startTime <= dayStart && event.endTime >= dayEnd
 }
 
+export function getEventsForDay(
+  events: readonly CalendarEvent[],
+  date: Date
+): readonly CalendarEvent[] {
+  const ds = startOfDay(date)
+  const de = endOfDay(date)
+  return events.filter((e) => e.startTime <= de && e.endTime >= ds)
+}
+
 export { isSameDay, isSameMonth, isToday, getDay }

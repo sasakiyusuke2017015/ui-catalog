@@ -2,7 +2,7 @@ import { useRef, useCallback } from 'react'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { hoveredEventAtom, anyDragActiveAtom } from '../../state/calendar'
 import { useInfiniteTimeline } from '../../hooks/useInfiniteTimeline'
-import { formatDayHeader, isToday, coversFullDay } from '../../utils/dates'
+import { formatDayHeader, isToday, coversFullDay, getEventsForDay } from '../../utils/dates'
 import { DayColumn } from '../DayColumn/DayColumn'
 import { EventCard as EventCardBase } from '../../atoms/EventCard/EventCard'
 import type { CalendarEvent } from '../../types'
@@ -11,16 +11,7 @@ import tlStyles from './Timeline.module.scss'
 const SLOT_HEIGHT = 56
 const LABEL_WIDTH = 64
 
-function getEventsForDay(
-  events: readonly CalendarEvent[],
-  date: Date
-): readonly CalendarEvent[] {
-  const dayStart = new Date(date)
-  dayStart.setHours(0, 0, 0, 0)
-  const dayEnd = new Date(date)
-  dayEnd.setHours(23, 59, 59, 999)
-  return events.filter((e) => e.startTime <= dayEnd && e.endTime >= dayStart)
-}
+
 
 interface CalendarStorageProps {
   readonly events: readonly CalendarEvent[]

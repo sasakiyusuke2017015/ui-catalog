@@ -47,6 +47,22 @@ export const colors = {
     border: 'rgba(251, 191, 36, 0.3)',
   },
 
+  // Semantic text/border
+  text: {
+    primary: '#1e293b',
+    secondary: '#64748b',
+    muted: '#475569',
+  },
+  border: {
+    primary: '#e2e8f0',
+    light: '#f1f5f9',
+  },
+  surface: {
+    popover: '#e2e5eb',
+    panel: '#ffffff',
+  },
+  danger: '#dc2626',
+
   // Base
   white: '#ffffff',
   black: '#000000',

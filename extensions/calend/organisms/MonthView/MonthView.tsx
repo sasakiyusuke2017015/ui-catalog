@@ -2,11 +2,12 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { selectedDateAtom, activeSlotAtom, eventModalAtom, hoveredEventAtom, anyDragActiveAtom } from '../../state/calendar'
 import {
   getMonthCalendarDates,
-  isToday,
-  isSameMonth,
-  coversFullDay,
+  getEventsForDay,
 } from '../../utils/dates'
 import { format, startOfDay, differenceInCalendarDays } from 'date-fns'
+import { SpanningBar } from '../../molecules/SpanningBar/SpanningBar'
+import { MonthDayCell } from '../../molecules/MonthDayCell/MonthDayCell'
+import { layoutSpanningEvents, isMultiDayEvent } from '../../utils/layoutSpanning'
 import { ja } from 'date-fns/locale'
 import { useCallback, useRef, useState } from 'react'
 import type { CalendarEvent } from '../../types'
@@ -14,112 +15,9 @@ import styles from './MonthView.module.scss'
 
 const WEEKDAY_LABELS = ['日', '月', '火', '水', '木', '金', '土']
 const LANE_H = 20
-const MAX_SINGLE_PER_DAY = 2
 const DRAG_THRESHOLD = 5
 
 /* ------------------------------------------------------------------ */
-/*  Multi-day event layout                                            */
-/* ------------------------------------------------------------------ */
-
-interface SpanningEvent {
-  readonly event: CalendarEvent
-  readonly startCol: number
-  readonly endCol: number
-  readonly lane: number
-  readonly continuesLeft: boolean
-  readonly continuesRight: boolean
-}
-
-function isMultiDayEvent(event: CalendarEvent): boolean {
-  const s = startOfDay(event.startTime).getTime()
-  const e = startOfDay(event.endTime).getTime()
-  return s !== e
-}
-
-function layoutSpanningEvents(
-  events: readonly CalendarEvent[],
-  weekDates: readonly Date[]
-): { readonly spanning: readonly SpanningEvent[]; readonly laneCount: number } {
-  const weekStartMs = startOfDay(weekDates[0]!).getTime()
-  const weekEndMs = startOfDay(weekDates[6]!).getTime()
-
-  const multiDay = events.filter((ev) => {
-    const evStartMs = startOfDay(ev.startTime).getTime()
-    const evEndMs = startOfDay(ev.endTime).getTime()
-    if (evStartMs > weekEndMs || evEndMs < weekStartMs) return false
-    return isMultiDayEvent(ev)
-  })
-
-  const sorted = [...multiDay].sort((a, b) => {
-    const d = a.startTime.getTime() - b.startTime.getTime()
-    if (d !== 0) return d
-    return (b.endTime.getTime() - b.startTime.getTime()) - (a.endTime.getTime() - a.startTime.getTime())
-  })
-
-  const lanes: (string | null)[][] = []
-  const result: SpanningEvent[] = []
-
-  for (const event of sorted) {
-    const evStartMs = startOfDay(event.startTime).getTime()
-    const evEndMs = startOfDay(event.endTime).getTime()
-
-    let startCol = 0
-    let endCol = 6
-
-    for (let i = 0; i < 7; i++) {
-      if (startOfDay(weekDates[i]!).getTime() >= evStartMs) {
-        startCol = i
-        break
-      }
-    }
-
-    for (let i = 6; i >= 0; i--) {
-      if (startOfDay(weekDates[i]!).getTime() <= evEndMs) {
-        endCol = i
-        break
-      }
-    }
-
-    const continuesLeft = evStartMs < weekStartMs
-    const continuesRight = evEndMs > weekEndMs
-
-    let lane = -1
-    for (let l = 0; l < lanes.length; l++) {
-      let free = true
-      for (let c = startCol; c <= endCol; c++) {
-        if (lanes[l]![c] !== null) { free = false; break }
-      }
-      if (free) { lane = l; break }
-    }
-    if (lane === -1) {
-      lane = lanes.length
-      lanes.push(Array(7).fill(null))
-    }
-
-    for (let c = startCol; c <= endCol; c++) {
-      lanes[lane]![c] = event.id
-    }
-
-    result.push({ event, startCol, endCol, lane, continuesLeft, continuesRight })
-  }
-
-  return { spanning: result, laneCount: lanes.length }
-}
-
-/* ------------------------------------------------------------------ */
-/*  Helpers                                                           */
-/* ------------------------------------------------------------------ */
-
-function getEventsForDay(
-  events: readonly CalendarEvent[],
-  date: Date
-): readonly CalendarEvent[] {
-  const dayStart = new Date(date)
-  dayStart.setHours(0, 0, 0, 0)
-  const dayEnd = new Date(date)
-  dayEnd.setHours(23, 59, 59, 999)
-  return events.filter((e) => e.startTime <= dayEnd && e.endTime >= dayStart)
-}
 
 function findDateCellFromPoint(x: number, y: number): string | null {
   const els = document.elementsFromPoint(x, y)
@@ -183,7 +81,8 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
     if (!state.started) {
       const dx = Math.abs(e.clientX - state.startX)
       const dy = Math.abs(e.clientY - state.startY)
-      if (dx < DRAG_THRESHOLD && dy < DRAG_THRESHOLD) return
+      const threshold = state.mode === 'move' ? DRAG_THRESHOLD : 3
+      if (dx < threshold && dy < threshold) return
       ;(dragRef.current as { started: boolean }).started = true
       setDragEventId(state.event.id)
       setHovered(null)
@@ -324,159 +223,45 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
           const laneAreaH = laneCount * LANE_H
 
           return (
-            <div key={weekIdx} className="grid grid-cols-7 border-b border-border/50 relative overflow-hidden">
+            <div key={weekIdx} className={`grid grid-cols-7 border-b border-border/50 relative overflow-hidden ${weekIdx % 2 === 0 ? styles.weekRowEven : ''}`}>
               {/* Spanning event bars */}
-              {spanning.map(({ event, startCol, endCol, lane, continuesLeft, continuesRight }) => {
-                  const padL = continuesLeft ? 0 : 2
-                  const padR = continuesRight ? 0 : 2
-                  const isDragging = dragEventId === event.id
-                  return (
-                    <div
-                      key={event.id}
-                      style={{
-                        position: 'absolute',
-                        left: `calc(${(startCol / 7) * 100}% + ${padL}px)`,
-                        width: `calc(${((endCol - startCol + 1) / 7) * 100}% - ${padL + padR}px)`,
-                        top: `${28 + lane * LANE_H}px`,
-                        height: `${LANE_H - 2}px`,
-                        zIndex: isDragging ? 20 : 2,
-                        opacity: isDragging ? 0.4 : 1,
-                      }}
-                    >
-                      <div
-                        className="h-full flex items-center px-4 text-white text-[10px] font-medium truncate cursor-grab hover:brightness-110 relative group/span"
-                        style={{
-                          backgroundColor: event.color,
-                          borderRadius: `${continuesLeft ? 0 : 10}px ${continuesRight ? 0 : 10}px ${continuesRight ? 0 : 10}px ${continuesLeft ? 0 : 10}px`,
-                          boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.2)',
-                        }}
-                        onClick={(e) => handleEventClick(event, week[startCol]!, e)}
-                        onPointerDown={(e) => startEventDrag(event, week[startCol]!, e)}
-                      >
-                        {event.title}
-                        {/* Left resize handle */}
-                        {!continuesLeft && (
-                          <div
-                            className="absolute left-0 top-0 bottom-0 w-2 cursor-ew-resize opacity-0 group-hover/span:opacity-100 transition-opacity"
-                            style={{ borderRadius: '10px 0 0 10px', background: 'rgba(255,255,255,0.3)' }}
-                            onPointerDown={(e) => {
-                              e.stopPropagation()
-                              startEventDrag(event, startOfDay(event.startTime), e, 'resize-left')
-                            }}
-                          />
-                        )}
-                        {/* Right resize handle */}
-                        {!continuesRight && (
-                          <div
-                            className="absolute right-0 top-0 bottom-0 w-2 cursor-ew-resize opacity-0 group-hover/span:opacity-100 transition-opacity"
-                            style={{ borderRadius: '0 10px 10px 0', background: 'rgba(255,255,255,0.3)' }}
-                            onPointerDown={(e) => {
-                              e.stopPropagation()
-                              startEventDrag(event, startOfDay(event.endTime), e, 'resize-right')
-                            }}
-                          />
-                        )}
-                      </div>
-                    </div>
-                  )
-                })}
+              {spanning.map(({ event, startCol, endCol, lane, continuesLeft, continuesRight }) => (
+                <SpanningBar
+                  key={event.id}
+                  event={event}
+                  startCol={startCol}
+                  endCol={endCol}
+                  lane={lane}
+                  continuesLeft={continuesLeft}
+                  continuesRight={continuesRight}
+                  isDragging={dragEventId === event.id}
+                  isDragActive={dragEventId !== null}
+                  onClick={handleEventClick}
+                  onDragStart={startEventDrag}
+                  weekDates={week}
+                />
+              ))}
 
               {/* Day cells */}
-              {week.map((date, colIdx) => {
-                const today = isToday(date)
-                const inMonth = isSameMonth(date, selectedDate)
-                const dayEvents = getEventsForDay(events, date)
-                const singleDayEvents = dayEvents.filter(
-                  (e) => !spanningIds.has(e.id) && !isMultiDayEvent(e)
-                )
-                const singleAllDay = singleDayEvents.filter((e) => coversFullDay(e, date))
-                const singleTimed = singleDayEvents.filter((e) => !coversFullDay(e, date))
-                const dayOfWeek = date.getDay()
-                const isActive = activeSlot?.date === date.toDateString()
-                const isDropTarget = dragEventId !== null && dropDateStr === date.toISOString()
-
-                const orderedSingle = [...singleAllDay, ...singleTimed]
-                const visibleSingle = orderedSingle.slice(0, MAX_SINGLE_PER_DAY)
-                const hiddenCount = orderedSingle.length - visibleSingle.length
-
-                return (
-                  <div
-                    key={date.toISOString()}
-                    data-month-date={date.toISOString()}
-                    onClick={() => handleDayClick(date)}
-                    className={`relative min-h-[80px] p-1 border-r border-border/50 cursor-pointer transition-colors hover:bg-surface-hover ${
-                      !inMonth ? 'opacity-40' : ''
-                    } ${today ? styles.todayCell : ''} ${isDropTarget ? styles.dropTarget : ''}`}
-                  >
-                    {isActive && (
-                      <div className="absolute inset-0 border-2 border-primary rounded-xl pointer-events-none z-20" />
-                    )}
-                    <div
-                      className={`text-sm font-medium mb-1 ${
-                        today
-                          ? 'text-primary font-bold'
-                          : dayOfWeek === 0
-                            ? 'text-red-500'
-                            : dayOfWeek === 6
-                              ? 'text-blue-500'
-                              : 'text-text'
-                      }`}
-                    >
-                      {format(date, 'd')}
-                    </div>
-
-                    {laneAreaH > 0 && <div style={{ height: `${laneAreaH}px` }} />}
-
-                    <div className="space-y-0.5">
-                      {visibleSingle.map((event) => {
-                        const isDragging = dragEventId === event.id
-                        return coversFullDay(event, date) ? (
-                          <div
-                            key={event.id}
-                            data-component="event-card"
-                            className="rounded-lg px-2.5 py-0.5 text-white text-[10px] font-medium truncate cursor-grab hover:brightness-110 transition-shadow hover:shadow-md"
-                            style={{
-                              backgroundColor: event.color,
-                              boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.2)',
-                              opacity: isDragging ? 0.4 : 1,
-                            }}
-                            title={event.title}
-                            onClick={(e) => handleEventClick(event, date, e)}
-                            onPointerDown={(e) => startEventDrag(event, date, e)}
-                          >
-                            {event.title}
-                          </div>
-                        ) : (
-                          <div
-                            key={event.id}
-                            data-component="event-card"
-                            className="flex items-center gap-1.5 px-1 py-0.5 rounded-lg cursor-grab hover:bg-surface-hover transition-colors truncate"
-                            style={{ opacity: isDragging ? 0.4 : 1 }}
-                            onClick={(e) => handleEventClick(event, date, e)}
-                            onPointerDown={(e) => startEventDrag(event, date, e)}
-                          >
-                            <div
-                              className="w-2 h-2 rounded-full shrink-0"
-                              style={{ backgroundColor: event.color }}
-                            />
-                            <span className="text-[10px] text-text-secondary font-medium shrink-0" style={{ fontVariantNumeric: 'tabular-nums' }}>
-                              {format(event.startTime, 'HH:mm')} - {format(event.endTime, 'HH:mm')}
-                            </span>
-                            <span className="text-[10px] text-text font-medium truncate ml-1">
-                              {event.title}
-                            </span>
-                          </div>
-                        )
-                      })}
-                      {hiddenCount > 0 && (
-                        <div className="text-[10px] text-text-secondary px-1">
-                          +{hiddenCount} 件
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )
-              })}
+              {week.map((date) => (
+                <MonthDayCell
+                  key={date.toISOString()}
+                  date={date}
+                  selectedDate={selectedDate}
+                  events={getEventsForDay(events, date)}
+                  spanningIds={spanningIds}
+                  laneAreaH={laneAreaH}
+                  isActive={activeSlot?.date === date.toDateString()}
+                  isDropTarget={dragEventId !== null && dropDateStr === date.toISOString()}
+                  dragEventId={dragEventId}
+                  todayCellClass={styles.todayCell ?? ''}
+                  dropTargetClass={styles.dropTarget ?? ''}
+                  isMultiDayEvent={isMultiDayEvent}
+                  onDayClick={handleDayClick}
+                  onEventClick={handleEventClick}
+                  onEventDragStart={startEventDrag}
+                />
+              ))}
             </div>
           )
         })}

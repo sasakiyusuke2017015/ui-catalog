@@ -3,32 +3,15 @@ import { useAtom, useSetAtom, useAtomValue } from 'jotai'
 import { eventModalAtom, activeSlotAtom, viewModeAtom } from '../../state/calendar'
 import { format } from 'date-fns'
 import { Button, Input, TextArea, Checkbox } from '@ui-catalog/core/atoms'
+import { colors } from '@ui-catalog/core/tokens'
+import { TimeSelect } from '../../molecules/TimeSelect/TimeSelect'
+import { ColorPicker, EVENT_COLORS } from '../../molecules/ColorPicker/ColorPicker'
 import type { CalendarEvent } from '../../types'
-
-const EVENT_COLORS = [
-  { value: '#4f46e5', label: 'Indigo' },
-  { value: '#059669', label: 'Green' },
-  { value: '#d97706', label: 'Amber' },
-  { value: '#dc2626', label: 'Red' },
-  { value: '#7c3aed', label: 'Purple' },
-  { value: '#0891b2', label: 'Cyan' },
-  { value: '#be185d', label: 'Pink' },
-]
-
-const TIME_OPTIONS = Array.from({ length: 96 }, (_, i) => {
-  const h = Math.floor(i / 4)
-  const m = (i % 4) * 15
-  return {
-    value: h * 60 + m,
-    label: `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`,
-  }
-})
 
 function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
 }
 
-const selectClass = 'text-sm px-3 py-2 rounded-lg border border-border bg-surface-hover text-text outline-none focus:border-primary transition-colors'
 const labelClass = 'text-xs text-text-secondary font-medium'
 
 interface EventModalProps {
@@ -38,7 +21,6 @@ interface EventModalProps {
 export function EventModal({ persistEvent }: EventModalProps) {
   const [modal, setModal] = useAtom(eventModalAtom)
   const setActiveSlot = useSetAtom(activeSlotAtom)
-  const activeSlot = useAtomValue(activeSlotAtom)
   const viewMode = useAtomValue(viewModeAtom)
   const titleRef = useRef<HTMLInputElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
@@ -49,7 +31,7 @@ export function EventModal({ persistEvent }: EventModalProps) {
   const [allDay, setAllDay] = useState(false)
   const [startMin, setStartMin] = useState(9 * 60)
   const [endMin, setEndMin] = useState(10 * 60)
-  const [color, setColor] = useState(EVENT_COLORS[0]!.value)
+  const [color, setColor] = useState<string>(EVENT_COLORS[0]!.value)
   const [description, setDescription] = useState('')
   const lockedPos = useRef<{ top?: number; left?: number; right?: number } | null>(null)
   const [posReady, setPosReady] = useState(false)
@@ -67,14 +49,10 @@ export function EventModal({ persistEvent }: EventModalProps) {
     const vw = window.innerWidth
     const vh = window.innerHeight
     const margin = 12
-
-    // Always use modal.date (= the date of the clicked cell/card), not editingEvent.startTime
-    // This ensures we avoid the column where the user actually clicked
     const targetDay = modal.date.toDateString()
 
     let targetRect: DOMRect | null = null
 
-    // Find column by data-date attribute (week/day view)
     for (const col of document.querySelectorAll('[data-date]')) {
       if (new Date((col as HTMLElement).dataset.date!).toDateString() === targetDay) {
         targetRect = col.getBoundingClientRect()
@@ -82,7 +60,6 @@ export function EventModal({ persistEvent }: EventModalProps) {
       }
     }
 
-    // Find cell by data-month-date attribute (month view)
     if (!targetRect) {
       for (const cell of document.querySelectorAll('[data-month-date]')) {
         if (new Date((cell as HTMLElement).dataset.monthDate!).toDateString() === targetDay) {
@@ -92,7 +69,6 @@ export function EventModal({ persistEvent }: EventModalProps) {
       }
     }
 
-    // Fallback: active slot border
     if (!targetRect) {
       const el = document.querySelector('.border-primary')
       if (el) targetRect = el.getBoundingClientRect()
@@ -111,7 +87,6 @@ export function EventModal({ persistEvent }: EventModalProps) {
       lockedPos.current = null
     }
 
-    // Fade in on next frame
     requestAnimationFrame(() => setPosReady(true))
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modal.isOpen])
@@ -139,7 +114,6 @@ export function EventModal({ persistEvent }: EventModalProps) {
         setColor(EVENT_COLORS[0]!.value)
         setDescription('')
       }
-
       requestAnimationFrame(() => titleRef.current?.focus())
     }
   }, [modal.isOpen, modal.date, modal.hour, modal.editingEvent])
@@ -168,18 +142,16 @@ export function EventModal({ persistEvent }: EventModalProps) {
         }
       }
 
-      const event = {
-        id: modal.editingEvent?.id ?? generateId(),
-        title: title.trim(),
-        startTime,
-        endTime,
-        color,
-        allDay: allDay || undefined,
-        description: description.trim() || undefined,
-      }
-
       try {
-        await persistEvent(event)
+        await persistEvent({
+          id: modal.editingEvent?.id ?? generateId(),
+          title: title.trim(),
+          startTime,
+          endTime,
+          color,
+          allDay: allDay || undefined,
+          description: description.trim() || undefined,
+        })
         close()
       } catch (error) {
         throw new Error(`Failed to save event: ${error}`)
@@ -188,7 +160,6 @@ export function EventModal({ persistEvent }: EventModalProps) {
     [title, startDateStr, endDateStr, allDay, startMin, endMin, color, description, modal.editingEvent, persistEvent, close]
   )
 
-  // ESC to close
   useEffect(() => {
     if (!modal.isOpen) return
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -200,7 +171,6 @@ export function EventModal({ persistEvent }: EventModalProps) {
 
   if (!modal.isOpen) return null
 
-  // Validation
   const hasTitle = title.trim().length > 0
   const isDateInvalid = !allDay && startDateStr === endDateStr && endMin <= startMin
   const isDateRangeInvalid = startDateStr > endDateStr
@@ -208,248 +178,116 @@ export function EventModal({ persistEvent }: EventModalProps) {
 
   const pos = lockedPos.current
   const panelStyle: React.CSSProperties = pos
-    ? {
-        position: 'fixed',
-        top: pos.top !== undefined ? `${pos.top}px` : undefined,
-        left: pos.left !== undefined ? `${pos.left}px` : undefined,
-        right: pos.right !== undefined ? `${pos.right}px` : undefined,
-        width: '380px',
-        maxHeight: '80vh',
-        zIndex: 10000,
-      }
-    : {
-        width: '380px',
-        maxHeight: '80vh',
-      }
-
-  const panelContent = (
-    <div
-      ref={panelRef}
-      style={{
-        ...panelStyle,
-        background: '#fff',
-        borderRadius: '16px',
-        boxShadow: '0 24px 48px rgba(0,0,0,0.2)',
-        overflow: 'hidden',
-        opacity: posReady ? 1 : 0,
-        transform: posReady ? 'scale(1) translateY(0)' : 'scale(0.96) translateY(6px)',
-        transition: 'opacity 0.2s ease-out, transform 0.2s ease-out',
-      }}
-    >
-      {/* Header */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '16px 24px',
-        borderBottom: '1px solid #e2e8f0',
-      }}>
-        <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#1e293b', margin: 0 }}>
-          {modal.editingEvent ? 'イベントを編集' : 'イベントを追加'}
-        </h3>
-        <button
-          onClick={close}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '32px',
-            height: '32px',
-            border: 'none',
-            background: 'none',
-            color: '#64748b',
-            cursor: 'pointer',
-            borderRadius: '8px',
-            fontSize: '18px',
-          }}
-        >
-          &times;
-        </button>
-      </div>
-
-      {/* Body */}
-      <div style={{ padding: '20px 24px', overflowY: 'auto' }}>
-        <form onSubmit={handleSubmit}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {/* タイトル */}
-            <div>
-              <div className={labelClass} style={{ marginBottom: '4px' }}>タイトル</div>
-              <Input
-                ref={titleRef}
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="タイトルを追加"
-                size="large"
-              />
-            </div>
-
-            {/* 終日チェック */}
-            <Checkbox
-              checked={allDay}
-              onChange={(e) => setAllDay((e.target as HTMLInputElement).checked)}
-              label="終日"
-            />
-
-            {/* 日時 */}
-            {allDay ? (
-              <div>
-                <div className={labelClass} style={{ marginBottom: '4px' }}>期間</div>
-                <div className="flex items-center gap-2">
-                  <Input
-                    type="date"
-                    value={startDateStr}
-                    onChange={(e) => {
-                      setStartDateStr(e.target.value)
-                      if (e.target.value > endDateStr) setEndDateStr(e.target.value)
-                    }}
-                    size="small"
-                  />
-                  <span className="text-text-secondary text-sm">-</span>
-                  <Input
-                    type="date"
-                    value={endDateStr}
-                    min={startDateStr}
-                    onChange={(e) => setEndDateStr(e.target.value)}
-                    size="small"
-                  />
-                </div>
-              </div>
-            ) : (
-              <div>
-                <div className={labelClass} style={{ marginBottom: '4px' }}>開始</div>
-                <div className="flex items-center gap-2" style={{ marginBottom: '8px' }}>
-                  <Input
-                    type="date"
-                    value={startDateStr}
-                    onChange={(e) => {
-                      setStartDateStr(e.target.value)
-                      if (e.target.value > endDateStr) setEndDateStr(e.target.value)
-                    }}
-                    size="small"
-                  />
-                  <select
-                    value={startMin}
-                    onChange={(e) => {
-                      const m = Number(e.target.value)
-                      setStartMin(m)
-                      if (endMin <= m && startDateStr === endDateStr) {
-                        setEndMin(Math.min(m + 60, 23 * 60 + 45))
-                      }
-                    }}
-                    className={selectClass}
-                  >
-                    {TIME_OPTIONS.map((o) => (
-                      <option key={o.value} value={o.value}>{o.label}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className={labelClass} style={{ marginBottom: '4px', color: isDateInvalid || isDateRangeInvalid ? '#dc2626' : undefined }}>
-                  終了 {(isDateInvalid || isDateRangeInvalid) && <span style={{ fontSize: '11px' }}>※ 開始より後にしてください</span>}
-                </div>
-                <div className="flex items-center gap-2">
-                  <Input
-                    type="date"
-                    value={endDateStr}
-                    min={startDateStr}
-                    onChange={(e) => setEndDateStr(e.target.value)}
-                    size="small"
-                  />
-                  <select
-                    value={endMin}
-                    onChange={(e) => setEndMin(Number(e.target.value))}
-                    className={selectClass}
-                    style={isDateInvalid ? { borderColor: '#dc2626' } : undefined}
-                  >
-                    {TIME_OPTIONS.map((o) => (
-                      <option key={o.value} value={o.value}>{o.label}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            )}
-
-            {/* カラー */}
-            <div>
-              <div className={labelClass} style={{ marginBottom: '4px' }}>カラー</div>
-              <div className="flex gap-2">
-                {EVENT_COLORS.map((c) => (
-                  <button
-                    key={c.value}
-                    type="button"
-                    onClick={() => setColor(c.value)}
-                    className={`w-7 h-7 rounded-full transition-all ${
-                      color === c.value
-                        ? 'ring-2 ring-offset-2 ring-primary scale-110'
-                        : 'hover:scale-110'
-                    }`}
-                    style={{ backgroundColor: c.value }}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* 説明 */}
-            <div>
-              <div className={labelClass} style={{ marginBottom: '4px' }}>説明</div>
-              <TextArea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="説明を追加"
-                rows={4}
-                size="small"
-              />
-            </div>
-          </div>
-
-          <div style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            gap: '8px',
-            marginTop: '20px',
-          }}>
-            <Button variant="secondary" onClick={close}>
-              キャンセル
-            </Button>
-            <button
-              type="submit"
-              disabled={!canSubmit}
-              style={{
-                padding: '8px 24px',
-                fontSize: '14px',
-                fontWeight: 500,
-                color: 'white',
-                backgroundColor: !canSubmit ? '#a5b4fc' : '#4f46e5',
-                borderRadius: '8px',
-                border: 'none',
-                cursor: !canSubmit ? 'not-allowed' : 'pointer',
-              }}
-            >
-              保存
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  )
+    ? { position: 'fixed', top: `${pos.top}px`, left: pos.left !== undefined ? `${pos.left}px` : undefined, right: pos.right !== undefined ? `${pos.right}px` : undefined, width: '380px', maxHeight: '80vh', zIndex: 10000 }
+    : { width: '380px', maxHeight: '80vh' }
 
   return (
     <div
       style={{
-        position: 'fixed',
-        inset: 0,
-        display: 'flex',
+        position: 'fixed', inset: 0, display: 'flex',
         alignItems: pos ? 'flex-start' : 'center',
         justifyContent: pos ? 'flex-start' : 'center',
-        backgroundColor: posReady ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0)',
-        transition: 'background-color 0.2s ease-out',
-        zIndex: 10000,
+        backgroundColor: posReady ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0)',
+        transition: 'background-color 0.2s ease-out', zIndex: 10000,
       }}
-      onClick={(e) => {
-        if (e.target === e.currentTarget) close()
-      }}
+      onClick={(e) => { if (e.target === e.currentTarget) close() }}
     >
-      {panelContent}
+      <div
+        ref={panelRef}
+        style={{
+          ...panelStyle,
+          background: '#fff', borderRadius: '16px',
+          boxShadow: '0 24px 48px rgba(0,0,0,0.2)', overflow: 'hidden',
+          opacity: posReady ? 1 : 0,
+          transform: posReady ? 'scale(1) translateY(0)' : 'scale(0.96) translateY(6px)',
+          transition: 'opacity 0.2s ease-out, transform 0.2s ease-out',
+        }}
+      >
+        {/* Header */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', borderBottom: `1px solid ${colors.border.primary}` }}>
+          <h3 style={{ fontSize: '18px', fontWeight: 700, color: colors.text.primary, margin: 0 }}>
+            {modal.editingEvent ? 'イベントを編集' : 'イベントを追加'}
+          </h3>
+          <button
+            onClick={close}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '32px', height: '32px', border: 'none', background: 'none', color: colors.text.secondary, cursor: 'pointer', borderRadius: '8px', fontSize: '18px' }}
+          >
+            &times;
+          </button>
+        </div>
+
+        {/* Body */}
+        <div style={{ padding: '20px 24px', overflowY: 'auto' }}>
+          <form onSubmit={handleSubmit}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {/* タイトル */}
+              <div>
+                <div className={labelClass} style={{ marginBottom: '4px' }}>タイトル</div>
+                <Input ref={titleRef} type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="タイトルを追加" size="large" />
+              </div>
+
+              {/* 終日 */}
+              <Checkbox checked={allDay} onChange={(e) => setAllDay((e.target as HTMLInputElement).checked)} label="終日" />
+
+              {/* 日時 */}
+              {allDay ? (
+                <div>
+                  <div className={labelClass} style={{ marginBottom: '4px' }}>期間</div>
+                  <div className="flex items-center gap-2">
+                    <Input type="date" value={startDateStr} onChange={(e) => { setStartDateStr(e.target.value); if (e.target.value > endDateStr) setEndDateStr(e.target.value) }} size="small" />
+                    <span className="text-text-secondary text-sm">-</span>
+                    <Input type="date" value={endDateStr} min={startDateStr} onChange={(e) => setEndDateStr(e.target.value)} size="small" />
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <div className={labelClass} style={{ marginBottom: '4px' }}>開始</div>
+                  <div className="flex items-center gap-2" style={{ marginBottom: '8px' }}>
+                    <Input type="date" value={startDateStr} onChange={(e) => { setStartDateStr(e.target.value); if (e.target.value > endDateStr) setEndDateStr(e.target.value) }} size="small" />
+                    <TimeSelect
+                      value={startMin}
+                      onChange={(m) => {
+                        setStartMin(m)
+                        if (endMin <= m && startDateStr === endDateStr) setEndMin(Math.min(m + 60, 23 * 60 + 45))
+                      }}
+                    />
+                  </div>
+                  <div className={labelClass} style={{ marginBottom: '4px', color: isDateInvalid || isDateRangeInvalid ? colors.danger : undefined }}>
+                    終了 {(isDateInvalid || isDateRangeInvalid) && <span style={{ fontSize: '11px' }}>※ 開始より後にしてください</span>}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Input type="date" value={endDateStr} min={startDateStr} onChange={(e) => setEndDateStr(e.target.value)} size="small" />
+                    <TimeSelect value={endMin} onChange={setEndMin} error={isDateInvalid} />
+                  </div>
+                </div>
+              )}
+
+              {/* カラー */}
+              <div>
+                <div className={labelClass} style={{ marginBottom: '4px' }}>カラー</div>
+                <ColorPicker value={color} onChange={setColor} />
+              </div>
+
+              {/* 説明 */}
+              <div>
+                <div className={labelClass} style={{ marginBottom: '4px' }}>説明</div>
+                <TextArea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="説明を追加" rows={4} size="small" />
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', marginTop: '20px' }}>
+              <Button variant="secondary" onClick={close}>キャンセル</Button>
+              <button
+                type="submit"
+                disabled={!canSubmit}
+                style={{ padding: '8px 24px', fontSize: '14px', fontWeight: 500, color: 'white', backgroundColor: !canSubmit ? '#a5b4fc' : '#4f46e5', borderRadius: '8px', border: 'none', cursor: !canSubmit ? 'not-allowed' : 'pointer' }}
+              >
+                保存
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   )
 }

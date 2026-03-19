@@ -72,3 +72,4 @@ export { Header } from './organisms/Header/Header'
 
 // Molecules
 export { EventPopover } from './molecules/EventPopover/EventPopover'
+export { SpanningBar } from './molecules/SpanningBar/SpanningBar'
