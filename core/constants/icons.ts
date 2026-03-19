@@ -59,6 +59,7 @@ export const ALL_ICON_TYPES = [
   'trend-down-right',
   'trend-down',
   'trash',
+  'save',
   // LOADING
   'spinner',
   'spinner-thin',

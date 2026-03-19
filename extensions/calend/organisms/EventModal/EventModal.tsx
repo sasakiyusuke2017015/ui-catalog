@@ -16,9 +16,10 @@ const labelClass = 'text-xs text-text-secondary font-medium'
 
 interface EventModalProps {
   readonly persistEvent: (event: CalendarEvent) => Promise<void>
+  readonly removeEvent: (id: string) => Promise<void>
 }
 
-export function EventModal({ persistEvent }: EventModalProps) {
+export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
   const [modal, setModal] = useAtom(eventModalAtom)
   const setActiveSlot = useSetAtom(activeSlotAtom)
   const viewMode = useAtomValue(viewModeAtom)
@@ -122,6 +123,16 @@ export function EventModal({ persistEvent }: EventModalProps) {
     setModal((prev) => ({ ...prev, isOpen: false }))
     setActiveSlot(null)
   }, [setModal, setActiveSlot])
+
+  const handleDelete = useCallback(async () => {
+    if (!modal.editingEvent) return
+    try {
+      await removeEvent(modal.editingEvent.id)
+      close()
+    } catch (error) {
+      throw new Error(`Failed to delete event: ${error}`)
+    }
+  }, [modal.editingEvent, removeEvent, close])
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -276,9 +287,11 @@ export function EventModal({ persistEvent }: EventModalProps) {
               </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', marginTop: '20px' }}>
-              <Button variant="secondary" onClick={close}>キャンセル</Button>
-              <Button type="submit" variant="primary" disabled={!canSubmit}>保存</Button>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
+              {modal.editingEvent ? (
+                <Button variant="danger" leftIcon="trash" onClick={handleDelete}>削除</Button>
+              ) : <div />}
+              <Button type="submit" variant="primary" leftIcon="save" disabled={!canSubmit}>保存</Button>
             </div>
           </form>
         </div>

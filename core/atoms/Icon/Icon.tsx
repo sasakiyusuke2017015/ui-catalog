@@ -49,6 +49,22 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
       d="M4 20L20 4M4 4l16 16"
     />
   ),
+  ['save']: () => (
+    <g className={styles.body}>
+      <path
+        className={styles.stroke}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"
+      />
+      <path
+        className={styles.stroke}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M17 21v-8H7v8M7 3v5h8"
+      />
+    </g>
+  ),
   ['trash']: () => (
     <>
       <path
