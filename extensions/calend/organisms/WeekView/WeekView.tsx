@@ -79,17 +79,25 @@ export function WeekView({ events, persistEvent, removeEvent }: CalendarStorageP
           <div className="border-r border-border" />
           {weekDates.map((date) => {
             const today = isToday(date)
+            const dow = date.getDay()
+            const weekendClass = today ? wvStyles.todayHeader
+              : dow === 0 ? wvStyles.sundayHeader
+              : dow === 6 ? wvStyles.saturdayHeader
+              : ''
             return (
               <div
                 key={date.toISOString()}
-                className={`text-center py-2 border-r border-border ${today ? wvStyles.todayHeader : ''}`}
+                className={`text-center py-2 border-r border-border ${weekendClass}`}
               >
-                <div className="text-xs text-text-secondary">
+                <div className={`text-xs ${dow === 0 ? 'text-red-500' : dow === 6 ? 'text-blue-500' : 'text-text-secondary'}`}>
                   {format(date, 'E', { locale: ja })}
                 </div>
                 <div
                   className={`text-lg font-bold ${
-                    today ? 'text-primary' : 'text-text'
+                    today ? 'text-primary'
+                      : dow === 0 ? 'text-red-500'
+                      : dow === 6 ? 'text-blue-500'
+                      : 'text-text'
                   }`}
                 >
                   {format(date, 'd')}
@@ -168,8 +176,11 @@ export function WeekView({ events, persistEvent, removeEvent }: CalendarStorageP
         </div>
 
         {/* Day columns — same DayColumn as day view */}
-        {weekDates.map((date, i) => (
-          <div key={date.toISOString()} ref={i === 0 ? dayColRef : undefined}>
+        {weekDates.map((date, i) => {
+          const dow = date.getDay()
+          const colClass = dow === 0 ? wvStyles.sundayCol : dow === 6 ? wvStyles.saturdayCol : ''
+          return (
+          <div key={date.toISOString()} ref={i === 0 ? dayColRef : undefined} className={`border-r border-border ${colClass}`} data-date={date.toISOString()}>
             <DayColumn
               date={date}
               events={getEventsForDay(events, date)}
@@ -179,7 +190,8 @@ export function WeekView({ events, persistEvent, removeEvent }: CalendarStorageP
               onUpdateEvent={handleUpdate}
             />
           </div>
-        ))}
+          )
+        })}
       </div>
     </div>
   )

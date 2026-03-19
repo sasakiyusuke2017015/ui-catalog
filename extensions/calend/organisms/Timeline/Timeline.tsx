@@ -74,10 +74,18 @@ export function Timeline({ events, persistEvent, removeEvent }: CalendarStorageP
           >
             <div
               className={`sticky top-0 z-20 backdrop-blur-md border-b border-border py-3 px-4 ${
-                today ? tlStyles.todayHeader : 'bg-surface/90'
+                today ? tlStyles.todayHeader
+                  : date.getDay() === 0 ? tlStyles.sundayHeader
+                  : date.getDay() === 6 ? tlStyles.saturdayHeader
+                  : 'bg-surface/90'
               }`}
             >
-              <h2 className={`text-lg font-bold ${today ? 'text-primary' : 'text-text'}`}>
+              <h2 className={`text-lg font-bold ${
+                today ? 'text-primary'
+                  : date.getDay() === 0 ? 'text-red-500'
+                  : date.getDay() === 6 ? 'text-blue-500'
+                  : 'text-text'
+              }`}>
                 {formatDayHeader(date)}
                 {today && (
                   <span className="ml-2 text-xs font-normal bg-primary text-white px-2 py-0.5 rounded-full">
