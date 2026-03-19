@@ -1,39 +1,41 @@
-import { useRef, useCallback } from 'react'
-import { useAtomValue, useSetAtom } from 'jotai'
-import { hoveredEventAtom, anyDragActiveAtom } from '../../state/calendar'
-import { formatDayHeader, isToday, coversFullDay, getEventsForDay } from '../../utils/dates'
+import { formatDayHeader, isToday, getEventsForDay } from '../../utils/dates'
 import { DayColumn } from '../DayColumn/DayColumn'
-import { EventCard as EventCardBase } from '../../atoms/EventCard/EventCard'
 import type { CalendarEvent } from '../../types'
 import styles from './DayFrame.module.scss'
 
 const SLOT_HEIGHT = 56
 const LABEL_WIDTH = 64
 
+type HeaderVariant = 'blur' | 'subtle'
+
 interface DayFrameProps {
   readonly date: Date
   readonly events: readonly CalendarEvent[]
+  readonly headerVariant?: HeaderVariant
   readonly onDeleteEvent: (id: string) => void
   readonly onUpdateEvent: (event: CalendarEvent) => void
 }
 
-export function DayFrame({ date, events, onDeleteEvent, onUpdateEvent }: DayFrameProps) {
-  const hovered = useAtomValue(hoveredEventAtom)
-  const setHovered = useSetAtom(hoveredEventAtom)
-  const anyDrag = useAtomValue(anyDragActiveAtom)
-  const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+const HEADER_VARIANT_CLASS: Record<HeaderVariant, string> = {
+  blur: styles.blur,
+  subtle: styles.subtle,
+}
 
+export function DayFrame({ date, events, headerVariant = 'blur', onDeleteEvent, onUpdateEvent }: DayFrameProps) {
   const today = isToday(date)
   const dayEvents = getEventsForDay(events, date)
   const dow = date.getDay()
 
-  const headerClass = today
+  const dayClass = today
     ? styles.todayHeader
     : dow === 0
       ? styles.sundayHeader
       : dow === 6
         ? styles.saturdayHeader
-        : 'bg-surface/90'
+        : ''
+
+  const variantClass = HEADER_VARIANT_CLASS[headerVariant]
+  const headerClass = `${variantClass} ${dayClass}`
 
   const textClass = today
     ? 'text-primary'
@@ -43,42 +45,14 @@ export function DayFrame({ date, events, onDeleteEvent, onUpdateEvent }: DayFram
         ? 'text-blue-500'
         : 'text-text'
 
-  const clearHoverTimer = useCallback(() => {
-    if (hoverTimerRef.current) {
-      clearTimeout(hoverTimerRef.current)
-      hoverTimerRef.current = null
-    }
-  }, [])
-
-  const handleEventMouseEnter = useCallback(
-    (event: CalendarEvent, e: React.MouseEvent) => {
-      if (anyDrag) return
-      clearHoverTimer()
-      hoverTimerRef.current = setTimeout(() => {
-        const rect = (e.target as HTMLElement).getBoundingClientRect()
-        setHovered({
-          event,
-          rect: { top: rect.top, left: rect.left, right: rect.right, bottom: rect.bottom, width: rect.width },
-        })
-      }, 300)
-    },
-    [anyDrag, clearHoverTimer, setHovered]
-  )
-
-  const handleEventMouseLeave = useCallback(() => {
-    clearHoverTimer()
-    setHovered(null)
-  }, [clearHoverTimer, setHovered])
-
-  const allDayEvents = dayEvents.filter((e) => coversFullDay(e, date))
-
   return (
     <div
       className="min-h-screen"
       data-date={date.toISOString()}
     >
       <div
-        className={`sticky top-0 z-20 backdrop-blur-md border-b border-border py-3 px-4 ${headerClass}`}
+        data-sticky-header
+        className={`${styles.header} ${headerClass}`}
       >
         <h2 className={`text-lg font-bold ${textClass}`}>
           {formatDayHeader(date)}
@@ -89,26 +63,6 @@ export function DayFrame({ date, events, onDeleteEvent, onUpdateEvent }: DayFram
           )}
         </h2>
       </div>
-
-      {allDayEvents.length > 0 && (
-        <div
-          className="flex flex-wrap gap-1 px-2 py-1 border-b border-border/50 bg-surface-hover/30"
-          style={{ paddingLeft: `${LABEL_WIDTH + 12}px` }}
-        >
-          {allDayEvents.map((event) => (
-            <EventCardBase
-              key={event.id}
-              variant="compact"
-              title={event.title}
-              color={event.color}
-              isHovered={hovered?.event.id === event.id}
-              onMouseEnter={(e) => handleEventMouseEnter(event, e)}
-              onMouseLeave={handleEventMouseLeave}
-              onDelete={() => onDeleteEvent(event.id)}
-            />
-          ))}
-        </div>
-      )}
 
       <div className="px-2">
         <DayColumn

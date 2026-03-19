@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { activeSlotAtom, eventModalAtom, dragAtom, selectedDateAtom, anyDragActiveAtom, hoveredEventAtom } from '../../state/calendar'
-import { formatHour, isToday, coversFullDay } from '../../utils/dates'
+import { formatHour, isToday } from '../../utils/dates'
 import { layoutEvents } from '../../utils/layoutEvents'
 import { EventCard } from '../EventCard/EventCard'
 import type { CalendarEvent } from '../../types'
@@ -42,8 +42,7 @@ export function DayColumn({
   const dayStart = new Date(date)
   dayStart.setHours(0, 0, 0, 0)
 
-  const timedEvents = events.filter((e) => !coversFullDay(e, date))
-  const layouted = layoutEvents(timedEvents as CalendarEvent[])
+  const layouted = layoutEvents(events as CalendarEvent[])
 
   // Slot drag to create event
   const [slotDrag, setSlotDrag] = useState<{ startHour: number; currentHour: number } | null>(null)

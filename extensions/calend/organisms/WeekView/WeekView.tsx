@@ -16,11 +16,12 @@ const SLOT_HEIGHT = 48
 
 interface CalendarStorageProps {
   readonly events: readonly CalendarEvent[]
+  readonly showAllDayBar?: boolean
   readonly persistEvent: (event: CalendarEvent) => Promise<void>
   readonly removeEvent: (id: string) => Promise<void>
 }
 
-export function WeekView({ events, persistEvent, removeEvent }: CalendarStorageProps) {
+export function WeekView({ events, showAllDayBar = true, persistEvent, removeEvent }: CalendarStorageProps) {
   const [selectedDate] = useAtom(selectedDateAtom)
   const setModal = useSetAtom(eventModalAtom)
   const hovered = useAtomValue(hoveredEventAtom)
@@ -66,7 +67,7 @@ export function WeekView({ events, persistEvent, removeEvent }: CalendarStorageP
   return (
     <div className="h-full overflow-auto">
       {/* Header */}
-      <div className="sticky top-0 bg-surface border-b border-border" style={{ zIndex: 40 }}>
+      <div data-sticky-header className="sticky top-0 bg-surface border-b border-border" style={{ zIndex: 40 }}>
         <div className="grid grid-cols-[64px_repeat(7,1fr)]">
           <div className="border-r border-border" />
           {weekDates.map((date) => {
@@ -101,7 +102,7 @@ export function WeekView({ events, persistEvent, removeEvent }: CalendarStorageP
         </div>
 
         {/* All-day events row */}
-        {weekDates.some((d) => getEventsForDay(events, d).some((e) => coversFullDay(e, d))) && (
+        {showAllDayBar && weekDates.some((d) => getEventsForDay(events, d).some((e) => coversFullDay(e, d))) && (
           <div className="grid grid-cols-[64px_repeat(7,1fr)] border-b border-border bg-surface">
             <div className="text-[10px] text-text-secondary py-1 pr-2 text-right border-r border-border/50 select-none flex items-center justify-end">
               終日
@@ -177,7 +178,7 @@ export function WeekView({ events, persistEvent, removeEvent }: CalendarStorageP
           <div key={date.toISOString()} ref={i === 0 ? dayColRef : undefined} className={`border-r border-border ${colClass}`} data-date={date.toISOString()}>
             <DayColumn
               date={date}
-              events={getEventsForDay(events, date)}
+              events={showAllDayBar ? getEventsForDay(events, date).filter((e) => !coversFullDay(e, date)) : getEventsForDay(events, date)}
               slotHeight={SLOT_HEIGHT}
               columnWidth={colWidth}
               onDeleteEvent={handleDelete}

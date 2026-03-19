@@ -2,7 +2,8 @@
  * EventCard コンポーネント
  * タイムライン（日・週）とコンパクト（月）の2モードで描画
  */
-import type { ReactNode } from 'react'
+import { useRef, useEffect, useState, useCallback, type ReactNode } from 'react'
+import { getStickyBottom } from '../../utils/dom'
 
 interface EventCardBaseProps {
   readonly title: string
@@ -90,6 +91,51 @@ function CompactEventCard({
   )
 }
 
+/**
+ * スクロール停止時にタイトルが見切れていたら
+ * ぬるっとスライドして表示内に入るアニメーション
+ */
+function useStickyTitle(cardRef: React.RefObject<HTMLDivElement | null>) {
+  const [offsetY, setOffsetY] = useState(0)
+  const [animating, setAnimating] = useState(false)
+  const scrollTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const recalc = useCallback(() => {
+    const el = cardRef.current
+    if (!el) return
+
+    const cardRect = el.getBoundingClientRect()
+    const clipped = getStickyBottom() - cardRect.top
+
+    if (clipped > 0 && clipped < cardRect.height - 20) {
+      setOffsetY(clipped + 4)
+    } else {
+      setOffsetY(0)
+    }
+  }, [cardRef])
+
+  useEffect(() => {
+    const onScroll = () => {
+      // スクロール停止後、アニメーション付きで新しい位置へ
+      if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current)
+      scrollTimerRef.current = setTimeout(() => {
+        setAnimating(true)
+        recalc()
+      }, 150)
+    }
+
+    window.addEventListener('scroll', onScroll, { capture: true, passive: true })
+    recalc()
+
+    return () => {
+      window.removeEventListener('scroll', onScroll, { capture: true })
+      if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current)
+    }
+  }, [recalc])
+
+  return { offsetY, animating }
+}
+
 function TimelineEventCard({
   title,
   startLabel,
@@ -112,6 +158,9 @@ function TimelineEventCard({
   children,
   className = '',
 }: TimelineProps) {
+  const cardRef = useRef<HTMLDivElement>(null)
+  const { offsetY, animating } = useStickyTitle(cardRef)
+
   const positionStyle = leftPercent !== undefined && widthPercent !== undefined
     ? {
         left: `calc(${leftPercent}% + 1px)`,
@@ -124,6 +173,7 @@ function TimelineEventCard({
 
   return (
     <div
+      ref={cardRef}
       data-component="event-card"
       className={`absolute rounded-xl px-2 py-1 text-white overflow-hidden transition-all group/card ${
         isDragging ? 'cursor-grabbing' : 'cursor-grab hover:overflow-visible'
@@ -146,7 +196,13 @@ function TimelineEventCard({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <span className="text-[11px] font-semibold leading-tight line-clamp-3 break-all group-hover/card:line-clamp-none group-hover/card:whitespace-normal">
+      <span
+        className="text-[11px] font-semibold leading-tight line-clamp-3 break-all group-hover/card:line-clamp-none group-hover/card:whitespace-normal block"
+        style={{
+          transform: `translateY(${offsetY}px)`,
+          transition: animating ? 'transform 0.3s ease-out' : 'none',
+        }}
+      >
         {title}
       </span>
       {onDelete && <DeleteButton onDelete={onDelete} />}

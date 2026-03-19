@@ -1,6 +1,7 @@
 import { format } from 'date-fns'
 import { ja } from 'date-fns/locale'
 import { colors } from '@ui-catalog/core/tokens'
+import { getStickyBottom } from '../../utils/dom'
 import type { HoveredEvent } from '../../state/calendar'
 
 interface EventPopoverProps {
@@ -16,8 +17,7 @@ const GAP = 8
 function getPlacement(rect: HoveredEvent['rect']): Placement {
   const vw = window.innerWidth
   const vh = window.innerHeight
-  const headerEl = document.querySelector('header')
-  const minTop = (headerEl?.getBoundingClientRect().bottom ?? 60) + 4
+  const minTop = getStickyBottom()
 
   // Can the popover fit to the right AND vertically overlap with the card?
   const canRight = rect.right + GAP + POP_W < vw
@@ -44,14 +44,7 @@ function computeLayout(rect: HoveredEvent['rect'], placement: Placement) {
   const cardCenterX = (rect.left + rect.right) / 2
   const vh = window.innerHeight
 
-  // Find the bottom of the topmost sticky area (header + week header + allDay banner)
-  const stickyEls = document.querySelectorAll('header, [class*="sticky"]')
-  let minTop = 60
-  for (const el of stickyEls) {
-    const b = el.getBoundingClientRect().bottom
-    if (b > minTop) minTop = b
-  }
-  minTop += 4
+  const minTop = getStickyBottom()
 
   // Clamp card rect to visible content area
   const visTop = Math.max(rect.top, minTop)
@@ -101,13 +94,7 @@ export function EventPopover({ hovered }: EventPopoverProps) {
   const placement = getPlacement(rect)
   const layout = computeLayout(rect, placement)
 
-  const stickyEls2 = document.querySelectorAll('header, [class*="sticky"]')
-  let minTopForRender = 60
-  for (const el of stickyEls2) {
-    const b = el.getBoundingClientRect().bottom
-    if (b > minTopForRender) minTopForRender = b
-  }
-  minTopForRender += 4
+  const minTopForRender = getStickyBottom()
   const vh = window.innerHeight
 
   const posStyle: React.CSSProperties = {
@@ -168,8 +155,10 @@ export function EventPopover({ hovered }: EventPopoverProps) {
               paddingTop: '10px',
               borderTop: `1px solid ${colors.border.light}`,
               whiteSpace: 'pre-wrap',
-              maxHeight: '80px',
-              overflow: 'auto',
+              overflow: 'hidden',
+              display: '-webkit-box',
+              WebkitLineClamp: 5,
+              WebkitBoxOrient: 'vertical',
             }}>
               {event.description}
             </div>
