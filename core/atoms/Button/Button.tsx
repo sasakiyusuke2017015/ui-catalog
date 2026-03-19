@@ -119,9 +119,7 @@ const Button: FC<ButtonProps> = ({
             name={leftIcon}
             size={getIconSize()}
             className={styles.icon}
-            animationTrigger="hover"
-            hoverScale={1.1}
-            tapScale={0.85}
+            hover="pop"
           />
         )}
         {children}
@@ -130,9 +128,7 @@ const Button: FC<ButtonProps> = ({
             name={rightIcon}
             size={getIconSize()}
             className={styles.icon}
-            animationTrigger="hover"
-            hoverScale={1.1}
-            tapScale={0.85}
+            hover="pop"
           />
         )}
       </span>

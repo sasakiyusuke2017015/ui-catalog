@@ -5,6 +5,7 @@ storybook-static/
 
 # Dependencies
 node_modules/
+.pnpm-store/
 
 # Test results
 coverage/

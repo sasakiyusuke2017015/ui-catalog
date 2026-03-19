@@ -46,12 +46,8 @@ const RefreshButton: FC<RefreshButtonProps> = ({
       <Icon
         name={'arrow-rotate'}
         size={16}
-        animationTrigger="condition"
-        condition={refreshing}
-        conditionAnimation={{ rotate: [0, 360] }}
-        duration={1}
-        repeat={9999}
-        ease="linear"
+        animation={refreshing ? 'spin' : undefined}
+        animate={refreshing}
       />
     </button>
     <span className="text-fluid-xs text-gray-400">

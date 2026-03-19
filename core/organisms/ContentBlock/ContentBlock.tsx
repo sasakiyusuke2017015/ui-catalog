@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Icon, { type AnimationEase } from '../../atoms/Icon';
+import Icon from '../../atoms/Icon';
 import Media from '../../atoms/Media/Media';
 import LoadingZone from '../LoadingZone/LoadingZone';
 import { type IconName } from '../../constants';
@@ -32,9 +32,6 @@ interface ContentBlockProps {
   loadingSize?: number;
   loadingColor?: string;
   loadingFill?: string;
-  loadingEase?: AnimationEase;
-  loadingDuration?: number;
-  loadingRepeat?: number;
 
   // その他
   children: React.ReactNode;
@@ -75,9 +72,6 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
   loadingSize = 32,
   loadingColor = 'text-indigo-600',
   loadingFill,
-  loadingEase = 'easeOut',
-  loadingDuration,
-  loadingRepeat,
 
   // その他
   children,
@@ -136,9 +130,6 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
       size={loadingSize}
       color={loadingColor}
       fill={loadingFill}
-      ease={loadingEase}
-      duration={loadingDuration}
-      repeat={loadingRepeat}
     >
       <div id={id} className={finalClassName} style={{ borderRadius: cardRadius }} data-component="content-block" data-variant={variant}>
         {/* アイコン/メディア表示 */}

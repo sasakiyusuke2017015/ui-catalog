@@ -56,7 +56,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
     iconProp?: ReactNode | IconName,
     size: number = 20,
     filled: boolean = false,
-    hovered: boolean = false
+    _hovered: boolean = false
   ) => {
     if (!iconProp) return null;
     if (typeof iconProp === 'string') {
@@ -65,10 +65,8 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
           name={iconProp as IconName}
           size={size}
           fill={filled ? 'white' : 'none'}
-          shake={iconShake}
-          animationTrigger="condition"
-          condition={hovered}
-          conditionAnimation={iconShake ? undefined : { scale: [1, 1.1] }}
+          animation={iconShake ? 'shake' : undefined}
+          hover="pop"
         />
       );
     }

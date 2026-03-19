@@ -31,8 +31,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext .ts,.tsx",
     "clean": "rm -rf node_modules/.cache storybook-static dist",
-    "prestorybook": "node -e \"const{execSync}=require('child_process');try{const r=execSync('netstat -ano').toString().split('\\n').find(l=>l.includes(':6006')&&l.includes('LISTENING'));if(r){const p=r.trim().split(/\\s+/).pop();execSync('taskkill /F /PID '+p)}}catch{}\"",
-    "storybook": "storybook dev -p 6006 --no-open",
+    "storybook": "fuser -k 6006/tcp 2>/dev/null || true; docker compose -f infra/docker/docker-compose.yml up",
+    "storybook:down": "docker compose -f infra/docker/docker-compose.yml down",
     "storybook:build": "storybook build -o storybook-static",
     "test:storybook": "vitest --project storybook",
     "export-versions": "npx tsx infra/version/export-versions-cli.ts"

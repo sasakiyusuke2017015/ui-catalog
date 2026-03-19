@@ -184,7 +184,7 @@ const DatePicker: FC<DatePickerProps> = ({
                 }`}
                 title="日付をクリア"
               >
-                <Icon name={'x'} size={ICON_SIZES[size] - 2} interactive />
+                <Icon name={'x'} size={ICON_SIZES[size] - 2} hover="pop" />
               </button>
             )}
             <button
@@ -197,7 +197,7 @@ const DatePicker: FC<DatePickerProps> = ({
               }`}
               title="カレンダーを開く"
             >
-              <Icon name={'calendar'} size={ICON_SIZES[size]} interactive />
+              <Icon name={'calendar'} size={ICON_SIZES[size]} hover="pop" />
             </button>
           </div>
 

@@ -86,7 +86,7 @@ export const ViewModeToggle = <T extends string = string>({
                 <Icon
                   name={option.icon}
                   size={size === 'small' ? 14 : size === 'large' ? 18 : 16}
-                  hoverPreset={isActive ? undefined : 'pop'}
+                  hover={isActive ? undefined : 'pop'}
                   glow={isActive}
                 />
               </span>

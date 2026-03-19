@@ -14,12 +14,11 @@ export * from './Text'
 export { default as Icon } from './Icon'
 export type {
   IconProps,
-  AnimationEase,
-  AnimationTrigger,
-  AnimationDuration,
-  IconSvgProps,
-  IconAnimationConfig,
   LoadingPreset,
+  AnimationPreset,
+  HoverPreset,
+  ColorVariant,
+  SizePreset,
 } from './Icon'
 
 // Form controls

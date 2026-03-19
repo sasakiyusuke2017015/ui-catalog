@@ -1,727 +1,576 @@
+/**
+ * Icon コンポーネント
+ *
+ * 設計原則:
+ * - SVG は幾何学データ（Path）に徹する
+ * - SCSS で魂（色・動き・状態）を吹き込む
+ * - currentColor を活用し親要素の色を継承
+ */
 import React from 'react';
-
-import {
-  motion,
-  type SVGMotionProps,
-  type Transition,
-  type TargetAndTransition,
-  type Easing,
-} from 'framer-motion';
-
-import { type IconName } from '../../constants';
+import type { IconName } from '../../constants';
 import { cn } from '../../utils';
 import styles from './Icon.module.scss';
+import type {
+  IconProps,
+  AnimationPreset,
+  HoverPreset,
+  LoadingPreset,
+  SizePreset,
+  ColorVariant,
+} from './types';
 
-import type { IconProps, IconSvgProps, LoadingPreset, AnimationPreset, HoverPreset } from './types';
+// ========================================
+// SVG Path 定義
+// ========================================
 
-// ローディングアイコン判定
-const isLoadingIcon = (iconName: string): boolean =>
-  iconName.startsWith('loading-') || iconName.startsWith('spinner');
+// SVG レンダリング用の内部型
+interface PathRenderProps {
+  className?: string;
+}
 
-// アイコンごとのSVGパス定義を統合
-const ICON_SVG_PATHS: Record<
-  string,
-  (props: IconSvgProps) => React.ReactElement
-> = {
+// アイコンごとのSVGパス定義
+const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement> = {
   // ========================================
   // REGULAR アイコン
   // ========================================
-  ['hamburger']: ({ fillColor, strokeColor }) => (
+  ['hamburger']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M2 5h20M2 12h20M2 19h20"
     />
   ),
-  ['x']: ({ fillColor, strokeColor }) => (
+  ['x']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M4 20L20 4M4 4l16 16"
     />
   ),
-  ['trash']: ({ fillColor, strokeColor }) => (
+  ['trash']: () => (
     <>
       <path
+        className={styles.stroke}
         strokeLinecap="round"
         strokeLinejoin="round"
-        fill={fillColor}
-        stroke={strokeColor}
         d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14"
       />
       <path
+        className={styles.stroke}
         strokeLinecap="round"
         strokeLinejoin="round"
-        fill="none"
-        stroke={strokeColor}
         d="M10 11v6M14 11v6"
       />
     </>
   ),
-  ['person']: ({ fillColor, strokeColor }) => (
+  ['person']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
     />
   ),
-  ['employee']: ({ fillColor, strokeColor }) => (
+  ['employee']: () => (
     <>
-      {/* 頭部 - 拡大して上部余白削減 */}
       <circle
+        className={styles.stroke}
         cx="12"
         cy="6"
         r="4.5"
         strokeLinecap="round"
         strokeLinejoin="round"
-        fill={fillColor}
-        stroke={strokeColor}
       />
-      {/* 身体 - 拡大して下部余白削減 */}
       <path
+        className={styles.stroke}
         strokeLinecap="round"
         strokeLinejoin="round"
-        fill={fillColor}
-        stroke={strokeColor}
         d="M4 20a8 8 0 0116 0"
       />
-      {/* ネクタイ */}
       <path
+        className={cn(styles.stroke, styles.detail)}
         strokeLinecap="round"
         strokeLinejoin="round"
-        fill="none"
-        stroke={strokeColor}
         d="M12 10.5v3.5l-1 3.5h2l-1-3.5v-3.5z"
         strokeWidth="2"
       />
     </>
   ),
-  ['chevron-down']: ({ fillColor, strokeColor }) => (
+  ['chevron-down']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M21 7l-9 9-9-9"
     />
   ),
-  ['chevron-up']: ({ fillColor, strokeColor }) => (
+  ['chevron-up']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M3 17l9-9 9 9"
     />
   ),
-  ['chevron-left']: ({ fillColor, strokeColor }) => (
+  ['chevron-left']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M17 21l-9-9 9-9"
     />
   ),
-  ['chevron-right']: ({ fillColor, strokeColor }) => (
+  ['chevron-right']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M7 3l9 9-9 9"
     />
   ),
-  ['magnifying-glass']: ({ fillColor, strokeColor }) => (
+  ['magnifying-glass']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
     />
   ),
-  ['eye']: ({ fillColor, strokeColor }) => (
-    <g>
+  ['eye']: () => (
+    <g className={styles.body}>
       <path
+        className={cn(styles.stroke, styles.pupil)}
         strokeLinecap="round"
         strokeLinejoin="round"
-        fill={fillColor}
-        stroke={strokeColor}
         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
       />
       <path
+        className={cn(styles.stroke, styles.outline)}
         strokeLinecap="round"
         strokeLinejoin="round"
-        fill={fillColor}
-        stroke={strokeColor}
         d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
       />
     </g>
   ),
-  ['eye-slashed']: ({ fillColor, strokeColor }) => (
-    <g>
-      {/* 目の外形（アーモンド型） */}
+  ['eye-slashed']: () => (
+    <g className={styles.body}>
       <path
+        className={styles.stroke}
         strokeLinecap="round"
         strokeLinejoin="round"
-        fill={fillColor}
-        stroke={strokeColor}
         d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
       />
-      {/* 瞳 */}
-      <circle
-        cx="12"
-        cy="12"
-        r="3"
-        fill={fillColor}
-        stroke={strokeColor}
-        strokeWidth="2"
-      />
-      {/* 斜線 */}
+      <circle className={styles.stroke} cx="12" cy="12" r="3" strokeWidth="2" />
       <line
+        className={cn(styles.stroke, styles.slash)}
         x1="4"
         y1="4"
         x2="20"
         y2="20"
-        stroke={strokeColor}
         strokeWidth="2.5"
         strokeLinecap="round"
       />
     </g>
   ),
-  ['arrow-up-right']: ({ fillColor, strokeColor }) => (
+  ['arrow-up-right']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
     />
   ),
-  ['arrow-in']: ({ fillColor, strokeColor }) => (
+  ['arrow-in']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
     />
   ),
-  ['sync-pull']: ({ strokeColor }) => (
-    <g fill="none" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      {/* サーバー（上の横線） */}
-      <line x1="4" y1="4" x2="20" y2="4" />
-      {/* 下向き矢印 */}
-      <line x1="12" y1="7" x2="12" y2="18" />
-      <polyline points="8 14 12 18 16 14" />
-      {/* ローカル（下の横線） */}
-      <line x1="4" y1="21" x2="20" y2="21" />
+  ['sync-pull']: () => (
+    <g className={styles.body}>
+      <line className={cn(styles.stroke, styles.serverLine)} x1="4" y1="4" x2="20" y2="4" />
+      <line className={cn(styles.stroke, styles.arrow)} x1="12" y1="7" x2="12" y2="18" />
+      <polyline className={cn(styles.stroke, styles.arrow)} points="8 14 12 18 16 14" />
+      <line className={cn(styles.stroke, styles.localLine)} x1="4" y1="21" x2="20" y2="21" />
     </g>
   ),
-  ['sync-push']: ({ strokeColor }) => (
-    <g fill="none" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      {/* ローカル（下の横線） */}
-      <line x1="4" y1="21" x2="20" y2="21" />
-      {/* 上向き矢印 */}
-      <line x1="12" y1="18" x2="12" y2="7" />
-      <polyline points="8 11 12 7 16 11" />
-      {/* サーバー（上の横線） */}
-      <line x1="4" y1="4" x2="20" y2="4" />
+  ['sync-push']: () => (
+    <g className={styles.body}>
+      <line className={cn(styles.stroke, styles.localLine)} x1="4" y1="21" x2="20" y2="21" />
+      <line className={cn(styles.stroke, styles.arrow)} x1="12" y1="18" x2="12" y2="7" />
+      <polyline className={cn(styles.stroke, styles.arrow)} points="8 11 12 7 16 11" />
+      <line className={cn(styles.stroke, styles.serverLine)} x1="4" y1="4" x2="20" y2="4" />
     </g>
   ),
-  ['arrow-rotate']: ({ strokeColor }) => (
+  ['arrow-rotate']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill="none"
-      stroke={strokeColor}
       d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
     />
   ),
-  ['arrow-turn-left']: ({ strokeColor }) => (
-    <g>
+  ['arrow-turn-left']: () => (
+    <g className={styles.body}>
       <path
+        className={styles.stroke}
         strokeLinecap="round"
         strokeLinejoin="round"
-        fill="none"
-        stroke={strokeColor}
         d="M18 8v7a4 4 0 0 1-4 4H6"
       />
       <path
+        className={styles.stroke}
         strokeLinecap="round"
         strokeLinejoin="round"
-        fill="none"
-        stroke={strokeColor}
         d="M9 16l-3 3 3 3"
       />
     </g>
   ),
-  ['arrow-u-turn']: ({ strokeColor }) => (
-    <g>
+  ['arrow-u-turn']: () => (
+    <g className={styles.body}>
       <path
+        className={styles.stroke}
         strokeLinecap="round"
         strokeLinejoin="round"
-        fill="none"
-        stroke={strokeColor}
         d="M16 6H9a5 5 0 0 0 0 10h7"
       />
       <path
+        className={styles.stroke}
         strokeLinecap="round"
         strokeLinejoin="round"
-        fill="none"
-        stroke={strokeColor}
         d="M13 19l3-3-3-3"
       />
     </g>
   ),
-  ['door-out']: ({ strokeColor }) => (
-    <g fill="none" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      {/* ドア枠 */}
-      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-      {/* ドア */}
-      <rect x="9" y="3" width="6" height="18" rx="1" />
-      {/* ドアノブ */}
-      <circle cx="13" cy="12" r="1" fill={strokeColor} stroke="none" />
-      {/* 矢印 */}
-      <path d="M16 12h6m-3-3l3 3-3 3" />
+  ['door-out']: () => (
+    <g className={styles.body}>
+      <path className={styles.stroke} d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+      <rect className={styles.stroke} x="9" y="3" width="6" height="18" rx="1" />
+      <circle className={cn(styles.fill, styles.handle)} cx="13" cy="12" r="1" />
+      <path className={cn(styles.stroke, styles.arrow)} d="M16 12h6m-3-3l3 3-3 3" />
     </g>
   ),
-  ['info-triangle']: ({ fillColor, strokeColor }) => (
+  ['info-triangle']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
     />
   ),
-  ['info-circle']: ({ fill, fillColor, strokeColor }) => (
-    <g>
-      <circle
-        cx="12"
-        cy="12"
-        r="10"
-        fill={fill !== 'none' ? fillColor : 'none'}
-        stroke={strokeColor}
-      />
-      <path
-        d="M12 8v5"
-        strokeLinecap="round"
-        fill="none"
-        stroke={strokeColor}
-      />
-      <path
-        d="M12 15.5h.01"
-        strokeLinecap="round"
-        fill="none"
-        stroke={strokeColor}
-      />
+  ['info-circle']: () => (
+    <g className={styles.body}>
+      <circle className={styles.stroke} cx="12" cy="12" r="10" />
+      <path className={styles.stroke} d="M12 8v5" strokeLinecap="round" />
+      <path className={styles.stroke} d="M12 15.5h.01" strokeLinecap="round" />
     </g>
   ),
-  ['lock']: ({ fillColor, strokeColor }) => (
+  ['lock']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
     />
   ),
-  ['unlock']: ({ strokeColor }) => (
-    <g>
+  ['unlock']: () => (
+    <g className={styles.body}>
       <path
+        className={styles.stroke}
         strokeLinecap="round"
         strokeLinejoin="round"
-        fill="none"
-        stroke={strokeColor}
         d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"
       />
       <path
+        className={styles.stroke}
         strokeLinecap="round"
         strokeLinejoin="round"
-        fill="none"
-        stroke={strokeColor}
         d="M7 11V7a5 5 0 015-5 5 5 0 015 5"
       />
       <path
+        className={cn(styles.stroke, styles.indicator)}
         strokeLinecap="round"
         strokeLinejoin="round"
-        fill="none"
-        stroke={strokeColor}
         d="M17 7l2-2"
       />
     </g>
   ),
-  ['expand']: ({ strokeColor }) => (
-    <g>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-        stroke={strokeColor}
-        d="M3 8V4a1 1 0 011-1h4M21 8V4a1 1 0 00-1-1h-4M3 16v4a1 1 0 001 1h4M21 16v4a1 1 0 01-1 1h-4"
-      />
-    </g>
-  ),
-  ['calendar']: ({ fillColor, strokeColor }) => (
+  ['expand']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
+      d="M3 8V4a1 1 0 011-1h4M21 8V4a1 1 0 00-1-1h-4M3 16v4a1 1 0 001 1h4M21 16v4a1 1 0 01-1 1h-4"
+    />
+  ),
+  ['calendar']: () => (
+    <path
+      className={styles.stroke}
+      strokeLinecap="round"
+      strokeLinejoin="round"
       d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
     />
   ),
-  ['funnel']: ({ fillColor, strokeColor }) => (
+  ['funnel']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V20l-4 4v-10.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
     />
   ),
-  ['gear']: ({ fillColor, strokeColor }) => (
-    <g>
+  ['gear']: () => (
+    <g className={styles.body}>
       <path
+        className={styles.stroke}
         strokeLinecap="round"
         strokeLinejoin="round"
-        fill={fillColor}
-        stroke={strokeColor}
         d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
       />
-      {/* 中央の穴（白い円で背景色を重ねる） */}
-      <circle
-        cx="12"
-        cy="12"
-        r="3"
-        fill="white"
-        stroke={strokeColor}
-        strokeWidth="2"
-      />
+      <circle className={cn(styles.stroke, styles.center)} cx="12" cy="12" r="3" strokeWidth="2" />
     </g>
   ),
-  ['bell']: ({ fillColor, strokeColor }) => (
+  ['bell']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
     />
   ),
-  ['home']: ({ fillColor, strokeColor }) => (
+  ['home']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
     />
   ),
-  ['dashboard']: ({ strokeColor }) => (
-    <g fill="none" stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      {/* メイングリッド - 非対称レイアウト */}
-      <rect x="3" y="3" width="7" height="7" rx="2" />
-      <rect x="14" y="3" width="7" height="4" rx="2" />
-      <rect x="14" y="10" width="7" height="11" rx="2" />
-      <rect x="3" y="13" width="7" height="8" rx="2" />
-      {/* アクセントドット */}
-      <circle cx="6.5" cy="6.5" r="1" fill={strokeColor} stroke="none" />
+  ['dashboard']: () => (
+    <g className={styles.body}>
+      <rect className={styles.stroke} x="3" y="3" width="7" height="7" rx="2" />
+      <rect className={styles.stroke} x="14" y="3" width="7" height="4" rx="2" />
+      <rect className={styles.stroke} x="14" y="10" width="7" height="11" rx="2" />
+      <rect className={styles.stroke} x="3" y="13" width="7" height="8" rx="2" />
+      <circle className={cn(styles.fill, styles.accent)} cx="6.5" cy="6.5" r="1" />
     </g>
   ),
-  ['chart-bar']: ({ strokeColor }) => (
-    <g fill="none" stroke={strokeColor} strokeWidth="1.5">
-      <rect x="4" y="14" width="4" height="7" rx="1" />
-      <rect x="10" y="8" width="4" height="13" rx="1" />
-      <rect x="16" y="4" width="4" height="17" rx="1" />
-      <line x1="2" y1="22" x2="22" y2="22" />
+  ['chart-bar']: () => (
+    <g className={styles.body}>
+      <rect className={styles.stroke} x="4" y="14" width="4" height="7" rx="1" />
+      <rect className={styles.stroke} x="10" y="8" width="4" height="13" rx="1" />
+      <rect className={styles.stroke} x="16" y="4" width="4" height="17" rx="1" />
+      <line className={styles.stroke} x1="2" y1="22" x2="22" y2="22" />
     </g>
   ),
-  ['list']: ({ strokeColor }) => (
-    <g fill="none" stroke={strokeColor} strokeWidth="1.5">
-      <line x1="3" y1="4" x2="21" y2="4" strokeLinecap="square" />
-      <line x1="3" y1="12" x2="21" y2="12" strokeLinecap="square" />
-      <line x1="3" y1="20" x2="21" y2="20" strokeLinecap="square" />
-      <circle cx="3" cy="4" r="1.2" fill={strokeColor} />
-      <circle cx="3" cy="12" r="1.2" fill={strokeColor} />
-      <circle cx="3" cy="20" r="1.2" fill={strokeColor} />
+  ['list']: () => (
+    <g className={styles.body}>
+      <line className={styles.stroke} x1="3" y1="4" x2="21" y2="4" strokeLinecap="square" />
+      <line className={styles.stroke} x1="3" y1="12" x2="21" y2="12" strokeLinecap="square" />
+      <line className={styles.stroke} x1="3" y1="20" x2="21" y2="20" strokeLinecap="square" />
+      <circle className={cn(styles.fill, styles.bullet)} cx="3" cy="4" r="1.2" />
+      <circle className={cn(styles.fill, styles.bullet)} cx="3" cy="12" r="1.2" />
+      <circle className={cn(styles.fill, styles.bullet)} cx="3" cy="20" r="1.2" />
     </g>
   ),
-  ['file']: ({ fillColor, strokeColor }) => (
+  ['file']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zM14 2v6h6M16 13H8m8 4H8m2-8H8"
     />
   ),
-  ['survey']: ({ strokeColor }) => (
-    <g fill="none" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      {/* 用紙 */}
-      <rect x="4" y="3" width="16" height="18" rx="2" />
-      {/* チェックマーク */}
-      <path d="M8 12l3 3 5-6" />
+  ['survey']: () => (
+    <g className={styles.body}>
+      <rect className={styles.stroke} x="4" y="3" width="16" height="18" rx="2" />
+      <path className={cn(styles.stroke, styles.checkmark)} d="M8 12l3 3 5-6" />
     </g>
   ),
-  ['comment-check']: ({ strokeColor }) => (
-    <g fill="none" stroke={strokeColor}>
-      {/* 吹き出し本体 */}
-      <rect
-        x="2"
-        y="3"
-        width="20"
-        height="14"
-        rx="2"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      {/* 吹き出しのしっぽ */}
-      <path
-        d="M8 17L6 21L10 18"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      {/* チェックマーク */}
-      <path
-        d="M7 10L10 13L17 6"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+  ['comment-check']: () => (
+    <g className={styles.body}>
+      <rect className={styles.stroke} x="2" y="3" width="20" height="14" rx="2" />
+      <path className={cn(styles.stroke, styles.tail)} d="M8 17L6 21L10 18" />
+      <path className={cn(styles.stroke, styles.checkmark)} d="M7 10L10 13L17 6" strokeWidth="2.5" />
     </g>
   ),
-  ['check']: ({ strokeColor }) => (
+  ['check']: () => (
     <path
+      className={styles.stroke}
       d="M5 12l5 5L19 7"
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill="none"
-      stroke={strokeColor}
       strokeWidth="2"
     />
   ),
-  ['check-circle']: ({ fill, fillColor, strokeColor }) => (
-    <g>
-      <circle
-        cx="12"
-        cy="12"
-        r="10"
-        fill={fill !== 'none' ? fillColor : 'none'}
-        stroke={strokeColor}
-      />
+  ['check-circle']: () => (
+    <g className={styles.body}>
+      <circle className={styles.stroke} cx="12" cy="12" r="10" />
       <path
+        className={cn(styles.stroke, styles.checkmark)}
         d="M9 12l2 2 4-4"
         strokeLinecap="round"
         strokeLinejoin="round"
-        fill="none"
-        stroke={strokeColor}
         strokeWidth="2"
       />
     </g>
   ),
-  ['x-circle']: ({ fill, fillColor, strokeColor }) => (
-    <g>
-      <circle
-        cx="10"
-        cy="10"
-        r="8"
-        fill={fill !== 'none' ? fillColor : 'none'}
-        stroke={strokeColor}
-      />
+  ['x-circle']: () => (
+    <g className={styles.body}>
+      <circle className={styles.stroke} cx="10" cy="10" r="8" />
       <path
+        className={cn(styles.fill, styles.xmark)}
         d="M7.293 6.293a1 1 0 011.414 0L10 7.586l1.293-1.293a1 1 0 111.414 1.414L11.414 9l1.293 1.293a1 1 0 01-1.414 1.414L10 10.414l-1.293 1.293a1 1 0 01-1.414-1.414L8.586 9 7.293 7.707a1 1 0 010-1.414z"
-        fill={strokeColor}
         fillRule="evenodd"
         clipRule="evenodd"
       />
     </g>
   ),
-  ['keyboard']: ({ strokeColor }) => (
-    <g fill="none" stroke={strokeColor}>
-      {/* キーボード本体 */}
-      <rect
-        x="2"
-        y="5"
-        width="20"
-        height="14"
-        rx="2"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      {/* 上段キー */}
-      <rect x="4" y="7.5" width="2.5" height="2.5" rx="0.5" strokeWidth="1.2" />
-      <rect x="7.5" y="7.5" width="2.5" height="2.5" rx="0.5" strokeWidth="1.2" />
-      <rect x="11" y="7.5" width="2.5" height="2.5" rx="0.5" strokeWidth="1.2" />
-      <rect x="14.5" y="7.5" width="2.5" height="2.5" rx="0.5" strokeWidth="1.2" />
-      <rect x="18" y="7.5" width="2" height="2.5" rx="0.5" strokeWidth="1.2" />
-
-      {/* 中段キー */}
-      <rect x="4" y="11" width="2.5" height="2.5" rx="0.5" strokeWidth="1.2" />
-      <rect x="7.5" y="11" width="2.5" height="2.5" rx="0.5" strokeWidth="1.2" />
-      <rect x="11" y="11" width="2.5" height="2.5" rx="0.5" strokeWidth="1.2" />
-      <rect x="14.5" y="11" width="2.5" height="2.5" rx="0.5" strokeWidth="1.2" />
-      <rect x="18" y="11" width="2" height="2.5" rx="0.5" strokeWidth="1.2" />
-
-      {/* 下段キー（スペースバー） */}
-      <rect x="6" y="14.5" width="12" height="2.5" rx="0.5" strokeWidth="1.2" />
+  ['keyboard']: () => (
+    <g className={styles.body}>
+      <rect className={styles.stroke} x="2" y="5" width="20" height="14" rx="2" strokeWidth="1.5" />
+      <rect className={cn(styles.stroke, styles.key)} x="4" y="7.5" width="2.5" height="2.5" rx="0.5" strokeWidth="1.2" />
+      <rect className={cn(styles.stroke, styles.key)} x="7.5" y="7.5" width="2.5" height="2.5" rx="0.5" strokeWidth="1.2" />
+      <rect className={cn(styles.stroke, styles.key)} x="11" y="7.5" width="2.5" height="2.5" rx="0.5" strokeWidth="1.2" />
+      <rect className={cn(styles.stroke, styles.key)} x="14.5" y="7.5" width="2.5" height="2.5" rx="0.5" strokeWidth="1.2" />
+      <rect className={cn(styles.stroke, styles.key)} x="18" y="7.5" width="2" height="2.5" rx="0.5" strokeWidth="1.2" />
+      <rect className={cn(styles.stroke, styles.key)} x="4" y="11" width="2.5" height="2.5" rx="0.5" strokeWidth="1.2" />
+      <rect className={cn(styles.stroke, styles.key)} x="7.5" y="11" width="2.5" height="2.5" rx="0.5" strokeWidth="1.2" />
+      <rect className={cn(styles.stroke, styles.key)} x="11" y="11" width="2.5" height="2.5" rx="0.5" strokeWidth="1.2" />
+      <rect className={cn(styles.stroke, styles.key)} x="14.5" y="11" width="2.5" height="2.5" rx="0.5" strokeWidth="1.2" />
+      <rect className={cn(styles.stroke, styles.key)} x="18" y="11" width="2" height="2.5" rx="0.5" strokeWidth="1.2" />
+      <rect className={cn(styles.stroke, styles.spacebar)} x="6" y="14.5" width="12" height="2.5" rx="0.5" strokeWidth="1.2" />
     </g>
   ),
-  ['palette']: ({ fillColor, strokeColor }) => (
-    <g fill={fillColor} stroke={strokeColor} strokeWidth="1.5">
-      {/* パレット本体 */}
+  ['palette']: () => (
+    <g className={styles.body}>
       <path
+        className={styles.stroke}
         d="M12 2C6.48 2 2 6.48 2 12c0 5.52 4.48 10 10 10 1.1 0 2-.9 2-2 0-.51-.19-.99-.52-1.36-.31-.35-.48-.82-.48-1.32 0-1.1.9-2 2-2h2.36c3.03 0 5.64-2.61 5.64-5.64C22 5.48 17.52 2 12 2z"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        strokeWidth="1.5"
       />
-      {/* 絵の具の丸 */}
-      <circle cx="7.5" cy="11.5" r="1.5" fill={strokeColor} stroke="none" />
-      <circle cx="10.5" cy="7.5" r="1.5" fill={strokeColor} stroke="none" />
-      <circle cx="15" cy="7.5" r="1.5" fill={strokeColor} stroke="none" />
-      <circle cx="17.5" cy="11" r="1.5" fill={strokeColor} stroke="none" />
+      <circle className={cn(styles.fill, styles.paint)} cx="7.5" cy="11.5" r="1.5" />
+      <circle className={cn(styles.fill, styles.paint)} cx="10.5" cy="7.5" r="1.5" />
+      <circle className={cn(styles.fill, styles.paint)} cx="15" cy="7.5" r="1.5" />
+      <circle className={cn(styles.fill, styles.paint)} cx="17.5" cy="11" r="1.5" />
     </g>
   ),
-  ['brush']: ({ fillColor, strokeColor }) => (
-    <g fill={fillColor} stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      {/* ブラシの毛先 */}
-      <path d="M3 21c0 0 1-2 3-4s6-4 8-6c2-2 6-8 8-10s-2 0-4 2s-8 6-10 8s-4 6-4 8s-1 2-1 2z" />
-      {/* ブラシの柄 */}
-      <path d="M14 10l6-6" strokeWidth="2" />
+  ['brush']: () => (
+    <g className={styles.body}>
+      <path
+        className={styles.stroke}
+        d="M3 21c0 0 1-2 3-4s6-4 8-6c2-2 6-8 8-10s-2 0-4 2s-8 6-10 8s-4 6-4 8s-1 2-1 2z"
+        strokeWidth="1.5"
+      />
+      <path className={cn(styles.stroke, styles.handle)} d="M14 10l6-6" strokeWidth="2" />
     </g>
   ),
-  ['sliders']: ({ strokeColor }) => (
-    <g fill="none" stroke={strokeColor} strokeWidth="2" strokeLinecap="round">
-      {/* 左のスライダー */}
-      <line x1="4" y1="21" x2="4" y2="14" />
-      <line x1="4" y1="10" x2="4" y2="3" />
-      <circle cx="4" cy="12" r="2" fill={strokeColor} />
-      {/* 中央のスライダー */}
-      <line x1="12" y1="21" x2="12" y2="18" />
-      <line x1="12" y1="14" x2="12" y2="3" />
-      <circle cx="12" cy="16" r="2" fill={strokeColor} />
-      {/* 右のスライダー */}
-      <line x1="20" y1="21" x2="20" y2="10" />
-      <line x1="20" y1="6" x2="20" y2="3" />
-      <circle cx="20" cy="8" r="2" fill={strokeColor} />
+  ['sliders']: () => (
+    <g className={styles.body}>
+      <line className={styles.stroke} x1="4" y1="21" x2="4" y2="14" />
+      <line className={styles.stroke} x1="4" y1="10" x2="4" y2="3" />
+      <circle className={cn(styles.fill, styles.knob)} cx="4" cy="12" r="2" />
+      <line className={styles.stroke} x1="12" y1="21" x2="12" y2="18" />
+      <line className={styles.stroke} x1="12" y1="14" x2="12" y2="3" />
+      <circle className={cn(styles.fill, styles.knob)} cx="12" cy="16" r="2" />
+      <line className={styles.stroke} x1="20" y1="21" x2="20" y2="10" />
+      <line className={styles.stroke} x1="20" y1="6" x2="20" y2="3" />
+      <circle className={cn(styles.fill, styles.knob)} cx="20" cy="8" r="2" />
     </g>
   ),
-  ['diamond']: ({ fillColor, strokeColor }) => (
-    <g fill={fillColor} stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      {/* ダイヤモンドの上部 */}
-      <polygon points="12,2 2,9 12,22 22,9" />
-      {/* 内部のカット線 */}
-      <line x1="2" y1="9" x2="22" y2="9" />
-      <line x1="12" y1="2" x2="8" y2="9" />
-      <line x1="12" y1="2" x2="16" y2="9" />
-      <line x1="8" y1="9" x2="12" y2="22" />
-      <line x1="16" y1="9" x2="12" y2="22" />
+  ['diamond']: () => (
+    <g className={styles.body}>
+      <polygon className={styles.stroke} points="12,2 2,9 12,22 22,9" strokeWidth="1.5" />
+      <line className={cn(styles.stroke, styles.facet)} x1="2" y1="9" x2="22" y2="9" />
+      <line className={cn(styles.stroke, styles.facet)} x1="12" y1="2" x2="8" y2="9" />
+      <line className={cn(styles.stroke, styles.facet)} x1="12" y1="2" x2="16" y2="9" />
+      <line className={cn(styles.stroke, styles.facet)} x1="8" y1="9" x2="12" y2="22" />
+      <line className={cn(styles.stroke, styles.facet)} x1="16" y1="9" x2="12" y2="22" />
     </g>
   ),
-  ['paint-roller']: ({ fillColor, strokeColor }) => (
-    <g fill={fillColor} stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      {/* ローラー本体 */}
-      <rect x="2" y="3" width="14" height="6" rx="1" />
-      {/* ローラーの軸 */}
-      <line x1="18" y1="6" x2="20" y2="6" strokeWidth="2" />
-      {/* 柄の接続部 */}
-      <line x1="20" y1="6" x2="20" y2="12" strokeWidth="2" />
-      {/* 柄 */}
-      <line x1="20" y1="12" x2="12" y2="12" strokeWidth="2" />
-      <line x1="12" y1="12" x2="12" y2="21" strokeWidth="2" />
+  ['paint-roller']: () => (
+    <g className={styles.body}>
+      <rect className={cn(styles.stroke, styles.roller)} x="2" y="3" width="14" height="6" rx="1" strokeWidth="1.5" />
+      <line className={cn(styles.stroke, styles.shaft)} x1="18" y1="6" x2="20" y2="6" strokeWidth="2" />
+      <line className={cn(styles.stroke, styles.shaft)} x1="20" y1="6" x2="20" y2="12" strokeWidth="2" />
+      <line className={cn(styles.stroke, styles.handle)} x1="20" y1="12" x2="12" y2="12" strokeWidth="2" />
+      <line className={cn(styles.stroke, styles.handle)} x1="12" y1="12" x2="12" y2="21" strokeWidth="2" />
     </g>
   ),
-  ['chat']: ({ fillColor, strokeColor }) => (
-    <g fill={fillColor} stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      {/* メインの吹き出し */}
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-      {/* メッセージライン */}
-      <line x1="7" y1="8" x2="17" y2="8" strokeWidth="2" />
-      <line x1="7" y1="12" x2="13" y2="12" strokeWidth="2" />
+  ['chat']: () => (
+    <g className={styles.body}>
+      <path
+        className={styles.stroke}
+        d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+        strokeWidth="1.5"
+      />
+      <line className={cn(styles.stroke, styles.messageLine)} x1="7" y1="8" x2="17" y2="8" strokeWidth="2" />
+      <line className={cn(styles.stroke, styles.messageLine)} x1="7" y1="12" x2="13" y2="12" strokeWidth="2" />
     </g>
   ),
-  ['clock']: ({ fillColor, strokeColor }) => (
-    <g fill={fillColor} stroke={strokeColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      {/* 時計の文字盤 */}
-      <circle cx="12" cy="12" r="10" fill="none" />
-      {/* 時針（短い） */}
-      <line x1="12" y1="12" x2="12" y2="7" />
-      {/* 分針（長い・左向き） */}
-      <line x1="12" y1="12" x2="8" y2="12" />
-      {/* 中心点 */}
-      <circle cx="12" cy="12" r="1" fill={strokeColor} stroke="none" />
+  ['clock']: () => (
+    <g className={styles.body}>
+      <circle className={styles.stroke} cx="12" cy="12" r="10" />
+      <line className={cn(styles.stroke, styles.hourHand)} x1="12" y1="12" x2="12" y2="7" />
+      <line className={cn(styles.stroke, styles.minuteHand)} x1="12" y1="12" x2="8" y2="12" />
+      <circle className={cn(styles.fill, styles.centerDot)} cx="12" cy="12" r="1" />
     </g>
   ),
-  ['folder']: ({ fillColor, strokeColor }) => (
-    <g fill={fillColor} stroke={strokeColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      {/* フォルダ本体 */}
-      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-    </g>
-  ),
-  ['users-group']: ({ fillColor, strokeColor }) => (
+  ['folder']: () => (
     <path
+      className={styles.stroke}
+      d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"
+    />
+  ),
+  ['users-group']: () => (
+    <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
     />
   ),
-
-  // トレンドアイコン（変化矢印）
-  ['trend-up']: ({ fillColor, strokeColor }) => (
+  ['trend-up']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M12 4v16m0-16l-4 4m4-4l4 4"
     />
   ),
-  ['trend-up-right']: ({ fillColor, strokeColor }) => (
+  ['trend-up-right']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M7 17L17 7m0 0H9m8 0v8"
     />
   ),
-  ['trend-right']: ({ fillColor, strokeColor }) => (
+  ['trend-right']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M4 12h16m0 0l-4-4m4 4l-4 4"
     />
   ),
-  ['trend-down-right']: ({ fillColor, strokeColor }) => (
+  ['trend-down-right']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M7 7l10 10m0 0V9m0 8H9"
     />
   ),
-  ['trend-down']: ({ fillColor, strokeColor }) => (
+  ['trend-down']: () => (
     <path
+      className={styles.stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
-      fill={fillColor}
-      stroke={strokeColor}
       d="M12 20V4m0 16l-4-4m4 4l4-4"
     />
   ),
@@ -729,1717 +578,309 @@ const ICON_SVG_PATHS: Record<
   // ========================================
   // LOADING アイコン
   // ========================================
-  ['spinner']: ({ fillColor, strokeColor }) => (
-    <g>
+  ['spinner']: () => (
+    <g className={styles.body}>
       <circle
-        className="opacity-25"
+        className={cn(styles.stroke, styles.track)}
         cx="12"
         cy="12"
         r="9"
-        stroke={strokeColor}
         strokeWidth="2"
-        fill="none"
-      ></circle>
+        opacity="0.25"
+      />
       <path
-        className="opacity-75"
-        fill={fillColor !== 'none' ? fillColor : strokeColor}
+        className={cn(styles.fill, styles.indicator)}
         d="M12 2a10 10 0 0 1 10 10h-2a8 8 0 0 0-8-8V2z"
-      ></path>
+      />
     </g>
   ),
-  ['spinner-thin']: ({ fillColor, strokeColor }) => (
-    <g>
+  ['spinner-thin']: () => (
+    <g className={styles.body}>
       <circle
+        className={cn(styles.stroke, styles.track)}
         opacity="0.1"
         cx="12"
         cy="12"
         r="11"
-        stroke={strokeColor}
         strokeWidth="1"
-        fill="none"
       />
       <path
-        fill={fillColor !== 'none' ? fillColor : strokeColor}
+        className={cn(styles.fill, styles.indicator)}
         d="M12 1a11 11 0 0 1 11 11h-1a10 10 0 0 0-10-10V1z"
       />
     </g>
   ),
-  ['spinner-thick']: ({ fillColor, strokeColor }) => (
-    <g>
+  ['spinner-thick']: () => (
+    <g className={styles.body}>
       <circle
+        className={cn(styles.stroke, styles.track)}
         opacity="0.3"
         cx="12"
         cy="12"
         r="8"
-        stroke={strokeColor}
         strokeWidth="4"
-        fill="none"
       />
       <path
-        fill={fillColor !== 'none' ? fillColor : strokeColor}
+        className={cn(styles.fill, styles.indicator)}
         d="M12 3a9 9 0 0 1 9 9h-4a5 5 0 0 0-5-5V3z"
       />
     </g>
   ),
-  ['loading-dots']: ({ fillColor }) => (
-    <g>
-      <circle cx="4" cy="12" r="1.5" fill={fillColor}>
-        <animate
-          attributeName="opacity"
-          values="0.3;1;0.3"
-          dur="1.5s"
-          repeatCount="indefinite"
-          begin="0s"
-        />
+  ['loading-dots']: () => (
+    <g className={styles.body}>
+      <circle className={cn(styles.fill, styles.dot)} cx="4" cy="12" r="1.5">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite" begin="0s" />
       </circle>
-      <circle cx="12" cy="12" r="1.5" fill={fillColor}>
-        <animate
-          attributeName="opacity"
-          values="0.3;1;0.3"
-          dur="1.5s"
-          repeatCount="indefinite"
-          begin="0.5s"
-        />
+      <circle className={cn(styles.fill, styles.dot)} cx="12" cy="12" r="1.5">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite" begin="0.5s" />
       </circle>
-      <circle cx="20" cy="12" r="1.5" fill={fillColor}>
-        <animate
-          attributeName="opacity"
-          values="0.3;1;0.3"
-          dur="1.5s"
-          repeatCount="indefinite"
-          begin="1s"
-        />
+      <circle className={cn(styles.fill, styles.dot)} cx="20" cy="12" r="1.5">
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite" begin="1s" />
       </circle>
     </g>
   ),
-  ['loading-dots-fade']: ({ fillColor, strokeColor }) => (
-    <g>
-      <circle
-        cx="4"
-        cy="12"
-        r="2"
-        fill={fillColor !== 'none' ? fillColor : strokeColor}
-      >
-        <animate
-          attributeName="opacity"
-          values="0;1;0"
-          dur="1.4s"
-          repeatCount="indefinite"
-          begin="0s"
-        />
-        <animateTransform
-          attributeName="transform"
-          type="scale"
-          values="0.5;1;0.5"
-          dur="1.4s"
-          repeatCount="indefinite"
-          begin="0s"
-        />
-      </circle>
-      <circle
-        cx="12"
-        cy="12"
-        r="2"
-        fill={fillColor !== 'none' ? fillColor : strokeColor}
-      >
-        <animate
-          attributeName="opacity"
-          values="0;1;0"
-          dur="1.4s"
-          repeatCount="indefinite"
-          begin="0.2s"
-        />
-        <animateTransform
-          attributeName="transform"
-          type="scale"
-          values="0.5;1;0.5"
-          dur="1.4s"
-          repeatCount="indefinite"
-          begin="0.2s"
-        />
-      </circle>
-      <circle
-        cx="20"
-        cy="12"
-        r="2"
-        fill={fillColor !== 'none' ? fillColor : strokeColor}
-      >
-        <animate
-          attributeName="opacity"
-          values="0;1;0"
-          dur="1.4s"
-          repeatCount="indefinite"
-          begin="0.4s"
-        />
-        <animateTransform
-          attributeName="transform"
-          type="scale"
-          values="0.5;1;0.5"
-          dur="1.4s"
-          repeatCount="indefinite"
-          begin="0.4s"
-        />
-      </circle>
-    </g>
-  ),
-  ['loading-pulse']: ({ strokeColor }) => (
+  ['loading-pulse']: () => (
     <circle
+      className={cn(styles.stroke, styles.pulse)}
       cx="12"
       cy="12"
       r="6"
-      stroke={strokeColor}
       strokeWidth="2"
-      fill="none"
       opacity="0.5"
     />
   ),
-  ['loading-pulse-ring']: ({ fillColor, strokeColor }) => (
-    <g>
-      <circle
-        cx="12"
-        cy="12"
-        r="10"
-        stroke={strokeColor}
-        strokeWidth="2"
-        fill="none"
-      >
-        <animate
-          attributeName="r"
-          values="8;10;8"
-          dur="1s"
-          repeatCount="indefinite"
-        />
-        <animate
-          attributeName="opacity"
-          values="1;0.5;1"
-          dur="1s"
-          repeatCount="indefinite"
-        />
-      </circle>
-      <circle
-        cx="12"
-        cy="12"
-        r="6"
-        fill={fillColor !== 'none' ? fillColor : strokeColor}
-      >
-        <animate
-          attributeName="r"
-          values="6;4;6"
-          dur="1s"
-          repeatCount="indefinite"
-        />
-      </circle>
-    </g>
-  ),
-  ['loading-bars']: ({ fillColor }) => (
-    <g>
-      <rect x="11" y="1" width="2" height="6" fill={fillColor} rx="1">
-        <animateTransform
-          attributeName="transform"
-          type="rotate"
-          values="0 12 12;360 12 12"
-          dur="0.8s"
-          repeatCount="indefinite"
-        />
-      </rect>
-      <rect
-        x="11"
-        y="17"
-        width="2"
-        height="6"
-        fill={fillColor}
-        rx="1"
-        opacity="0.5"
-      >
-        <animateTransform
-          attributeName="transform"
-          type="rotate"
-          values="0 12 12;360 12 12"
-          dur="0.8s"
-          repeatCount="indefinite"
-        />
-      </rect>
-      <rect
-        x="17"
-        y="11"
-        width="6"
-        height="2"
-        fill={fillColor}
-        rx="1"
-        opacity="0.75"
-      >
-        <animateTransform
-          attributeName="transform"
-          type="rotate"
-          values="0 12 12;360 12 12"
-          dur="0.8s"
-          repeatCount="indefinite"
-        />
-      </rect>
-      <rect
-        x="1"
-        y="11"
-        width="6"
-        height="2"
-        fill={fillColor}
-        rx="1"
-        opacity="0.25"
-      >
-        <animateTransform
-          attributeName="transform"
-          type="rotate"
-          values="0 12 12;360 12 12"
-          dur="0.8s"
-          repeatCount="indefinite"
-        />
-      </rect>
-    </g>
-  ),
-  ['loading-bounce']: ({ fillColor }) => (
-    <g>
-      <circle cx="6" cy="12" r="2" fill={fillColor}>
-        <animateTransform
-          attributeName="transform"
-          type="translate"
-          values="0 0; 0 -8; 0 0"
-          dur="0.6s"
-          repeatCount="indefinite"
-          begin="0s"
-        />
-      </circle>
-      <circle cx="12" cy="12" r="2" fill={fillColor}>
-        <animateTransform
-          attributeName="transform"
-          type="translate"
-          values="0 0; 0 -8; 0 0"
-          dur="0.6s"
-          repeatCount="indefinite"
-          begin="0.2s"
-        />
-      </circle>
-      <circle cx="18" cy="12" r="2" fill={fillColor}>
-        <animateTransform
-          attributeName="transform"
-          type="translate"
-          values="0 0; 0 -8; 0 0"
-          dur="0.6s"
-          repeatCount="indefinite"
-          begin="0.4s"
-        />
-      </circle>
-    </g>
-  ),
-  ['loading-clock']: ({ fillColor, strokeColor }) => (
-    <g>
-      <circle
-        cx="12"
-        cy="12"
-        r="10"
-        stroke={strokeColor}
-        strokeWidth="2"
-        fill="none"
-        opacity="0.2"
-      />
-      <line
-        x1="12"
-        y1="12"
-        x2="12"
-        y2="5"
-        stroke={strokeColor}
-        strokeWidth="2"
-        strokeLinecap="round"
-      >
-        <animateTransform
-          attributeName="transform"
-          type="rotate"
-          from="0 12 12"
-          to="360 12 12"
-          dur="1s"
-          repeatCount="indefinite"
-        />
-      </line>
-      <circle
-        cx="12"
-        cy="12"
-        r="1"
-        fill={fillColor !== 'none' ? fillColor : strokeColor}
-      />
-    </g>
-  ),
-  ['loading-wifi']: ({ fillColor, strokeColor }) => (
-    <g>
-      <path
-        d="M5 12.55a11.8 11.8 0 0 1 14 0"
-        stroke={strokeColor}
-        strokeWidth="2"
-        fill="none"
-        strokeLinecap="round"
-      >
-        <animate
-          attributeName="opacity"
-          values="0.2;1;0.2"
-          dur="1.2s"
-          repeatCount="indefinite"
-          begin="0s"
-        />
-      </path>
-      <path
-        d="M8.5 16a6.5 6.5 0 0 1 7 0"
-        stroke={strokeColor}
-        strokeWidth="2"
-        fill="none"
-        strokeLinecap="round"
-      >
-        <animate
-          attributeName="opacity"
-          values="0.2;1;0.2"
-          dur="1.2s"
-          repeatCount="indefinite"
-          begin="0.1s"
-        />
-      </path>
-      <circle
-        cx="12"
-        cy="19"
-        r="1"
-        fill={fillColor !== 'none' ? fillColor : strokeColor}
-      >
-        <animate
-          attributeName="opacity"
-          values="0.2;1;0.2"
-          dur="1.2s"
-          repeatCount="indefinite"
-          begin="0.2s"
-        />
-      </circle>
-    </g>
-  ),
-  ['loading-orbit']: ({ fillColor, strokeColor }) => (
-    <g>
-      <circle
-        cx="12"
-        cy="12"
-        r="10"
-        stroke={strokeColor}
-        strokeWidth="1"
-        fill="none"
-        opacity="0.1"
-      />
-      <circle
-        cx="12"
-        cy="2"
-        r="2"
-        fill={fillColor !== 'none' ? fillColor : strokeColor}
-      >
-        <animateTransform
-          attributeName="transform"
-          type="rotate"
-          from="0 12 12"
-          to="360 12 12"
-          dur="2s"
-          repeatCount="indefinite"
-        />
-      </circle>
-      <circle cx="12" cy="22" r="1.5" fill={strokeColor} opacity="0.6">
-        <animateTransform
-          attributeName="transform"
-          type="rotate"
-          from="0 12 12"
-          to="-360 12 12"
-          dur="1.5s"
-          repeatCount="indefinite"
-        />
-      </circle>
-    </g>
-  ),
-  ['loading-morph']: ({ fillColor, strokeColor }) => (
-    <rect
-      x="6"
-      y="6"
-      width="12"
-      height="12"
-      rx="0"
-      fill={fillColor !== 'none' ? fillColor : strokeColor}
-    >
-      <animate
-        attributeName="rx"
-        values="0;6;0"
-        dur="2s"
-        repeatCount="indefinite"
-      />
-      <animateTransform
-        attributeName="transform"
-        type="rotate"
-        from="0 12 12"
-        to="360 12 12"
-        dur="2s"
-        repeatCount="indefinite"
-      />
-    </rect>
-  ),
-  ['loading-progress']: ({ fillColor, strokeColor }) => (
-    <g>
-      <rect
-        x="0"
-        y="10"
-        width="24"
-        height="4"
-        fill={strokeColor}
-        opacity="0.1"
-        rx="2"
-      />
-      <rect
-        x="0"
-        y="10"
-        width="6"
-        height="4"
-        fill={fillColor !== 'none' ? fillColor : strokeColor}
-        rx="2"
-      >
-        <animate
-          attributeName="x"
-          values="0;18;0"
-          dur="1.5s"
-          repeatCount="indefinite"
-        />
-      </rect>
-    </g>
-  ),
-  ['loading-half']: ({ fillColor, strokeColor }) => (
-    <g>
-      <circle
-        opacity="0.15"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke={strokeColor}
-        strokeWidth="2"
-        fill="none"
-      />
-      <path
-        fill={fillColor !== 'none' ? fillColor : strokeColor}
-        d="M2 12a10 10 0 0 1 20 0h-2a8 8 0 0 0-16 0h-2z"
-      >
-        <animateTransform
-          attributeName="transform"
-          type="rotate"
-          from="0 12 12"
-          to="360 12 12"
-          dur="0.8s"
-          repeatCount="indefinite"
-        />
-      </path>
-    </g>
-  ),
-  ['loading-dash']: ({ strokeColor }) => (
-    <circle
-      cx="12"
-      cy="12"
-      r="10"
-      stroke={strokeColor}
-      strokeWidth="3"
-      fill="none"
-      strokeLinecap="round"
-      strokeDasharray="1 150"
-    >
-      <animate
-        attributeName="stroke-dasharray"
-        values="1 150;90 150;90 150"
-        dur="1.5s"
-        repeatCount="indefinite"
-      />
-      <animate
-        attributeName="stroke-dashoffset"
-        values="0;-35;-124"
-        dur="1.5s"
-        repeatCount="indefinite"
-      />
-    </circle>
-  ),
-  ['loading-scale-pulse']: ({ fillColor, strokeColor }) => (
-    <g>
-      <circle
-        cx="12"
-        cy="12"
-        r="3"
-        fill={fillColor !== 'none' ? fillColor : strokeColor}
-      >
-        <animate
-          attributeName="r"
-          values="3;4;3"
-          dur="1s"
-          repeatCount="indefinite"
-        />
-      </circle>
-      <circle
-        cx="12"
-        cy="12"
-        r="8"
-        stroke={strokeColor}
-        strokeWidth="2"
-        fill="none"
-        opacity="0.3"
-      >
-        <animate
-          attributeName="r"
-          values="8;10;8"
-          dur="1s"
-          repeatCount="indefinite"
-        />
-        <animate
-          attributeName="opacity"
-          values="0.3;0.1;0.3"
-          dur="1s"
-          repeatCount="indefinite"
-        />
-      </circle>
-      <circle
-        cx="12"
-        cy="12"
-        r="11"
-        stroke={strokeColor}
-        strokeWidth="1"
-        fill="none"
-        opacity="0.1"
-      >
-        <animate
-          attributeName="r"
-          values="11;13;11"
-          dur="1s"
-          repeatCount="indefinite"
-        />
-        <animate
-          attributeName="opacity"
-          values="0.1;0.05;0.1"
-          dur="1s"
-          repeatCount="indefinite"
-        />
-      </circle>
-    </g>
-  ),
-  ['loading-flip']: ({ fillColor, strokeColor }) => (
-    <rect
-      x="8"
-      y="8"
-      width="8"
-      height="8"
-      fill={fillColor !== 'none' ? fillColor : strokeColor}
-    >
-      <animateTransform
-        attributeName="transform"
-        type="scale"
-        values="1,1;0.1,1;1,1"
-        dur="2s"
-        repeatCount="indefinite"
-      />
-      <animate
-        attributeName="opacity"
-        values="1;0.5;1"
-        dur="2s"
-        repeatCount="indefinite"
-      />
-    </rect>
-  ),
-  ['loading-square']: ({ strokeColor }) => (
-    <rect
-      x="4"
-      y="4"
-      width="16"
-      height="16"
-      stroke={strokeColor}
-      strokeWidth="2"
-      fill="none"
-    >
-      <animateTransform
-        attributeName="transform"
-        type="rotate"
-        from="0 12 12"
-        to="360 12 12"
-        dur="2s"
-        repeatCount="indefinite"
-      />
-      <animate
-        attributeName="rx"
-        values="0;4;0"
-        dur="2s"
-        repeatCount="indefinite"
-      />
-    </rect>
-  ),
-  ['loading-triangle']: ({ fillColor, strokeColor }) => (
-    <g>
-      <polygon
-        points="12,2 22,20 2,20"
-        stroke={strokeColor}
-        strokeWidth="2"
-        fill="none"
-      >
-        <animateTransform
-          attributeName="transform"
-          type="rotate"
-          from="0 12 12"
-          to="360 12 12"
-          dur="1s"
-          repeatCount="indefinite"
-        />
-      </polygon>
-      <circle
-        cx="12"
-        cy="12"
-        r="2"
-        fill={fillColor !== 'none' ? fillColor : strokeColor}
-      />
-    </g>
-  ),
-  ['loading-cross']: ({ strokeColor }) => (
-    <g>
-      <line
-        x1="12"
-        y1="2"
-        x2="12"
-        y2="22"
-        stroke={strokeColor}
-        strokeWidth="4"
-        strokeLinecap="round"
-      >
-        <animateTransform
-          attributeName="transform"
-          type="rotate"
-          from="0 12 12"
-          to="360 12 12"
-          dur="1s"
-          repeatCount="indefinite"
-        />
-      </line>
-      <line
-        x1="2"
-        y1="12"
-        x2="22"
-        y2="12"
-        stroke={strokeColor}
-        strokeWidth="4"
-        strokeLinecap="round"
-      >
-        <animateTransform
-          attributeName="transform"
-          type="rotate"
-          from="0 12 12"
-          to="360 12 12"
-          dur="1s"
-          repeatCount="indefinite"
-        />
-      </line>
-    </g>
-  ),
-  ['loading-star']: ({ fillColor, strokeColor }) => (
-    <g>
-      {/* 外側の星 - 時計回り */}
-      <polygon
-        points="12,2 14.5,8.5 21.5,9 16.5,13.5 18,20.5 12,17 6,20.5 7.5,13.5 2.5,9 9.5,8.5"
-        stroke={strokeColor}
-        strokeWidth="1.5"
-        strokeLinejoin="round"
-        fill="none"
-        opacity="0.4"
-      >
-        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="3s" repeatCount="indefinite" />
-      </polygon>
-      {/* 内側の星 - 反時計回り */}
-      <polygon
-        points="12,5 13.5,9.5 18,10 15,12.5 16,17 12,14.5 8,17 9,12.5 6,10 10.5,9.5"
-        stroke={strokeColor}
-        strokeWidth="1.5"
-        strokeLinejoin="round"
-        fill={fillColor !== 'none' ? fillColor : 'none'}
-        opacity="0.7"
-      >
-        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="-360 12 12" dur="2s" repeatCount="indefinite" />
-        <animate attributeName="opacity" values="0.7;1;0.7" dur="1s" repeatCount="indefinite" />
-      </polygon>
-      {/* 中心点 */}
-      <circle cx="12" cy="12" r="1.5" fill={fillColor !== 'none' ? fillColor : strokeColor}>
-        <animate attributeName="r" values="1.5;2.5;1.5" dur="1s" repeatCount="indefinite" />
-      </circle>
-    </g>
-  ),
-  ['loading-hexagon']: ({ fillColor, strokeColor }) => (
-    <g>
-      {/* 最外側の六角形 - ゆっくり回転 */}
-      <polygon
-        points="12,1 21,6 21,18 12,23 3,18 3,6"
-        stroke={strokeColor}
-        strokeWidth="1"
-        strokeLinejoin="round"
-        fill="none"
-        opacity="0.2"
-      >
-        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="4s" repeatCount="indefinite" />
-      </polygon>
-      {/* 中間の六角形 - 逆回転 */}
-      <polygon
-        points="12,4 18,8 18,16 12,20 6,16 6,8"
-        stroke={strokeColor}
-        strokeWidth="1.5"
-        strokeLinejoin="round"
-        fill="none"
-        opacity="0.5"
-      >
-        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="-360 12 12" dur="2s" repeatCount="indefinite" />
-      </polygon>
-      {/* 内側の六角形 - 塗りつぶし＋パルス */}
-      <polygon
-        points="12,7 15,9 15,15 12,17 9,15 9,9"
-        stroke={strokeColor}
-        strokeWidth="1"
-        strokeLinejoin="round"
-        fill={fillColor !== 'none' ? fillColor : strokeColor}
-        opacity="0.8"
-      >
-        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1.5s" repeatCount="indefinite" />
-        <animate attributeName="opacity" values="0.8;1;0.8" dur="0.75s" repeatCount="indefinite" />
-      </polygon>
-    </g>
-  ),
-  // ========================================
-  // 新デザイン ローディングアイコン
-  // ========================================
-  ['loading-dna']: ({ fillColor, strokeColor }) => (
-    <g>
-      {/* 左のらせん */}
-      <ellipse cx="8" cy="4" rx="2" ry="1.5" fill={fillColor !== 'none' ? fillColor : strokeColor}>
-        <animate attributeName="cy" values="4;12;20;12;4" dur="2s" repeatCount="indefinite" />
-        <animate attributeName="rx" values="2;4;2;4;2" dur="2s" repeatCount="indefinite" />
-      </ellipse>
-      <ellipse cx="16" cy="20" rx="2" ry="1.5" fill={fillColor !== 'none' ? fillColor : strokeColor}>
-        <animate attributeName="cy" values="20;12;4;12;20" dur="2s" repeatCount="indefinite" />
-        <animate attributeName="rx" values="2;4;2;4;2" dur="2s" repeatCount="indefinite" />
-      </ellipse>
-      {/* 接続線 */}
-      <line x1="8" y1="8" x2="16" y2="8" stroke={strokeColor} strokeWidth="1.5" opacity="0.5">
-        <animate attributeName="y1" values="8;12;16;12;8" dur="2s" repeatCount="indefinite" />
-        <animate attributeName="y2" values="8;12;16;12;8" dur="2s" repeatCount="indefinite" />
-      </line>
-      <line x1="8" y1="12" x2="16" y2="12" stroke={strokeColor} strokeWidth="1.5" opacity="0.7" />
-      <line x1="8" y1="16" x2="16" y2="16" stroke={strokeColor} strokeWidth="1.5" opacity="0.5">
-        <animate attributeName="y1" values="16;12;8;12;16" dur="2s" repeatCount="indefinite" />
-        <animate attributeName="y2" values="16;12;8;12;16" dur="2s" repeatCount="indefinite" />
-      </line>
-    </g>
-  ),
-  ['loading-ripple']: ({ strokeColor }) => (
-    <g fill="none" stroke={strokeColor} strokeWidth="2">
-      <circle cx="12" cy="12" r="1">
-        <animate attributeName="r" values="1;10" dur="1.5s" repeatCount="indefinite" />
-        <animate attributeName="opacity" values="1;0" dur="1.5s" repeatCount="indefinite" />
-      </circle>
-      <circle cx="12" cy="12" r="1">
-        <animate attributeName="r" values="1;10" dur="1.5s" repeatCount="indefinite" begin="0.5s" />
-        <animate attributeName="opacity" values="1;0" dur="1.5s" repeatCount="indefinite" begin="0.5s" />
-      </circle>
-      <circle cx="12" cy="12" r="1">
-        <animate attributeName="r" values="1;10" dur="1.5s" repeatCount="indefinite" begin="1s" />
-        <animate attributeName="opacity" values="1;0" dur="1.5s" repeatCount="indefinite" begin="1s" />
-      </circle>
-    </g>
-  ),
-  ['loading-infinity']: ({ strokeColor }) => (
-    <g fill="none" stroke={strokeColor} strokeWidth="2" strokeLinecap="round">
-      {/* 無限マークのパス */}
-      <path d="M12 12c-2-2-4-4-6-4s-4 2-4 4 2 4 4 4c2 0 4-2 6-4s4-4 6-4 4 2 4 4-2 4-4 4c-2 0-4-2-6-4" opacity="0.2" />
-      {/* アニメーションするドット */}
-      <circle cx="12" cy="12" r="2" fill={strokeColor}>
-        <animateMotion dur="2s" repeatCount="indefinite" path="M0 0c-2-2-4-4-6-4s-4 2-4 4 2 4 4 4c2 0 4-2 6-4s4-4 6-4 4 2 4 4-2 4-4 4c-2 0-4-2-6-4" />
-      </circle>
-    </g>
-  ),
-  ['loading-atom']: ({ fillColor, strokeColor }) => (
-    <g>
-      {/* 核 */}
-      <circle cx="12" cy="12" r="3" fill={fillColor !== 'none' ? fillColor : strokeColor}>
-        <animate attributeName="r" values="3;3.5;3" dur="1s" repeatCount="indefinite" />
-      </circle>
-      {/* 軌道1 - 水平 */}
-      <ellipse cx="12" cy="12" rx="10" ry="4" fill="none" stroke={strokeColor} strokeWidth="1" opacity="0.3">
-        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="3s" repeatCount="indefinite" />
-      </ellipse>
-      <circle cx="22" cy="12" r="1.5" fill={strokeColor}>
-        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1.5s" repeatCount="indefinite" />
-      </circle>
-      {/* 軌道2 - 斜め */}
-      <ellipse cx="12" cy="12" rx="10" ry="4" fill="none" stroke={strokeColor} strokeWidth="1" opacity="0.3" transform="rotate(60 12 12)">
-        <animateTransform attributeName="transform" type="rotate" from="60 12 12" to="420 12 12" dur="3s" repeatCount="indefinite" />
-      </ellipse>
-      <circle cx="22" cy="12" r="1.5" fill={strokeColor} transform="rotate(60 12 12)">
-        <animateTransform attributeName="transform" type="rotate" from="60 12 12" to="420 12 12" dur="2s" repeatCount="indefinite" />
-      </circle>
-      {/* 軌道3 - 逆斜め */}
-      <ellipse cx="12" cy="12" rx="10" ry="4" fill="none" stroke={strokeColor} strokeWidth="1" opacity="0.3" transform="rotate(-60 12 12)">
-        <animateTransform attributeName="transform" type="rotate" from="-60 12 12" to="300 12 12" dur="3s" repeatCount="indefinite" />
-      </ellipse>
-      <circle cx="22" cy="12" r="1.5" fill={strokeColor} transform="rotate(-60 12 12)">
-        <animateTransform attributeName="transform" type="rotate" from="-60 12 12" to="300 12 12" dur="2.5s" repeatCount="indefinite" />
-      </circle>
-    </g>
-  ),
-  ['loading-heartbeat']: ({ strokeColor }) => (
-    <g fill="none" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      {/* ベースライン */}
-      <line x1="2" y1="12" x2="22" y2="12" opacity="0.2" />
-      {/* 心電図パルス */}
-      <polyline points="2,12 6,12 8,12 9,6 10,18 11,8 12,14 13,12 17,12 22,12">
-        <animate attributeName="stroke-dasharray" values="0 100;50 100;100 100" dur="1.5s" repeatCount="indefinite" />
-        <animate attributeName="stroke-dashoffset" values="0;-25;-50" dur="1.5s" repeatCount="indefinite" />
-      </polyline>
-    </g>
-  ),
-  ['loading-hourglass']: ({ fillColor, strokeColor }) => (
-    <g fill="none" stroke={strokeColor} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      {/* 砂時計フレーム */}
-      <path d="M5 3h14M5 21h14" />
-      <path d="M6 3v3a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3" />
-      <path d="M6 21v-3a6 6 0 0 1 6-6 6 6 0 0 1 6 6v3" />
-      {/* 砂 */}
-      <path d="M12 12v3" stroke={fillColor !== 'none' ? fillColor : strokeColor} strokeWidth="3">
-        <animate attributeName="d" values="M12 12v0;M12 12v3;M12 12v0" dur="2s" repeatCount="indefinite" />
-      </path>
-      {/* 回転アニメーション */}
-      <animateTransform attributeName="transform" type="rotate" values="0 12 12;0 12 12;180 12 12;180 12 12;360 12 12" dur="4s" repeatCount="indefinite" keyTimes="0;0.4;0.5;0.9;1" />
-    </g>
-  ),
-  ['loading-gears']: ({ fillColor, strokeColor }) => (
-    <g fill={fillColor} stroke={strokeColor} strokeWidth="1">
-      {/* 大歯車 */}
-      <g>
-        <circle cx="9" cy="12" r="5" fill="none" strokeWidth="1.5" />
-        <circle cx="9" cy="12" r="2" fill={strokeColor} />
-        {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => (
-          <rect key={i} x="8" y="5" width="2" height="3" rx="0.5" fill={strokeColor} transform={`rotate(${angle} 9 12)`} />
-        ))}
-        <animateTransform attributeName="transform" type="rotate" from="0 9 12" to="360 9 12" dur="3s" repeatCount="indefinite" />
-      </g>
-      {/* 小歯車 */}
-      <g>
-        <circle cx="17" cy="10" r="3.5" fill="none" strokeWidth="1.5" />
-        <circle cx="17" cy="10" r="1.5" fill={strokeColor} />
-        {[0, 60, 120, 180, 240, 300].map((angle, i) => (
-          <rect key={i} x="16.25" y="5" width="1.5" height="2" rx="0.5" fill={strokeColor} transform={`rotate(${angle} 17 10)`} />
-        ))}
-        <animateTransform attributeName="transform" type="rotate" from="0 17 10" to="-360 17 10" dur="2s" repeatCount="indefinite" />
-      </g>
-    </g>
-  ),
-  ['loading-wave']: ({ strokeColor }) => (
-    <g fill="none" stroke={strokeColor} strokeWidth="2" strokeLinecap="round">
-      <path d="M2 12 Q 6 6, 12 12 T 22 12" opacity="0.3" />
-      <path d="M2 12 Q 6 6, 12 12 T 22 12">
-        <animate attributeName="d"
-          values="M2 12 Q 6 6, 12 12 T 22 12;M2 12 Q 6 18, 12 12 T 22 12;M2 12 Q 6 6, 12 12 T 22 12"
-          dur="1s" repeatCount="indefinite" />
-      </path>
-      {/* 移動するドット */}
-      <circle cx="2" cy="12" r="2" fill={strokeColor}>
-        <animate attributeName="cx" values="2;22;2" dur="2s" repeatCount="indefinite" />
-        <animate attributeName="cy" values="12;12;12" dur="2s" repeatCount="indefinite" />
-      </circle>
-    </g>
-  ),
-  ['loading-radar']: ({ fillColor, strokeColor }) => (
-    <g>
-      {/* レーダー円 */}
-      <circle cx="12" cy="12" r="10" fill="none" stroke={strokeColor} strokeWidth="1" opacity="0.2" />
-      <circle cx="12" cy="12" r="7" fill="none" stroke={strokeColor} strokeWidth="1" opacity="0.2" />
-      <circle cx="12" cy="12" r="4" fill="none" stroke={strokeColor} strokeWidth="1" opacity="0.2" />
-      <circle cx="12" cy="12" r="1" fill={fillColor !== 'none' ? fillColor : strokeColor} />
-      {/* スキャンライン */}
-      <line x1="12" y1="12" x2="12" y2="2" stroke={strokeColor} strokeWidth="2" strokeLinecap="round">
-        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="2s" repeatCount="indefinite" />
-      </line>
-      {/* スキャンエリア */}
-      <path d="M12 12 L12 2 A10 10 0 0 1 20 8 Z" fill={strokeColor} opacity="0.15">
-        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="2s" repeatCount="indefinite" />
-      </path>
-    </g>
-  ),
-  ['loading-cube3d']: ({ strokeColor }) => (
-    <g fill="none" stroke={strokeColor} strokeWidth="1.5" strokeLinejoin="round">
-      {/* 3Dキューブ */}
-      <polygon points="12,2 20,7 20,17 12,22 4,17 4,7" opacity="0.3" />
-      <line x1="12" y1="2" x2="12" y2="12" />
-      <line x1="12" y1="12" x2="4" y2="17" />
-      <line x1="12" y1="12" x2="20" y2="17" />
-      <polygon points="12,2 20,7 12,12 4,7" fill={strokeColor} opacity="0.2">
-        <animate attributeName="opacity" values="0.2;0.5;0.2" dur="1.5s" repeatCount="indefinite" />
-      </polygon>
-      <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="4s" repeatCount="indefinite" />
-    </g>
-  ),
-  ['loading-cube3d-glow']: ({ strokeColor }) => (
-    <g fill="none" stroke={strokeColor} strokeWidth="1.5">
-      {/* Phase 1: キューブ */}
-      <g opacity="0">
-        <animate attributeName="opacity" values="1;1;0;0;0;0;1" dur="6s" repeatCount="indefinite" />
-        <polygon points="12,2 20,7 20,17 12,22 4,17 4,7" strokeLinejoin="round" />
-        <line x1="12" y1="2" x2="12" y2="12" />
-        <line x1="12" y1="12" x2="4" y2="17" />
-        <line x1="12" y1="12" x2="20" y2="17" />
-        <polygon points="12,2 20,7 12,12 4,7" fill={strokeColor} opacity="0.3" strokeLinejoin="round" />
-      </g>
-      {/* Phase 2: 原子（軌道＋核） */}
-      <g opacity="0">
-        <animate attributeName="opacity" values="0;0;1;1;0;0;0" dur="6s" repeatCount="indefinite" />
-        <ellipse cx="12" cy="12" rx="9" ry="4" />
-        <ellipse cx="12" cy="12" rx="9" ry="4" transform="rotate(60 12 12)" />
-        <ellipse cx="12" cy="12" rx="9" ry="4" transform="rotate(120 12 12)" />
-        <circle cx="12" cy="12" r="2.5" fill={strokeColor} />
-      </g>
-      {/* Phase 3: 同心円リング */}
-      <g opacity="0">
-        <animate attributeName="opacity" values="0;0;0;0;1;1;0" dur="6s" repeatCount="indefinite" />
-        <circle cx="12" cy="12" r="3" />
-        <circle cx="12" cy="12" r="6" opacity="0.7" />
-        <circle cx="12" cy="12" r="9" opacity="0.4" />
-        <circle cx="12" cy="12" r="2" fill={strokeColor} />
-      </g>
-    </g>
-  ),
-  ['loading-rings']: ({ strokeColor }) => (
-    <g fill="none" strokeWidth="2">
-      {/* 外リング */}
-      <circle cx="12" cy="12" r="10" stroke={strokeColor} opacity="0.2" />
-      <circle cx="12" cy="12" r="10" stroke={strokeColor} strokeDasharray="15 48">
-        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1.5s" repeatCount="indefinite" />
-      </circle>
-      {/* 中リング */}
-      <circle cx="12" cy="12" r="6" stroke={strokeColor} opacity="0.2" />
-      <circle cx="12" cy="12" r="6" stroke={strokeColor} strokeDasharray="10 28">
-        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="-360 12 12" dur="1s" repeatCount="indefinite" />
-      </circle>
-      {/* 内リング */}
-      <circle cx="12" cy="12" r="2" stroke={strokeColor} strokeWidth="3">
-        <animate attributeName="r" values="2;3;2" dur="0.75s" repeatCount="indefinite" />
-        <animate attributeName="opacity" values="1;0.5;1" dur="0.75s" repeatCount="indefinite" />
-      </circle>
-    </g>
-  ),
-  ['loading-eclipse']: ({ fillColor, strokeColor }) => (
-    <g>
-      {/* 太陽本体（背景の光） */}
-      <circle cx="12" cy="12" r="6" fill={fillColor !== 'none' ? fillColor : strokeColor} opacity="0.3" />
-      {/* 月の影（左右に移動） */}
-      <circle cx="12" cy="12" r="6" fill={strokeColor}>
-        <animate attributeName="cx" values="7;12;17;12;7" dur="3s" repeatCount="indefinite" />
-      </circle>
-      {/* 外輪（コロナリング） */}
-      <circle cx="12" cy="12" r="8" fill="none" stroke={strokeColor} strokeWidth="1" opacity="0.5">
-        <animate attributeName="r" values="8;9;8" dur="1.5s" repeatCount="indefinite" />
-        <animate attributeName="opacity" values="0.5;0.2;0.5" dur="1.5s" repeatCount="indefinite" />
-      </circle>
-    </g>
-  ),
-  ['loading-interview']: ({ fillColor, strokeColor }) => (
-    <g>
-      {/* 左の人（頭だけ上下に伸びる、足元は固定） */}
-      <g>
-        {/* 体（固定） */}
-        <path d="M1 19a4 4 0 018 0" fill={strokeColor} opacity="0.9" />
-        {/* 頭（上下に動く - 黄金比 1.618s） */}
-        <circle cx="5" cy="11" r="2.5" fill={strokeColor} opacity="0.9">
-          <animate
-            attributeName="cy"
-            values="11;9.8;11.3;10.2;11"
-            dur="1.618s"
-            repeatCount="indefinite"
-            calcMode="spline"
-            keySplines="0.34 0.96 0.64 1; 0.4 0 0.6 1; 0.34 0.96 0.64 1; 0.4 0 0.6 1"
-          />
-        </circle>
-      </g>
-      {/* 右の人（頭だけ上下に伸びる、足元は固定） */}
-      <g>
-        {/* 体（固定） */}
-        <path d="M15 19a4 4 0 018 0" fill={strokeColor} opacity="0.9" />
-        {/* 頭（上下に動く、タイミングずらす - 黄金比の逆数 0.618s） */}
-        <circle cx="19" cy="11" r="2.5" fill={strokeColor} opacity="0.9">
-          <animate
-            attributeName="cy"
-            values="11;10.2;11.3;9.8;11"
-            dur="1.618s"
-            repeatCount="indefinite"
-            begin="0.618s"
-            calcMode="spline"
-            keySplines="0.34 0.96 0.64 1; 0.4 0 0.6 1; 0.34 0.96 0.64 1; 0.4 0 0.6 1"
-          />
-        </circle>
-      </g>
-      {/* 中央の吹き出し（滑らかにグネグネ - 黄金比タイミング） */}
-      <g>
-        {/* 吹き出しの上部ふくらみ1（左） */}
-        <circle cx="10" cy="3" r="0.8" fill={fillColor !== 'none' ? fillColor : strokeColor} opacity="0.9">
-          <animate
-            attributeName="cy"
-            values="3;2.5;3.2;2.7;3"
-            dur="2.618s"
-            repeatCount="indefinite"
-            calcMode="spline"
-            keySplines="0.34 0.96 0.64 1; 0.4 0 0.6 1; 0.34 0.96 0.64 1; 0.4 0 0.6 1"
-          />
-          <animate
-            attributeName="r"
-            values="0.8;0.9;0.75;0.85;0.8"
-            dur="1.618s"
-            repeatCount="indefinite"
-          />
-        </circle>
-        {/* 吹き出しの上部ふくらみ2（中央） */}
-        <circle cx="12" cy="2.5" r="1" fill={fillColor !== 'none' ? fillColor : strokeColor} opacity="0.95">
-          <animate
-            attributeName="cy"
-            values="2.5;2;2.8;2.3;2.5"
-            dur="2.618s"
-            repeatCount="indefinite"
-            calcMode="spline"
-            keySplines="0.34 0.96 0.64 1; 0.4 0 0.6 1; 0.34 0.96 0.64 1; 0.4 0 0.6 1"
-            begin="0.382s"
-          />
-          <animate
-            attributeName="r"
-            values="1;1.1;0.95;1.05;1"
-            dur="1.618s"
-            repeatCount="indefinite"
-            begin="0.382s"
-          />
-        </circle>
-        {/* 吹き出しの上部ふくらみ3（右） */}
-        <circle cx="14" cy="3" r="0.8" fill={fillColor !== 'none' ? fillColor : strokeColor} opacity="0.9">
-          <animate
-            attributeName="cy"
-            values="3;2.6;3.1;2.8;3"
-            dur="2.618s"
-            repeatCount="indefinite"
-            calcMode="spline"
-            keySplines="0.34 0.96 0.64 1; 0.4 0 0.6 1; 0.34 0.96 0.64 1; 0.4 0 0.6 1"
-            begin="0.618s"
-          />
-          <animate
-            attributeName="r"
-            values="0.8;0.7;0.9;0.8;0.8"
-            dur="1.618s"
-            repeatCount="indefinite"
-            begin="0.618s"
-          />
-        </circle>
-        {/* 吹き出しの下部ベース（横長） */}
-        <ellipse cx="12" cy="4" rx="3.5" ry="0.8" fill={fillColor !== 'none' ? fillColor : strokeColor} opacity="0.85">
-          <animate
-            attributeName="cy"
-            values="4;3.7;4.2;3.9;4"
-            dur="2.618s"
-            repeatCount="indefinite"
-            calcMode="spline"
-            keySplines="0.34 0.96 0.64 1; 0.4 0 0.6 1; 0.34 0.96 0.64 1; 0.4 0 0.6 1"
-            begin="0.236s"
-          />
-          <animate
-            attributeName="rx"
-            values="3.5;3.3;3.7;3.5"
-            dur="2.618s"
-            repeatCount="indefinite"
-            calcMode="spline"
-            keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1"
-          />
-        </ellipse>
-      </g>
-      {/* 左から雲へ飛ぶボール（弧を描く - 黄金比 1.618s） */}
-      <circle r="0.6" fill={fillColor !== 'none' ? fillColor : strokeColor} visibility="hidden">
-        <animateMotion dur="1.618s" repeatCount="indefinite" begin="0s">
-          <mpath xlinkHref="#arcPathLeft" />
-        </animateMotion>
-        <animate
-          attributeName="visibility"
-          values="hidden;visible;visible;hidden"
-          dur="1.618s"
-          repeatCount="indefinite"
-          begin="0s"
-        />
-        <animate
-          attributeName="opacity"
-          values="0;0.9;0.9;0"
-          dur="1.618s"
-          repeatCount="indefinite"
-          begin="0s"
-          calcMode="spline"
-          keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1"
-        />
-      </circle>
-      {/* 右から雲へ飛ぶボール（弧を描く - 黄金比の半分 0.809s ずらし） */}
-      <circle r="0.6" fill={fillColor !== 'none' ? fillColor : strokeColor} visibility="hidden">
-        <animateMotion dur="1.618s" repeatCount="indefinite" begin="0.809s">
-          <mpath xlinkHref="#arcPathRight" />
-        </animateMotion>
-        <animate
-          attributeName="visibility"
-          values="hidden;visible;visible;hidden"
-          dur="1.618s"
-          repeatCount="indefinite"
-          begin="0.809s"
-        />
-        <animate
-          attributeName="opacity"
-          values="0;0.9;0.9;0"
-          dur="1.618s"
-          repeatCount="indefinite"
-          begin="0.809s"
-          calcMode="spline"
-          keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1"
-        />
-      </circle>
-      {/* 弧のパス定義（非表示） - 頭の上から雲へ弧を描く */}
-      <defs>
-        <path id="arcPathLeft" d="M5 8 Q 8 1, 12 3" fill="none" />
-        <path id="arcPathRight" d="M19 8 Q 16 1, 12 3" fill="none" />
-      </defs>
-    </g>
-  ),
 };
 
 // ========================================
-// アイコンアニメーション設定
+// ローディングプリセット
 // ========================================
-const ICON_ANIMATION_CONFIG: Record<
-  string,
-  { animation: TargetAndTransition; transition: Transition }
-> = {
-  spinner: {
-    animation: { rotate: [0, 360] },
-    transition: { repeat: Infinity, duration: 1, ease: 'linear' },
-  },
-  'spinner-thin': {
-    animation: { rotate: [0, 360] },
-    transition: { repeat: Infinity, duration: 1.5, ease: 'easeInOut' },
-  },
-  'spinner-thick': {
-    animation: { rotate: [0, 360] },
-    transition: { repeat: Infinity, duration: 1.2, ease: 'linear' },
-  },
-  'loading-dots': {
-    animation: { opacity: [0.3, 1, 0.3] },
-    transition: { repeat: Infinity, duration: 1.5, ease: 'easeInOut' },
-  },
-  'loading-dots-fade': {
-    animation: { opacity: [0.3, 1, 0.3], scale: [0.5, 1, 0.5] },
-    transition: { repeat: Infinity, duration: 1.4, ease: 'easeInOut' },
-  },
-  'loading-pulse': {
-    animation: { scale: [1, 1.2, 1] },
-    transition: { repeat: Infinity, duration: 1, ease: 'easeInOut' },
-  },
-  'loading-pulse-ring': {
-    animation: { scale: [1, 1.2, 1] },
-    transition: { repeat: Infinity, duration: 1, ease: 'easeInOut' },
-  },
-  'loading-scale-pulse': {
-    animation: { scale: [1, 1.2, 1] },
-    transition: { repeat: Infinity, duration: 1, ease: 'easeInOut' },
-  },
-  'loading-bars': {
-    animation: { rotate: [0, 360] },
-    transition: { repeat: Infinity, duration: 0.8, ease: 'linear' },
-  },
-  'loading-bounce': {
-    animation: { y: [0, -8, 0] },
-    transition: { repeat: Infinity, duration: 0.6, ease: 'easeInOut' },
-  },
-  'loading-clock': {
-    animation: { rotate: [0, 360] },
-    transition: { repeat: Infinity, duration: 1, ease: 'linear' },
-  },
-  'loading-wifi': {
-    animation: { opacity: [0.2, 1, 0.2] },
-    transition: { repeat: Infinity, duration: 1.2, ease: 'easeInOut' },
-  },
-  'loading-orbit': {
-    animation: { rotate: [0, 360] },
-    transition: { repeat: Infinity, duration: 2, ease: 'linear' },
-  },
-  'loading-morph': {
-    animation: { rotate: [0, 360] },
-    transition: { repeat: Infinity, duration: 2, ease: 'easeInOut' },
-  },
-  'loading-progress': {
-    animation: { x: [0, 18, 0] },
-    transition: { repeat: Infinity, duration: 1.5, ease: 'easeInOut' },
-  },
-  'loading-half': {
-    animation: { rotate: [0, 360] },
-    transition: { repeat: Infinity, duration: 0.8, ease: 'linear' },
-  },
-  'loading-dash': {
-    animation: {},
-    transition: { repeat: Infinity, duration: 1.5, ease: 'easeInOut' },
-  },
-  'loading-flip': {
-    animation: { scaleX: [1, 0.1, 1] },
-    transition: { repeat: Infinity, duration: 2, ease: 'linear' },
-  },
-  'loading-square': {
-    animation: { rotate: [0, 360] },
-    transition: { repeat: Infinity, duration: 2, ease: 'easeInOut' },
-  },
-  'loading-triangle': {
-    animation: { rotate: [0, 360] },
-    transition: { repeat: Infinity, duration: 1, ease: 'linear' },
-  },
-  'loading-cross': {
-    animation: { rotate: [0, 360] },
-    transition: { repeat: Infinity, duration: 1, ease: 'linear' },
-  },
-  'loading-star': {
-    animation: { rotate: [0, 360] },
-    transition: { repeat: Infinity, duration: 1.2, ease: 'linear' },
-  },
-  'loading-hexagon': {
-    animation: { rotate: [0, 360] },
-    transition: { repeat: Infinity, duration: 1.5, ease: 'linear' },
-  },
-  // 新デザイン
-  'loading-dna': {
-    animation: { opacity: [0.8, 1, 0.8] },
-    transition: { repeat: Infinity, duration: 2, ease: 'easeInOut' },
-  },
-  'loading-ripple': {
-    animation: { scale: [1, 1.1, 1] },
-    transition: { repeat: Infinity, duration: 1.5, ease: 'easeOut' },
-  },
-  'loading-infinity': {
-    animation: { opacity: [0.8, 1, 0.8] },
-    transition: { repeat: Infinity, duration: 2, ease: 'easeInOut' },
-  },
-  'loading-atom': {
-    animation: { rotate: [0, 360] },
-    transition: { repeat: Infinity, duration: 3, ease: 'linear' },
-  },
-  'loading-heartbeat': {
-    animation: { opacity: [0.8, 1, 0.8] },
-    transition: { repeat: Infinity, duration: 1.5, ease: 'easeInOut' },
-  },
-  'loading-hourglass': {
-    animation: { rotate: [0, 180] },
-    transition: { repeat: Infinity, duration: 4, ease: 'easeInOut' },
-  },
-  'loading-gears': {
-    animation: { rotate: [0, 360] },
-    transition: { repeat: Infinity, duration: 3, ease: 'linear' },
-  },
-  'loading-wave': {
-    animation: { opacity: [0.8, 1, 0.8] },
-    transition: { repeat: Infinity, duration: 1, ease: 'easeInOut' },
-  },
-  'loading-radar': {
-    animation: { rotate: [0, 360] },
-    transition: { repeat: Infinity, duration: 2, ease: 'linear' },
-  },
-  'loading-cube3d': {
-    animation: { rotate: [0, 360] },
-    transition: { repeat: Infinity, duration: 5, ease: 'linear' },
-  },
-  'loading-cube3d-glow': {
-    animation: { rotate: [0, 360] },
-    transition: { repeat: Infinity, duration: 8, ease: 'linear' },
-  },
-  'loading-rings': {
-    animation: { rotate: [0, 360] },
-    transition: { repeat: Infinity, duration: 1.5, ease: 'linear' },
-  },
-  'loading-eclipse': {
-    animation: { opacity: [0.8, 1, 0.8] },
-    transition: { repeat: Infinity, duration: 3, ease: 'easeInOut' },
-  },
-  'loading-interview': {
-    animation: { opacity: [0.92, 1, 0.92] },
-    transition: { repeat: Infinity, duration: 1.618, ease: 'easeInOut' },
-  },
-  unlock: {
-    animation: { rotate: [-15, 15, -12, 12, -8, 8, -5, 5, -2, 2, 0] },
-    transition: { repeat: 1, duration: 1.2, ease: 'easeOut' },
-  },
-};
-
-// ========================================
-// プリセットマッピング
-// ========================================
-const PRESET_MAP: Record<LoadingPreset, { name: IconName; useFill?: boolean }> = {
+const PRESET_MAP: Record<LoadingPreset, { name: IconName }> = {
   spinner: { name: 'spinner' },
-  dots: { name: 'loading-dots', useFill: true },
+  dots: { name: 'loading-dots' },
   pulse: { name: 'loading-pulse' },
-  cube: { name: 'loading-cube3d' },
-  'cube-glow': { name: 'loading-cube3d-glow' },
-  interview: { name: 'loading-interview', useFill: true },
-  dna: { name: 'loading-dna' },
-  atom: { name: 'loading-atom' },
-  rings: { name: 'loading-rings' },
-  gears: { name: 'loading-gears' },
-  hourglass: { name: 'loading-hourglass' },
-  wave: { name: 'loading-wave' },
-  radar: { name: 'loading-radar', useFill: true },
-  eclipse: { name: 'loading-eclipse', useFill: true },
-  clock: { name: 'loading-clock' },
-  morph: { name: 'loading-morph' },
-  orbit: { name: 'loading-orbit' },
-  triangle: { name: 'loading-triangle' },
-  heartbeat: { name: 'loading-heartbeat' },
+  cube: { name: 'spinner' },
+  'cube-glow': { name: 'spinner' },
+  interview: { name: 'spinner' },
+  dna: { name: 'spinner' },
+  atom: { name: 'spinner' },
+  rings: { name: 'spinner' },
+  gears: { name: 'spinner' },
+  hourglass: { name: 'spinner' },
+  wave: { name: 'spinner' },
+  radar: { name: 'spinner' },
+  eclipse: { name: 'spinner' },
+  clock: { name: 'spinner' },
+  morph: { name: 'spinner' },
+  orbit: { name: 'spinner' },
+  triangle: { name: 'spinner' },
+  heartbeat: { name: 'spinner' },
 };
 
 // ========================================
-// Iconコンポーネント本体
+// サイズプリセット
 // ========================================
-// SCSS アニメーションプリセットからクラス名へのマッピング
-const ANIMATION_PRESET_CLASSES: Record<AnimationPreset, string> = {
-  // 基本アニメーション
-  'bounce': styles.bounce,
+const SIZE_VALUES: Record<SizePreset, number> = {
+  xs: 12,
+  sm: 16,
+  md: 20,
+  lg: 24,
+  xl: 32,
+  xxl: 48,
+};
+
+// ========================================
+// スタイルクラスマッピング
+// ========================================
+const ANIMATION_CLASSES: Record<AnimationPreset, string> = {
+  bounce: styles.bounce,
   'bounce-in': styles.bounceIn,
   'bounce-out': styles.bounceOut,
   'bounce-horizontal': styles.bounceHorizontal,
-  'ping': styles.ping,
-  'pulse': styles.pulse,
+  ping: styles.ping,
+  pulse: styles.pulse,
   'pulse-scale': styles.pulseScale,
-  'spin': styles.spin,
+  spin: styles.spin,
   'spin-slow': styles.spinSlow,
   'spin-fast': styles.spinFast,
   'spin-reverse': styles.spinReverse,
-  'wiggle': styles.wiggle,
+  wiggle: styles.wiggle,
   'wiggle-more': styles.wiggleMore,
-  'shake': styles.shake,
+  shake: styles.shake,
   'shake-hard': styles.shakeHard,
-  'float': styles.float,
+  float: styles.float,
   'float-rotate': styles.floatRotate,
-  'heartbeat': styles.heartbeat,
-  'tada': styles.tada,
-  'swing': styles.swing,
-  // 3D エフェクト
+  heartbeat: styles.heartbeat,
+  tada: styles.tada,
+  swing: styles.swing,
   'flip-x': styles.flipX,
   'flip-y': styles.flipY,
   'rotate-3d': styles.rotate3d,
   'flip-in': styles.flipIn,
   'flip-out': styles.flipOut,
-  // インタラクティブ
-  'pop': styles.pop,
+  pop: styles.pop,
   'pop-in': styles.popIn,
   'rubber-band': styles.rubberBand,
-  'jello': styles.jello,
-  'squeeze': styles.squeeze,
-  'wobble': styles.wobble,
-  // フェードエフェクト
+  jello: styles.jello,
+  squeeze: styles.squeeze,
+  wobble: styles.wobble,
   'fade-in': styles.fadeIn,
   'fade-out': styles.fadeOut,
   'fade-in-up': styles.fadeInUp,
   'fade-in-down': styles.fadeInDown,
   'zoom-in': styles.zoomIn,
   'zoom-out': styles.zoomOut,
-  // スライドエフェクト
   'slide-in-left': styles.slideInLeft,
   'slide-in-right': styles.slideInRight,
   'slide-in-up': styles.slideInUp,
   'slide-in-down': styles.slideInDown,
-  // グロー効果
-  'glow': styles.glow,
+  glow: styles.glow,
   'glow-strong': styles.glowStrong,
   'glow-pulse': styles.glowPulse,
   'glow-breathe': styles.glowBreathe,
   'glow-rainbow': styles.glowRainbow,
-  'neon': styles.neon,
+  neon: styles.neon,
   'color-shift': styles.colorShift,
-  'rainbow': styles.rainbow,
-  'flash': styles.flash,
-  'flicker': styles.flicker,
-  // 特殊効果
-  'sparkle': styles.sparkle,
-  'twinkle': styles.twinkle,
-  'glitch': styles.glitch,
+  rainbow: styles.rainbow,
+  flash: styles.flash,
+  flicker: styles.flicker,
+  sparkle: styles.sparkle,
+  twinkle: styles.twinkle,
+  glitch: styles.glitch,
   'blur-pulse': styles.blurPulse,
-  'morph': styles.morph,
-  'liquid': styles.liquid,
-  'orbit': styles.orbit,
-  'ripple': styles.ripple,
+  morph: styles.morph,
+  liquid: styles.liquid,
+  orbit: styles.orbit,
+  ripple: styles.ripple,
 };
 
-// ホバープリセットからクラス名へのマッピング
-const HOVER_PRESET_CLASSES: Record<HoverPreset, string> = {
-  // スケール
-  'scale': styles.hoverScale,
+const HOVER_CLASSES: Record<HoverPreset, string> = {
+  scale: styles.hoverScale,
   'scale-large': styles.hoverScaleLarge,
-  // 回転
-  'rotate': styles.hoverRotate,
+  rotate: styles.hoverRotate,
   'rotate-full': styles.hoverRotateFull,
-  // グロー
-  'glow': styles.hoverGlow,
-  'neon': styles.hoverNeon,
-  // バウンス系
-  'bounce': styles.hoverBounce,
-  'pop': styles.hoverPop,
-  'wiggle': styles.hoverWiggle,
-  'shake': styles.hoverShake,
-  // 回転系
-  'spin': styles.hoverSpin,
-  'flip': styles.hoverFlip,
+  glow: styles.hoverGlow,
+  neon: styles.hoverNeon,
+  bounce: styles.hoverBounce,
+  pop: styles.hoverPop,
+  wiggle: styles.hoverWiggle,
+  shake: styles.hoverShake,
+  spin: styles.hoverSpin,
+  flip: styles.hoverFlip,
   'flip-x': styles.hoverFlipX,
-  // 移動系
-  'float': styles.hoverFloat,
-  // 特殊効果
+  float: styles.hoverFloat,
   'rubber-band': styles.hoverRubberBand,
-  'jello': styles.hoverJello,
-  'tada': styles.hoverTada,
-  'heartbeat': styles.hoverHeartbeat,
-  'glitch': styles.hoverGlitch,
+  jello: styles.hoverJello,
+  tada: styles.hoverTada,
+  heartbeat: styles.hoverHeartbeat,
+  glitch: styles.hoverGlitch,
 };
 
+const COLOR_CLASSES: Record<ColorVariant, string> = {
+  current: '',
+  primary: styles.colorPrimary,
+  success: styles.colorSuccess,
+  warning: styles.colorWarning,
+  danger: styles.colorError,
+  info: styles.colorInfo,
+  muted: styles.colorMuted,
+};
+
+// ========================================
+// Icon コンポーネント
+// ========================================
 const Icon: React.FC<IconProps> = ({
   name: nameProp,
   preset,
   size = 24,
-  className = '',
+  className,
   style,
-  fill: fillProp,
-  stroke: strokeProp = 'currentColor',
+  stroke,
+  fill,
   strokeWidth = 2,
   dot = false,
   dotPing = false,
-  shake = false,
-  interactive = false,
-  animationTrigger,
-  condition = false,
-  hoverScale = 1.1,
-  tapScale = 0.95,
-  conditionAnimation,
-  transition = { duration: 0.2 },
-  ease,
-  duration,
-  repeat,
-  delay,
-  onClick,
-  // SCSS ベースの新しい Props
-  animationPreset,
-  hoverPreset,
+  disabled = false,
+  active = false,
+  animation,
+  hover,
+  animate = true,
   glow = false,
   glowStrong = false,
   clickable = false,
-  disabled = false,
+  onClick,
+  color = 'current',
+  'aria-label': ariaLabel,
+  'aria-hidden': ariaHidden,
 }) => {
-  // presetからnameとfillを解決
+  // preset から name を解決
   const presetConfig = preset ? PRESET_MAP[preset] : undefined;
   const name = (nameProp ?? presetConfig?.name ?? '') as IconName;
-  const fill = fillProp ?? (presetConfig?.useFill ? strokeProp : 'none');
-  const stroke = strokeProp;
-  // ========================================
-  // 内部処理
-  // ========================================
 
-  // shake アニメーション設定
-  const SHAKE_ANIMATION = {
-    animation: { rotate: [-15, 15, -15, 15, 0] },
-    transition: { repeat: 3, duration: 0.4, ease: 'easeInOut' as const },
-  };
+  // サイズを解決
+  const resolvedSize = typeof size === 'string' ? SIZE_VALUES[size] : size;
 
-  // アニメーション設定があるアイコンかどうか
-  const hasAnimationConfig = name in ICON_ANIMATION_CONFIG;
-  const isLoadingIconType = isLoadingIcon(name);
+  // ローディングアイコン判定
+  const isLoadingIcon = name.startsWith('loading-') || name.startsWith('spinner');
 
-  // interactiveモードの場合、animationTriggerが未指定なら'hover'を適用
-  const resolvedAnimationTrigger = animationTrigger ?? (interactive ? 'hover' : 'none');
-
-  // shake が有効な場合は condition トリガーを使用
-  const effectiveAnimationTrigger = shake
-    ? 'condition'
-    : hasAnimationConfig
-      ? 'condition'
-      : resolvedAnimationTrigger;
-  const effectiveCondition = shake ? condition : (isLoadingIconType ? true : condition);
-
-  // アニメーション設定の取得
-  const getAnimationSettings = () => {
-    // shake が有効な場合は SHAKE_ANIMATION を使用
-    if (shake) {
-      return SHAKE_ANIMATION;
-    }
-
-    const config = ICON_ANIMATION_CONFIG[name];
-    if (!config) {
-      return { animation: conditionAnimation, transition };
-    }
-
-    const defaultTransition = config.transition as {
-      repeat?: number;
-      duration?: number;
-      ease?: Easing;
-      delay?: number;
-    };
-
-    // propsで上書きがある場合はマージ
-    if (
-      ease ||
-      duration !== undefined ||
-      repeat !== undefined ||
-      delay !== undefined
-    ) {
-      return {
-        animation: config.animation,
-        transition: {
-          repeat: repeat !== undefined ? repeat : defaultTransition.repeat,
-          duration:
-            duration !== undefined ? duration : defaultTransition.duration,
-          ease: ease ?? defaultTransition.ease,
-          delay: delay !== undefined ? delay : defaultTransition.delay,
-        },
-      };
-    }
-
-    return config;
-  };
-
-  const {
-    animation: effectiveConditionAnimation,
-    transition: effectiveTransition,
-  } = shake || hasAnimationConfig
-    ? getAnimationSettings()
-    : { animation: conditionAnimation, transition };
-
-  // 色設定を処理する関数
-  const getColorValues = () => {
-    // 色の値を解決する関数
-    const resolveColor = (
-      colorValue: string | undefined,
-      defaultColor: string
-    ): string => {
-      if (!colorValue) return defaultColor;
-      if (colorValue === 'none') return 'none';
-      // 直接指定されたカラーコード等をそのまま使用
-      return colorValue;
-    };
-
-    return {
-      fillColor: resolveColor(fill, 'none'),
-      strokeColor: resolveColor(stroke, 'currentColor'),
-    };
-  };
-
-  const { fillColor, strokeColor } = getColorValues();
-
-  // SCSS クラス名を構築
-  const scssClasses = cn(
+  // クラス名を構築
+  const iconClasses = cn(
     styles.icon,
-    // アニメーションプリセット
-    animationPreset && ANIMATION_PRESET_CLASSES[animationPreset],
-    // ホバープリセット
-    hoverPreset && HOVER_PRESET_CLASSES[hoverPreset],
-    // グロー効果
+    // アニメーション
+    animate && animation && ANIMATION_CLASSES[animation],
+    // ローディングアイコンは自動でスピン
+    isLoadingIcon && !animation && styles.spin,
+    // ホバー
+    hover && HOVER_CLASSES[hover],
+    // カラー
+    color !== 'current' && COLOR_CLASSES[color],
+    // グロー
     glow && styles.glow,
     glowStrong && styles.glowStrong,
-    // インタラクティブ状態
+    // 状態
     clickable && styles.clickable,
     disabled && styles.disabled,
-    // ドットスタイル
+    active && styles.active,
+    // ドット
     dot && !dotPing && styles.dot,
     dotPing && styles.dotPing,
-    // ユーザー指定のクラス
+    // ユーザー指定
     className,
   );
 
-  // 共通のSVGプロパティ
+  // SVG props
   const svgProps = {
-    className: scssClasses,
-    style,
-    width: size,
-    height: size,
-    fill: 'none', // SVG全体のfillは無効化し、個別要素で制御
-    stroke: strokeColor,
-    strokeWidth,
+    className: iconClasses,
+    style: {
+      ...style,
+      // stroke/fill のカスタマイズがある場合のみ上書き
+      ...(stroke && { '--icon-stroke': stroke }),
+      ...(fill && { '--icon-fill': fill }),
+    } as React.CSSProperties,
+    width: resolvedSize,
+    height: resolvedSize,
     viewBox: '0 0 24 24',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeWidth,
     onClick,
-    'data-component': 'icon',
-    'data-icon-name': name,
+    'aria-label': ariaLabel,
+    'aria-hidden': ariaHidden ?? !ariaLabel,
+    'data-icon': name,
   };
 
-  // アニメーション設定を生成
-  const getAnimationProps = () => {
-    const props: Partial<SVGMotionProps<SVGSVGElement>> = {
-      ...svgProps,
-    };
-
-    // タップ時のバウンス（ぷるっと）効果用トランジション
-    const tapBounceTransition = {
-      type: 'spring' as const,
-      stiffness: 400,
-      damping: 10,
-      mass: 0.8,
-    };
-
-    switch (effectiveAnimationTrigger) {
-      case 'hover':
-        props.whileHover = { scale: hoverScale };
-        props.whileTap = { scale: tapScale };
-        props.transition = tapBounceTransition;
-        break;
-
-      case 'tap':
-        props.whileTap = { scale: tapScale };
-        props.transition = tapBounceTransition;
-        break;
-
-      case 'condition':
-        if (effectiveCondition && effectiveConditionAnimation) {
-          props.animate = effectiveConditionAnimation;
-          props.transition = effectiveTransition;
-        }
-        break;
-
-      case 'none':
-      default:
-        // アニメーションなし
-        break;
+  // Path をレンダリング
+  const renderPath = () => {
+    const pathRenderer = ICON_PATHS[name];
+    if (pathRenderer) {
+      return pathRenderer({});
     }
-
-    return props;
-  };
-
-  const renderIconPath = () => {
-    const renderer = ICON_SVG_PATHS[name];
-    if (renderer) {
-      return renderer({ fillColor, strokeColor, fill });
-    }
-    if (import.meta.env.DEV) {
+    if (import.meta.env?.DEV) {
       console.warn(`Icon "${name}" not found`);
     }
     return null;
   };
 
-  // 右上の通知ドット（SCSS の ::after で処理するため、SVG内には描画しない）
-  // dotPing は SCSS で ::before と ::after を使用
-  const renderDot = () => {
-    // SCSS ベースのドットを使用する場合は SVG 内には描画しない
-    if (dot || dotPing) return null;
-    return null;
-  };
-
-  // ========================================
-  // レンダリング
-  // ========================================
-
-  if (effectiveAnimationTrigger === 'none') {
-    // アニメーションなしの場合は通常のSVG
-    return (
-      <svg {...svgProps}>
-        {renderIconPath()}
-        {renderDot()}
-      </svg>
-    );
-  }
-
-  // アニメーションありの場合はmotion.svg
-  return (
-    <motion.svg {...getAnimationProps()}>
-      {renderIconPath()}
-      {renderDot()}
-    </motion.svg>
-  );
+  return <svg {...svgProps}>{renderPath()}</svg>;
 };
 
 export default Icon;

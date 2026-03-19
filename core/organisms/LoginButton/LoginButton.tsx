@@ -184,11 +184,7 @@ const LoginButton = ({
           <Icon
             name={'unlock'}
             className={getIconSize()}
-            animationTrigger="condition"
-            condition={true}
-            ease="easeOut"
-            duration={1.2}
-            repeat={1}
+            animation="pop"
           />
         </div>
 

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ReplayButton from './ReplayButton';
 
 const meta: Meta<typeof ReplayButton> = {
-  title: 'Atoms/ReplayButton',
+  title: 'アクション/ReplayButton',
   component: ReplayButton,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

@@ -4,7 +4,7 @@ import Icon from "../../atoms/Icon/Icon";
 import Tooltip from "../../atoms/Tooltip/Tooltip";
 
 const meta: Meta<typeof DetailHeader> = {
-  title: "organisms/DetailHeader",
+  title: "レイアウト/DetailHeader",
   component: DetailHeader,
   decorators: [
     (Story) => (

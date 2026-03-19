@@ -2,7 +2,7 @@
 // 汎用ローディングゾーンコンポーネント
 import { FC, useState, useEffect, useRef } from 'react';
 
-import Icon, { type AnimationEase } from '../../atoms/Icon';
+import Icon from '../../atoms/Icon';
 import type { LoadingPreset } from '../../atoms/Icon/types';
 import { type ColorTheme } from '../../constants';
 import { cn } from '../../utils/cn';
@@ -22,10 +22,6 @@ interface LoadingZoneProps {
   height?: string;
   message?: string;
   className?: string;
-  ease?: AnimationEase;
-  duration?: number;
-  repeat?: number;
-  delay?: number;
   /** ローディングプリセット */
   preset?: LoadingPreset;
   size?: number;
@@ -48,10 +44,6 @@ const LoadingZone: FC<LoadingZoneProps> = ({
   height = '100px',
   message = 'データを読み込み中...',
   className = '',
-  ease = 'easeOut',
-  duration,
-  repeat,
-  delay,
   preset,
   size = 32,
   color,
@@ -276,13 +268,10 @@ const LoadingZone: FC<LoadingZoneProps> = ({
               <div className="flex justify-center">
                 <Icon
                   preset={preset}
-                                    size={size}
+                  size={size}
                   style={{ color: iconColor }}
-                  duration={duration}
-                  ease={ease}
-                  repeat={repeat}
-                  delay={delay}
                   fill={fill}
+                  animate
                 />
               </div>
             </div>
@@ -301,13 +290,10 @@ const LoadingZone: FC<LoadingZoneProps> = ({
               <div className="mb-2 flex justify-center">
                 <Icon
                   preset={preset}
-                                    size={size}
+                  size={size}
                   style={{ color: iconColor }}
-                  duration={duration}
-                  ease={ease}
-                  repeat={repeat}
-                  delay={delay}
                   fill={fill}
+                  animate
                 />
               </div>
               <p className="text-gray-500">{message}</p>
@@ -326,13 +312,10 @@ const LoadingZone: FC<LoadingZoneProps> = ({
               <div className="mb-4 flex justify-center">
                 <Icon
                   preset={preset}
-                                    size={size}
+                  size={size}
                   style={{ color: iconColor }}
-                  duration={duration}
-                  ease={ease}
-                  repeat={repeat}
-                  delay={delay}
                   fill={fill}
+                  animate
                 />
               </div>
               <p className="text-gray-700">{message}</p>
@@ -346,13 +329,10 @@ const LoadingZone: FC<LoadingZoneProps> = ({
             <div className="flex-shrink-0">
               <Icon
                 preset={preset}
-                                size={size}
+                size={size}
                 style={{ color: iconColor }}
-                duration={duration}
-                ease={ease}
-                repeat={repeat}
-                delay={delay}
                 fill={fill}
+                animate
               />
             </div>
             <span className="text-gray-600">{message}</span>

@@ -1268,7 +1268,7 @@
 }
 
 .colorError {
-  color: $color-error-500;
+  color: $color-danger-500;
 }
 
 .colorInfo {
@@ -1311,4 +1311,198 @@
 
 .loadingDots {
   animation: pulse 1.5s ease-in-out infinite;
+}
+
+// -----------------------------------------------------------------------------
+// Semantic Classes (SVG 内部パーツ用)
+// currentColor を活用し、親要素の色を継承
+// -----------------------------------------------------------------------------
+
+// 基本ストローク - currentColor を使用
+.stroke {
+  stroke: currentColor;
+  fill: none;
+}
+
+// 基本フィル - currentColor を使用
+.fill {
+  fill: currentColor;
+  stroke: none;
+}
+
+// 本体グループ - hover 時のアニメーション対象
+.body {
+  transition: transform $transition-duration-200 $transition-ease-in-out;
+}
+
+// アクティブ状態
+.active {
+  color: $color-primary-500;
+}
+
+// -----------------------------------------------------------------------------
+// パーツ別セマンティッククラス
+// -----------------------------------------------------------------------------
+
+// 詳細パーツ（ネクタイ、装飾など）
+.detail {
+  opacity: 0.8;
+}
+
+// 瞳（目のアイコン）
+.pupil {
+  transition: transform $transition-duration-200 $transition-ease-in-out;
+}
+
+// アウトライン
+.outline {
+  // 通常時
+}
+
+// スラッシュ線（非表示系アイコン）
+.slash {
+  stroke: currentColor;
+}
+
+// 矢印パーツ
+.arrow {
+  transition: transform $transition-duration-200 $transition-ease-in-out;
+}
+
+// サーバー/ローカル線（同期アイコン）
+.serverLine,
+.localLine {
+  // stroke: currentColor;
+}
+
+// ドアハンドル等の小パーツ
+.handle {
+  fill: currentColor;
+}
+
+// インジケーター（ロック解除の斜線など）
+.indicator {
+  fill: currentColor;
+}
+
+// 中心部分（歯車の穴など）
+.center {
+  fill: $color-white;
+}
+
+// アクセントドット
+.accent {
+  fill: currentColor;
+}
+
+// 箇条書きの丸
+.bullet {
+  fill: currentColor;
+}
+
+// チェックマーク
+.checkmark {
+  stroke: currentColor;
+  fill: none;
+}
+
+// ×マーク
+.xmark {
+  fill: currentColor;
+}
+
+// キーボードのキー
+.key {
+  stroke: currentColor;
+  fill: none;
+}
+
+// スペースバー
+.spacebar {
+  stroke: currentColor;
+  fill: none;
+}
+
+// 吹き出しの尻尾
+.tail {
+  stroke: currentColor;
+}
+
+// メッセージ線
+.messageLine {
+  stroke: currentColor;
+}
+
+// 時計の針
+.hourHand,
+.minuteHand {
+  stroke: currentColor;
+}
+
+// 中心ドット
+.centerDot {
+  fill: currentColor;
+}
+
+// 絵の具（パレット）
+.paint {
+  fill: currentColor;
+}
+
+// スライダーのつまみ
+.knob {
+  fill: currentColor;
+}
+
+// ダイヤモンドのカット面
+.facet {
+  stroke: currentColor;
+  opacity: 0.6;
+}
+
+// ペイントローラー
+.roller {
+  stroke: currentColor;
+}
+
+// 軸・シャフト
+.shaft {
+  stroke: currentColor;
+}
+
+// スピナーのトラック（背景の円）
+.track {
+  stroke: currentColor;
+}
+
+// ローディングドット
+.dot {
+  fill: currentColor;
+}
+
+// パルスアニメーション用
+.pulse {
+  stroke: currentColor;
+}
+
+// -----------------------------------------------------------------------------
+// CSS カスタムプロパティによる色のオーバーライド
+// stroke/fill を直接指定したい場合に使用
+// -----------------------------------------------------------------------------
+.icon {
+  --icon-stroke: currentColor;
+  --icon-fill: none;
+
+  // カスタムプロパティが設定されている場合は上書き
+  &[style*='--icon-stroke'] {
+    .stroke {
+      stroke: var(--icon-stroke);
+    }
+  }
+
+  &[style*='--icon-fill'] {
+    .fill {
+      fill: var(--icon-fill);
+    }
+  }
 }

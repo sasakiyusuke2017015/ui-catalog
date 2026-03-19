@@ -1,20 +1,17 @@
 /**
  * Icon コンポーネント型定義
+ *
+ * 設計原則:
+ * - SVG は幾何学データ（Path）に徹する
+ * - SCSS で魂（色・動き・状態）を吹き込む
+ * - currentColor を活用し親要素の色を継承
  */
 import type React from 'react';
-import type { Transition, Easing } from 'framer-motion';
 import type { IconName } from '../../constants';
-
-// framer-motion の Easing 型をエイリアス
-export type AnimationEase = Easing;
-
-export type AnimationTrigger = 'hover' | 'tap' | 'condition' | 'none';
-
-export type AnimationDuration = number;
 
 /**
  * ローディングプリセット
- * preset を指定すると name, stroke, fill が自動設定される
+ * preset を指定すると name が自動設定される
  */
 export type LoadingPreset =
   | 'spinner'
@@ -140,98 +137,113 @@ export type HoverPreset =
   | 'heartbeat'
   | 'glitch';
 
+/**
+ * カラーバリアント
+ * currentColor を基本とし、セマンティックな色指定も可能
+ */
+export type ColorVariant =
+  | 'current'    // currentColor（デフォルト）
+  | 'primary'
+  | 'success'
+  | 'warning'
+  | 'danger'
+  | 'info'
+  | 'muted';
+
+/**
+ * サイズプリセット
+ */
+export type SizePreset = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
+
 export interface IconProps {
   /** アイコン名（presetを使う場合は省略可） */
   name?: IconName;
+
   /** ローディングプリセット（指定するとnameが自動設定される） */
   preset?: LoadingPreset;
-  size?: number;
+
+  /** サイズ（数値 or プリセット） */
+  size?: number | SizePreset;
+
+  /** 追加のクラス名 */
   className?: string;
+
+  /** インラインスタイル */
   style?: React.CSSProperties;
-  fill?: string;
+
+  /** stroke の色（デフォルト: currentColor） */
   stroke?: string;
+
+  /** fill の色（デフォルト: none） */
+  fill?: string;
+
+  /** stroke の太さ */
   strokeWidth?: number;
 
-  // 右上に赤い通知ドットを表示
+  // ========================================
+  // 状態
+  // ========================================
+
+  /** 右上に赤い通知ドットを表示 */
   dot?: boolean;
+
   /** ドットにパルスアニメーションを適用 */
   dotPing?: boolean;
 
-  // shake アニメーション（ベルのように揺れる）
-  shake?: boolean;
+  /** 無効状態 */
+  disabled?: boolean;
 
-  // インタラクティブモード（hover/tapアニメーションを自動適用）
-  interactive?: boolean;
-
-  // アニメーション設定
-  animationTrigger?: AnimationTrigger;
-  condition?: boolean;
-
-  // スケールアニメーション
-  hoverScale?: number;
-  tapScale?: number;
-  conditionAnimation?: {
-    rotate?: number[];
-    scale?: number[];
-    opacity?: number[];
-    x?: number[];
-    y?: number[];
-  };
-
-  // トランジション設定
-  transition?: Transition;
-  ease?: AnimationEase;
-  duration?: AnimationDuration;
-  repeat?: number;
-  delay?: number;
-
-  // イベントハンドラ
-  onClick?: () => void;
+  /** アクティブ状態（トグル等で使用） */
+  active?: boolean;
 
   // ========================================
-  // SCSS ベースのアニメーション（新規追加）
+  // アニメーション（SCSS ベース）
   // ========================================
 
-  /** SCSS アニメーションプリセット */
-  animationPreset?: AnimationPreset;
+  /** アニメーションプリセット */
+  animation?: AnimationPreset;
 
   /** ホバー時のアニメーション */
-  hoverPreset?: HoverPreset;
+  hover?: HoverPreset;
 
-  /** グロー効果を有効化 */
+  /** アニメーションを有効にする条件 */
+  animate?: boolean;
+
+  /** グロー効果 */
   glow?: boolean;
 
   /** 強いグロー効果 */
   glowStrong?: boolean;
 
+  // ========================================
+  // インタラクション
+  // ========================================
+
   /** クリック可能なスタイル */
   clickable?: boolean;
 
-  /** 無効状態 */
-  disabled?: boolean;
+  /** クリックハンドラ */
+  onClick?: (event: React.MouseEvent<SVGSVGElement>) => void;
+
+  // ========================================
+  // セマンティック
+  // ========================================
+
+  /** カラーバリアント */
+  color?: ColorVariant;
+
+  /** アクセシビリティラベル */
+  'aria-label'?: string;
+
+  /** アクセシビリティ非表示 */
+  'aria-hidden'?: boolean;
 }
 
-// SVGレンダリングのprops型定義
-export interface IconSvgProps {
-  fillColor: string;
-  strokeColor: string;
-  fill: string;
-}
-
-
-// アニメーション設定型
-export interface IconAnimationConfig {
-  animation: {
-    rotate?: number[];
-    scale?: number[];
-    opacity?: number[];
-    x?: number[];
-    y?: number[];
-  };
-  transition: {
-    repeat?: number;
-    duration?: number;
-    ease?: string;
-    delay?: number;
-  };
+/**
+ * SVG Path レンダリング用 Props
+ * currentColor を使用し、親要素の色を継承
+ */
+export interface IconPathProps {
+  /** クラス名（セマンティッククラス用） */
+  className?: string;
 }
