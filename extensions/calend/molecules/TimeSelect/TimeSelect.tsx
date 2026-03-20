@@ -17,6 +17,7 @@ interface TimeSelectProps {
 export function TimeSelect({ value, onChange, error = false, className = '' }: TimeSelectProps) {
   return (
     <select
+      data-component="TimeSelect"
       value={value}
       onChange={(e) => onChange(Number(e.target.value))}
       className={`text-sm px-3 py-2 rounded-lg border bg-surface-hover text-text outline-none focus:border-primary transition-colors ${

@@ -65,7 +65,7 @@ export function WeekView({ events, showAllDayBar = true, persistEvent, removeEve
   )
 
   return (
-    <div className="h-full overflow-auto">
+    <div data-component="WeekView" className="h-full overflow-auto">
       {/* Header */}
       <div data-sticky-header className="sticky top-0 bg-surface border-b border-border" style={{ zIndex: 40 }}>
         <div className="grid grid-cols-[64px_repeat(7,1fr)]">

@@ -204,6 +204,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
 
   return (
     <div
+      data-component="EventModal"
       style={{
         position: 'fixed', inset: 0, display: 'flex',
         alignItems: pos ? 'flex-start' : 'center',

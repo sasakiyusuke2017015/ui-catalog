@@ -119,7 +119,7 @@ export function EventPopover({ hovered }: EventPopoverProps) {
   }
 
   return (
-    <div style={posStyle}>
+    <div data-component="EventPopover" style={posStyle}>
       <div style={{
         background: colors.surface.popover,
         borderRadius: '14px',

@@ -36,6 +36,7 @@ export function SpanningBar({
 
   return (
     <div
+      data-component="SpanningBar"
       style={{
         position: 'absolute',
         left: `calc(${(startCol / 7) * 100}% + ${padL}px)`,

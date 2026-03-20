@@ -7,6 +7,7 @@
 // Calendar atoms (presentational)
 export { EventCard } from './atoms/EventCard/EventCard'
 export type { EventCardProps } from './atoms/EventCard/EventCard'
+export { MonthEventCard } from './atoms/MonthEventCard/MonthEventCard'
 export { TimeSlotRow } from './atoms/TimeSlotRow/TimeSlotRow'
 export type { TimeSlotRowProps } from './atoms/TimeSlotRow/TimeSlotRow'
 
@@ -77,3 +78,5 @@ export { PillSelect } from './molecules/PillSelect/PillSelect'
 export { DayOfWeekPicker } from './molecules/DayOfWeekPicker/DayOfWeekPicker'
 export { ColorPicker, EVENT_COLORS } from './molecules/ColorPicker/ColorPicker'
 export type { ColorOption } from './molecules/ColorPicker/ColorPicker'
+export { MonthDayCell } from './molecules/MonthDayCell/MonthDayCell'
+export { TimeSelect } from './molecules/TimeSelect/TimeSelect'

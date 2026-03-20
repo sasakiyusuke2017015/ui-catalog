@@ -47,6 +47,7 @@ export function DayFrame({ date, events, headerVariant = 'blur', onDeleteEvent, 
 
   return (
     <div
+      data-component="DayFrame"
       className="min-h-screen"
       data-date={date.toISOString()}
     >

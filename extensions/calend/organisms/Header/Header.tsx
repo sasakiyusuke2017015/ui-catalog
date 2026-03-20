@@ -48,7 +48,7 @@ export function Header() {
   }
 
   return (
-    <header className="shrink-0 flex items-center justify-between px-4 py-3 border-b border-border bg-surface" style={{ position: 'relative', zIndex: 50 }}>
+    <header data-component="Header" className="shrink-0 flex items-center justify-between px-4 py-3 border-b border-border bg-surface" style={{ position: 'relative', zIndex: 50 }}>
       <div className="flex items-center gap-3">
         <h1 className="text-xl font-bold text-primary tracking-tight">
           Calendar

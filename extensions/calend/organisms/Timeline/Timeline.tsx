@@ -38,6 +38,7 @@ export function Timeline({ events, headerVariant, persistEvent, removeEvent }: C
 
   return (
     <div
+      data-component="Timeline"
       ref={scrollRef}
       className="h-full overflow-y-auto"
     >

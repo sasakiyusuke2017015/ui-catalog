@@ -13,7 +13,7 @@ interface PillSelectProps {
 
 export function PillSelect({ options, value, onChange }: PillSelectProps) {
   return (
-    <div style={{ display: 'flex', gap: '6px' }}>
+    <div data-component="PillSelect" style={{ display: 'flex', gap: '6px' }}>
       {options.map(({ value: v, label }) => {
         const active = value === v
         return (

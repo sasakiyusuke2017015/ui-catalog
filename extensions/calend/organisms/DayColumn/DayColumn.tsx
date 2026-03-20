@@ -119,7 +119,7 @@ export function DayColumn({
   const dragMax = slotDrag ? Math.max(slotDrag.startHour, slotDrag.currentHour) : -1
 
   return (
-    <div>
+    <div data-component="DayColumn">
       <div className="relative" ref={columnRef}>
         {HOURS.map((hour) => {
           const isCurrentHour = today && new Date().getHours() === hour

@@ -54,6 +54,7 @@ export function MonthDayCell({
 
   return (
     <div
+      data-component="MonthDayCell"
       data-month-date={date.toISOString()}
       onClick={() => onDayClick(date)}
       className={[

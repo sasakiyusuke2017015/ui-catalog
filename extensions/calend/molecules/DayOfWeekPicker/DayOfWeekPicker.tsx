@@ -25,7 +25,7 @@ export function DayOfWeekPicker({ value, onChange }: DayOfWeekPickerProps) {
   }
 
   return (
-    <div style={{ display: 'flex', gap: '4px' }}>
+    <div data-component="DayOfWeekPicker" style={{ display: 'flex', gap: '4px' }}>
       {([0, 1, 2, 3, 4, 5, 6] as const).map((dow) => {
         const active = value.includes(dow)
         const dayColor = DAY_COLORS[dow] ?? DEFAULT_COLOR

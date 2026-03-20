@@ -196,7 +196,7 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
   )
 
   return (
-    <div className="h-full flex flex-col p-4">
+    <div data-component="MonthView" className="h-full flex flex-col p-4">
       <div className="text-center mb-4">
         <h2 className="text-2xl font-bold text-text">
           {format(selectedDate, 'yyyy年M月', { locale: ja })}
