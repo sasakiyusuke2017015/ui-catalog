@@ -31,6 +31,25 @@ export function useDragEvent({ event, slotHeight, columnWidth, onCommit, onClick
     started: boolean
   } | null>(null)
 
+  // Store listener refs so all handlers can remove each other
+  const listenersRef = useRef<{
+    move: (e: PointerEvent) => void
+    up: () => void
+    key: (e: KeyboardEvent) => void
+  } | null>(null)
+
+  const removeAllListeners = useCallback(() => {
+    const listeners = listenersRef.current
+    if (!listeners) return
+    document.removeEventListener('pointermove', listeners.move)
+    document.removeEventListener('pointerup', listeners.up)
+    document.removeEventListener('keydown', listeners.key)
+    listenersRef.current = null
+    document.body.style.cursor = ''
+    document.body.style.userSelect = ''
+    setAnyDrag(false)
+  }, [setAnyDrag])
+
   const handlePointerMove = useCallback(
     (e: PointerEvent) => {
       const state = stateRef.current
@@ -70,7 +89,7 @@ export function useDragEvent({ event, slotHeight, columnWidth, onCommit, onClick
         pointerY: e.clientY,
       })
     },
-    [event, slotHeight, columnWidth, setDrag]
+    [event, slotHeight, columnWidth, setDrag, setAnyDrag, setHovered]
   )
 
   const handlePointerUp = useCallback(
@@ -78,11 +97,7 @@ export function useDragEvent({ event, slotHeight, columnWidth, onCommit, onClick
       const state = stateRef.current
       stateRef.current = null
 
-      document.body.style.cursor = ''
-      document.body.style.userSelect = ''
-      document.removeEventListener('pointermove', handlePointerMove)
-      document.removeEventListener('pointerup', handlePointerUp)
-      setAnyDrag(false)
+      removeAllListeners()
 
       if (!state?.started) {
         setDrag(null)
@@ -107,7 +122,17 @@ export function useDragEvent({ event, slotHeight, columnWidth, onCommit, onClick
         return null
       })
     },
-    [event, handlePointerMove, setDrag, onCommit]
+    [event, removeAllListeners, setDrag, onCommit, onClick]
+  )
+
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      stateRef.current = null
+      removeAllListeners()
+      setDrag(null)
+    },
+    [removeAllListeners, setDrag]
   )
 
   const startDrag = useCallback(
@@ -124,10 +149,18 @@ export function useDragEvent({ event, slotHeight, columnWidth, onCommit, onClick
           started: false,
         }
 
-        document.addEventListener('pointermove', handlePointerMove)
-        document.addEventListener('pointerup', handlePointerUp)
+        const listeners = {
+          move: handlePointerMove,
+          up: handlePointerUp,
+          key: handleKeyDown,
+        }
+        listenersRef.current = listeners
+
+        document.addEventListener('pointermove', listeners.move)
+        document.addEventListener('pointerup', listeners.up)
+        document.addEventListener('keydown', listeners.key)
       },
-    [handlePointerMove, handlePointerUp]
+    [handlePointerMove, handlePointerUp, handleKeyDown]
   )
 
   return {

@@ -18,7 +18,11 @@ export function MonthEventCard({ event, isDragging, onClick, onPointerDown }: Mo
     <div
       data-component="event-card"
       className={styles.card}
-      style={{ opacity: isDragging ? 0.4 : 1 }}
+      style={{
+        opacity: isDragging ? 0.3 : 1,
+        filter: isDragging ? 'grayscale(0.4)' : 'none',
+        transition: 'opacity 150ms ease, filter 150ms ease',
+      }}
       onClick={onClick}
       onPointerDown={onPointerDown}
     >

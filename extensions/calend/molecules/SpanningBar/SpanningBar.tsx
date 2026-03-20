@@ -44,7 +44,9 @@ export function SpanningBar({
         top: `${28 + lane * LANE_H}px`,
         height: `${LANE_H - 2}px`,
         zIndex: isDragging ? 20 : 2,
-        opacity: isDragging ? 0.4 : 1,
+        opacity: isDragging ? 0.3 : 1,
+        filter: isDragging ? 'grayscale(0.4)' : 'none',
+        transition: 'opacity 150ms ease, filter 150ms ease',
         pointerEvents: isDragActive ? 'none' : 'auto',
       }}
     >

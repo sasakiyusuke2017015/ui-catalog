@@ -70,14 +70,16 @@ function CompactEventCard({
     <div
       data-component="event-card"
       className={`rounded-xl px-2 py-0.5 text-white text-[10px] font-medium truncate relative group transition-all ${
-        isDragging ? 'cursor-grabbing opacity-50' : 'cursor-pointer'
+        isDragging ? 'cursor-grabbing' : 'cursor-pointer'
       } ${className}`}
       style={{
         backgroundColor: color,
         boxShadow: isHovered
           ? '0 4px 12px rgba(0,0,0,0.2), inset 0 0 0 1.5px rgba(255,255,255,0.6)'
           : 'inset 0 0 0 1.5px rgba(255,255,255,0.45)',
-        filter: isHovered ? 'brightness(1.15)' : 'none',
+        opacity: isDragging ? 0.3 : 1,
+        filter: isDragging ? 'grayscale(0.3)' : isHovered ? 'brightness(1.15)' : 'none',
+        transition: 'opacity 150ms ease, filter 150ms ease',
       }}
       onClick={onClick}
       onPointerDown={onPointerDown}
@@ -184,8 +186,9 @@ function TimelineEventCard({
         height: `${Math.max(height - 2, 14)}px`,
         zIndex: isDragging ? 20 : isHovered ? Math.min(10 + zColumn, 19) : Math.min(1 + zColumn, 9),
         pointerEvents: 'auto',
-        opacity: isDragging ? 0.7 : isHovered ? 0.85 : 1,
-        filter: isHovered ? 'brightness(1.2)' : 'none',
+        opacity: isDragging ? 0.35 : isHovered ? 0.85 : 1,
+        filter: isDragging ? 'grayscale(0.3)' : isHovered ? 'brightness(1.2)' : 'none',
+        transition: 'opacity 150ms ease, filter 150ms ease',
         boxShadow: isHovered
           ? '0 4px 16px rgba(0,0,0,0.2), inset 0 0 0 1.5px rgba(255,255,255,0.6)'
           : '0 1px 3px rgba(0,0,0,0.12), inset 0 0 0 1.5px rgba(255,255,255,0.45)',

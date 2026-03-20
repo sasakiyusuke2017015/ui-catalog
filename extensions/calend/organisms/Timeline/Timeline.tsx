@@ -1,6 +1,7 @@
 import { useRef, useCallback } from 'react'
 import { useInfiniteTimeline } from '../../hooks/useInfiniteTimeline'
 import { DayFrame } from '../DayFrame/DayFrame'
+import { DragOverlay } from '../DragOverlay/DragOverlay'
 import type { CalendarEvent } from '../../types'
 
 interface CalendarStorageProps {
@@ -52,6 +53,7 @@ export function Timeline({ events, headerVariant, persistEvent, removeEvent }: C
           onUpdateEvent={handleUpdate}
         />
       ))}
+      <DragOverlay />
     </div>
   )
 }

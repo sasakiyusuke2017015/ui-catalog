@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { activeSlotAtom, eventModalAtom, dragAtom, selectedDateAtom, anyDragActiveAtom, hoveredEventAtom } from '../../state/calendar'
 import { formatHour, isToday } from '../../utils/dates'
@@ -114,6 +114,42 @@ export function DayColumn({
 
   const eventLeft = labelWidth > 0 ? `${labelWidth + 4}px` : '0'
 
+  // Memoize drop target overlay calculation to avoid recalculating for unrelated re-renders
+  const dropTargetOverlay = useMemo(() => {
+    if (!drag) return null
+
+    const dragStartDate = new Date(drag.currentStartTime)
+    const dragEndDate = new Date(drag.currentEndTime)
+    dragStartDate.setHours(0, 0, 0, 0)
+    dragEndDate.setHours(0, 0, 0, 0)
+    const colDate = new Date(date)
+    colDate.setHours(0, 0, 0, 0)
+    const colTime = colDate.getTime()
+    if (colTime < dragStartDate.getTime() || colTime > dragEndDate.getTime()) return null
+
+    const startMinutes = colTime === dragStartDate.getTime()
+      ? drag.currentStartTime.getHours() * 60 + drag.currentStartTime.getMinutes()
+      : 0
+    const endMinutes = colTime === dragEndDate.getTime()
+      ? drag.currentEndTime.getHours() * 60 + drag.currentEndTime.getMinutes()
+      : 24 * 60
+
+    const topPx = (startMinutes / 60) * slotHeight
+    const heightPx = ((endMinutes - startMinutes) / 60) * slotHeight
+
+    return (
+      <div
+        className={dcStyles.dropTargetOverlay}
+        style={{
+          top: `${topPx}px`,
+          height: `${heightPx}px`,
+          left: eventLeft,
+          zIndex: 4,
+        }}
+      />
+    )
+  }, [drag, date, slotHeight, eventLeft])
+
   // Calculate slot drag highlight range
   const dragMin = slotDrag ? Math.min(slotDrag.startHour, slotDrag.currentHour) : -1
   const dragMax = slotDrag ? Math.max(slotDrag.startHour, slotDrag.currentHour) : -1
@@ -154,6 +190,9 @@ export function DayColumn({
             </div>
           )
         })}
+
+        {/* Drop target highlight during event drag */}
+        {dropTargetOverlay}
 
         {/* Drag range preview / Active slot overlay */}
         {(() => {

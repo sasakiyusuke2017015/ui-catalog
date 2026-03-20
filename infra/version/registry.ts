@@ -118,9 +118,11 @@ export const VERSION_REGISTRY = {
   DayFrame: '1.0.0',
   EventModal: '1.0.0',
   'calend/Header': '1.0.0',
+  MonthDragOverlay: '1.0.0',
   MonthView: '1.0.0',
   Timeline: '1.0.0',
   WeekView: '1.0.0',
+  DragOverlay: '1.0.0',
 
   // decorations
   BackgroundTexture: '1.0.0',

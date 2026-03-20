@@ -3,6 +3,7 @@ import { selectedDateAtom, eventModalAtom, hoveredEventAtom, anyDragActiveAtom }
 import { getWeekDates, formatHour, isToday, coversFullDay, getEventsForDay } from '../../utils/dates'
 import { DayColumn } from '../DayColumn/DayColumn'
 import { EventCard as EventCardBase } from '../../atoms/EventCard/EventCard'
+import { DragOverlay } from '../DragOverlay/DragOverlay'
 import { format } from 'date-fns'
 import { ja } from 'date-fns/locale'
 import { useCallback, useRef, useState, useEffect } from 'react'
@@ -188,6 +189,7 @@ export function WeekView({ events, showAllDayBar = true, persistEvent, removeEve
           )
         })}
       </div>
+      <DragOverlay />
     </div>
   )
 }

@@ -6,6 +6,7 @@ import {
 } from '../../utils/dates'
 import { format, startOfDay, differenceInCalendarDays } from 'date-fns'
 import { SpanningBar } from '../../molecules/SpanningBar/SpanningBar'
+import { MonthDragOverlay } from '../MonthDragOverlay/MonthDragOverlay'
 import { MonthDayCell } from '../../molecules/MonthDayCell/MonthDayCell'
 import { layoutSpanningEvents } from '../../utils/layoutSpanning'
 import { ja } from 'date-fns/locale'
@@ -70,6 +71,8 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
   // Drag state
   const [dragEventId, setDragEventId] = useState<string | null>(null)
   const [dropDateStr, setDropDateStr] = useState<string | null>(null)
+  const [dragInitialPointer, setDragInitialPointer] = useState<{ x: number; y: number } | null>(null)
+  const [dragEvent, setDragEvent] = useState<CalendarEvent | null>(null)
   const dragRef = useRef<MonthDragState | null>(null)
 
   const dropDateRef = useRef<string | null>(null)
@@ -85,6 +88,8 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
       if (dx < threshold && dy < threshold) return
       ;(dragRef.current as { started: boolean }).started = true
       setDragEventId(state.event.id)
+      setDragEvent(state.event)
+      setDragInitialPointer({ x: e.clientX, y: e.clientY })
       setHovered(null)
       setAnyDrag(true)
       document.body.style.cursor = state.mode === 'move' ? 'grabbing' : 'ew-resize'
@@ -96,19 +101,36 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
     setDropDateStr(dateStr)
   }, [])
 
-  const handlePointerUpReal = useCallback(() => {
-    const state = dragRef.current
+  // Store listener refs so all handlers can remove each other
+  const listenersRef = useRef<{
+    move: (e: PointerEvent) => void
+    up: () => void
+    key: (e: KeyboardEvent) => void
+  } | null>(null)
+
+  const cleanupDrag = useCallback(() => {
+    const listeners = listenersRef.current
+    if (listeners) {
+      document.removeEventListener('pointermove', listeners.move)
+      document.removeEventListener('pointerup', listeners.up)
+      document.removeEventListener('keydown', listeners.key)
+      listenersRef.current = null
+    }
     dragRef.current = null
     document.body.style.cursor = ''
     document.body.style.userSelect = ''
-    document.removeEventListener('pointermove', handlePointerMoveReal)
-    document.removeEventListener('pointerup', handlePointerUpReal)
-
-    const targetStr = dropDateRef.current
     dropDateRef.current = null
     setDragEventId(null)
     setDropDateStr(null)
+    setDragInitialPointer(null)
+    setDragEvent(null)
     setAnyDrag(false)
+  }, [setAnyDrag])
+
+  const handlePointerUpReal = useCallback(() => {
+    const state = dragRef.current
+    const targetStr = dropDateRef.current
+    cleanupDrag()
 
     if (!state?.started || !targetStr) return
 
@@ -136,7 +158,12 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
         persistEvent({ ...state.event, endTime: newEnd })
       }
     }
-  }, [handlePointerMoveReal, persistEvent])
+  }, [cleanupDrag, persistEvent])
+
+  const handleEscapeCancel = useCallback((e: KeyboardEvent) => {
+    if (e.key !== 'Escape') return
+    cleanupDrag()
+  }, [cleanupDrag])
 
   const startEventDrag = useCallback(
     (event: CalendarEvent, originDate: Date, e: React.PointerEvent, mode: MonthDragMode = 'move') => {
@@ -151,10 +178,19 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
         startY: e.clientY,
         started: false,
       }
-      document.addEventListener('pointermove', handlePointerMoveReal)
-      document.addEventListener('pointerup', handlePointerUpReal)
+
+      const listeners = {
+        move: handlePointerMoveReal,
+        up: handlePointerUpReal,
+        key: handleEscapeCancel,
+      }
+      listenersRef.current = listeners
+
+      document.addEventListener('pointermove', listeners.move)
+      document.addEventListener('pointerup', listeners.up)
+      document.addEventListener('keydown', listeners.key)
     },
-    [handlePointerMoveReal, handlePointerUpReal]
+    [handlePointerMoveReal, handlePointerUpReal, handleEscapeCancel]
   )
 
   const handleEventClick = useCallback(
@@ -265,6 +301,8 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
           )
         })}
       </div>
+
+      <MonthDragOverlay event={dragEvent} initialPointer={dragInitialPointer} />
     </div>
   )
 }
