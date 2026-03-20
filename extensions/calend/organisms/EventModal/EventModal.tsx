@@ -117,9 +117,10 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
         setSubmitted(false)
       } else {
         const d = format(modal.date, 'yyyy-MM-dd')
+        const ed = modal.endDate ? format(modal.endDate, 'yyyy-MM-dd') : d
         setTitle('')
         setStartDateStr(d)
-        setEndDateStr(d)
+        setEndDateStr(ed)
         setMode('normal')
         setRepeatDays([])
         setStartMin(modal.hour * 60)

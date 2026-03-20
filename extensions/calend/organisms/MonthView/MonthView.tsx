@@ -221,17 +221,49 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
 
   const handleDayClick = useCallback(
     (date: Date) => {
-      if (dragRef.current) return
+      if (dragRef.current || slotDragStarted.current) return
       setSelectedDate(date)
-      const dateKey = date.toDateString()
-      if (activeSlot?.date === dateKey) {
-        setModal({ isOpen: true, date, hour: 9 })
-      } else {
-        setActiveSlot({ date: dateKey, hour: -1 })
-      }
+      setModal({ isOpen: true, date, hour: 9 })
     },
-    [activeSlot, setActiveSlot, setModal, setSelectedDate]
+    [setModal, setSelectedDate]
   )
+
+  // Slot drag to create event across multiple days
+  const [slotDrag, setSlotDrag] = useState<{ startDate: Date; currentDate: Date } | null>(null)
+  const slotDragStarted = useRef(false)
+
+  const handleSlotPointerMove = useCallback((e: PointerEvent) => {
+    const dateStr = findDateCellFromPoint(e.clientX, e.clientY)
+    if (!dateStr) return
+    const date = new Date(dateStr)
+    setSlotDrag((prev) => {
+      if (!prev || prev.currentDate.getTime() === date.getTime()) return prev
+      slotDragStarted.current = true
+      return { ...prev, currentDate: date }
+    })
+  }, [])
+
+  const handleSlotPointerUp = useCallback(() => {
+    document.removeEventListener('pointermove', handleSlotPointerMove)
+    document.removeEventListener('pointerup', handleSlotPointerUp)
+
+    const drag = slotDrag
+    if (drag && slotDragStarted.current) {
+      const start = drag.startDate < drag.currentDate ? drag.startDate : drag.currentDate
+      const end = drag.startDate < drag.currentDate ? drag.currentDate : drag.startDate
+      setModal({ isOpen: true, date: start, hour: 9, endDate: end })
+    }
+    setSlotDrag(null)
+    slotDragStarted.current = false
+  }, [slotDrag, handleSlotPointerMove, setModal])
+
+  const handleDayPointerDown = useCallback((date: Date, e: React.PointerEvent) => {
+    if (e.button !== 0 || dragRef.current) return
+    slotDragStarted.current = false
+    setSlotDrag({ startDate: date, currentDate: date })
+    document.addEventListener('pointermove', handleSlotPointerMove)
+    document.addEventListener('pointerup', handleSlotPointerUp)
+  }, [handleSlotPointerMove, handleSlotPointerUp])
 
   const handleDelete = useCallback(
     async (id: string) => {
@@ -331,7 +363,15 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
                   todayCellClass={styles.todayCell ?? ''}
                   dropTargetClass={styles.dropTarget ?? ''}
                   dropTargetColor={dragEvent?.color}
+                  isSlotSelected={(() => {
+                    if (!slotDrag) return false
+                    const start = slotDrag.startDate < slotDrag.currentDate ? slotDrag.startDate : slotDrag.currentDate
+                    const end = slotDrag.startDate < slotDrag.currentDate ? slotDrag.currentDate : slotDrag.startDate
+                    const d = startOfDay(date)
+                    return d >= startOfDay(start) && d <= startOfDay(end)
+                  })()}
                   onDayClick={handleDayClick}
+                  onDayPointerDown={handleDayPointerDown}
                   onEventClick={handleEventClick}
                   onEventDragStart={startEventDrag}
                 />

@@ -8,7 +8,7 @@ import {
   applyResizeDelta,
 } from '../utils/dragUtils'
 import type { CalendarEvent } from '../types'
-import { getEffectiveDayOffset } from '../utils/repeatUtils'
+import { getEffectiveDayOffset, resolveOriginalEvent } from '../utils/repeatUtils'
 
 const DRAG_THRESHOLD = 5
 
@@ -17,11 +17,13 @@ interface UseDragEventOptions {
   readonly slotHeight: number
   /** Day column width in px. Required for cross-day dragging. */
   readonly columnWidth?: number
+  /** All events (needed to resolve repeat event originals) */
+  readonly allEvents?: readonly CalendarEvent[]
   readonly onCommit: (updated: CalendarEvent) => void
   readonly onClick?: () => void
 }
 
-export function useDragEvent({ event, slotHeight, columnWidth, onCommit, onClick }: UseDragEventOptions) {
+export function useDragEvent({ event, slotHeight, columnWidth, allEvents, onCommit, onClick }: UseDragEventOptions) {
   const setDrag = useSetAtom(dragAtom)
   const setAnyDrag = useSetAtom(anyDragActiveAtom)
   const setHovered = useSetAtom(hoveredEventAtom)
@@ -113,11 +115,22 @@ export function useDragEvent({ event, slotHeight, columnWidth, onCommit, onClick
             current.currentEndTime.getTime() !== event.endTime.getTime()
 
           if (hasChanged) {
-            onCommit({
-              ...event,
-              startTime: current.currentStartTime,
-              endTime: current.currentEndTime,
-            })
+            if (event.repeat && allEvents) {
+              // 繰り返しイベント: 時間デルタを元イベントの期間に適用
+              const original = resolveOriginalEvent(event, allEvents)
+              const startDelta = current.currentStartTime.getTime() - event.startTime.getTime()
+              const newStart = new Date(original.startTime.getTime() + startDelta)
+              newStart.setHours(current.currentStartTime.getHours(), current.currentStartTime.getMinutes(), 0, 0)
+              const newEnd = new Date(original.endTime.getTime() + startDelta)
+              newEnd.setHours(current.currentEndTime.getHours(), current.currentEndTime.getMinutes(), 0, 0)
+              onCommit({ ...original, startTime: newStart, endTime: newEnd })
+            } else {
+              onCommit({
+                ...event,
+                startTime: current.currentStartTime,
+                endTime: current.currentEndTime,
+              })
+            }
           }
         }
         return null

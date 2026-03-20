@@ -17,7 +17,9 @@ interface MonthDayCellProps {
   readonly todayCellClass: string
   readonly dropTargetClass: string
   readonly dropTargetColor?: string
+  readonly isSlotSelected?: boolean
   readonly onDayClick: (date: Date) => void
+  readonly onDayPointerDown?: (date: Date, e: React.PointerEvent) => void
   readonly onEventClick: (event: CalendarEvent, date: Date, e: React.MouseEvent) => void
   readonly onEventDragStart: (event: CalendarEvent, date: Date, e: React.PointerEvent) => void
 }
@@ -34,7 +36,9 @@ export function MonthDayCell({
   todayCellClass,
   dropTargetClass,
   dropTargetColor,
+  isSlotSelected = false,
   onDayClick,
+  onDayPointerDown,
   onEventClick,
   onEventDragStart,
 }: MonthDayCellProps) {
@@ -59,6 +63,7 @@ export function MonthDayCell({
       data-component="MonthDayCell"
       data-month-date={date.toISOString()}
       onClick={() => onDayClick(date)}
+      onPointerDown={(e) => onDayPointerDown?.(date, e)}
       className={[
         styles.cell,
         !inMonth ? styles.outOfMonth : '',
@@ -70,8 +75,11 @@ export function MonthDayCell({
         boxShadow: `inset 0 0 0 2px ${dropTargetColor}4D`,
       } : undefined}
     >
-      {isActive && (
+      {isActive && !isSlotSelected && (
         <div className="absolute inset-0 border-2 border-primary rounded-xl pointer-events-none z-20" />
+      )}
+      {isSlotSelected && (
+        <div className="absolute inset-0 rounded-xl pointer-events-none z-20" style={{ backgroundColor: 'rgba(79, 70, 229, 0.08)', border: '2px solid rgba(79, 70, 229, 0.4)' }} />
       )}
 
       <div className={dateLabelClass}>

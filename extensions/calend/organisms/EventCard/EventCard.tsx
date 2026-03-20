@@ -3,8 +3,9 @@ import { format } from 'date-fns'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { EventCard as EventCardBase } from '../../atoms/EventCard/EventCard'
 import { useDragEvent } from '../../hooks/useDragEvent'
-import { dragAtom, hoveredEventAtom, eventModalAtom, anyDragActiveAtom } from '../../state/calendar'
+import { dragAtom, hoveredEventAtom, eventModalAtom, anyDragActiveAtom, eventsAtom } from '../../state/calendar'
 import type { CalendarEvent } from '../../types'
+import { resolveOriginalEvent } from '../../utils/repeatUtils'
 
 interface EventCardProps {
   readonly event: CalendarEvent
@@ -34,25 +35,28 @@ export function EventCard({
   const isDragging = drag?.eventId === event.id
   const isResizing = isDragging && drag?.mode !== 'move'
   const isHovered = hovered?.event.id === event.id
+  const allEvents = useAtomValue(eventsAtom)
   const setHovered = useSetAtom(hoveredEventAtom)
   const setModal = useSetAtom(eventModalAtom)
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const handleClick = useCallback(() => {
     setHovered(null)
+    const original = resolveOriginalEvent(event, allEvents)
     setModal({
       isOpen: true,
       date: dayStart,
-      hour: event.startTime.getHours(),
-      editingEvent: event,
+      hour: original.startTime.getHours(),
+      editingEvent: original,
     })
-  }, [event, dayStart, setHovered, setModal])
+  }, [event, allEvents, dayStart, setHovered, setModal])
 
   const { handleMoveStart, handleResizeTopStart, handleResizeBottomStart } =
     useDragEvent({
       event,
       slotHeight,
       columnWidth,
+      allEvents,
       onCommit: onUpdate,
       onClick: handleClick,
     })

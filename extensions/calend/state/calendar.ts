@@ -32,6 +32,7 @@ export interface ModalState {
   readonly date: Date
   readonly hour: number
   readonly endHour?: number
+  readonly endDate?: Date
   readonly editingEvent?: CalendarEvent
 }
 
