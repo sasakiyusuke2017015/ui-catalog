@@ -2,11 +2,13 @@ import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react
 import { useAtom, useSetAtom, useAtomValue } from 'jotai'
 import { eventModalAtom, activeSlotAtom, viewModeAtom } from '../../state/calendar'
 import { format } from 'date-fns'
-import { Button, Input, TextArea, Checkbox } from '@ui-catalog/core/atoms'
+import { Button, Input, TextArea } from '@ui-catalog/core/atoms'
 import { colors } from '@ui-catalog/core/tokens'
 import { TimeSelect } from '../../molecules/TimeSelect/TimeSelect'
 import { ColorPicker, EVENT_COLORS } from '../../molecules/ColorPicker/ColorPicker'
-import type { CalendarEvent } from '../../types'
+import { PillSelect } from '../../molecules/PillSelect/PillSelect'
+import { DayOfWeekPicker } from '../../molecules/DayOfWeekPicker/DayOfWeekPicker'
+import type { CalendarEvent, EventMode, DayOfWeek } from '../../types'
 
 function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
@@ -29,7 +31,8 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
   const [title, setTitle] = useState('')
   const [startDateStr, setStartDateStr] = useState('')
   const [endDateStr, setEndDateStr] = useState('')
-  const [allDay, setAllDay] = useState(false)
+  const [mode, setMode] = useState<EventMode>('normal')
+  const [repeatDays, setRepeatDays] = useState<readonly DayOfWeek[]>([])
   const [startMin, setStartMin] = useState(9 * 60)
   const [endMin, setEndMin] = useState(10 * 60)
   const [color, setColor] = useState<string>(EVENT_COLORS[0]!.value)
@@ -46,7 +49,6 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
     }
 
     const panelW = 380
-    const panelH = 550
     const vw = window.innerWidth
     const vh = window.innerHeight
     const margin = 12
@@ -76,7 +78,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
     }
 
     if (targetRect) {
-      const anchorY = Math.max(margin, Math.min(targetRect.top, vh - panelH - margin))
+      const anchorY = Math.max(margin, (vh - 500) / 2)
       if (targetRect.right + margin + panelW < vw) {
         lockedPos.current = { top: anchorY, left: targetRect.right + margin }
       } else if (targetRect.left - margin - panelW > 0) {
@@ -99,7 +101,8 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
         setTitle(editing.title)
         setStartDateStr(format(editing.startTime, 'yyyy-MM-dd'))
         setEndDateStr(format(editing.endTime, 'yyyy-MM-dd'))
-        setAllDay(editing.allDay ?? false)
+        setMode(editing.repeat ? 'repeat' : editing.allDay ? 'allDay' : 'normal')
+        setRepeatDays(editing.repeat ?? [])
         setStartMin(editing.startTime.getHours() * 60 + editing.startTime.getMinutes())
         setEndMin(editing.endTime.getHours() * 60 + editing.endTime.getMinutes())
         setColor(editing.color)
@@ -109,7 +112,8 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
         setTitle('')
         setStartDateStr(d)
         setEndDateStr(d)
-        setAllDay(false)
+        setMode('normal')
+        setRepeatDays([])
         setStartMin(modal.hour * 60)
         setEndMin((modal.endHour ?? Math.min(modal.hour + 1, 23)) * 60)
         setColor(EVENT_COLORS[0]!.value)
@@ -142,7 +146,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
       const startTime = new Date(startDateStr)
       const endTime = new Date(endDateStr)
 
-      if (allDay) {
+      if (mode === 'allDay') {
         startTime.setHours(0, 0, 0, 0)
         endTime.setHours(23, 59, 59, 999)
       } else {
@@ -160,7 +164,8 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
           startTime,
           endTime,
           color,
-          allDay: allDay || undefined,
+          allDay: mode === 'allDay' || undefined,
+          repeat: mode === 'repeat' && repeatDays.length > 0 ? repeatDays : undefined,
           description: description.trim() || undefined,
         })
         close()
@@ -168,7 +173,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
         throw new Error(`Failed to save event: ${error}`)
       }
     },
-    [title, startDateStr, endDateStr, allDay, startMin, endMin, color, description, modal.editingEvent, persistEvent, close]
+    [title, startDateStr, endDateStr, mode, repeatDays, startMin, endMin, color, description, modal.editingEvent, persistEvent, close]
   )
 
   useEffect(() => {
@@ -182,14 +187,19 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
 
   if (!modal.isOpen) return null
 
+  const allDay = mode === 'allDay'
   const hasTitle = title.trim().length > 0
   const isDateInvalid = !allDay && startDateStr === endDateStr && endMin <= startMin
-  const isDateRangeInvalid = startDateStr > endDateStr
-  const canSubmit = hasTitle && !isDateInvalid && !isDateRangeInvalid
+  const isDateRangeInvalid = mode !== 'repeat' && startDateStr > endDateStr
+  const isRepeatInvalid = mode === 'repeat' && repeatDays.length === 0
+  const canSubmit = hasTitle && !isDateInvalid && !isDateRangeInvalid && !isRepeatInvalid
 
   const pos = lockedPos.current
+  const vh = typeof window !== 'undefined' ? window.innerHeight : 800
+  const availableH = pos ? vh - pos.top! - 12 : vh * 0.8
+  const panelMaxH = `${Math.max(availableH, 200)}px`
   const panelStyle: React.CSSProperties = pos
-    ? { position: 'fixed', top: `${pos.top}px`, left: pos.left !== undefined ? `${pos.left}px` : undefined, right: pos.right !== undefined ? `${pos.right}px` : undefined, width: '380px', maxHeight: '80vh', zIndex: 10000 }
+    ? { position: 'fixed', top: `${pos.top}px`, left: pos.left !== undefined ? `${pos.left}px` : undefined, right: pos.right !== undefined ? `${pos.right}px` : undefined, width: '380px', maxHeight: panelMaxH, zIndex: 10000 }
     : { width: '380px', maxHeight: '80vh' }
 
   return (
@@ -209,6 +219,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
           ...panelStyle,
           background: '#fff', borderRadius: '16px',
           boxShadow: '0 24px 48px rgba(0,0,0,0.2)', overflow: 'hidden',
+          display: 'flex', flexDirection: 'column' as const,
           opacity: posReady ? 1 : 0,
           transform: posReady ? 'scale(1) translateY(0)' : 'scale(0.96) translateY(6px)',
           transition: 'opacity 0.2s ease-out, transform 0.2s ease-out',
@@ -229,7 +240,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
         </div>
 
         {/* Body */}
-        <div style={{ padding: '20px 24px', overflowY: 'auto' }}>
+        <div style={{ padding: '20px 24px', overflowY: 'auto', flex: 1, minHeight: 0 }}>
           <form onSubmit={handleSubmit}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {/* タイトル */}
@@ -238,8 +249,24 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
                 <Input ref={titleRef} type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="タイトルを追加" size="large" />
               </div>
 
-              {/* 終日 */}
-              <Checkbox checked={allDay} onChange={(e) => setAllDay((e.target as HTMLInputElement).checked)} label="終日" />
+              {/* モード選択 */}
+              <PillSelect
+                options={[
+                  { value: 'normal', label: '時間指定' },
+                  { value: 'allDay', label: '終日' },
+                  { value: 'repeat', label: '繰り返し' },
+                ]}
+                value={mode}
+                onChange={(v) => setMode(v as typeof mode)}
+              />
+
+              {/* 繰り返し曜日 */}
+              {mode === 'repeat' && (
+                <div>
+                  <div className={labelClass} style={{ marginBottom: '6px' }}>曜日</div>
+                  <DayOfWeekPicker value={repeatDays} onChange={setRepeatDays} />
+                </div>
+              )}
 
               {/* 日時 */}
               {allDay ? (

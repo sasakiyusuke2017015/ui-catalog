@@ -18,6 +18,8 @@ services:
       - ../..:/workspace
     environment:
       - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - CHOKIDAR_INTERVAL=3000
     command: >
       sh -c "
         corepack enable &&

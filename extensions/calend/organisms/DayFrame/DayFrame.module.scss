@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use '../../../../core/tokens' as *;
 
 .header {
@@ -21,14 +22,14 @@
 
 // Day-of-week overrides
 .todayHeader {
-  background-color: mix($color-white, #fbbf24, 85%);
+  background-color: color.mix($color-white, #fbbf24, 85%);
   border-color: $color-today-border;
 }
 
 .sundayHeader {
-  background-color: mix($color-white, #ef4444, 92%);
+  background-color: color.mix($color-white, #ef4444, 92%);
 }
 
 .saturdayHeader {
-  background-color: mix($color-white, #3b82f6, 92%);
+  background-color: color.mix($color-white, #3b82f6, 92%);
 }

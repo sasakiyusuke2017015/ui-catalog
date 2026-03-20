@@ -1,3 +1,8 @@
+/** 曜日（0=日, 1=月, ..., 6=土） */
+export type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6
+
+export type EventMode = 'normal' | 'allDay' | 'repeat'
+
 export interface CalendarEvent {
   readonly id: string
   readonly title: string
@@ -6,6 +11,7 @@ export interface CalendarEvent {
   readonly color: string
   readonly description?: string
   readonly allDay?: boolean
+  readonly repeat?: readonly DayOfWeek[]
 }
 
 export interface TimeSlot {
