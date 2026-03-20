@@ -11,7 +11,7 @@ export { TimeSlotRow } from './atoms/TimeSlotRow/TimeSlotRow'
 export type { TimeSlotRowProps } from './atoms/TimeSlotRow/TimeSlotRow'
 
 // Types
-export type { CalendarEvent, TimeSlot, DayData, DateRange, ViewMode } from './types'
+export type { CalendarEvent, TimeSlot, DayData, DateRange, ViewMode, DayOfWeek, EventMode } from './types'
 
 // State (Jotai atoms)
 export {
@@ -73,3 +73,7 @@ export { Header } from './organisms/Header/Header'
 // Molecules
 export { EventPopover } from './molecules/EventPopover/EventPopover'
 export { SpanningBar } from './molecules/SpanningBar/SpanningBar'
+export { PillSelect } from './molecules/PillSelect/PillSelect'
+export { DayOfWeekPicker } from './molecules/DayOfWeekPicker/DayOfWeekPicker'
+export { ColorPicker, EVENT_COLORS } from './molecules/ColorPicker/ColorPicker'
+export type { ColorOption } from './molecules/ColorPicker/ColorPicker'

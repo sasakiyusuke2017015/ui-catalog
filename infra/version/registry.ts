@@ -104,6 +104,7 @@ export const VERSION_REGISTRY = {
   // calend
   EventCard: '1.0.0',
   TimeSlotRow: '1.0.0',
+  ColorPicker: '1.0.0',
 
   // decorations
   BackgroundTexture: '1.0.0',

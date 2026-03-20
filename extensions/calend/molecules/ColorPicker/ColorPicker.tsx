@@ -8,29 +8,40 @@ const EVENT_COLORS = [
   { value: '#be185d', label: 'Pink' },
 ] as const
 
+type ColorOption = { readonly value: string; readonly label: string }
+
 interface ColorPickerProps {
   readonly value: string
   readonly onChange: (color: string) => void
+  readonly colors?: readonly ColorOption[]
+  readonly size?: number
 }
 
-export function ColorPicker({ value, onChange }: ColorPickerProps) {
+export function ColorPicker({ value, onChange, colors = EVENT_COLORS, size = 28 }: ColorPickerProps) {
   return (
-    <div className="flex gap-2">
-      {EVENT_COLORS.map((c) => (
-        <button
-          key={c.value}
-          type="button"
-          onClick={() => onChange(c.value)}
-          className={`w-7 h-7 rounded-full transition-all ${
-            value === c.value
-              ? 'ring-2 ring-offset-2 ring-primary scale-110'
-              : 'hover:scale-110'
-          }`}
-          style={{ backgroundColor: c.value }}
-        />
-      ))}
+    <div data-component="ColorPicker" role="radiogroup" aria-label="カラー選択" className="flex gap-2">
+      {colors.map((c) => {
+        const selected = value === c.value
+        return (
+          <button
+            key={c.value}
+            type="button"
+            role="radio"
+            aria-checked={selected}
+            aria-label={c.label}
+            onClick={() => onChange(c.value)}
+            className={`rounded-full transition-all ${
+              selected
+                ? 'ring-2 ring-offset-2 ring-primary scale-110'
+                : 'hover:scale-110'
+            }`}
+            style={{ width: size, height: size, backgroundColor: c.value }}
+          />
+        )
+      })}
     </div>
   )
 }
 
 export { EVENT_COLORS }
+export type { ColorOption }
