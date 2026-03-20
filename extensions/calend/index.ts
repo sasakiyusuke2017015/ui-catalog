@@ -61,6 +61,7 @@ export {
   applyResizeDelta,
   clampToDay,
 } from './utils/dragUtils'
+export { resolveOriginalEvent, getEffectiveDayOffset } from './utils/repeatUtils'
 
 // Organisms
 export { DayColumn } from './organisms/DayColumn/DayColumn'

@@ -1,6 +1,6 @@
 import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react'
 import { useAtom, useSetAtom, useAtomValue } from 'jotai'
-import { eventModalAtom, activeSlotAtom, viewModeAtom } from '../../state/calendar'
+import { eventModalAtom, activeSlotAtom, viewModeAtom, eventsAtom } from '../../state/calendar'
 import { format } from 'date-fns'
 import { Button, Input, TextArea } from '@ui-catalog/core/atoms'
 import { colors } from '@ui-catalog/core/tokens'
@@ -9,6 +9,7 @@ import { ColorPicker, EVENT_COLORS } from '../../molecules/ColorPicker/ColorPick
 import { PillSelect } from '../../molecules/PillSelect/PillSelect'
 import { DayOfWeekPicker } from '../../molecules/DayOfWeekPicker/DayOfWeekPicker'
 import type { CalendarEvent, EventMode, DayOfWeek } from '../../types'
+import { resolveOriginalEvent } from '../../utils/repeatUtils'
 
 function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
@@ -25,6 +26,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
   const [modal, setModal] = useAtom(eventModalAtom)
   const setActiveSlot = useSetAtom(activeSlotAtom)
   const viewMode = useAtomValue(viewModeAtom)
+  const allEvents = useAtomValue(eventsAtom)
   const titleRef = useRef<HTMLInputElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
 
@@ -97,7 +99,8 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
 
   useEffect(() => {
     if (modal.isOpen) {
-      const editing = modal.editingEvent
+      // 繰り返しイベントは仮想インスタンスの可能性があるので元イベントを使う
+      const editing = modal.editingEvent ? resolveOriginalEvent(modal.editingEvent, allEvents) : null
       if (editing) {
         setTitle(editing.title)
         setStartDateStr(format(editing.startTime, 'yyyy-MM-dd'))
@@ -152,8 +155,11 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
       const repeatEmpty = mode === 'repeat' && repeatDays.length === 0
       if (titleEmpty || timeInvalid || dateRangeInvalid || repeatEmpty) return
 
-      const startTime = new Date(startDateStr)
-      const endTime = new Date(endDateStr)
+      // YYYY-MM-DD をローカル日付として解釈（UTC解釈のズレを防ぐ）
+      const [sy, sm, sd] = startDateStr.split('-').map(Number)
+      const [ey, em, ed] = endDateStr.split('-').map(Number)
+      const startTime = new Date(sy!, sm! - 1, sd!)
+      const endTime = new Date(ey!, em! - 1, ed!)
 
       if (mode === 'allDay') {
         startTime.setHours(0, 0, 0, 0)
@@ -161,7 +167,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
       } else {
         startTime.setHours(Math.floor(startMin / 60), startMin % 60, 0, 0)
         endTime.setHours(Math.floor(endMin / 60), endMin % 60, 0, 0)
-        if (endTime <= startTime) {
+        if (mode !== 'repeat' && endTime <= startTime) {
           endTime.setDate(endTime.getDate() + 1)
         }
       }

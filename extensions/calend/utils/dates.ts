@@ -160,7 +160,10 @@ export function getEventsForDay(
   const result: CalendarEvent[] = []
   for (const e of events) {
     if (e.repeat) {
-      if (e.repeat.includes(dayOfWeek)) {
+      // 曜日マッチ かつ 期間内のみ表示
+      const periodStart = startOfDay(e.startTime)
+      const periodEnd = endOfDay(e.endTime)
+      if (e.repeat.includes(dayOfWeek) && ds >= periodStart && de <= periodEnd) {
         // 元の時刻をこの日の日付に載せ替え
         const s = new Date(date)
         s.setHours(e.startTime.getHours(), e.startTime.getMinutes(), 0, 0)

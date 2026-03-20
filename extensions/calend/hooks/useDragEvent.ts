@@ -8,6 +8,7 @@ import {
   applyResizeDelta,
 } from '../utils/dragUtils'
 import type { CalendarEvent } from '../types'
+import { getEffectiveDayOffset } from '../utils/repeatUtils'
 
 const DRAG_THRESHOLD = 5
 
@@ -70,9 +71,9 @@ export function useDragEvent({ event, slotHeight, columnWidth, onCommit, onClick
 
       const rawMinutes = pxToMinutes(deltaY, slotHeight)
       const snappedMinutes = snapToInterval(rawMinutes, 15)
-      const dayOffset = columnWidth && state.mode === 'move'
-        ? Math.round(deltaX / columnWidth)
-        : 0
+      // 繰り返しイベントは曜日固定、時刻のみ移動
+      const rawDayOffset = columnWidth && state.mode === 'move' ? Math.round(deltaX / columnWidth) : 0
+      const dayOffset = getEffectiveDayOffset(event, rawDayOffset)
 
       const newTimes =
         state.mode === 'move'

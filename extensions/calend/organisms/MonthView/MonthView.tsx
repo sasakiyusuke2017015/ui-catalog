@@ -12,6 +12,7 @@ import { layoutSpanningEvents } from '../../utils/layoutSpanning'
 import { ja } from 'date-fns/locale'
 import { useCallback, useRef, useState } from 'react'
 import type { CalendarEvent } from '../../types'
+import { resolveOriginalEvent } from '../../utils/repeatUtils'
 import styles from './MonthView.module.scss'
 
 const WEEKDAY_LABELS = ['日', '月', '火', '水', '木', '金', '土']
@@ -72,8 +73,10 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
   const [dragEventId, setDragEventId] = useState<string | null>(null)
   const [dropDateStr, setDropDateStr] = useState<string | null>(null)
   const [dragInitialPointer, setDragInitialPointer] = useState<{ x: number; y: number } | null>(null)
-  const [dragEvent, setDragEvent] = useState<CalendarEvent | null>(null)
   const dragRef = useRef<MonthDragState | null>(null)
+
+  // Compute dragEvent from dragEventId and events (no separate state needed)
+  const dragEvent = dragEventId ? events.find(e => e.id === dragEventId) ?? null : null
 
   const dropDateRef = useRef<string | null>(null)
 
@@ -88,7 +91,6 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
       if (dx < threshold && dy < threshold) return
       ;(dragRef.current as { started: boolean }).started = true
       setDragEventId(state.event.id)
-      setDragEvent(state.event)
       setDragInitialPointer({ x: e.clientX, y: e.clientY })
       setHovered(null)
       setAnyDrag(true)
@@ -123,7 +125,6 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
     setDragEventId(null)
     setDropDateStr(null)
     setDragInitialPointer(null)
-    setDragEvent(null)
     setAnyDrag(false)
   }, [setAnyDrag])
 
@@ -142,11 +143,21 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
 
     if (state.mode === 'move') {
       const deltaMs = dayDelta * DAY_MS
-      persistEvent({
-        ...state.event,
-        startTime: new Date(state.event.startTime.getTime() + deltaMs),
-        endTime: new Date(state.event.endTime.getTime() + deltaMs),
-      })
+      if (state.event.repeat) {
+        // 繰り返しイベント: 元イベントの期間をシフト、時刻維持
+        const original = resolveOriginalEvent(state.event, events)
+        const newStart = new Date(original.startTime)
+        newStart.setDate(newStart.getDate() + dayDelta)
+        const newEnd = new Date(original.endTime)
+        newEnd.setDate(newEnd.getDate() + dayDelta)
+        persistEvent({ ...original, startTime: newStart, endTime: newEnd })
+      } else {
+        persistEvent({
+          ...state.event,
+          startTime: new Date(state.event.startTime.getTime() + deltaMs),
+          endTime: new Date(state.event.endTime.getTime() + deltaMs),
+        })
+      }
     } else if (state.mode === 'resize-left') {
       const newStart = new Date(state.event.startTime.getTime() + dayDelta * DAY_MS)
       if (newStart < state.event.endTime) {
@@ -158,7 +169,7 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
         persistEvent({ ...state.event, endTime: newEnd })
       }
     }
-  }, [cleanupDrag, persistEvent])
+  }, [cleanupDrag, persistEvent, events])
 
   const handleEscapeCancel = useCallback((e: KeyboardEvent) => {
     if (e.key !== 'Escape') return
@@ -196,11 +207,13 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
   const handleEventClick = useCallback(
     (event: CalendarEvent, clickedDate: Date, e: React.MouseEvent) => {
       e.stopPropagation()
+      // 繰り返しイベントは仮想インスタンスではなく元イベントで編集
+      const original = resolveOriginalEvent(event, events)
       setModal({
         isOpen: true,
         date: clickedDate,
-        hour: event.startTime.getHours(),
-        editingEvent: event,
+        hour: original.startTime.getHours(),
+        editingEvent: original,
       })
     },
     [setModal]
@@ -293,6 +306,18 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
                     const dropDate = new Date(dropDateStr)
                     const originDate = dragRef.current?.originDate
                     if (!originDate) return dropDateStr === date.toISOString()
+
+                    if (dragEvent.repeat) {
+                      // 繰り返しイベント: 曜日マッチ かつ シフト後の期間内
+                      if (!dragEvent.repeat.includes(date.getDay() as 0|1|2|3|4|5|6)) return false
+                      const dayDelta = differenceInCalendarDays(dropDate, originDate)
+                      const shiftedStart = startOfDay(new Date(dragEvent.startTime.getTime() + dayDelta * 86400000))
+                      const shiftedEnd = new Date(dragEvent.endTime.getTime() + dayDelta * 86400000)
+                      shiftedEnd.setHours(23, 59, 59, 999)
+                      const cellDate = startOfDay(date)
+                      return cellDate >= shiftedStart && cellDate <= shiftedEnd
+                    }
+
                     const dayDelta = differenceInCalendarDays(dropDate, originDate)
                     const newStart = new Date(dragEvent.startTime.getTime() + dayDelta * 86400000)
                     const newEnd = new Date(dragEvent.endTime.getTime() + dayDelta * 86400000)

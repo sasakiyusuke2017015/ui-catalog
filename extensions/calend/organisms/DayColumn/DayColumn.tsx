@@ -118,26 +118,36 @@ export function DayColumn({
   const dropTargetOverlay = useMemo(() => {
     if (!drag) return null
 
-    const dragStartDate = new Date(drag.currentStartTime)
-    const dragEndDate = new Date(drag.currentEndTime)
-    dragStartDate.setHours(0, 0, 0, 0)
-    dragEndDate.setHours(0, 0, 0, 0)
+    const ev = drag.originalEvent
+    const eventColor = ev.color
     const colDate = new Date(date)
     colDate.setHours(0, 0, 0, 0)
-    const colTime = colDate.getTime()
-    if (colTime < dragStartDate.getTime() || colTime > dragEndDate.getTime()) return null
 
-    const startMinutes = colTime === dragStartDate.getTime()
-      ? drag.currentStartTime.getHours() * 60 + drag.currentStartTime.getMinutes()
-      : 0
-    const endMinutes = colTime === dragEndDate.getTime()
-      ? drag.currentEndTime.getHours() * 60 + drag.currentEndTime.getMinutes()
-      : 24 * 60
+    let startMinutes: number
+    let endMinutes: number
+
+    if (ev.repeat) {
+      if (!ev.repeat.includes(colDate.getDay() as 0|1|2|3|4|5|6)) return null
+      startMinutes = drag.currentStartTime.getHours() * 60 + drag.currentStartTime.getMinutes()
+      endMinutes = drag.currentEndTime.getHours() * 60 + drag.currentEndTime.getMinutes()
+    } else {
+      const dragStartDate = new Date(drag.currentStartTime)
+      const dragEndDate = new Date(drag.currentEndTime)
+      dragStartDate.setHours(0, 0, 0, 0)
+      dragEndDate.setHours(0, 0, 0, 0)
+      const colTime = colDate.getTime()
+      if (colTime < dragStartDate.getTime() || colTime > dragEndDate.getTime()) return null
+      startMinutes = colTime === dragStartDate.getTime()
+        ? drag.currentStartTime.getHours() * 60 + drag.currentStartTime.getMinutes()
+        : 0
+      endMinutes = colTime === dragEndDate.getTime()
+        ? drag.currentEndTime.getHours() * 60 + drag.currentEndTime.getMinutes()
+        : 24 * 60
+    }
 
     const topPx = (startMinutes / 60) * slotHeight
     const heightPx = ((endMinutes - startMinutes) / 60) * slotHeight
 
-    const eventColor = drag.originalEvent.color
     return (
       <div
         className={dcStyles.dropTargetOverlay}
@@ -151,7 +161,7 @@ export function DayColumn({
         }}
       />
     )
-  }, [drag, date, slotHeight, eventLeft])
+  }, [drag?.eventId, drag?.currentStartTime?.getTime(), drag?.currentEndTime?.getTime(), drag?.originalEvent, date, slotHeight, eventLeft])
 
   // Calculate slot drag highlight range
   const dragMin = slotDrag ? Math.min(slotDrag.startHour, slotDrag.currentHour) : -1

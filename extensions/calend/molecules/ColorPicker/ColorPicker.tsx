@@ -1,11 +1,16 @@
 const EVENT_COLORS = [
-  { value: '#4f46e5', label: 'Indigo' },
   { value: '#059669', label: 'Green' },
   { value: '#d97706', label: 'Amber' },
   { value: '#dc2626', label: 'Red' },
   { value: '#7c3aed', label: 'Purple' },
   { value: '#0891b2', label: 'Cyan' },
   { value: '#be185d', label: 'Pink' },
+  { value: '#0284c7', label: 'Sky' },   
+  { value: '#e11d48', label: 'Rose' },  
+  { value: '#ea580c', label: 'Orange' },
+  { value: '#4f46e5', label: 'Indigo' },
+  { value: '#65a30d', label: 'Lime' },  
+  { value: '#475569', label: 'Slate' }, 
 ] as const
 
 type ColorOption = { readonly value: string; readonly label: string }
