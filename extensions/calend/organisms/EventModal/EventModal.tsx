@@ -37,6 +37,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
   const [endMin, setEndMin] = useState(10 * 60)
   const [color, setColor] = useState<string>(EVENT_COLORS[0]!.value)
   const [description, setDescription] = useState('')
+  const [submitted, setSubmitted] = useState(false)
   const lockedPos = useRef<{ top?: number; left?: number; right?: number } | null>(null)
   const [posReady, setPosReady] = useState(false)
 
@@ -107,6 +108,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
         setEndMin(editing.endTime.getHours() * 60 + editing.endTime.getMinutes())
         setColor(editing.color)
         setDescription(editing.description ?? '')
+        setSubmitted(false)
       } else {
         const d = format(modal.date, 'yyyy-MM-dd')
         setTitle('')
@@ -118,6 +120,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
         setEndMin((modal.endHour ?? Math.min(modal.hour + 1, 23)) * 60)
         setColor(EVENT_COLORS[0]!.value)
         setDescription('')
+        setSubmitted(false)
       }
       requestAnimationFrame(() => titleRef.current?.focus())
     }
@@ -141,7 +144,13 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault()
-      if (!title.trim()) return
+      setSubmitted(true)
+      const allDayMode = mode === 'allDay'
+      const titleEmpty = !title.trim()
+      const timeInvalid = !allDayMode && endMin <= startMin && (mode === 'repeat' || startDateStr === endDateStr)
+      const dateRangeInvalid = startDateStr > endDateStr
+      const repeatEmpty = mode === 'repeat' && repeatDays.length === 0
+      if (titleEmpty || timeInvalid || dateRangeInvalid || repeatEmpty) return
 
       const startTime = new Date(startDateStr)
       const endTime = new Date(endDateStr)
@@ -188,11 +197,16 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
   if (!modal.isOpen) return null
 
   const allDay = mode === 'allDay'
-  const hasTitle = title.trim().length > 0
-  const isDateInvalid = !allDay && startDateStr === endDateStr && endMin <= startMin
-  const isDateRangeInvalid = mode !== 'repeat' && startDateStr > endDateStr
-  const isRepeatInvalid = mode === 'repeat' && repeatDays.length === 0
-  const canSubmit = hasTitle && !isDateInvalid && !isDateRangeInvalid && !isRepeatInvalid
+  const isTitleEmpty = title.trim().length === 0
+  const isTimeInvalid = !allDay && endMin <= startMin && (mode === 'repeat' || startDateStr === endDateStr)
+  const isDateRangeInvalid = startDateStr > endDateStr
+  const isRepeatDaysEmpty = mode === 'repeat' && repeatDays.length === 0
+  const errorBorder: React.CSSProperties = { borderColor: '#dc2626', boxShadow: 'inset 0 0 0 1px #dc2626' }
+  const validationErrors: string[] = []
+  if (isTitleEmpty) validationErrors.push('タイトルを入力してください')
+  if (isRepeatDaysEmpty) validationErrors.push('曜日を選択してください')
+  if (isDateRangeInvalid) validationErrors.push('終了日は開始日より後にしてください')
+  if (isTimeInvalid) validationErrors.push('終了時刻は開始時刻より後にしてください')
 
   const pos = lockedPos.current
   const vh = typeof window !== 'undefined' ? window.innerHeight : 800
@@ -246,8 +260,8 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {/* タイトル */}
               <div>
-                <div className={labelClass} style={{ marginBottom: '4px' }}>タイトル</div>
-                <Input ref={titleRef} type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="タイトルを追加" size="large" />
+                <div className={labelClass} style={{ marginBottom: '4px', color: submitted && isTitleEmpty ? colors.danger : undefined }}>タイトル</div>
+                <Input ref={titleRef} type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="タイトルを追加" size="large" style={submitted && isTitleEmpty ? errorBorder : undefined} />
               </div>
 
               {/* モード選択 */}
@@ -264,7 +278,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
               {/* 繰り返し曜日 */}
               {mode === 'repeat' && (
                 <div>
-                  <div className={labelClass} style={{ marginBottom: '6px' }}>曜日</div>
+                  <div className={labelClass} style={{ marginBottom: '6px', color: submitted && isRepeatDaysEmpty ? colors.danger : undefined }}>曜日</div>
                   <DayOfWeekPicker value={repeatDays} onChange={setRepeatDays} />
                 </div>
               )}
@@ -272,16 +286,46 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
               {/* 日時 */}
               {allDay ? (
                 <div>
-                  <div className={labelClass} style={{ marginBottom: '4px' }}>期間</div>
+                  <div className={labelClass} style={{ marginBottom: '4px', color: submitted && isDateRangeInvalid ? colors.danger : undefined }}>期間</div>
                   <div className="flex items-center gap-2">
                     <Input type="date" value={startDateStr} onChange={(e) => { setStartDateStr(e.target.value); if (e.target.value > endDateStr) setEndDateStr(e.target.value) }} size="small" />
                     <span className="text-text-secondary text-sm">-</span>
-                    <Input type="date" value={endDateStr} min={startDateStr} onChange={(e) => setEndDateStr(e.target.value)} size="small" />
+                    <Input type="date" value={endDateStr} onChange={(e) => setEndDateStr(e.target.value)} size="small" style={submitted && isDateRangeInvalid ? errorBorder : undefined} />
+                  </div>
+                </div>
+              ) : mode === 'repeat' ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <div>
+                    <div className={labelClass} style={{ marginBottom: '4px', color: submitted && isDateRangeInvalid ? colors.danger : undefined }}>期間</div>
+                    <div className="flex items-center gap-2">
+                      <Input type="date" value={startDateStr} onChange={(e) => { setStartDateStr(e.target.value); if (e.target.value > endDateStr) setEndDateStr(e.target.value) }} size="small" />
+                      <span className="text-text-secondary text-sm">-</span>
+                      <Input type="date" value={endDateStr} onChange={(e) => setEndDateStr(e.target.value)} size="small" style={submitted && isDateRangeInvalid ? errorBorder : undefined} />
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div style={{ flex: 1 }}>
+                      <div className={labelClass} style={{ marginBottom: '4px' }}>開始時刻</div>
+                      <TimeSelect
+                        value={startMin}
+                        onChange={(m) => {
+                          setStartMin(m)
+                          if (endMin <= m) setEndMin(Math.min(m + 60, 23 * 60 + 45))
+                        }}
+                      />
+                    </div>
+                    <span className="text-text-secondary text-sm" style={{ marginTop: '20px' }}>-</span>
+                    <div style={{ flex: 1 }}>
+                      <div className={labelClass} style={{ marginBottom: '4px', color: submitted && isTimeInvalid ? colors.danger : undefined }}>
+                        終了時刻
+                      </div>
+                      <TimeSelect value={endMin} onChange={setEndMin} error={submitted && isTimeInvalid} />
+                    </div>
                   </div>
                 </div>
               ) : (
                 <div>
-                  <div className={labelClass} style={{ marginBottom: '4px' }}>開始</div>
+                  <div className={labelClass} style={{ marginBottom: '4px' }}>開始日時</div>
                   <div className="flex items-center gap-2" style={{ marginBottom: '8px' }}>
                     <Input type="date" value={startDateStr} onChange={(e) => { setStartDateStr(e.target.value); if (e.target.value > endDateStr) setEndDateStr(e.target.value) }} size="small" />
                     <TimeSelect
@@ -292,12 +336,12 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
                       }}
                     />
                   </div>
-                  <div className={labelClass} style={{ marginBottom: '4px', color: isDateInvalid || isDateRangeInvalid ? colors.danger : undefined }}>
-                    終了 {(isDateInvalid || isDateRangeInvalid) && <span style={{ fontSize: '11px' }}>※ 開始より後にしてください</span>}
+                  <div className={labelClass} style={{ marginBottom: '4px', color: submitted && (isTimeInvalid || isDateRangeInvalid) ? colors.danger : undefined }}>
+                    終了日時
                   </div>
                   <div className="flex items-center gap-2">
-                    <Input type="date" value={endDateStr} min={startDateStr} onChange={(e) => setEndDateStr(e.target.value)} size="small" />
-                    <TimeSelect value={endMin} onChange={setEndMin} error={isDateInvalid} />
+                    <Input type="date" value={endDateStr} onChange={(e) => setEndDateStr(e.target.value)} size="small" style={submitted && isDateRangeInvalid ? errorBorder : undefined} />
+                    <TimeSelect value={endMin} onChange={setEndMin} error={submitted && isTimeInvalid} />
                   </div>
                 </div>
               )}
@@ -315,11 +359,19 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
               </div>
             </div>
 
+            {submitted && validationErrors.length > 0 && (
+              <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                {validationErrors.map((msg) => (
+                  <div key={msg} style={{ fontSize: '11px', color: colors.danger }}>※ {msg}</div>
+                ))}
+              </div>
+            )}
+
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
               {modal.editingEvent ? (
                 <Button variant="danger" leftIcon="trash" onClick={handleDelete}>削除</Button>
               ) : <div />}
-              <Button type="submit" variant="primary" leftIcon="save" disabled={!canSubmit}>保存</Button>
+              <Button type="submit" variant="primary" leftIcon="save" >保存</Button>
             </div>
           </form>
         </div>

@@ -137,6 +137,7 @@ export function DayColumn({
     const topPx = (startMinutes / 60) * slotHeight
     const heightPx = ((endMinutes - startMinutes) / 60) * slotHeight
 
+    const eventColor = drag.originalEvent.color
     return (
       <div
         className={dcStyles.dropTargetOverlay}
@@ -145,6 +146,8 @@ export function DayColumn({
           height: `${heightPx}px`,
           left: eventLeft,
           zIndex: 4,
+          backgroundColor: `${eventColor}10`,
+          border: `1.5px dashed ${eventColor}40`,
         }}
       />
     )

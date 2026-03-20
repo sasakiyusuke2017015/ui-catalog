@@ -288,10 +288,24 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
                   spanningIds={spanningIds}
                   laneAreaH={laneAreaH}
                   isActive={activeSlot?.date === date.toDateString()}
-                  isDropTarget={dragEventId !== null && dropDateStr === date.toISOString()}
+                  isDropTarget={(() => {
+                    if (!dragEventId || !dropDateStr || !dragEvent) return false
+                    const dropDate = new Date(dropDateStr)
+                    const originDate = dragRef.current?.originDate
+                    if (!originDate) return dropDateStr === date.toISOString()
+                    const dayDelta = differenceInCalendarDays(dropDate, originDate)
+                    const newStart = new Date(dragEvent.startTime.getTime() + dayDelta * 86400000)
+                    const newEnd = new Date(dragEvent.endTime.getTime() + dayDelta * 86400000)
+                    const cellStart = new Date(date)
+                    cellStart.setHours(0, 0, 0, 0)
+                    const cellEnd = new Date(date)
+                    cellEnd.setHours(23, 59, 59, 999)
+                    return cellStart <= newEnd && cellEnd >= newStart
+                  })()}
                   dragEventId={dragEventId}
                   todayCellClass={styles.todayCell ?? ''}
                   dropTargetClass={styles.dropTarget ?? ''}
+                  dropTargetColor={dragEvent?.color}
                   onDayClick={handleDayClick}
                   onEventClick={handleEventClick}
                   onEventDragStart={startEventDrag}

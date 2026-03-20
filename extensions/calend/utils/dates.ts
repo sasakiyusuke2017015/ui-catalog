@@ -143,6 +143,8 @@ export function navigateDate(
  *   3/13 → false (09:00終了)
  */
 export function coversFullDay(event: CalendarEvent, date: Date): boolean {
+  // 繰り返しイベントは時刻指定扱い
+  if (event.repeat) return false
   const dayStart = startOfDay(date)
   const dayEnd = endOfDay(date)
   return event.startTime <= dayStart && event.endTime >= dayEnd
@@ -154,7 +156,23 @@ export function getEventsForDay(
 ): readonly CalendarEvent[] {
   const ds = startOfDay(date)
   const de = endOfDay(date)
-  return events.filter((e) => e.startTime <= de && e.endTime >= ds)
+  const dayOfWeek = date.getDay() as 0 | 1 | 2 | 3 | 4 | 5 | 6
+  const result: CalendarEvent[] = []
+  for (const e of events) {
+    if (e.repeat) {
+      if (e.repeat.includes(dayOfWeek)) {
+        // 元の時刻をこの日の日付に載せ替え
+        const s = new Date(date)
+        s.setHours(e.startTime.getHours(), e.startTime.getMinutes(), 0, 0)
+        const en = new Date(date)
+        en.setHours(e.endTime.getHours(), e.endTime.getMinutes(), 0, 0)
+        result.push({ ...e, startTime: s, endTime: en })
+      }
+    } else if (e.startTime <= de && e.endTime >= ds) {
+      result.push(e)
+    }
+  }
+  return result
 }
 
 export { isSameDay, isSameMonth, isToday, getDay }

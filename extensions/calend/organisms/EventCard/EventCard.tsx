@@ -32,6 +32,7 @@ export function EventCard({
   const drag = useAtomValue(dragAtom)
   const hovered = useAtomValue(hoveredEventAtom)
   const isDragging = drag?.eventId === event.id
+  const isResizing = isDragging && drag?.mode !== 'move'
   const isHovered = hovered?.event.id === event.id
   const setHovered = useSetAtom(hoveredEventAtom)
   const setModal = useSetAtom(eventModalAtom)
@@ -120,7 +121,7 @@ export function EventCard({
       onPointerDown={handleMoveStart}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      isDragging={isDragging}
+      isDragging={isDragging && !isResizing}
       isHovered={isHovered}
     >
       {/* Resize handle: top */}

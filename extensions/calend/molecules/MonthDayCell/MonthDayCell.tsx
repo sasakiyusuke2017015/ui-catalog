@@ -16,6 +16,7 @@ interface MonthDayCellProps {
   readonly dragEventId: string | null
   readonly todayCellClass: string
   readonly dropTargetClass: string
+  readonly dropTargetColor?: string
   readonly onDayClick: (date: Date) => void
   readonly onEventClick: (event: CalendarEvent, date: Date, e: React.MouseEvent) => void
   readonly onEventDragStart: (event: CalendarEvent, date: Date, e: React.PointerEvent) => void
@@ -32,6 +33,7 @@ export function MonthDayCell({
   dragEventId,
   todayCellClass,
   dropTargetClass,
+  dropTargetColor,
   onDayClick,
   onEventClick,
   onEventDragStart,
@@ -42,7 +44,7 @@ export function MonthDayCell({
   const [expanded, setExpanded] = useState(false)
 
   const MAX_VISIBLE = 3
-  const timedEvents = events.filter((e) => !spanningIds.has(e.id))
+  const timedEvents = events.filter((e) => !spanningIds.has(e.id)).sort((a, b) => a.startTime.getTime() - b.startTime.getTime())
   const visibleEvents = timedEvents.slice(0, MAX_VISIBLE)
   const hiddenCount = timedEvents.length - MAX_VISIBLE
   const hasMore = hiddenCount > 0
@@ -63,6 +65,10 @@ export function MonthDayCell({
         today ? todayCellClass : '',
         isDropTarget ? dropTargetClass : '',
       ].filter(Boolean).join(' ')}
+      style={isDropTarget && dropTargetColor ? {
+        backgroundColor: `${dropTargetColor}10`,
+        boxShadow: `inset 0 0 0 2px ${dropTargetColor}4D`,
+      } : undefined}
     >
       {isActive && (
         <div className="absolute inset-0 border-2 border-primary rounded-xl pointer-events-none z-20" />

@@ -25,7 +25,7 @@ function GhostCard({ drag }: { readonly drag: DragState }) {
   useEffect(() => {
     const el = overlayRef.current
     if (!el) return
-    el.style.transform = `translate(${drag.pointerX + 12}px, ${drag.pointerY - 20}px)`
+    el.style.transform = `translate(${drag.pointerX}px, ${drag.pointerY - 16}px)`
   }, []) // intentionally run once for initial position
 
   // Track pointer via document events + rAF
@@ -36,7 +36,7 @@ function GhostCard({ drag }: { readonly drag: DragState }) {
     const handlePointerMove = (e: PointerEvent) => {
       cancelAnimationFrame(rafRef.current)
       rafRef.current = requestAnimationFrame(() => {
-        el.style.transform = `translate(${e.clientX + 12}px, ${e.clientY - 20}px)`
+        el.style.transform = `translate(${e.clientX}px, ${e.clientY - 16}px)`
       })
     }
 
@@ -68,7 +68,7 @@ function GhostCard({ drag }: { readonly drag: DragState }) {
 export function DragOverlay() {
   const drag = useAtomValue(dragAtom)
 
-  if (!drag) return null
+  if (!drag || drag.mode !== 'move') return null
 
   return createPortal(
     <div data-component="DragOverlay">
