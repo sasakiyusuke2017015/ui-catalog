@@ -12,7 +12,7 @@ export { TimeSlotRow } from './atoms/TimeSlotRow/TimeSlotRow'
 export type { TimeSlotRowProps } from './atoms/TimeSlotRow/TimeSlotRow'
 
 // Types
-export type { CalendarEvent, TimeSlot, DayData, DateRange, ViewMode, DayOfWeek, EventMode } from './types'
+export type { CalendarEvent, TimeSlot, DayData, DateRange as CalendDateRange, ViewMode, DayOfWeek, EventMode } from './types'
 
 // State (Jotai atoms)
 export {
@@ -71,7 +71,7 @@ export { Timeline } from './organisms/Timeline/Timeline'
 export { WeekView } from './organisms/WeekView/WeekView'
 export { MonthView } from './organisms/MonthView/MonthView'
 export { EventModal } from './organisms/EventModal/EventModal'
-export { Header } from './organisms/Header/Header'
+export { Header as CalendHeader } from './organisms/Header/Header'
 
 // Molecules
 export { EventPopover } from './molecules/EventPopover/EventPopover'
