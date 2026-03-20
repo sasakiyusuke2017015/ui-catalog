@@ -175,6 +175,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         }}
         onBlur={(e) => {
           log('blur', { variant, size })
+          e.target.setSelectionRange(0, 0)
+          e.target.scrollLeft = 0
           onBlur?.(e)
         }}
         data-component="input"

@@ -33,6 +33,9 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
   // ========================================
   // REGULAR アイコン
   // ========================================
+  ['dot']: () => (
+    <circle cx="12" cy="12" r="5" fill="currentColor" />
+  ),
   ['hamburger']: () => (
     <path
       className={styles.stroke}

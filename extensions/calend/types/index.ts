@@ -10,6 +10,7 @@ export interface CalendarEvent {
   readonly endTime: Date
   readonly color: string
   readonly description?: string
+  readonly icon?: string
   readonly allDay?: boolean
   readonly repeat?: readonly DayOfWeek[]
 }

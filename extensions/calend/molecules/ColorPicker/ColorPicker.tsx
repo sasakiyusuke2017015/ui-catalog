@@ -1,3 +1,5 @@
+import { useRef } from 'react'
+
 const EVENT_COLORS = [
   { value: '#059669', label: 'Green' },
   { value: '#d97706', label: 'Amber' },
@@ -5,12 +7,11 @@ const EVENT_COLORS = [
   { value: '#7c3aed', label: 'Purple' },
   { value: '#0891b2', label: 'Cyan' },
   { value: '#be185d', label: 'Pink' },
-  { value: '#0284c7', label: 'Sky' },   
-  { value: '#e11d48', label: 'Rose' },  
+  { value: '#0284c7', label: 'Sky' },
   { value: '#ea580c', label: 'Orange' },
   { value: '#4f46e5', label: 'Indigo' },
-  { value: '#65a30d', label: 'Lime' },  
-  { value: '#475569', label: 'Slate' }, 
+  { value: '#65a30d', label: 'Lime' },
+  { value: '#475569', label: 'Slate' },
 ] as const
 
 type ColorOption = { readonly value: string; readonly label: string }
@@ -20,11 +21,16 @@ interface ColorPickerProps {
   readonly onChange: (color: string) => void
   readonly colors?: readonly ColorOption[]
   readonly size?: number
+  readonly allowCustom?: boolean
+  readonly nowrap?: boolean
 }
 
-export function ColorPicker({ value, onChange, colors = EVENT_COLORS, size = 28 }: ColorPickerProps) {
+export function ColorPicker({ value, onChange, colors = EVENT_COLORS, size = 28, allowCustom = false, nowrap = false }: ColorPickerProps) {
+  const inputRef = useRef<HTMLInputElement>(null)
+  const isPreset = colors.some((c) => c.value === value)
+
   return (
-    <div data-component="ColorPicker" role="radiogroup" aria-label="カラー選択" className="flex gap-2">
+    <div data-component="ColorPicker" role="radiogroup" aria-label="カラー選択" className={`flex ${nowrap ? 'gap-1 flex-nowrap' : 'gap-2 flex-wrap'}`}>
       {colors.map((c) => {
         const selected = value === c.value
         return (
@@ -34,6 +40,7 @@ export function ColorPicker({ value, onChange, colors = EVENT_COLORS, size = 28 
             role="radio"
             aria-checked={selected}
             aria-label={c.label}
+            title={c.label}
             onClick={() => onChange(c.value)}
             className={`rounded-full transition-all ${
               selected
@@ -44,6 +51,37 @@ export function ColorPicker({ value, onChange, colors = EVENT_COLORS, size = 28 
           />
         )
       })}
+      {allowCustom && (
+        <button
+          type="button"
+          role="radio"
+          aria-checked={!isPreset}
+          aria-label="カスタムカラー"
+          title="カスタムカラー"
+          onClick={() => inputRef.current?.click()}
+          className={`rounded-full transition-all relative overflow-hidden ${
+            !isPreset
+              ? 'ring-2 ring-offset-2 ring-primary scale-110'
+              : 'hover:scale-110'
+          }`}
+          style={{
+            width: size,
+            height: size,
+            background: !isPreset
+              ? value
+              : 'conic-gradient(from 0deg, #ef4444, #f59e0b, #22c55e, #3b82f6, #8b5cf6, #ef4444)',
+          }}
+        >
+          <input
+            ref={inputRef}
+            type="color"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            className="absolute inset-0 opacity-0 cursor-pointer"
+            style={{ width: '100%', height: '100%' }}
+          />
+        </button>
+      )}
     </div>
   )
 }

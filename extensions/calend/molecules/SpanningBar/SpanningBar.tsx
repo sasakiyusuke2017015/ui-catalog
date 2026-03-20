@@ -1,4 +1,6 @@
 import { startOfDay } from 'date-fns'
+import Icon from '@ui-catalog/core/atoms/Icon'
+import type { IconName } from '@ui-catalog/core/constants'
 import type { CalendarEvent } from '../../types'
 
 const LANE_H = 20
@@ -52,7 +54,7 @@ export function SpanningBar({
     >
       {/* Bar body */}
       <div
-        className="h-full flex items-center px-4 text-white text-[10px] font-medium truncate cursor-grab hover:brightness-110"
+        className="h-full flex items-center gap-1 px-4 text-white text-[10px] font-medium truncate cursor-grab hover:brightness-110"
         style={{
           backgroundColor: event.color,
           borderRadius,
@@ -61,6 +63,7 @@ export function SpanningBar({
         onClick={(e) => onClick(event, weekDates[startCol]!, e)}
         onPointerDown={(e) => onDragStart(event, weekDates[startCol]!, e)}
       >
+        {event.icon && <Icon name={event.icon as IconName} size={12} className="shrink-0" />}
         {event.title}
       </div>
 

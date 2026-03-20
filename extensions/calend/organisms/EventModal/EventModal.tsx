@@ -8,6 +8,7 @@ import { TimeSelect } from '../../molecules/TimeSelect/TimeSelect'
 import { ColorPicker, EVENT_COLORS } from '../../molecules/ColorPicker/ColorPicker'
 import { PillSelect } from '../../molecules/PillSelect/PillSelect'
 import { DayOfWeekPicker } from '../../molecules/DayOfWeekPicker/DayOfWeekPicker'
+import { IconPicker } from '../../molecules/IconPicker/IconPicker'
 import type { CalendarEvent, EventMode, DayOfWeek } from '../../types'
 import { resolveOriginalEvent } from '../../utils/repeatUtils'
 
@@ -38,6 +39,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
   const [startMin, setStartMin] = useState(9 * 60)
   const [endMin, setEndMin] = useState(10 * 60)
   const [color, setColor] = useState<string>(EVENT_COLORS[0]!.value)
+  const [icon, setIcon] = useState<string | undefined>(undefined)
   const [description, setDescription] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const lockedPos = useRef<{ top?: number; left?: number; right?: number } | null>(null)
@@ -110,6 +112,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
         setStartMin(editing.startTime.getHours() * 60 + editing.startTime.getMinutes())
         setEndMin(editing.endTime.getHours() * 60 + editing.endTime.getMinutes())
         setColor(editing.color)
+        setIcon(editing.icon)
         setDescription(editing.description ?? '')
         setSubmitted(false)
       } else {
@@ -122,6 +125,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
         setStartMin(modal.hour * 60)
         setEndMin((modal.endHour ?? Math.min(modal.hour + 1, 23)) * 60)
         setColor(EVENT_COLORS[0]!.value)
+        setIcon(undefined)
         setDescription('')
         setSubmitted(false)
       }
@@ -181,6 +185,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
           color,
           allDay: mode === 'allDay' || undefined,
           repeat: mode === 'repeat' && repeatDays.length > 0 ? repeatDays : undefined,
+          icon: icon || undefined,
           description: description.trim() || undefined,
         })
         close()
@@ -188,7 +193,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
         throw new Error(`Failed to save event: ${error}`)
       }
     },
-    [title, startDateStr, endDateStr, mode, repeatDays, startMin, endMin, color, description, modal.editingEvent, persistEvent, close]
+    [title, startDateStr, endDateStr, mode, repeatDays, startMin, endMin, color, icon, description, modal.editingEvent, persistEvent, close]
   )
 
   useEffect(() => {
@@ -352,10 +357,16 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
                 </div>
               )}
 
+              {/* アイコン */}
+              <div>
+                <div className={labelClass} style={{ marginBottom: '4px' }}>アイコン</div>
+                <IconPicker value={icon} onChange={setIcon} />
+              </div>
+
               {/* カラー */}
               <div>
                 <div className={labelClass} style={{ marginBottom: '4px' }}>カラー</div>
-                <ColorPicker value={color} onChange={setColor} />
+                <ColorPicker value={color} onChange={setColor} allowCustom nowrap />
               </div>
 
               {/* 説明 */}

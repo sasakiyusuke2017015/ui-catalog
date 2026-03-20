@@ -5,6 +5,7 @@
 // すべてのアイコン名のリスト
 export const ALL_ICON_TYPES = [
   // REGULAR
+  'dot',
   'info-circle',
   'info-triangle',
   'x',

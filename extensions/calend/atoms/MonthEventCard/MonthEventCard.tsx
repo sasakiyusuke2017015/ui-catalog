@@ -1,4 +1,6 @@
 import { format } from 'date-fns'
+import Icon from '@ui-catalog/core/atoms/Icon'
+import type { IconName } from '@ui-catalog/core/constants'
 import type { CalendarEvent } from '../../types'
 import styles from './MonthEventCard.module.scss'
 
@@ -26,7 +28,7 @@ export function MonthEventCard({ event, isDragging, onClick, onPointerDown }: Mo
       onClick={onClick}
       onPointerDown={onPointerDown}
     >
-      <div className={styles.dot} style={{ backgroundColor: event.color }} />
+      <Icon name={(event.icon ?? 'dot') as IconName} size={12} className="shrink-0" style={{ color: event.color }} />
       <span className={styles.time}>
         {format(event.startTime, 'HH:mm')} - {format(event.endTime, 'HH:mm')}
       </span>

@@ -3,11 +3,14 @@
  * タイムライン（日・週）とコンパクト（月）の2モードで描画
  */
 import { useRef, useEffect, useState, useCallback, type ReactNode } from 'react'
+import Icon from '@ui-catalog/core/atoms/Icon'
+import type { IconName } from '@ui-catalog/core/constants'
 import { getStickyBottom } from '../../utils/dom'
 
 interface EventCardBaseProps {
   readonly title: string
   readonly color: string
+  readonly icon?: string
   readonly onDelete?: () => void
   readonly onClick?: (e: React.MouseEvent) => void
   readonly onPointerDown?: (e: React.PointerEvent) => void
@@ -56,6 +59,7 @@ function DeleteButton({ onDelete }: { readonly onDelete: () => void }) {
 function CompactEventCard({
   title,
   color,
+  icon,
   onDelete,
   onClick,
   onPointerDown,
@@ -69,7 +73,7 @@ function CompactEventCard({
   return (
     <div
       data-component="event-card"
-      className={`rounded-xl px-2 py-0.5 text-white text-[10px] font-medium truncate relative group transition-all ${
+      className={`rounded-xl px-2 py-0.5 text-white text-[10px] font-medium truncate relative group transition-all flex items-center gap-0.5 ${
         isDragging ? 'cursor-grabbing' : 'cursor-pointer'
       } ${className}`}
       style={{
@@ -86,7 +90,8 @@ function CompactEventCard({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      {title}
+      {icon && <Icon name={icon as IconName} size={12} className="shrink-0" />}
+      <span className="truncate">{title}</span>
       {onDelete && <DeleteButton onDelete={onDelete} />}
       {children}
     </div>
@@ -140,6 +145,7 @@ function useStickyTitle(cardRef: React.RefObject<HTMLDivElement | null>) {
 
 function TimelineEventCard({
   title,
+  icon,
   startLabel,
   endLabel,
   top,
@@ -199,15 +205,18 @@ function TimelineEventCard({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <span
-        className="text-[11px] font-semibold leading-tight line-clamp-3 break-all group-hover/card:line-clamp-none group-hover/card:whitespace-normal block"
+      <div
+        className="flex items-start gap-1"
         style={{
           transform: `translateY(${offsetY}px)`,
           transition: animating ? 'transform 0.3s ease-out' : 'none',
         }}
       >
-        {title}
-      </span>
+        {icon && <Icon name={icon as IconName} size={14} className="shrink-0 mt-px" />}
+        <span className="text-[11px] font-semibold leading-tight line-clamp-3 break-all group-hover/card:line-clamp-none group-hover/card:whitespace-normal">
+          {title}
+        </span>
+      </div>
       {onDelete && <DeleteButton onDelete={onDelete} />}
       {children}
     </div>

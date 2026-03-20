@@ -109,6 +109,7 @@ export function EventCard({
   return (
     <EventCardBase
       title={event.title}
+      icon={event.icon}
       startLabel={startLabel}
       endLabel={endLabel}
       top={top}
