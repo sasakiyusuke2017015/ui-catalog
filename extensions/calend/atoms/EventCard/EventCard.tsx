@@ -3,9 +3,8 @@
  * タイムライン（日・週）とコンパクト（月）の2モードで描画
  */
 import { useRef, useEffect, useState, useCallback, type ReactNode } from 'react'
-import Icon from '@ui-catalog/core/atoms/Icon'
-import type { IconName } from '@ui-catalog/core/constants'
 import { getStickyBottom } from '../../utils/dom'
+import { IconLabel } from '../IconLabel/IconLabel'
 
 interface EventCardBaseProps {
   readonly title: string
@@ -79,7 +78,7 @@ function CompactEventCard({
       style={{
         backgroundColor: color,
         boxShadow: isHovered
-          ? '0 4px 12px rgba(0,0,0,0.2), inset 0 0 0 1.5px rgba(255,255,255,0.6)'
+          ? `0 4px 12px rgba(0,0,0,0.2), inset 0 0 0 1.5px rgba(255,255,255,0.6), 0 0 0 2px ${color}`
           : 'inset 0 0 0 1.5px rgba(255,255,255,0.45)',
         opacity: isDragging ? 0.3 : 1,
         filter: isDragging ? 'grayscale(0.3)' : isHovered ? 'brightness(1.15)' : 'none',
@@ -90,8 +89,7 @@ function CompactEventCard({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      {icon && <Icon name={icon as IconName} size={12} className="shrink-0" />}
-      <span className="truncate">{title}</span>
+      <IconLabel icon={icon} iconSize={12}><span className="truncate">{title}</span></IconLabel>
       {onDelete && <DeleteButton onDelete={onDelete} />}
       {children}
     </div>
@@ -196,7 +194,7 @@ function TimelineEventCard({
         filter: isDragging ? 'grayscale(0.3)' : isHovered ? 'brightness(1.2)' : 'none',
         transition: 'opacity 150ms ease, filter 150ms ease',
         boxShadow: isHovered
-          ? '0 4px 16px rgba(0,0,0,0.2), inset 0 0 0 1.5px rgba(255,255,255,0.6)'
+          ? `0 4px 16px rgba(0,0,0,0.2), inset 0 0 0 1.5px rgba(255,255,255,0.6), 0 0 0 2px ${color}`
           : '0 1px 3px rgba(0,0,0,0.12), inset 0 0 0 1.5px rgba(255,255,255,0.45)',
         ...positionStyle,
       }}
@@ -206,16 +204,16 @@ function TimelineEventCard({
       onMouseLeave={onMouseLeave}
     >
       <div
-        className="flex items-start gap-1"
         style={{
           transform: `translateY(${offsetY}px)`,
           transition: animating ? 'transform 0.3s ease-out' : 'none',
         }}
       >
-        {icon && <Icon name={icon as IconName} size={14} className="shrink-0 mt-px" />}
-        <span className="text-[11px] font-semibold leading-tight line-clamp-3 break-all group-hover/card:line-clamp-none group-hover/card:whitespace-normal">
-          {title}
-        </span>
+        <IconLabel icon={icon} iconSize={14}>
+          <span className="text-[11px] font-semibold leading-tight line-clamp-3 break-all group-hover/card:line-clamp-none group-hover/card:whitespace-normal">
+            {title}
+          </span>
+        </IconLabel>
       </div>
       {onDelete && <DeleteButton onDelete={onDelete} />}
       {children}

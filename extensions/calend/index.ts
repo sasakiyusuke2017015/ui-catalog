@@ -7,6 +7,7 @@
 // Calendar atoms (presentational)
 export { EventCard } from './atoms/EventCard/EventCard'
 export type { EventCardProps } from './atoms/EventCard/EventCard'
+export { IconLabel } from './atoms/IconLabel/IconLabel'
 export { MonthEventCard } from './atoms/MonthEventCard/MonthEventCard'
 export { TimeSlotRow } from './atoms/TimeSlotRow/TimeSlotRow'
 export type { TimeSlotRowProps } from './atoms/TimeSlotRow/TimeSlotRow'

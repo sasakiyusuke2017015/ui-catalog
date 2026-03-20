@@ -146,7 +146,6 @@ export function WeekView({ events, showAllDayBar = true, persistEvent, removeEve
                         }
                         setHovered(null)
                       }}
-                      onDelete={() => handleDelete(event.id)}
                     />
                   ))}
                 </div>

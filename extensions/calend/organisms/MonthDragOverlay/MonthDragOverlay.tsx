@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import Icon from '@ui-catalog/core/atoms/Icon'
-import type { IconName } from '@ui-catalog/core/constants'
+import { IconLabel } from '../../atoms/IconLabel/IconLabel'
 import type { CalendarEvent } from '../../types'
 import styles from './MonthDragOverlay.module.scss'
 
@@ -47,8 +46,7 @@ export function MonthDragOverlay({ event, initialPointer }: MonthDragOverlayProp
         className={styles.ghost}
         style={{ borderLeftColor: event.color }}
       >
-        <Icon name={(event.icon ?? 'dot') as IconName} size={12} className="shrink-0" style={{ color: event.color }} />
-        <span className={styles.title}>{event.title}</span>
+        <IconLabel icon={event.icon ?? 'dot'} iconSize={12} iconColor={event.color}><span className={styles.title}>{event.title}</span></IconLabel>
       </div>
     </div>,
     document.body,

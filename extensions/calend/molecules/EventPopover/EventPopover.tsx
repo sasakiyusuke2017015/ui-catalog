@@ -1,8 +1,7 @@
 import { format } from 'date-fns'
 import { ja } from 'date-fns/locale'
-import Icon from '@ui-catalog/core/atoms/Icon'
-import type { IconName } from '@ui-catalog/core/constants'
 import { colors } from '@ui-catalog/core/tokens'
+import { IconLabel } from '../../atoms/IconLabel/IconLabel'
 import { getStickyBottom } from '../../utils/dom'
 import type { HoveredEvent } from '../../state/calendar'
 
@@ -131,9 +130,8 @@ export function EventPopover({ hovered }: EventPopoverProps) {
         <div style={{ height: '4px', background: event.color }} />
 
         <div style={{ padding: '14px 18px' }}>
-          <div style={{ fontSize: '15px', fontWeight: 700, color: colors.text.primary, lineHeight: 1.3, marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            {event.icon && <Icon name={event.icon as IconName} size={18} style={{ color: event.color }} className="shrink-0" />}
-            {event.title}
+          <div style={{ fontSize: '15px', fontWeight: 700, color: colors.text.primary, lineHeight: 1.3, marginBottom: '10px' }}>
+            <IconLabel icon={event.icon} iconSize={18} iconColor={event.color}>{event.title}</IconLabel>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>

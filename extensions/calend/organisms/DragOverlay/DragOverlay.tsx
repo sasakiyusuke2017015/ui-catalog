@@ -6,8 +6,7 @@ import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useAtomValue } from 'jotai'
 import { format } from 'date-fns'
-import Icon from '@ui-catalog/core/atoms/Icon'
-import type { IconName } from '@ui-catalog/core/constants'
+import { IconLabel } from '../../atoms/IconLabel/IconLabel'
 import { dragAtom } from '../../state/calendar'
 import type { DragState } from '../../state/calendar'
 import styles from './DragOverlay.module.scss'
@@ -59,8 +58,7 @@ function GhostCard({ drag }: { readonly drag: DragState }) {
         style={{ backgroundColor: `${drag.originalEvent.color}e6` }}
       >
         <div className={styles.ghostTitle}>
-          {drag.originalEvent.icon && <Icon name={drag.originalEvent.icon as IconName} size={14} className="shrink-0" />}
-          {drag.originalEvent.title}
+          <IconLabel icon={drag.originalEvent.icon} iconSize={14}>{drag.originalEvent.title}</IconLabel>
         </div>
         <div className={styles.ghostTime}>
           {startLabel} - {endLabel}
