@@ -23,8 +23,11 @@ const defaultProps = {
   continuesRight: false,
   isDragging: false,
   isDragActive: false,
+  isHovered: false,
   onClick: vi.fn(),
   onDragStart: vi.fn(),
+  onMouseEnter: vi.fn(),
+  onMouseLeave: vi.fn(),
   weekDates,
 }
 

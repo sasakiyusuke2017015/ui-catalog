@@ -18,10 +18,13 @@ interface MonthDayCellProps {
   readonly dropTargetClass: string
   readonly dropTargetColor?: string
   readonly isSlotSelected?: boolean
+  readonly hoveredEventId: string | null
   readonly onDayClick: (date: Date) => void
   readonly onDayPointerDown?: (date: Date, e: React.PointerEvent) => void
   readonly onEventClick: (event: CalendarEvent, date: Date, e: React.MouseEvent) => void
   readonly onEventDragStart: (event: CalendarEvent, date: Date, e: React.PointerEvent) => void
+  readonly onEventMouseEnter: (event: CalendarEvent, e: React.MouseEvent) => void
+  readonly onEventMouseLeave: () => void
 }
 
 export function MonthDayCell({
@@ -37,10 +40,13 @@ export function MonthDayCell({
   dropTargetClass,
   dropTargetColor,
   isSlotSelected = false,
+  hoveredEventId,
   onDayClick,
   onDayPointerDown,
   onEventClick,
   onEventDragStart,
+  onEventMouseEnter,
+  onEventMouseLeave,
 }: MonthDayCellProps) {
   const today = isToday(date)
   const inMonth = isSameMonth(date, selectedDate)
@@ -95,8 +101,11 @@ export function MonthDayCell({
               key={event.id}
               event={event}
               isDragging={dragEventId === event.id}
+              isHovered={hoveredEventId === event.id}
               onClick={(e) => onEventClick(event, date, e)}
               onPointerDown={(e) => onEventDragStart(event, date, e)}
+              onMouseEnter={(e) => onEventMouseEnter(event, e)}
+              onMouseLeave={onEventMouseLeave}
             />
           ))}
         </div>

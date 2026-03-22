@@ -47,6 +47,7 @@ export interface ActiveSlot {
   readonly date: string
   readonly hour: number
   readonly endHour?: number
+  readonly endDate?: string
 }
 
 export const activeSlotAtom = atom<ActiveSlot | null>(null)

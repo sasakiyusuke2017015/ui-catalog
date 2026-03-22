@@ -13,6 +13,8 @@ export interface CalendarEvent {
   readonly icon?: string
   readonly allDay?: boolean
   readonly repeat?: readonly DayOfWeek[]
+  readonly repeatPeriodStart?: Date
+  readonly repeatPeriodEnd?: Date
 }
 
 export interface TimeSlot {

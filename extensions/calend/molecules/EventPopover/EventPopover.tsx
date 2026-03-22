@@ -83,6 +83,13 @@ function computeLayout(rect: HoveredEvent['rect'], placement: Placement) {
   }
 }
 
+const WEEKDAY_LABELS_SHORT = ['日', '月', '火', '水', '木', '金', '土'] as const
+
+function formatRepeatDays(days: readonly number[]): string {
+  const sorted = [...days].sort((a, b) => a - b)
+  return sorted.map((d) => WEEKDAY_LABELS_SHORT[d]).join('・')
+}
+
 export function EventPopover({ hovered }: EventPopoverProps) {
   const { event, rect } = hovered
 
@@ -91,6 +98,7 @@ export function EventPopover({ hovered }: EventPopoverProps) {
   const endTime = format(event.endTime, 'HH:mm')
   const endDate = format(event.endTime, 'M月d日(E)', { locale: ja })
   const sameDay = event.startTime.toDateString() === event.endTime.toDateString()
+  const isRepeat = event.repeat && event.repeat.length > 0
 
   const placement = getPlacement(rect)
   const layout = computeLayout(rect, placement)
@@ -134,10 +142,17 @@ export function EventPopover({ hovered }: EventPopoverProps) {
             <IconLabel icon={event.icon} iconSize={18} iconColor={event.color}>{event.title}</IconLabel>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div style={{ width: '8px', height: '8px', borderRadius: '3px', background: event.color, flexShrink: 0 }} />
-            <div style={{ fontSize: '13px', color: colors.text.secondary }}>
-              {event.allDay ? (
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+            <div style={{ width: '8px', height: '8px', borderRadius: '3px', background: event.color, flexShrink: 0, marginTop: '4px' }} />
+            <div style={{ fontSize: '13px', color: colors.text.secondary, lineHeight: 1.6 }}>
+              {isRepeat ? (
+                <>
+                  <div>{`毎週 ${formatRepeatDays(event.repeat!)}  ${startTime} - ${endTime}`}</div>
+                  <div style={{ fontSize: '12px', color: colors.text.muted }}>
+                    {`${format(event.repeatPeriodStart ?? event.startTime, 'M月d日', { locale: ja })} 〜 ${format(event.repeatPeriodEnd ?? event.endTime, 'M月d日', { locale: ja })}`}
+                  </div>
+                </>
+              ) : event.allDay ? (
                 sameDay ? `${startDate} 終日` : `${startDate} - ${endDate}`
               ) : (
                 sameDay

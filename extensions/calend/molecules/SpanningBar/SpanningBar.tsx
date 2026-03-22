@@ -13,8 +13,11 @@ interface SpanningBarProps {
   readonly continuesRight: boolean
   readonly isDragging: boolean
   readonly isDragActive: boolean
+  readonly isHovered: boolean
   readonly onClick: (event: CalendarEvent, clickedDate: Date, e: React.MouseEvent) => void
   readonly onDragStart: (event: CalendarEvent, originDate: Date, e: React.PointerEvent, mode?: 'move' | 'resize-left' | 'resize-right') => void
+  readonly onMouseEnter: (event: CalendarEvent, e: React.MouseEvent) => void
+  readonly onMouseLeave: () => void
   readonly weekDates: readonly Date[]
 }
 
@@ -27,8 +30,11 @@ export function SpanningBar({
   continuesRight,
   isDragging,
   isDragActive,
+  isHovered,
   onClick,
   onDragStart,
+  onMouseEnter,
+  onMouseLeave,
   weekDates,
 }: SpanningBarProps) {
   const padL = continuesLeft ? 0 : 2
@@ -58,12 +64,19 @@ export function SpanningBar({
           backgroundColor: event.color,
           borderRadius,
           boxShadow: 'inset 0 0 0 1.5px rgba(255,255,255,0.45)',
-          outline: '2px solid transparent',
+          outline: `2px solid ${isHovered ? event.color : 'transparent'}`,
           outlineOffset: '0px',
-          transition: 'outline-color 150ms ease',
+          filter: isHovered ? 'brightness(1.15)' : 'none',
+          transition: 'outline-color 150ms ease, filter 150ms ease',
         }}
-        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.outlineColor = event.color }}
-        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.outlineColor = 'transparent' }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLElement).style.outlineColor = event.color
+          onMouseEnter(event, e)
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLElement).style.outlineColor = isHovered ? event.color : 'transparent'
+          onMouseLeave()
+        }}
         onClick={(e) => onClick(event, weekDates[startCol]!, e)}
         onPointerDown={(e) => onDragStart(event, weekDates[startCol]!, e)}
       >

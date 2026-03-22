@@ -169,7 +169,7 @@ export function getEventsForDay(
         s.setHours(e.startTime.getHours(), e.startTime.getMinutes(), 0, 0)
         const en = new Date(date)
         en.setHours(e.endTime.getHours(), e.endTime.getMinutes(), 0, 0)
-        result.push({ ...e, startTime: s, endTime: en })
+        result.push({ ...e, startTime: s, endTime: en, repeatPeriodStart: e.startTime, repeatPeriodEnd: e.endTime })
       }
     } else if (e.startTime <= de && e.endTime >= ds) {
       result.push(e)

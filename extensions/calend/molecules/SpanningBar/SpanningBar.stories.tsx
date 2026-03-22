@@ -40,8 +40,11 @@ export const Default = {
         continuesRight={false}
         isDragging={false}
         isDragActive={false}
+        isHovered={false}
         onClick={noop}
         onDragStart={noop}
+        onMouseEnter={noop}
+        onMouseLeave={noop}
         weekDates={weekDates}
       />
     </div>
@@ -60,8 +63,11 @@ export const ContinuesLeft = {
         continuesRight={false}
         isDragging={false}
         isDragActive={false}
+        isHovered={false}
         onClick={noop}
         onDragStart={noop}
+        onMouseEnter={noop}
+        onMouseLeave={noop}
         weekDates={weekDates}
       />
     </div>
@@ -80,8 +86,11 @@ export const ContinuesRight = {
         continuesRight={true}
         isDragging={false}
         isDragActive={false}
+        isHovered={false}
         onClick={noop}
         onDragStart={noop}
+        onMouseEnter={noop}
+        onMouseLeave={noop}
         weekDates={weekDates}
       />
     </div>
@@ -143,8 +152,11 @@ export const Dragging = {
         continuesRight={false}
         isDragging={true}
         isDragActive={true}
+        isHovered={false}
         onClick={noop}
         onDragStart={noop}
+        onMouseEnter={noop}
+        onMouseLeave={noop}
         weekDates={weekDates}
       />
     </div>
