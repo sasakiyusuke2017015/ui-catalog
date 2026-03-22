@@ -103,10 +103,12 @@ export const VERSION_REGISTRY = {
 
   // calend - atoms
   EventCard: '1.0.0',
+  IconLabel: '1.0.0',
   MonthEventCard: '1.0.0',
   TimeSlotRow: '1.0.0',
   // calend - molecules
   ColorPicker: '1.0.0',
+  IconPicker: '1.0.0',
   DayOfWeekPicker: '1.0.0',
   EventPopover: '1.0.0',
   MonthDayCell: '1.0.0',

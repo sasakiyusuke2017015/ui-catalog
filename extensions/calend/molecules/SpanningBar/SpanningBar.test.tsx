@@ -54,7 +54,7 @@ describe('SpanningBar', () => {
   it('applies reduced opacity when isDragging is true', () => {
     const { container } = render(<SpanningBar {...defaultProps} isDragging />)
     const outerDiv = container.firstElementChild as HTMLElement
-    expect(outerDiv.style.opacity).toBe('0.4')
+    expect(outerDiv.style.opacity).toBe('0.3')
   })
 
   it('disables pointer events when isDragActive is true', () => {
