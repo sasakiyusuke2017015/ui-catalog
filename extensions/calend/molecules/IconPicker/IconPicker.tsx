@@ -1,5 +1,5 @@
-import Icon from '@ui-catalog/core/atoms/Icon'
-import type { IconName } from '@ui-catalog/core/constants'
+import Icon from '../../../../core/atoms/Icon'
+import type { IconName } from '../../../../core/constants'
 
 const EVENT_ICONS: readonly { value: string; label: string }[] = [
   { value: '', label: 'なし' },

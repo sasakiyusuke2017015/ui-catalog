@@ -18,12 +18,13 @@ services:
       - ../..:/workspace
     environment:
       - NODE_ENV=development
+      - CI=true
       - CHOKIDAR_USEPOLLING=true
       - CHOKIDAR_INTERVAL=3000
     command: >
       sh -c "
         corepack enable &&
-        corepack prepare pnpm@9 --activate &&
+        corepack prepare pnpm@10 --activate &&
         pnpm install --frozen-lockfile &&
         pnpm exec storybook dev -p 6006 --no-open --host 0.0.0.0
       "

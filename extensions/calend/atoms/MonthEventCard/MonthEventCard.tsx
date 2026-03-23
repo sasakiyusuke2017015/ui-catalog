@@ -1,6 +1,6 @@
 import { format } from 'date-fns'
-import Icon from '@ui-catalog/core/atoms/Icon'
-import type { IconName } from '@ui-catalog/core/constants'
+import Icon from '../../../../core/atoms/Icon'
+import type { IconName } from '../../../../core/constants'
 import type { CalendarEvent } from '../../types'
 import styles from './MonthEventCard.module.scss'
 
