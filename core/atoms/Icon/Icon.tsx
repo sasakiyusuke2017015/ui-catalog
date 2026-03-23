@@ -33,6 +33,9 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
   // ========================================
   // REGULAR アイコン
   // ========================================
+  ['dot']: () => (
+    <circle cx="12" cy="12" r="5" fill="currentColor" />
+  ),
   ['hamburger']: () => (
     <path
       className={styles.stroke}
@@ -48,6 +51,22 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
       strokeLinejoin="round"
       d="M4 20L20 4M4 4l16 16"
     />
+  ),
+  ['save']: () => (
+    <g className={styles.body}>
+      <path
+        className={styles.stroke}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"
+      />
+      <path
+        className={styles.stroke}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M17 21v-8H7v8M7 3v5h8"
+      />
+    </g>
   ),
   ['trash']: () => (
     <>
@@ -129,6 +148,18 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
       strokeLinejoin="round"
       d="M7 3l9 9-9 9"
     />
+  ),
+  ['chevrons-left']: () => (
+    <>
+      <path className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" d="M18 17l-5-5 5-5" />
+      <path className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" d="M11 17l-5-5 5-5" />
+    </>
+  ),
+  ['chevrons-right']: () => (
+    <>
+      <path className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" d="M6 7l5 5-5 5" />
+      <path className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5-5 5" />
+    </>
   ),
   ['magnifying-glass']: () => (
     <path

@@ -3,8 +3,9 @@ import { format } from 'date-fns'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { EventCard as EventCardBase } from '../../atoms/EventCard/EventCard'
 import { useDragEvent } from '../../hooks/useDragEvent'
-import { dragAtom, hoveredEventAtom, eventModalAtom, anyDragActiveAtom } from '../../state/calendar'
+import { dragAtom, hoveredEventAtom, eventModalAtom, anyDragActiveAtom, eventsAtom } from '../../state/calendar'
 import type { CalendarEvent } from '../../types'
+import { resolveOriginalEvent } from '../../utils/repeatUtils'
 
 interface EventCardProps {
   readonly event: CalendarEvent
@@ -32,26 +33,30 @@ export function EventCard({
   const drag = useAtomValue(dragAtom)
   const hovered = useAtomValue(hoveredEventAtom)
   const isDragging = drag?.eventId === event.id
+  const isResizing = isDragging && drag?.mode !== 'move'
   const isHovered = hovered?.event.id === event.id
+  const allEvents = useAtomValue(eventsAtom)
   const setHovered = useSetAtom(hoveredEventAtom)
   const setModal = useSetAtom(eventModalAtom)
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const handleClick = useCallback(() => {
     setHovered(null)
+    const original = resolveOriginalEvent(event, allEvents)
     setModal({
       isOpen: true,
       date: dayStart,
-      hour: event.startTime.getHours(),
-      editingEvent: event,
+      hour: original.startTime.getHours(),
+      editingEvent: original,
     })
-  }, [event, dayStart, setHovered, setModal])
+  }, [event, allEvents, dayStart, setHovered, setModal])
 
   const { handleMoveStart, handleResizeTopStart, handleResizeBottomStart } =
     useDragEvent({
       event,
       slotHeight,
       columnWidth,
+      allEvents,
       onCommit: onUpdate,
       onClick: handleClick,
     })
@@ -90,17 +95,29 @@ export function EventCard({
   const endLabel = format(event.endTime, 'HH:mm')
 
   const dayStartMs = dayStart.getTime()
-  const dayEndMs = dayStartMs + 24 * 60 * 60 * 1000
 
+  // イベントがこの日に開始するかどうか
+  const eventStartDay = new Date(event.startTime)
+  eventStartDay.setHours(0, 0, 0, 0)
+  const startsOnThisDay = eventStartDay.getTime() === dayStartMs
+
+  // この日に開始するイベントのみ、日またぎでも全体を表示
+  // 開始が前日の場合は表示しない（前日のカードが伸びてくる）
   const clampedStart = Math.max(event.startTime.getTime(), dayStartMs)
-  const clampedEnd = Math.min(event.endTime.getTime(), dayEndMs)
+
+  // 日またぎイベントの場合、終了時刻をクランプしない（次の日にはみ出す）
+  const endHoursFromDayStart = (event.endTime.getTime() - dayStartMs) / (1000 * 60 * 60)
 
   const startHours = (clampedStart - dayStartMs) / (1000 * 60 * 60)
-  const endHours = (clampedEnd - dayStartMs) / (1000 * 60 * 60)
-  const durationHours = endHours - startHours
+  const durationHours = endHoursFromDayStart - startHours
 
   const top = startHours * slotHeight
   const height = Math.max(durationHours * slotHeight, slotHeight / 2)
+
+  // 前日から始まるイベントは表示しない（前日のカードが伸びてくるため）
+  if (!startsOnThisDay) {
+    return null
+  }
 
   const leftPercent = (column / totalColumns) * 100
   const widthPercent = (columnSpan / totalColumns) * 100
@@ -108,6 +125,7 @@ export function EventCard({
   return (
     <EventCardBase
       title={event.title}
+      icon={event.icon}
       startLabel={startLabel}
       endLabel={endLabel}
       top={top}
@@ -120,7 +138,7 @@ export function EventCard({
       onPointerDown={handleMoveStart}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      isDragging={isDragging}
+      isDragging={isDragging && !isResizing}
       isHovered={isHovered}
     >
       {/* Resize handle: top */}

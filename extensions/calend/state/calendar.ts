@@ -32,6 +32,7 @@ export interface ModalState {
   readonly date: Date
   readonly hour: number
   readonly endHour?: number
+  readonly endDate?: Date
   readonly editingEvent?: CalendarEvent
 }
 
@@ -46,6 +47,7 @@ export interface ActiveSlot {
   readonly date: string
   readonly hour: number
   readonly endHour?: number
+  readonly endDate?: string
 }
 
 export const activeSlotAtom = atom<ActiveSlot | null>(null)

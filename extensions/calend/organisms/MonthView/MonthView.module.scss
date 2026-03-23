@@ -5,7 +5,7 @@
 }
 
 .dropTarget {
-  background-color: $color-today-bg-strong;
+  transition: background-color 200ms ease-in-out, box-shadow 200ms ease-in-out;
 }
 
 .weekRowEven {

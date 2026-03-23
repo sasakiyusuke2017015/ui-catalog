@@ -1,9 +1,10 @@
-const TIME_OPTIONS = Array.from({ length: 96 }, (_, i) => {
+// 97個: 00:00 ~ 24:00 (24:00 = 翌日0時、終了時刻用)
+const TIME_OPTIONS = Array.from({ length: 97 }, (_, i) => {
   const h = Math.floor(i / 4)
   const m = (i % 4) * 15
   return {
     value: h * 60 + m,
-    label: `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`,
+    label: h === 24 ? '24:00' : `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`,
   }
 })
 
@@ -17,6 +18,7 @@ interface TimeSelectProps {
 export function TimeSelect({ value, onChange, error = false, className = '' }: TimeSelectProps) {
   return (
     <select
+      data-component="TimeSelect"
       value={value}
       onChange={(e) => onChange(Number(e.target.value))}
       className={`text-sm px-3 py-2 rounded-lg border bg-surface-hover text-text outline-none focus:border-primary transition-colors ${

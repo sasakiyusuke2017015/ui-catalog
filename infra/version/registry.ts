@@ -101,9 +101,30 @@ export const VERSION_REGISTRY = {
   TrendChart: '1.1.0',
   DetailHeader: '1.0.0',
 
-  // calend
+  // calend - atoms
   EventCard: '1.0.0',
+  IconLabel: '1.0.0',
+  MonthEventCard: '1.0.0',
   TimeSlotRow: '1.0.0',
+  // calend - molecules
+  ColorPicker: '1.0.0',
+  IconPicker: '1.0.0',
+  DayOfWeekPicker: '1.0.0',
+  EventPopover: '1.0.0',
+  MonthDayCell: '1.0.0',
+  PillSelect: '1.0.0',
+  SpanningBar: '1.0.0',
+  TimeSelect: '1.0.0',
+  // calend - organisms
+  DayColumn: '1.0.0',
+  DayFrame: '1.0.0',
+  EventModal: '1.0.0',
+  'calend/Header': '1.0.0',
+  MonthDragOverlay: '1.0.0',
+  MonthView: '1.0.0',
+  Timeline: '1.0.0',
+  WeekView: '1.0.0',
+  DragOverlay: '1.0.0',
 
   // decorations
   BackgroundTexture: '1.0.0',

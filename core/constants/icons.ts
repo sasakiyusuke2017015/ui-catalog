@@ -5,6 +5,7 @@
 // すべてのアイコン名のリスト
 export const ALL_ICON_TYPES = [
   // REGULAR
+  'dot',
   'info-circle',
   'info-triangle',
   'x',
@@ -24,6 +25,8 @@ export const ALL_ICON_TYPES = [
   'chevron-up',
   'chevron-left',
   'chevron-right',
+  'chevrons-left',
+  'chevrons-right',
   'arrow-up-right',
   'arrow-in',
   'sync-pull',
@@ -59,6 +62,7 @@ export const ALL_ICON_TYPES = [
   'trend-down-right',
   'trend-down',
   'trash',
+  'save',
   // LOADING
   'spinner',
   'spinner-thin',

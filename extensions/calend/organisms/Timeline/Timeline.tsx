@@ -1,15 +1,17 @@
 import { useRef, useCallback } from 'react'
 import { useInfiniteTimeline } from '../../hooks/useInfiniteTimeline'
 import { DayFrame } from '../DayFrame/DayFrame'
+import { DragOverlay } from '../DragOverlay/DragOverlay'
 import type { CalendarEvent } from '../../types'
 
 interface CalendarStorageProps {
   readonly events: readonly CalendarEvent[]
+  readonly headerVariant?: 'blur' | 'subtle'
   readonly persistEvent: (event: CalendarEvent) => Promise<void>
   readonly removeEvent: (id: string) => Promise<void>
 }
 
-export function Timeline({ events, persistEvent, removeEvent }: CalendarStorageProps) {
+export function Timeline({ events, headerVariant, persistEvent, removeEvent }: CalendarStorageProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const { dates } = useInfiniteTimeline(scrollRef)
 
@@ -37,6 +39,7 @@ export function Timeline({ events, persistEvent, removeEvent }: CalendarStorageP
 
   return (
     <div
+      data-component="Timeline"
       ref={scrollRef}
       className="h-full overflow-y-auto"
     >
@@ -45,10 +48,12 @@ export function Timeline({ events, persistEvent, removeEvent }: CalendarStorageP
           key={date.toISOString()}
           date={date}
           events={events}
+          headerVariant={headerVariant}
           onDeleteEvent={handleDelete}
           onUpdateEvent={handleUpdate}
         />
       ))}
+      <DragOverlay />
     </div>
   )
 }

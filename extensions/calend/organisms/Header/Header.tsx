@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { format } from 'date-fns'
+import { format, addDays, subDays } from 'date-fns'
 import { useAtom } from 'jotai'
 import { viewModeAtom, selectedDateAtom } from '../../state/calendar'
 import { navigateDate } from '../../utils/dates'
@@ -47,20 +47,41 @@ export function Header() {
     setSelectedDate((prev) => navigateDate(prev, 'next', viewMode))
   }
 
+  function handlePrevDay() {
+    setSelectedDate((prev) => subDays(prev, 1))
+  }
+
+  function handleNextDay() {
+    setSelectedDate((prev) => addDays(prev, 1))
+  }
+
   return (
-    <header className="shrink-0 flex items-center justify-between px-4 py-3 border-b border-border bg-surface" style={{ position: 'relative', zIndex: 50 }}>
+    <header data-component="Header" className="shrink-0 flex items-center justify-between px-4 py-3 border-b border-border bg-surface" style={{ position: 'relative', zIndex: 50 }}>
       <div className="flex items-center gap-3">
         <h1 className="text-xl font-bold text-primary tracking-tight">
           Calendar
         </h1>
 
         <div className="flex items-center gap-1">
+          {viewMode === 'week' && (
+            <Button
+              variant="default"
+              size="small"
+              onClick={handlePrev}
+              leftIcon="chevrons-left"
+              iconSize={16}
+              title="1週間前"
+            >
+              {''}
+            </Button>
+          )}
           <Button
             variant="default"
             size="small"
-            onClick={handlePrev}
+            onClick={viewMode === 'week' ? handlePrevDay : handlePrev}
             leftIcon="chevron-left"
             iconSize={16}
+            title={viewMode === 'week' ? '1日前' : undefined}
           >
             {''}
           </Button>
@@ -73,12 +94,25 @@ export function Header() {
           <Button
             variant="default"
             size="small"
-            onClick={handleNext}
+            onClick={viewMode === 'week' ? handleNextDay : handleNext}
             leftIcon="chevron-right"
             iconSize={16}
+            title={viewMode === 'week' ? '1日後' : undefined}
           >
             {''}
           </Button>
+          {viewMode === 'week' && (
+            <Button
+              variant="default"
+              size="small"
+              onClick={handleNext}
+              leftIcon="chevrons-right"
+              iconSize={16}
+              title="1週間後"
+            >
+              {''}
+            </Button>
+          )}
         </div>
       </div>
 

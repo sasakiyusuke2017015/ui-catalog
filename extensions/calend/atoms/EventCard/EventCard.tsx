@@ -2,11 +2,14 @@
  * EventCard コンポーネント
  * タイムライン（日・週）とコンパクト（月）の2モードで描画
  */
-import type { ReactNode } from 'react'
+import { useRef, useEffect, useState, useCallback, type ReactNode } from 'react'
+import { getStickyBottom } from '../../utils/dom'
+import { IconLabel } from '../IconLabel/IconLabel'
 
 interface EventCardBaseProps {
   readonly title: string
   readonly color: string
+  readonly icon?: string
   readonly onDelete?: () => void
   readonly onClick?: (e: React.MouseEvent) => void
   readonly onPointerDown?: (e: React.PointerEvent) => void
@@ -55,6 +58,7 @@ function DeleteButton({ onDelete }: { readonly onDelete: () => void }) {
 function CompactEventCard({
   title,
   color,
+  icon,
   onDelete,
   onClick,
   onPointerDown,
@@ -68,30 +72,78 @@ function CompactEventCard({
   return (
     <div
       data-component="event-card"
-      className={`rounded-xl px-2 py-0.5 text-white text-[10px] font-medium truncate relative group transition-all ${
-        isDragging ? 'cursor-grabbing opacity-50' : 'cursor-pointer'
+      className={`rounded-xl px-2 py-0.5 text-white text-[10px] font-medium truncate relative group transition-all flex items-center gap-0.5 ${
+        isDragging ? 'cursor-grabbing' : 'cursor-pointer'
       } ${className}`}
       style={{
         backgroundColor: color,
         boxShadow: isHovered
-          ? '0 4px 12px rgba(0,0,0,0.2), inset 0 0 0 1.5px rgba(255,255,255,0.6)'
+          ? `0 4px 12px rgba(0,0,0,0.2), inset 0 0 0 1.5px rgba(255,255,255,0.6), 0 0 0 2px ${color}`
           : 'inset 0 0 0 1.5px rgba(255,255,255,0.45)',
-        filter: isHovered ? 'brightness(1.15)' : 'none',
+        opacity: isDragging ? 0.3 : 1,
+        filter: isDragging ? 'grayscale(0.3)' : isHovered ? 'brightness(1.15)' : 'none',
+        transition: 'opacity 150ms ease, filter 150ms ease',
       }}
       onClick={onClick}
       onPointerDown={onPointerDown}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      {title}
+      <IconLabel icon={icon} iconSize={12}><span className="truncate">{title}</span></IconLabel>
       {onDelete && <DeleteButton onDelete={onDelete} />}
       {children}
     </div>
   )
 }
 
+/**
+ * スクロール停止時にタイトルが見切れていたら
+ * ぬるっとスライドして表示内に入るアニメーション
+ */
+function useStickyTitle(cardRef: React.RefObject<HTMLDivElement | null>) {
+  const [offsetY, setOffsetY] = useState(0)
+  const [animating, setAnimating] = useState(false)
+  const scrollTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const recalc = useCallback(() => {
+    const el = cardRef.current
+    if (!el) return
+
+    const cardRect = el.getBoundingClientRect()
+    const clipped = getStickyBottom() - cardRect.top
+
+    if (clipped > 0 && clipped < cardRect.height - 20) {
+      setOffsetY(clipped + 4)
+    } else {
+      setOffsetY(0)
+    }
+  }, [cardRef])
+
+  useEffect(() => {
+    const onScroll = () => {
+      // スクロール停止後、アニメーション付きで新しい位置へ
+      if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current)
+      scrollTimerRef.current = setTimeout(() => {
+        setAnimating(true)
+        recalc()
+      }, 150)
+    }
+
+    window.addEventListener('scroll', onScroll, { capture: true, passive: true })
+    recalc()
+
+    return () => {
+      window.removeEventListener('scroll', onScroll, { capture: true })
+      if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current)
+    }
+  }, [recalc])
+
+  return { offsetY, animating }
+}
+
 function TimelineEventCard({
   title,
+  icon,
   startLabel,
   endLabel,
   top,
@@ -112,6 +164,9 @@ function TimelineEventCard({
   children,
   className = '',
 }: TimelineProps) {
+  const cardRef = useRef<HTMLDivElement>(null)
+  const { offsetY, animating } = useStickyTitle(cardRef)
+
   const positionStyle = leftPercent !== undefined && widthPercent !== undefined
     ? {
         left: `calc(${leftPercent}% + 1px)`,
@@ -124,6 +179,7 @@ function TimelineEventCard({
 
   return (
     <div
+      ref={cardRef}
       data-component="event-card"
       className={`absolute rounded-xl px-2 py-1 text-white overflow-hidden transition-all group/card ${
         isDragging ? 'cursor-grabbing' : 'cursor-grab hover:overflow-visible'
@@ -132,12 +188,13 @@ function TimelineEventCard({
         backgroundColor: color,
         top: `${top + 1}px`,
         height: `${Math.max(height - 2, 14)}px`,
-        zIndex: isDragging ? 20 : isHovered ? Math.min(10 + zColumn, 19) : Math.min(1 + zColumn, 9),
+        zIndex: isDragging ? 30 : isHovered ? 15 + zColumn : 10 + zColumn,
         pointerEvents: 'auto',
-        opacity: isDragging ? 0.7 : isHovered ? 0.85 : 1,
-        filter: isHovered ? 'brightness(1.2)' : 'none',
+        opacity: isDragging ? 0.35 : isHovered ? 0.85 : 1,
+        filter: isDragging ? 'grayscale(0.3)' : isHovered ? 'brightness(1.2)' : 'none',
+        transition: 'opacity 150ms ease, filter 150ms ease',
         boxShadow: isHovered
-          ? '0 4px 16px rgba(0,0,0,0.2), inset 0 0 0 1.5px rgba(255,255,255,0.6)'
+          ? `0 4px 16px rgba(0,0,0,0.2), inset 0 0 0 1.5px rgba(255,255,255,0.6), 0 0 0 2px ${color}`
           : '0 1px 3px rgba(0,0,0,0.12), inset 0 0 0 1.5px rgba(255,255,255,0.45)',
         ...positionStyle,
       }}
@@ -146,9 +203,18 @@ function TimelineEventCard({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <span className="text-[11px] font-semibold leading-tight line-clamp-3 break-all group-hover/card:line-clamp-none group-hover/card:whitespace-normal">
-        {title}
-      </span>
+      <div
+        style={{
+          transform: `translateY(${offsetY}px)`,
+          transition: animating ? 'transform 0.3s ease-out' : 'none',
+        }}
+      >
+        <IconLabel icon={icon} iconSize={14}>
+          <span className="text-[11px] font-semibold leading-tight line-clamp-3 break-all group-hover/card:line-clamp-none group-hover/card:whitespace-normal">
+            {title}
+          </span>
+        </IconLabel>
+      </div>
       {onDelete && <DeleteButton onDelete={onDelete} />}
       {children}
     </div>

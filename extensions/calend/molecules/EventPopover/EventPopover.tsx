@@ -1,6 +1,8 @@
 import { format } from 'date-fns'
 import { ja } from 'date-fns/locale'
 import { colors } from '@ui-catalog/core/tokens'
+import { IconLabel } from '../../atoms/IconLabel/IconLabel'
+import { getStickyBottom } from '../../utils/dom'
 import type { HoveredEvent } from '../../state/calendar'
 
 interface EventPopoverProps {
@@ -9,15 +11,14 @@ interface EventPopoverProps {
 
 type Placement = 'right' | 'left' | 'bottom' | 'top'
 
-const POP_W = 280
+const POP_W = 320
 const POP_H_EST = 180
 const GAP = 8
 
 function getPlacement(rect: HoveredEvent['rect']): Placement {
   const vw = window.innerWidth
   const vh = window.innerHeight
-  const headerEl = document.querySelector('header')
-  const minTop = (headerEl?.getBoundingClientRect().bottom ?? 60) + 4
+  const minTop = getStickyBottom()
 
   // Can the popover fit to the right AND vertically overlap with the card?
   const canRight = rect.right + GAP + POP_W < vw
@@ -44,14 +45,7 @@ function computeLayout(rect: HoveredEvent['rect'], placement: Placement) {
   const cardCenterX = (rect.left + rect.right) / 2
   const vh = window.innerHeight
 
-  // Find the bottom of the topmost sticky area (header + week header + allDay banner)
-  const stickyEls = document.querySelectorAll('header, [class*="sticky"]')
-  let minTop = 60
-  for (const el of stickyEls) {
-    const b = el.getBoundingClientRect().bottom
-    if (b > minTop) minTop = b
-  }
-  minTop += 4
+  const minTop = getStickyBottom()
 
   // Clamp card rect to visible content area
   const visTop = Math.max(rect.top, minTop)
@@ -89,6 +83,13 @@ function computeLayout(rect: HoveredEvent['rect'], placement: Placement) {
   }
 }
 
+const WEEKDAY_LABELS_SHORT = ['日', '月', '火', '水', '木', '金', '土'] as const
+
+function formatRepeatDays(days: readonly number[]): string {
+  const sorted = [...days].sort((a, b) => a - b)
+  return sorted.map((d) => WEEKDAY_LABELS_SHORT[d]).join('・')
+}
+
 export function EventPopover({ hovered }: EventPopoverProps) {
   const { event, rect } = hovered
 
@@ -97,17 +98,12 @@ export function EventPopover({ hovered }: EventPopoverProps) {
   const endTime = format(event.endTime, 'HH:mm')
   const endDate = format(event.endTime, 'M月d日(E)', { locale: ja })
   const sameDay = event.startTime.toDateString() === event.endTime.toDateString()
+  const isRepeat = event.repeat && event.repeat.length > 0
 
   const placement = getPlacement(rect)
   const layout = computeLayout(rect, placement)
 
-  const stickyEls2 = document.querySelectorAll('header, [class*="sticky"]')
-  let minTopForRender = 60
-  for (const el of stickyEls2) {
-    const b = el.getBoundingClientRect().bottom
-    if (b > minTopForRender) minTopForRender = b
-  }
-  minTopForRender += 4
+  const minTopForRender = getStickyBottom()
   const vh = window.innerHeight
 
   const posStyle: React.CSSProperties = {
@@ -132,7 +128,7 @@ export function EventPopover({ hovered }: EventPopoverProps) {
   }
 
   return (
-    <div style={posStyle}>
+    <div data-component="EventPopover" style={posStyle}>
       <div style={{
         background: colors.surface.popover,
         borderRadius: '14px',
@@ -143,13 +139,20 @@ export function EventPopover({ hovered }: EventPopoverProps) {
 
         <div style={{ padding: '14px 18px' }}>
           <div style={{ fontSize: '15px', fontWeight: 700, color: colors.text.primary, lineHeight: 1.3, marginBottom: '10px' }}>
-            {event.title}
+            <IconLabel icon={event.icon} iconSize={18} iconColor={event.color}>{event.title}</IconLabel>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <div style={{ width: '8px', height: '8px', borderRadius: '3px', background: event.color, flexShrink: 0 }} />
-            <div style={{ fontSize: '13px', color: colors.text.secondary }}>
-              {event.allDay ? (
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+            <div style={{ width: '8px', height: '8px', borderRadius: '3px', background: event.color, flexShrink: 0, marginTop: '4px' }} />
+            <div style={{ fontSize: '13px', color: colors.text.secondary, lineHeight: 1.6 }}>
+              {isRepeat ? (
+                <>
+                  <div>{`毎週 ${formatRepeatDays(event.repeat!)}  ${startTime} - ${endTime}`}</div>
+                  <div style={{ fontSize: '12px', color: colors.text.muted }}>
+                    {`${format(event.repeatPeriodStart ?? event.startTime, 'M月d日', { locale: ja })} 〜 ${format(event.repeatPeriodEnd ?? event.endTime, 'M月d日', { locale: ja })}`}
+                  </div>
+                </>
+              ) : event.allDay ? (
                 sameDay ? `${startDate} 終日` : `${startDate} - ${endDate}`
               ) : (
                 sameDay
@@ -168,8 +171,10 @@ export function EventPopover({ hovered }: EventPopoverProps) {
               paddingTop: '10px',
               borderTop: `1px solid ${colors.border.light}`,
               whiteSpace: 'pre-wrap',
-              maxHeight: '80px',
-              overflow: 'auto',
+              overflow: 'hidden',
+              display: '-webkit-box',
+              WebkitLineClamp: 5,
+              WebkitBoxOrient: 'vertical',
             }}>
               {event.description}
             </div>

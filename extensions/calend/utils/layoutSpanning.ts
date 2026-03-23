@@ -24,6 +24,8 @@ export function layoutSpanningEvents(
   const weekEndMs = startOfDay(weekDates[6]!).getTime()
 
   const multiDay = events.filter((ev) => {
+    // 繰り返しイベントは時刻指定扱い（SpanningBarにしない）
+    if (ev.repeat) return false
     const evStartMs = startOfDay(ev.startTime).getTime()
     const evEndMs = startOfDay(ev.endTime).getTime()
     if (evStartMs > weekEndMs || evEndMs < weekStartMs) return false
