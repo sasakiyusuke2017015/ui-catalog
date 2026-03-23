@@ -2,16 +2,14 @@
  * DatePicker 型定義
  */
 import type { HTMLAttributes, FocusEvent } from 'react';
+import type { HighlightedMonth } from '../Calendar';
 
 export type PickerMode = 'date' | 'month';
 export type DatePickerVariant = 'default' | 'dark' | 'outlined' | 'minimal';
 export type DatePickerSize = 'small' | 'medium' | 'large';
 
-/** ハイライト月の指定（複数色対応） */
-export interface HighlightedMonth {
-  month: string; // YYYY-MM形式
-  colors: string[]; // Tailwindカラー名 (red, blue, green等) またはカラーコード (#ff0000等) の配列
-}
+// Calendar から再 export
+export type { HighlightedMonth };
 
 export interface DateRange {
   minDate: string;

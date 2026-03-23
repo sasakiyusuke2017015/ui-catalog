@@ -158,6 +158,23 @@
   }
 }
 
+.ghost {
+  background: transparent;
+  color: $color-gray-500;
+  box-shadow: none;
+  border: none;
+  min-width: auto;
+
+  &:hover:not(:disabled) {
+    background: $color-gray-100;
+    color: $color-gray-700;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px rgba(156, 163, 175, 0.4);
+  }
+}
+
 // -----------------------------------------------------------------------------
 // Shimmer Effect
 // -----------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 /**
  * DatePicker メインコンポーネント
  */
-import { FC, useRef, useState, useEffect, useCallback, useMemo } from 'react';
+import { FC, useRef, useState, useEffect, useCallback } from 'react';
 import Icon from '../../atoms/Icon';
 
 import { useAlert } from '../../hooks/ui';
@@ -10,12 +10,11 @@ import { AlertDialog } from '../../organisms/AlertDialog';
 
 import { useDatePickerState } from './useDatePickerState';
 import { NavigationButton } from './NavigationButton';
-import { MonthGrid } from './MonthGrid';
-import { CalendarGrid } from './CalendarGrid';
+import { Calendar } from '../Calendar';
 import { formatDisplayValue, formatDateValue } from './format';
 import {
   SIZE_STYLES, VARIANT_STYLES, ICON_SIZES,
-  POPUP_WIDTH, ANIMATION_DURATION,
+  POPUP_WIDTH,
 } from './constants';
 import type { DatePickerProps } from './types';
 
@@ -45,24 +44,15 @@ const DatePicker: FC<DatePickerProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [flipDirection, setFlipDirection] = useState<'up' | 'down' | null>(null);
-  const [isFlipping, setIsFlipping] = useState(false);
-  const [targetYear, setTargetYear] = useState<number | null>(null);
   const { alertState, closeAlert } = useAlert();
 
   const log = useOperationLog('DatePicker');
 
   const {
     selectedDate, parsedSelectedDate,
-    minDateObj, maxDateObj, viewYear, viewDate,
-    setViewYear, setViewDate, updateDate, isInRange,
+    minDateObj, maxDateObj, viewDate,
+    setViewDate, updateDate, isInRange,
   } = useDatePickerState({ value, pickerMode, minDate, maxDate, recentMonths, onChange, onPeriodChange });
-
-  // 有効な年の範囲
-  const { minYear, maxYear } = useMemo(() => ({
-    minYear: minDateObj ? minDateObj.getFullYear() : 1900,
-    maxYear: maxDateObj ? maxDateObj.getFullYear() : 2099,
-  }), [minDateObj, maxDateObj]);
 
   // 外部クリックでポップアップを閉じる
   useEffect(() => {
@@ -79,7 +69,6 @@ const DatePicker: FC<DatePickerProps> = ({
   const canNavigate = useCallback((direction: 'prev' | 'next'): boolean => {
     if (pickerMode !== 'month') return false;
     if (!selectedDate) return false;
-    // 移動先の月が範囲内かチェック
     const [year, month] = selectedDate.split('-').map(Number);
     let newYear = year, newMonth = direction === 'prev' ? month - 1 : month + 1;
     if (newMonth < 1) { newMonth = 12; newYear -= 1; }
@@ -89,33 +78,14 @@ const DatePicker: FC<DatePickerProps> = ({
   }, [pickerMode, selectedDate, isInRange]);
 
   const navigateMonth = useCallback((direction: 'prev' | 'next') => {
-    if (!canNavigate(direction) || isFlipping || !selectedDate) return;
+    if (!canNavigate(direction) || !selectedDate) return;
     const [year, month] = selectedDate.split('-').map(Number);
     let newYear = year, newMonth = direction === 'prev' ? month - 1 : month + 1;
     if (newMonth < 1) { newMonth = 12; newYear -= 1; }
     else if (newMonth > 12) { newMonth = 1; newYear += 1; }
     const newValue = `${newYear}-${String(newMonth).padStart(2, '0')}`;
     updateDate(newValue);
-  }, [canNavigate, isFlipping, selectedDate, updateDate]);
-
-  // 年ナビゲーション（ポップアップ内）
-  const canNavigateYear = useCallback((direction: 'prev' | 'next'): boolean => {
-    return direction === 'prev' ? viewYear > minYear : viewYear < maxYear;
-  }, [viewYear, minYear, maxYear]);
-
-  const navigateYear = useCallback((direction: 'prev' | 'next') => {
-    if (!canNavigateYear(direction) || isFlipping) return;
-    const newYear = viewYear + (direction === 'prev' ? -1 : 1);
-    setFlipDirection(direction === 'prev' ? 'up' : 'down');
-    setTargetYear(newYear);
-    requestAnimationFrame(() => requestAnimationFrame(() => setIsFlipping(true)));
-    setTimeout(() => {
-      setViewYear(newYear);
-      setIsFlipping(false);
-      setFlipDirection(null);
-      setTargetYear(null);
-    }, ANIMATION_DURATION);
-  }, [canNavigateYear, isFlipping, viewYear, setViewYear]);
+  }, [canNavigate, selectedDate, updateDate]);
 
   const handlePopupSelect = useCallback((date: Date) => {
     const newValue = formatDateValue(date, pickerMode);
@@ -124,12 +94,8 @@ const DatePicker: FC<DatePickerProps> = ({
     setIsPopupOpen(false);
   }, [pickerMode, updateDate, log]);
 
-  const handleMonthNavigate = useCallback((direction: 'prev' | 'next') => {
-    setViewDate(prev => {
-      const newDate = new Date(prev);
-      newDate.setMonth(newDate.getMonth() + (direction === 'prev' ? -1 : 1));
-      return newDate;
-    });
+  const handleCalendarNavigate = useCallback((newDate: Date) => {
+    setViewDate(newDate);
   }, [setViewDate]);
 
   const handleClear = useCallback(() => {
@@ -203,89 +169,21 @@ const DatePicker: FC<DatePickerProps> = ({
 
           {isPopupOpen && (
             <div
-              className={`absolute top-full mt-2 z-50 bg-white border border-gray-200 shadow-xl overflow-hidden ${menuAlign === 'right' ? 'right-0' : 'left-0'}`}
-              style={{ width: POPUP_WIDTH[pickerMode], borderRadius: dropdownRadius }}
+              className={`absolute top-full mt-2 z-50 ${menuAlign === 'right' ? 'right-0' : 'left-0'}`}
+              style={{ width: POPUP_WIDTH[pickerMode] }}
             >
-              {pickerMode === 'date' ? (
-                <CalendarGrid
-                  viewDate={viewDate}
-                  selectedDate={parsedSelectedDate}
-                  minDate={minDateObj}
-                  maxDate={maxDateObj}
-                  primaryBgColor={primaryBgColor}
-                  borderRadius={borderRadius}
-                  onSelect={handlePopupSelect}
-                  onNavigate={handleMonthNavigate}
-                />
-              ) : (
-                <>
-                  <button
-                    type="button"
-                    onClick={() => navigateYear('prev')}
-                    disabled={!canNavigateYear('prev')}
-                    className={`w-full py-2 flex items-center justify-center transition-colors ${canNavigateYear('prev') ? 'hover:bg-gray-100 text-gray-600' : 'text-gray-300 cursor-not-allowed'}`}
-                    aria-label="前年"
-                  >
-                    <Icon name={'chevron-up'} size={20} />
-                  </button>
-
-                  <div className="relative overflow-hidden" style={{ minHeight: '180px' }}>
-                    {flipDirection === 'up' ? (
-                      <>
-                        {targetYear !== null && (
-                          <div className="absolute inset-0" style={{ zIndex: 1 }}>
-                            <MonthGrid year={targetYear} selectedDate={parsedSelectedDate} minDate={minDateObj} maxDate={maxDateObj} primaryBgColor={primaryBgColor} borderRadius={borderRadius} highlightedMonths={highlightedMonths} onSelect={handlePopupSelect} />
-                          </div>
-                        )}
-                        <div
-                          className="relative"
-                          style={{
-                            zIndex: 2,
-                            transition: `transform ${ANIMATION_DURATION}ms cubic-bezier(0.4, 0.0, 0.2, 1), opacity ${ANIMATION_DURATION}ms ease-out`,
-                            transformOrigin: 'left bottom',
-                            transform: isFlipping ? 'rotate(-120deg) translateX(-30%)' : 'rotate(0deg) translateX(0)',
-                            opacity: isFlipping ? 0 : 1,
-                          }}
-                        >
-                          <MonthGrid year={viewYear} selectedDate={parsedSelectedDate} minDate={minDateObj} maxDate={maxDateObj} primaryBgColor={primaryBgColor} borderRadius={borderRadius} highlightedMonths={highlightedMonths} onSelect={handlePopupSelect} />
-                        </div>
-                      </>
-                    ) : flipDirection === 'down' ? (
-                      <>
-                        <div className="absolute inset-0" style={{ zIndex: 1 }}>
-                          <MonthGrid year={viewYear} selectedDate={parsedSelectedDate} minDate={minDateObj} maxDate={maxDateObj} primaryBgColor={primaryBgColor} borderRadius={borderRadius} highlightedMonths={highlightedMonths} onSelect={handlePopupSelect} />
-                        </div>
-                        {targetYear !== null && (
-                          <div
-                            className="relative"
-                            style={{
-                              zIndex: 2,
-                              transition: `transform ${ANIMATION_DURATION}ms cubic-bezier(0.4, 0.0, 0.2, 1), opacity ${ANIMATION_DURATION}ms ease-out`,
-                              transformOrigin: 'left bottom',
-                              transform: isFlipping ? 'rotate(0deg) translateX(0)' : 'rotate(-120deg) translateX(-30%)',
-                              opacity: isFlipping ? 1 : 0,
-                            }}
-                          >
-                            <MonthGrid year={targetYear} selectedDate={parsedSelectedDate} minDate={minDateObj} maxDate={maxDateObj} primaryBgColor={primaryBgColor} borderRadius={borderRadius} highlightedMonths={highlightedMonths} onSelect={handlePopupSelect} />
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      <MonthGrid year={viewYear} selectedDate={parsedSelectedDate} minDate={minDateObj} maxDate={maxDateObj} primaryBgColor={primaryBgColor} borderRadius={borderRadius} highlightedMonths={highlightedMonths} onSelect={handlePopupSelect} />
-                    )}
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={() => navigateYear('next')}
-                    disabled={!canNavigateYear('next')}
-                    className={`w-full py-2 flex items-center justify-center transition-colors ${canNavigateYear('next') ? 'hover:bg-gray-100 text-gray-600' : 'text-gray-300 cursor-not-allowed'}`}
-                    aria-label="次年"
-                  >
-                    <Icon name={'chevron-down'} size={20} />
-                  </button>
-                </>
-              )}
+              <Calendar
+                mode={pickerMode}
+                viewDate={viewDate}
+                selectedDate={parsedSelectedDate}
+                minDate={minDateObj}
+                maxDate={maxDateObj}
+                primaryBgColor={primaryBgColor}
+                borderRadius={dropdownRadius}
+                highlightedMonths={highlightedMonths}
+                onSelect={handlePopupSelect}
+                onNavigate={handleCalendarNavigate}
+              />
             </div>
           )}
         </div>

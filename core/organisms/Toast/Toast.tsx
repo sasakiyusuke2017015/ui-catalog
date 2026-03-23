@@ -4,6 +4,7 @@ import { FC, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { useOperationLog } from '../../../infra/devtools';
+import { Button } from '../../atoms/Button';
 import Icon from '../../atoms/Icon';
 
 
@@ -129,13 +130,16 @@ const Toast: FC<ToastProps> = ({
       >
         <Icon name={config.icon} size={20} stroke="#ffffff" />
         <span className="text-white font-medium">{message}</span>
-        <button
+        <Button
+          variant="ghost"
+          size="small"
           onClick={handleClose}
-          className="ml-2 text-white/80 hover:text-white transition-colors"
+          className="!p-1 !min-w-0 ml-2 text-white/80 hover:text-white hover:!bg-white/10"
           aria-label="閉じる"
+          enableShimmer={false}
         >
           <Icon name={'x'} size={16} stroke="currentColor" />
-        </button>
+        </Button>
       </div>
     </div>,
     document.body

@@ -149,40 +149,52 @@ initUICatalog(versions)
 
 ```
 ui-catalog リポジトリ
-├── main                 ← 安定版（リリース済み）
-├── project/1on1         ← 1on1 プロジェクトからの変更
+├── main                 ← 安定版（PR 経由のみ変更可）
+├── project/1on1         ← 1on1 プロジェクト専用
+├── project/calend       ← calend プロジェクト専用
 └── project/<name>       ← 各プロジェクト専用
 ```
+
+**重要**: main への直接コミットは禁止。必ず PR 経由で Squash Merge する。
 
 ### 運用フロー
 
 ```
-【各プロジェクト】
-1. UI を変更（開発・Vibe Coding）
-       ↓
-2. cd packages/ui-catalog && git push → project/<name> ブランチへ
-
-【ui-catalog リポジトリ】
-3. project/<name> → main への PR 作成
-       ↓
-4. VRT でレビュー・マージ
-       ↓
-5. タグ付け（v1.2.0）
-
-【各プロジェクト】
-6. cd packages/ui-catalog && git pull で main（安定版）を取り込む
+【開発】project/* ブランチで作業
+    ↓
+【PR】/ui-catalog pr で PR 作成
+    ↓
+【レビュー】GitHub で確認 → Squash Merge
+    ↓
+【同期】/ui-catalog sync で全ブランチを同期
 ```
+
+### コマンド
+
+| コマンド | 説明 |
+|----------|------|
+| `/ui-catalog` | 状態診断 + 推奨アクション |
+| `/ui-catalog sync` | main ↔ project/* 同期 |
+| `/ui-catalog pr` | PR 作成 |
+| `/ui-catalog clean` | 整合性修正 |
+| `/ui-catalog optimize` | 依存最適化 |
+| `/ui-catalog absorb` | アプリ → ui-catalog 昇格 |
+| `/ui-catalog apply` | ui-catalog → アプリ 適用 |
+
+詳細は `.claude/commands/ui-catalog.md` を参照。
 
 ### 育成フロー
 
 ```
-absorb（吸収）    : アプリから extensions/ に取り込み
+absorb（吸収）  : アプリから extensions/ に取り込み
     ↓
-refine（洗練）    : ビジネスロジック除去 → core/ へ昇格
+clean（洗練）   : 整合性確認・不要コード削除
     ↓
-distribute（配布）: 安定版を各プロジェクトへ
+optimize（最適化）: 依存関係の整理
     ↓
-merge（統合）     : project ブランチ → main
+pr（PR作成）    : main への変更を提案
+    ↓
+sync（同期）    : 全プロジェクトに配布
 ```
 
 ---

@@ -68,7 +68,7 @@ const Modal: FC<ModalProps> = ({
             onClick={() => { log('close', { title, trigger: 'button' }); onClose(); }}
             className={styles.closeButton}
           >
-            <Icon name="X" size={20} />
+            <Icon name="x" size={20} />
           </button>
         </div>
         <div className={styles.content}>{children}</div>
