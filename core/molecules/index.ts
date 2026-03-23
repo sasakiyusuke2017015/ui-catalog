@@ -12,6 +12,7 @@ export * from './Card'
 export * from './FormField'
 export * from './FilterField'
 export * from './DatePicker'
+export * from './Calendar'
 
 // Navigation
 export * from './Breadcrumb'
