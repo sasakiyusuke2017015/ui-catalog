@@ -25,6 +25,8 @@ export const ALL_ICON_TYPES = [
   'chevron-up',
   'chevron-left',
   'chevron-right',
+  'chevrons-left',
+  'chevrons-right',
   'arrow-up-right',
   'arrow-in',
   'sync-pull',

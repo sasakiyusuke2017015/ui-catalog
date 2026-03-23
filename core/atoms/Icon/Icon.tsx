@@ -149,6 +149,18 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
       d="M7 3l9 9-9 9"
     />
   ),
+  ['chevrons-left']: () => (
+    <>
+      <path className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" d="M18 17l-5-5 5-5" />
+      <path className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" d="M11 17l-5-5 5-5" />
+    </>
+  ),
+  ['chevrons-right']: () => (
+    <>
+      <path className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" d="M6 7l5 5-5 5" />
+      <path className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5-5 5" />
+    </>
+  ),
   ['magnifying-glass']: () => (
     <path
       className={styles.stroke}

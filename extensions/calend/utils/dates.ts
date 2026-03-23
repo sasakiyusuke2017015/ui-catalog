@@ -101,9 +101,8 @@ export function formatHour(hour: number): string {
 }
 
 export function getWeekDates(date: Date): readonly Date[] {
-  const weekStart = startOfWeek(date, { weekStartsOn: 0 })
-  const weekEnd = endOfWeek(date, { weekStartsOn: 0 })
-  return eachDayOfInterval({ start: weekStart, end: weekEnd })
+  const start = startOfDay(date)
+  return eachDayOfInterval({ start, end: addDays(start, 6) })
 }
 
 export function getMonthCalendarDates(date: Date): readonly Date[] {
