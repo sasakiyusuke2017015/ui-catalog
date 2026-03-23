@@ -124,7 +124,8 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
         setMode('normal')
         setRepeatDays([])
         setStartMin(modal.hour * 60)
-        setEndMin((modal.endHour ?? Math.min(modal.hour + 1, 23)) * 60)
+        // endHour=24 は 24:00（翌日0時）として扱う
+        setEndMin((modal.endHour ?? Math.min(modal.hour + 1, 24)) * 60)
         setColor(EVENT_COLORS[0]!.value)
         setIcon(undefined)
         setDescription('')
@@ -132,7 +133,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
       }
       requestAnimationFrame(() => titleRef.current?.focus())
     }
-  }, [modal.isOpen, modal.date, modal.hour, modal.editingEvent])
+  }, [modal.isOpen, modal.date, modal.hour, modal.endHour, modal.endDate, modal.editingEvent, allEvents])
 
   const close = useCallback(() => {
     setModal((prev) => ({ ...prev, isOpen: false }))
@@ -322,7 +323,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
                         value={startMin}
                         onChange={(m) => {
                           setStartMin(m)
-                          if (endMin <= m) setEndMin(Math.min(m + 60, 23 * 60 + 45))
+                          if (endMin <= m) setEndMin(Math.min(m + 60, 24 * 60))
                         }}
                       />
                     </div>
@@ -344,7 +345,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
                       value={startMin}
                       onChange={(m) => {
                         setStartMin(m)
-                        if (endMin <= m && startDateStr === endDateStr) setEndMin(Math.min(m + 60, 23 * 60 + 45))
+                        if (endMin <= m && startDateStr === endDateStr) setEndMin(Math.min(m + 60, 24 * 60))
                       }}
                     />
                   </div>

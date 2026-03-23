@@ -1,5 +1,7 @@
+import { useAtomValue } from 'jotai'
 import { formatDayHeader, isToday, getEventsForDay } from '../../utils/dates'
 import { DayColumn } from '../DayColumn/DayColumn'
+import { anyDragActiveAtom } from '../../state/calendar'
 import type { CalendarEvent } from '../../types'
 import styles from './DayFrame.module.scss'
 
@@ -25,6 +27,7 @@ export function DayFrame({ date, events, headerVariant = 'blur', onDeleteEvent, 
   const today = isToday(date)
   const dayEvents = getEventsForDay(events, date)
   const dow = date.getDay()
+  const anyDrag = useAtomValue(anyDragActiveAtom)
 
   const dayClass = today
     ? styles.todayHeader
@@ -50,10 +53,12 @@ export function DayFrame({ date, events, headerVariant = 'blur', onDeleteEvent, 
       data-component="DayFrame"
       className="min-h-screen"
       data-date={date.toISOString()}
+      style={{ overflow: 'visible' }}
     >
       <div
         data-sticky-header
         className={`${styles.header} ${headerClass}`}
+        style={anyDrag ? { pointerEvents: 'none' } : undefined}
       >
         <h2 className={`text-lg font-bold ${textClass}`}>
           {formatDayHeader(date)}
@@ -65,7 +70,7 @@ export function DayFrame({ date, events, headerVariant = 'blur', onDeleteEvent, 
         </h2>
       </div>
 
-      <div className="px-2">
+      <div className="px-2" style={{ overflow: 'visible' }}>
         <DayColumn
           date={date}
           events={dayEvents}

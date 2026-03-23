@@ -188,7 +188,7 @@ function TimelineEventCard({
         backgroundColor: color,
         top: `${top + 1}px`,
         height: `${Math.max(height - 2, 14)}px`,
-        zIndex: isDragging ? 20 : isHovered ? Math.min(10 + zColumn, 19) : Math.min(1 + zColumn, 9),
+        zIndex: isDragging ? 30 : isHovered ? 15 + zColumn : 10 + zColumn,
         pointerEvents: 'auto',
         opacity: isDragging ? 0.35 : isHovered ? 0.85 : 1,
         filter: isDragging ? 'grayscale(0.3)' : isHovered ? 'brightness(1.2)' : 'none',

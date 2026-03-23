@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { activeSlotAtom, eventModalAtom, dragAtom, selectedDateAtom, anyDragActiveAtom, hoveredEventAtom } from '../../state/calendar'
 import { formatHour, isToday } from '../../utils/dates'
@@ -33,6 +33,7 @@ export function DayColumn({
   const setModal = useSetAtom(eventModalAtom)
   const setSelectedDate = useSetAtom(selectedDateAtom)
   const drag = useAtomValue(dragAtom)
+  const anyDrag = useAtomValue(anyDragActiveAtom)
   const setAnyDrag = useSetAtom(anyDragActiveAtom)
   const setHovered = useSetAtom(hoveredEventAtom)
 
@@ -45,29 +46,31 @@ export function DayColumn({
   const layouted = layoutEvents(events as CalendarEvent[])
 
   // Slot drag to create event
-  const [slotDrag, setSlotDrag] = useState<{ startHour: number; currentHour: number } | null>(null)
-  const slotDragRef = useRef(false)
-  const columnRef = useRef<HTMLDivElement>(null)
+  // isDragging を state に含めることで、ref を使わずにドラッグ状態を追跡
+  const [slotDrag, setSlotDrag] = useState<{
+    startHour: number
+    currentHour: number
+    startClientY: number
+    isDragging: boolean
+  } | null>(null)
 
-  // Convert clientY to hour index within the column
-  const clientYToHour = useCallback((clientY: number) => {
-    const col = columnRef.current
-    if (!col) return 0
-    const rect = col.getBoundingClientRect()
-    const y = clientY - rect.top
-    return Math.max(0, Math.min(23, Math.floor(y / slotHeight)))
-  }, [slotHeight])
-
+  // 相対移動量ベースで時刻を計算（スクロール位置に依存しない）
   const handleDocPointerMove = useCallback(
     (e: PointerEvent) => {
-      const hour = clientYToHour(e.clientY)
       setSlotDrag((prev) => {
-        if (!prev || prev.currentHour === hour) return prev
-        slotDragRef.current = true
-        return { ...prev, currentHour: hour }
+        if (!prev) return prev
+        // 相対移動量から時刻を計算
+        const deltaY = e.clientY - prev.startClientY
+        const hourDelta = Math.floor(deltaY / slotHeight)
+        const newHour = prev.startHour + hourDelta
+        // -23〜47 の範囲（上方向は前日1時まで、下方向は翌日23時まで許可）
+        const clampedHour = Math.max(-23, Math.min(47, newHour))
+
+        if (prev.currentHour === clampedHour && prev.isDragging) return prev
+        return { ...prev, currentHour: clampedHour, isDragging: true }
       })
     },
-    [clientYToHour]
+    [slotHeight]
   )
 
   const handleDocPointerUp = useCallback(
@@ -77,39 +80,60 @@ export function DayColumn({
 
       setSlotDrag((prev) => {
         if (!prev) return null
-        const startH = Math.min(prev.startHour, prev.currentHour)
-        const endH = Math.max(prev.startHour, prev.currentHour) + 1
 
-        if (slotDragRef.current) {
-          setActiveSlot({ date: dateKey, hour: startH, endHour: Math.min(endH, 23) })
-          setModal({ isOpen: true, date, hour: startH, endHour: Math.min(endH, 23) })
-        } else {
-          const isActive = activeSlot?.date === dateKey && activeSlot.hour === prev.startHour
-          if (isActive) {
-            setModal({ isOpen: true, date, hour: prev.startHour })
+        if (prev.isDragging) {
+          // ドラッグ時: 開始スロットの上端からドラッグ先スロットの上端まで
+          // 例: 23時スロットから2スロット下にドラッグ → currentHour = 25
+          // → 選択範囲は 23:00 ～ 25:00（翌日1:00）
+          // 同一スロット内ドラッグの場合は最低1時間を確保
+          const startH = Math.min(prev.startHour, prev.currentHour)
+          const rawEndH = Math.max(prev.startHour, prev.currentHour)
+          const endH = rawEndH === startH ? startH + 1 : rawEndH
+
+          // 負の時刻（前日にまたぐ）の場合
+          if (startH < 0) {
+            const startDate = new Date(date)
+            startDate.setDate(startDate.getDate() - 1)
+            const actualStartH = 24 + startH // 例: -2 → 22時
+            setActiveSlot({ date: startDate.toDateString(), hour: actualStartH, endHour: Math.min(endH, 24), endDate: dateKey })
+            setModal({ isOpen: true, date: startDate, hour: actualStartH, endHour: Math.min(endH, 24), endDate: date })
+          // 24時を超えた場合は翌日にまたぐイベント
+          } else if (endH > 24) {
+            const endDate = new Date(date)
+            endDate.setDate(endDate.getDate() + 1)
+            setActiveSlot({ date: dateKey, hour: startH, endHour: endH, endDate: endDate.toDateString() })
+            setModal({ isOpen: true, date, hour: startH, endHour: endH - 24, endDate })
+          } else {
+            setActiveSlot({ date: dateKey, hour: startH, endHour: endH })
+            setModal({ isOpen: true, date, hour: startH, endHour: endH })
           }
+        } else {
+          // クリックのみ（ドラッグなし）: 1時間のスロットを選択
+          setActiveSlot({ date: dateKey, hour: prev.startHour, endHour: prev.startHour + 1 })
+          setModal({ isOpen: true, date, hour: prev.startHour, endHour: prev.startHour + 1 })
         }
         return null
       })
       setAnyDrag(false)
     },
-    [handleDocPointerMove, activeSlot, dateKey, date, setActiveSlot, setModal, setAnyDrag]
+    [handleDocPointerMove, dateKey, date, setActiveSlot, setModal, setAnyDrag]
   )
 
   const handleSlotPointerDown = useCallback(
     (hour: number, e: React.PointerEvent) => {
-      if (e.button !== 0 || drag) return
+      // 既にドラッグ中の場合は何もしない
+      if (e.button !== 0 || drag || anyDrag) return
       e.preventDefault()
       setSelectedDate(date)
       setActiveSlot({ date: dateKey, hour })
-      setSlotDrag({ startHour: hour, currentHour: hour })
-      slotDragRef.current = false
+      // startClientY を保存して相対移動量で計算できるようにする
+      setSlotDrag({ startHour: hour, currentHour: hour, startClientY: e.clientY, isDragging: false })
       setHovered(null)
       setAnyDrag(true)
       document.addEventListener('pointermove', handleDocPointerMove)
       document.addEventListener('pointerup', handleDocPointerUp)
     },
-    [drag, date, dateKey, setActiveSlot, setSelectedDate, setHovered, setAnyDrag, handleDocPointerMove, handleDocPointerUp]
+    [drag, anyDrag, date, dateKey, setActiveSlot, setSelectedDate, setHovered, setAnyDrag, handleDocPointerMove, handleDocPointerUp]
   )
 
   const eventLeft = labelWidth > 0 ? `${labelWidth + 4}px` : '0'
@@ -163,13 +187,13 @@ export function DayColumn({
     )
   }, [drag?.eventId, drag?.currentStartTime?.getTime(), drag?.currentEndTime?.getTime(), drag?.originalEvent, date, slotHeight, eventLeft])
 
-  // Calculate slot drag highlight range
-  const dragMin = slotDrag ? Math.min(slotDrag.startHour, slotDrag.currentHour) : -1
-  const dragMax = slotDrag ? Math.max(slotDrag.startHour, slotDrag.currentHour) : -1
+  // Calculate slot drag highlight range（負の値も許可して日またぎ対応）
+  const dragMin = slotDrag?.isDragging ? Math.max(0, Math.min(slotDrag.startHour, slotDrag.currentHour)) : -1
+  const dragMax = slotDrag?.isDragging ? Math.min(Math.max(slotDrag.startHour, slotDrag.currentHour), 23) : -1
 
   return (
-    <div data-component="DayColumn">
-      <div className="relative" ref={columnRef}>
+    <div data-component="DayColumn" style={{ overflow: 'visible' }}>
+      <div className="relative" style={{ overflow: 'visible' }}>
         {HOURS.map((hour) => {
           const isCurrentHour = today && new Date().getHours() === hour
           const isActive = activeSlot?.date === dateKey && (
@@ -187,6 +211,9 @@ export function DayColumn({
               } ${!inDragRange && isCurrentHour ? dcStyles.todaySlot : ''}`}
               style={{
                 height: `${slotHeight}px`,
+                touchAction: 'none', // ドラッグ中のスクロールを防止
+                // 他のDayColumnでドラッグ中はpointer-eventsを無効化
+                pointerEvents: anyDrag && !slotDrag ? 'none' : 'auto',
                 ...(labelWidth > 0 ? { display: 'grid', gridTemplateColumns: `${labelWidth}px 1fr` } : {}),
                 ...(inDragRange
                   ? { backgroundColor: 'rgba(79, 70, 229, 0.1)' }
@@ -209,35 +236,91 @@ export function DayColumn({
 
         {/* Drag range preview / Active slot overlay */}
         {(() => {
-          const overlayMin = slotDrag && slotDragRef.current ? dragMin : (
-            activeSlot?.date === dateKey ? activeSlot.hour : -1
-          )
-          const overlayMax = slotDrag && slotDragRef.current ? dragMax : (
-            activeSlot?.date === dateKey ? (activeSlot.endHour !== undefined ? activeSlot.endHour - 1 : activeSlot.hour) : -1
-          )
-          if (overlayMin < 0) return null
-          return (
-            <div
-              style={{
-                position: 'absolute',
-                top: `${overlayMin * slotHeight}px`,
-                height: `${(overlayMax - overlayMin + 1) * slotHeight}px`,
-                left: eventLeft,
-                right: '0',
-                border: '2px solid #4f46e5',
-                borderRadius: '8px',
-                pointerEvents: 'none',
-                zIndex: 5,
-                backgroundColor: 'rgba(79, 70, 229, 0.08)',
-              }}
-            />
-          )
+          // ドラッグ中の場合
+          if (slotDrag?.isDragging) {
+            const minH = Math.min(slotDrag.startHour, slotDrag.currentHour)
+            const maxH = Math.max(slotDrag.startHour, slotDrag.currentHour)
+            const rawEndH = maxH === minH ? minH + 1 : maxH
+            const overlayStartHour = Math.max(0, minH)
+            const overlayEndHour = rawEndH
+
+            if (overlayEndHour <= 0) return null
+            return (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: `${overlayStartHour * slotHeight}px`,
+                  height: `${(overlayEndHour - overlayStartHour) * slotHeight}px`,
+                  left: eventLeft,
+                  right: '0',
+                  border: '2px solid #4f46e5',
+                  borderRadius: '8px',
+                  pointerEvents: 'none',
+                  zIndex: 5,
+                  backgroundColor: 'rgba(79, 70, 229, 0.08)',
+                }}
+              />
+            )
+          }
+
+          // 非ドラッグ時: activeSlot から表示
+          if (!activeSlot) return null
+
+          // この DayColumn が activeSlot の開始日の場合
+          if (activeSlot.date === dateKey) {
+            const startH = activeSlot.hour
+            // 日またぎの場合は24時まで、そうでなければ endHour
+            const endH = activeSlot.endDate ? 24 : (activeSlot.endHour ?? startH + 1)
+            return (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: `${startH * slotHeight}px`,
+                  height: `${(endH - startH) * slotHeight}px`,
+                  left: eventLeft,
+                  right: '0',
+                  border: '2px solid #4f46e5',
+                  borderRadius: '8px',
+                  pointerEvents: 'none',
+                  zIndex: 5,
+                  backgroundColor: 'rgba(79, 70, 229, 0.08)',
+                }}
+              />
+            )
+          }
+
+          // この DayColumn が activeSlot の終了日の場合（日またぎ）
+          if (activeSlot.endDate === dateKey) {
+            // 0時から endHour まで（endHour が 24 を超えていたら 24 - 24 = 0 から計算）
+            const endH = (activeSlot.endHour ?? 24) > 24
+              ? (activeSlot.endHour ?? 24) - 24
+              : (activeSlot.endHour ?? 24)
+            if (endH <= 0) return null
+            return (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '0',
+                  height: `${endH * slotHeight}px`,
+                  left: eventLeft,
+                  right: '0',
+                  border: '2px solid #4f46e5',
+                  borderRadius: '8px',
+                  pointerEvents: 'none',
+                  zIndex: 5,
+                  backgroundColor: 'rgba(79, 70, 229, 0.08)',
+                }}
+              />
+            )
+          }
+
+          return null
         })()}
 
         {/* Events overlay + current time indicator */}
         <div
-          className="absolute top-0 bottom-0"
-          style={{ left: eventLeft, right: '0', pointerEvents: 'none' }}
+          className="absolute top-0"
+          style={{ left: eventLeft, right: '0', pointerEvents: 'none', overflow: 'visible' }}
         >
           {today && (() => {
             const now = new Date()
