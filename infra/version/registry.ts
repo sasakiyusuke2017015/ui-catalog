@@ -15,7 +15,7 @@ export const VERSION_REGISTRY = {
   BackgroundImage: '1.0.0',
   Badge: '1.1.0',
   Banner: '1.0.0',
-  Button: '1.1.0',
+  Button: '1.2.0',
   Card: '1.1.0',
   Checkbox: '1.0.0',
   ExternalLink: '1.0.0',

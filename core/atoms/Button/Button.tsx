@@ -13,6 +13,7 @@ type ButtonVariant =
   | 'danger'
   | 'default'
   | 'success'
+  | 'ghost'
 type ButtonSize = 'small' | 'medium' | 'large'
 
 interface ButtonProps
@@ -60,6 +61,7 @@ const Button: FC<ButtonProps> = ({
     danger: 'inset 0 0 0 3px rgba(239, 68, 68, 0.4)',
     default: 'inset 0 0 0 3px rgba(156, 163, 175, 0.4)',
     success: 'inset 0 0 0 3px rgba(34, 197, 94, 0.4)',
+    ghost: 'none',
   }
 
   // アイコンサイズを決定

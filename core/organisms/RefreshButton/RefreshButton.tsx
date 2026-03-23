@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import { useOperationLog } from '../../../infra/devtools';
+import { Button } from '../../atoms/Button';
 import Icon from '../../atoms/Icon';
 
 
@@ -37,11 +38,14 @@ const RefreshButton: FC<RefreshButtonProps> = ({
 
   return (
   <div className="flex items-center gap-1.5" data-component="refresh-button">
-    <button
+    <Button
+      variant="ghost"
+      size="small"
       onClick={handleRefresh}
       disabled={loading || refreshing}
-      className="flex items-center justify-center rounded-full p-1.5 text-gray-500 transition-all duration-200 hover:bg-gray-100 hover:text-gray-700 disabled:opacity-50"
+      className="!p-1.5 !min-w-0 rounded-full"
       title="データを更新"
+      enableShimmer={false}
     >
       <Icon
         name={'arrow-rotate'}
@@ -49,7 +53,7 @@ const RefreshButton: FC<RefreshButtonProps> = ({
         animation={refreshing ? 'spin' : undefined}
         animate={refreshing}
       />
-    </button>
+    </Button>
     <span className="text-fluid-xs text-gray-400">
       {dataUpdatedAt && dataUpdatedAt > 0
         ? new Date(dataUpdatedAt).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })
