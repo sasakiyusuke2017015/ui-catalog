@@ -39,6 +39,7 @@ export * from './Tooltip'
 // Links & Navigation
 export * from './BackButton'
 export * from './ExternalLink'
+export * from './FileLink'
 export * from './InternalLink'
 export * from './ReplayButton'
 export * from './ResetButton'

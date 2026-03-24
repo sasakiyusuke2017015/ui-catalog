@@ -19,6 +19,7 @@ export const VERSION_REGISTRY = {
   Card: '1.1.0',
   Checkbox: '1.0.0',
   ExternalLink: '1.0.0',
+  FileLink: '1.0.0',
   Icon: '1.4.0',
   Input: '1.0.0',
   InternalLink: '1.0.0',
