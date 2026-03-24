@@ -103,3 +103,22 @@
   flex-shrink: 0;
   padding-right: $spacing-1;
 }
+
+// -----------------------------------------------------------------------------
+// Hover actions
+// -----------------------------------------------------------------------------
+.actions {
+  position: absolute;
+  right: $spacing-1;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity $transition-duration-150 $transition-ease-in-out;
+
+  .row:hover & {
+    opacity: 1;
+  }
+}

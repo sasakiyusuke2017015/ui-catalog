@@ -7,6 +7,8 @@ export interface TreeNode<T = unknown> {
   label: string
   icon?: ReactNode
   indicator?: ReactNode
+  /** hover 時に表示するアクション要素 */
+  actions?: ReactNode
   children: TreeNode<T>[]
   data?: T
 }
@@ -183,6 +185,11 @@ function TreeRow<T>({
         {/* Indicator */}
         {node.indicator && (
           <span className={styles.indicator}>{node.indicator}</span>
+        )}
+
+        {/* Hover actions */}
+        {node.actions && (
+          <span className={styles.actions}>{node.actions}</span>
         )}
       </div>
 
