@@ -48,6 +48,8 @@ export const VERSION_REGISTRY = {
   SubHeader: '1.0.0',
 
   // molecules
+  StatusBar: '1.0.0',
+  TreeView: '1.0.0',
   AdjustmentBanner: '1.0.0',
   AlertDialog: '1.0.0',
   AuthFormCard: '1.0.0',
@@ -88,6 +90,8 @@ export const VERSION_REGISTRY = {
   ToggleableSection: '1.0.0',
 
   // organisms
+  DiffViewer: '1.0.0',
+  ModalCheckboxList: '1.0.0',
   ContentBlock: '1.0.0',
   DropdownMenu: '1.0.0',
   FixedTabBar: '1.0.0',

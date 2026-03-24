@@ -27,3 +27,9 @@ export * from './StepIndicator'
 
 // Controls
 export * from './ViewModeToggle'
+
+// Data Display
+export * from './TreeView'
+
+// Feedback
+export * from './StatusBar'

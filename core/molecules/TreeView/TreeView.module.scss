@@ -1,0 +1,105 @@
+// =============================================================================
+// TreeView Component Styles
+// =============================================================================
+
+@use '../../tokens' as *;
+
+// -----------------------------------------------------------------------------
+// Container
+// -----------------------------------------------------------------------------
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+// -----------------------------------------------------------------------------
+// Row
+// -----------------------------------------------------------------------------
+.row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: $spacing-1;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: $font-size-sm;
+  transition: background-color $transition-duration-150 $transition-ease-in-out;
+  border: none;
+  background: transparent;
+  color: var(--color-text);
+
+  &:hover {
+    background-color: var(--color-hover-bg);
+  }
+}
+
+.rowSelected {
+  background-color: var(--color-selected-bg);
+  color: var(--color-selected-text);
+  font-weight: $font-weight-medium;
+
+  &:hover {
+    background-color: var(--color-selected-bg);
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Guide SVG overlay
+// -----------------------------------------------------------------------------
+.guides {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.guideLine {
+  stroke: var(--color-text-muted);
+  stroke-width: 1;
+}
+
+// -----------------------------------------------------------------------------
+// Chevron toggle
+// -----------------------------------------------------------------------------
+.chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.chevronFill {
+  fill: var(--color-text-muted);
+}
+
+// リーフノード — 三角なし、幅ゼロ
+.leafSpacer {
+  width: 0;
+  flex-shrink: 0;
+}
+
+// -----------------------------------------------------------------------------
+// Icon / Label / Indicator
+// -----------------------------------------------------------------------------
+.icon {
+  flex-shrink: 0;
+  font-size: 12px;
+}
+
+.label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.indicator {
+  margin-left: auto;
+  flex-shrink: 0;
+  padding-right: $spacing-1;
+}
