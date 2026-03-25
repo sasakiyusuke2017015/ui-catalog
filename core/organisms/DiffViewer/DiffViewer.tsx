@@ -33,7 +33,12 @@ function formatValue(value: unknown): string {
   return JSON.stringify(value, null, 2)
 }
 
+function normalizeKind(kind: string): string {
+  return kind.toLowerCase()
+}
+
 function DiffRow({ entry, leftLabel, rightLabel }: { entry: DiffEntry; leftLabel: string; rightLabel: string }) {
+  const kind = normalizeKind(entry.kind)
   const oldVal = formatValue(entry.old ?? entry.value)
   const newVal = formatValue(entry.new ?? entry.value)
 
@@ -41,17 +46,17 @@ function DiffRow({ entry, leftLabel, rightLabel }: { entry: DiffEntry; leftLabel
     <div className={styles.entry}>
       {/* パスヘッダー */}
       <div className={styles.entryHeader}>
-        <span className={cn(styles.kindIcon, styles[`kind_${entry.kind}`])}>
-          {entry.kind === 'added' ? '+' : entry.kind === 'removed' ? '−' : '~'}
+        <span className={cn(styles.kindIcon, styles[`kind_${kind}`])}>
+          {kind === 'added' ? '+' : kind === 'removed' ? '−' : '~'}
         </span>
         <span className={styles.entryPath}>{entry.path}</span>
-        <span className={cn(styles.kindBadge, styles[`kind_${entry.kind}`])}>
-          {entry.kind === 'added' ? '追加' : entry.kind === 'removed' ? '削除' : '変更'}
+        <span className={cn(styles.kindBadge, styles[`kind_${kind}`])}>
+          {kind === 'added' ? '追加' : kind === 'removed' ? '削除' : '変更'}
         </span>
       </div>
 
       {/* 差分本体 */}
-      {entry.kind === 'changed' ? (
+      {kind === 'changed' ? (
         <div className={styles.diffSplit}>
           <div className={styles.diffSide}>
             <div className={styles.diffSideLabel}>{leftLabel}</div>
@@ -62,7 +67,7 @@ function DiffRow({ entry, leftLabel, rightLabel }: { entry: DiffEntry; leftLabel
             <pre className={styles.diffAdded}>{newVal}</pre>
           </div>
         </div>
-      ) : entry.kind === 'added' ? (
+      ) : kind === 'added' ? (
         <pre className={styles.diffAdded}>{newVal}</pre>
       ) : (
         <pre className={styles.diffRemoved}>{oldVal}</pre>
