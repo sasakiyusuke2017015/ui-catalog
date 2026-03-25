@@ -24,6 +24,9 @@ export * from './LoadingOverlay'
 export * from './LoadingZone'
 export * from './EmptyState'
 
+// Data
+export * from './DataTable'
+
 // Content
 export * from './ContentBlock'
 export * from './DetailHeader'
