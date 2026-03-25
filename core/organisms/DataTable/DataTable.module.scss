@@ -6,6 +6,9 @@
   overflow: hidden;
 }
 
+// -----------------------------------------------------------------------------
+// Toolbar
+// -----------------------------------------------------------------------------
 .toolbar {
   display: flex;
   align-items: center;
@@ -13,13 +16,52 @@
   padding: $spacing-1 $spacing-2;
   background-color: var(--color-bg);
   border-bottom: 1px solid var(--color-border);
+  gap: $spacing-2;
+}
+
+.toolbarLeft {
+  display: flex;
+  align-items: center;
+  gap: $spacing-2;
+  flex: 1;
+  min-width: 0;
+}
+
+.toolbarRight {
+  display: flex;
+  align-items: center;
+  gap: $spacing-1;
+  flex-shrink: 0;
+}
+
+.searchInput {
+  width: 160px;
+  padding: 2px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-size: $font-size-xs;
+  background-color: var(--color-bg-surface);
+  color: var(--color-text);
+  outline: none;
+
+  &:focus {
+    border-color: var(--color-accent);
+  }
+
+  &::placeholder {
+    color: var(--color-text-muted);
+  }
 }
 
 .rowCount {
   font-size: $font-size-xs;
   color: var(--color-text-muted);
+  white-space: nowrap;
 }
 
+// -----------------------------------------------------------------------------
+// Column picker
+// -----------------------------------------------------------------------------
 .pickerContainer {
   position: relative;
 }
@@ -75,8 +117,12 @@
   }
 }
 
+// -----------------------------------------------------------------------------
+// Table
+// -----------------------------------------------------------------------------
 .tableScroll {
   overflow-x: auto;
+  max-height: 60vh;
 }
 
 .table {
@@ -95,12 +141,33 @@
   background-color: var(--color-bg);
   border-bottom: 1px solid var(--color-border);
   white-space: nowrap;
+  z-index: 1;
+}
+
+.thSortable {
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    color: var(--color-text);
+    background-color: var(--color-hover-bg);
+  }
+}
+
+.sortIcon {
+  margin-left: $spacing-1;
+  font-size: 8px;
+  color: var(--color-accent);
 }
 
 .tr {
   &:hover {
     background-color: var(--color-hover-bg);
   }
+}
+
+.trClickable {
+  cursor: pointer;
 }
 
 .td {
@@ -113,11 +180,56 @@
   text-overflow: ellipsis;
 }
 
-.moreIndicator {
-  padding: $spacing-1 $spacing-2;
+.emptyRow {
+  padding: 24px;
   text-align: center;
-  font-size: $font-size-xs;
   color: var(--color-text-muted);
+  font-size: $font-size-sm;
+}
+
+// -----------------------------------------------------------------------------
+// Pagination
+// -----------------------------------------------------------------------------
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-2;
+  padding: $spacing-1 $spacing-2;
   background-color: var(--color-bg);
   border-top: 1px solid var(--color-border);
+}
+
+.pageButton {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: $font-size-xs;
+  cursor: pointer;
+  color: var(--color-text);
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-hover-bg);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+}
+
+.pageInfo {
+  font-size: $font-size-xs;
+  color: var(--color-text-muted);
+}
+
+.pageSizeSelect {
+  padding: 2px 4px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-size: $font-size-xs;
+  background-color: var(--color-bg-surface);
+  color: var(--color-text);
+  cursor: pointer;
 }
