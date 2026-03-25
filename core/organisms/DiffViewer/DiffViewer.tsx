@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react'
 import { cn } from '../../utils/cn'
+import styles from './DiffViewer.module.scss'
 
 export interface DiffEntry {
   path: string
@@ -27,23 +27,48 @@ export interface DiffViewerProps {
   className?: string
 }
 
-function kindBadge(kind: string): ReactNode {
-  const styles: Record<string, string> = {
-    added: 'bg-green-100 text-green-800',
-    removed: 'bg-red-100 text-red-800',
-    changed: 'bg-amber-100 text-amber-800',
-  }
-  return (
-    <span className={cn('px-1.5 py-0.5 rounded text-[10px] font-medium', styles[kind] ?? 'bg-gray-100 text-gray-600')}>
-      {kind}
-    </span>
-  )
-}
-
 function formatValue(value: unknown): string {
   if (value === undefined || value === null) return ''
   if (typeof value === 'string') return value
   return JSON.stringify(value, null, 2)
+}
+
+function DiffRow({ entry, leftLabel, rightLabel }: { entry: DiffEntry; leftLabel: string; rightLabel: string }) {
+  const oldVal = formatValue(entry.old ?? entry.value)
+  const newVal = formatValue(entry.new ?? entry.value)
+
+  return (
+    <div className={styles.entry}>
+      {/* パスヘッダー */}
+      <div className={styles.entryHeader}>
+        <span className={cn(styles.kindIcon, styles[`kind_${entry.kind}`])}>
+          {entry.kind === 'added' ? '+' : entry.kind === 'removed' ? '−' : '~'}
+        </span>
+        <span className={styles.entryPath}>{entry.path}</span>
+        <span className={cn(styles.kindBadge, styles[`kind_${entry.kind}`])}>
+          {entry.kind === 'added' ? '追加' : entry.kind === 'removed' ? '削除' : '変更'}
+        </span>
+      </div>
+
+      {/* 差分本体 */}
+      {entry.kind === 'changed' ? (
+        <div className={styles.diffSplit}>
+          <div className={styles.diffSide}>
+            <div className={styles.diffSideLabel}>{leftLabel}</div>
+            <pre className={styles.diffRemoved}>{oldVal}</pre>
+          </div>
+          <div className={styles.diffSide}>
+            <div className={styles.diffSideLabel}>{rightLabel}</div>
+            <pre className={styles.diffAdded}>{newVal}</pre>
+          </div>
+        </div>
+      ) : entry.kind === 'added' ? (
+        <pre className={styles.diffAdded}>{newVal}</pre>
+      ) : (
+        <pre className={styles.diffRemoved}>{oldVal}</pre>
+      )}
+    </div>
+  )
 }
 
 export default function DiffViewer({
@@ -60,70 +85,45 @@ export default function DiffViewer({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      className={styles.overlay}
       onClick={onClose}
       data-component="diff-viewer"
     >
       <div
-        className={cn(
-          'bg-(--color-bg-surface) rounded-[12px] border border-(--color-border) shadow-xl',
-          'w-[90vw] max-w-[900px] max-h-[80vh] flex flex-col',
-          className,
-        )}
+        className={cn(styles.modal, className)}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-3 border-b border-(--color-border)">
-          <div className="flex items-center gap-3">
-            <h2 className="text-[15px] font-semibold text-(--color-text)">{title}</h2>
-            <div className="flex gap-2 text-[11px]">
-              <span className="text-green-600">+{summary.added}</span>
-              <span className="text-red-600">-{summary.removed}</span>
-              <span className="text-amber-600">~{summary.changed}</span>
+        <div className={styles.header}>
+          <div className={styles.headerLeft}>
+            <h2 className={styles.title}>{title}</h2>
+            <div className={styles.stats}>
+              <span className={styles.statAdded}>+{summary.added}</span>
+              <span className={styles.statRemoved}>−{summary.removed}</span>
+              <span className={styles.statChanged}>~{summary.changed}</span>
             </div>
           </div>
           <button
             type="button"
-            className="text-(--color-text-muted) hover:text-(--color-text) cursor-pointer text-[18px] leading-none"
+            className={styles.closeButton}
             onClick={onClose}
           >
             ×
           </button>
         </div>
 
-        {/* Column headers */}
-        <div className="grid grid-cols-[1fr_1fr_1fr] gap-2 px-5 py-2 border-b border-(--color-border) text-[11px] font-medium text-(--color-text-muted)">
-          <span>パス</span>
-          <span>{leftLabel}</span>
-          <span>{rightLabel}</span>
-        </div>
-
         {/* Entries */}
-        <div className="flex-1 overflow-y-auto">
+        <div className={styles.body}>
           {entries.length === 0 ? (
-            <div className="flex items-center justify-center py-12 text-[13px] text-(--color-text-muted)">
-              差分はありません
-            </div>
+            <div className={styles.empty}>差分はありません</div>
           ) : (
             entries.map((entry, i) => (
-              <div
+              <DiffRow
                 key={i}
-                className={cn(
-                  'grid grid-cols-[1fr_1fr_1fr] gap-2 px-5 py-2 text-[12px] border-b border-(--color-border)/50',
-                  i % 2 === 0 ? 'bg-transparent' : 'bg-(--color-bg)',
-                )}
-              >
-                <div className="flex items-start gap-1.5">
-                  {kindBadge(entry.kind)}
-                  <span className="font-mono text-(--color-text) break-all">{entry.path}</span>
-                </div>
-                <pre className="whitespace-pre-wrap font-mono text-(--color-text-muted) overflow-hidden">
-                  {entry.kind === 'added' ? '' : formatValue(entry.old ?? entry.value)}
-                </pre>
-                <pre className="whitespace-pre-wrap font-mono text-(--color-text-muted) overflow-hidden">
-                  {entry.kind === 'removed' ? '' : formatValue(entry.new ?? entry.value)}
-                </pre>
-              </div>
+                entry={entry}
+                leftLabel={leftLabel}
+                rightLabel={rightLabel}
+              />
             ))
           )}
         </div>
