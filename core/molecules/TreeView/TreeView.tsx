@@ -184,7 +184,12 @@ function TreeRow<T>({
 
         {/* Indicator */}
         {node.indicator && (
-          <span className={styles.indicator}>{node.indicator}</span>
+          <span
+            className={styles.indicator}
+            style={node.actions ? { marginRight: 22 } : undefined}
+          >
+            {node.indicator}
+          </span>
         )}
 
         {/* Hover actions */}
