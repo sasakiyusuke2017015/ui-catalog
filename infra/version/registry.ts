@@ -83,7 +83,6 @@ export const VERSION_REGISTRY = {
   Toast: '1.0.0',
   RefreshButton: '1.0.0',
   FilterField: '1.0.0',
-  StatusBar: '1.0.0',
   ChatFab: '1.0.0',
   ActionBreadcrumb: '1.0.0',
   EmptyState: '1.0.0',
