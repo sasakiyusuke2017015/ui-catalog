@@ -210,3 +210,60 @@ $diff-changed-text: #92400e;
 .diffSide:first-child .diffAdded {
   border-right: 1px solid var(--color-border);
 }
+
+// -----------------------------------------------------------------------------
+// Line-level diff (Git unified style)
+// -----------------------------------------------------------------------------
+.lineDiff {
+  font-family: $font-family-mono;
+  font-size: $font-size-xs;
+  overflow-x: auto;
+}
+
+.lineDiffRow {
+  display: flex;
+  min-height: 20px;
+  line-height: 20px;
+}
+
+.lineDiffTag {
+  width: 20px;
+  flex-shrink: 0;
+  text-align: center;
+  color: var(--color-text-muted);
+  user-select: none;
+}
+
+.lineDiffText {
+  margin: 0;
+  padding: 0 $spacing-2;
+  white-space: pre-wrap;
+  word-break: break-all;
+  flex: 1;
+}
+
+.lineDiffAdded {
+  background-color: $diff-added-bg;
+
+  .lineDiffTag {
+    color: $diff-added-text;
+    font-weight: $font-weight-bold;
+  }
+
+  .lineDiffText {
+    color: $diff-added-text;
+  }
+}
+
+.lineDiffRemoved {
+  background-color: $diff-removed-bg;
+
+  .lineDiffTag {
+    color: $diff-removed-text;
+    font-weight: $font-weight-bold;
+  }
+
+  .lineDiffText {
+    color: $diff-removed-text;
+  }
+}

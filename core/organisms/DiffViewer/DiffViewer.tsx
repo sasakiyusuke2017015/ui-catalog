@@ -1,12 +1,18 @@
 import { cn } from '../../utils/cn'
 import styles from './DiffViewer.module.scss'
 
+export interface LineDiff {
+  tag: string  // "+" | "-" | " "
+  text: string
+}
+
 export interface DiffEntry {
   path: string
   kind: string
   value?: unknown
   old?: unknown
   new?: unknown
+  lines?: LineDiff[]
 }
 
 export interface DiffSummary {
@@ -56,7 +62,25 @@ function DiffRow({ entry, leftLabel, rightLabel }: { entry: DiffEntry; leftLabel
       </div>
 
       {/* 差分本体 */}
-      {kind === 'changed' ? (
+      {kind === 'changed' && entry.lines ? (
+        /* 行単位 diff（Git 風 unified） */
+        <div className={styles.lineDiff}>
+          {entry.lines.map((line, li) => (
+            <div
+              key={li}
+              className={cn(
+                styles.lineDiffRow,
+                line.tag === '+' && styles.lineDiffAdded,
+                line.tag === '-' && styles.lineDiffRemoved,
+              )}
+            >
+              <span className={styles.lineDiffTag}>{line.tag}</span>
+              <pre className={styles.lineDiffText}>{line.text}</pre>
+            </div>
+          ))}
+        </div>
+      ) : kind === 'changed' ? (
+        /* 短い値の変更（Split 表示） */
         <div className={styles.diffSplit}>
           <div className={styles.diffSide}>
             <div className={styles.diffSideLabel}>{leftLabel}</div>
