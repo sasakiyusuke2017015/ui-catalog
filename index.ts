@@ -22,7 +22,9 @@
 export * from './core'
 
 // Extensions
-export * from './extensions'
+// ※ StatusBar 等の名前衝突を避けるため、extensions は直接パスでインポートすること
+//   例: import { Question } from '@ui-catalog/core/extensions/1on1'
+// export * from './extensions'
 
 // Infra (devtools, version, theme)
 export * from './infra'
