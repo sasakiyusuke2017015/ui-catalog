@@ -170,6 +170,10 @@
   cursor: pointer;
 }
 
+.trSelected {
+  background-color: var(--color-selected-bg);
+}
+
 .td {
   padding: $spacing-1 $spacing-2;
   border-bottom: 1px solid var(--color-border-light, var(--color-border));

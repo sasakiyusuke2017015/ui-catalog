@@ -13,6 +13,10 @@ export interface DataTableProps {
   onColumnsChange?: (columns: string[]) => void
   /** 行クリック時のコールバック（行インデックス） */
   onRowClick?: (rowIndex: number, row: string[]) => void
+  /** 複数選択モード（チェックボックス表示） */
+  selectable?: boolean
+  /** 選択行の変更コールバック（行インデックスの Set） */
+  onSelectionChange?: (selected: Set<number>) => void
   /** 追加クラス */
   className?: string
   /** 1ページあたりの行数（省略時は 50） */
@@ -29,6 +33,8 @@ const DataTable: FC<DataTableProps> = ({
   visibleColumns,
   onColumnsChange,
   onRowClick,
+  selectable = false,
+  onSelectionChange,
   className,
   pageSize: defaultPageSize = 50,
 }) => {
@@ -38,6 +44,7 @@ const DataTable: FC<DataTableProps> = ({
   const [filterText, setFilterText] = useState('')
   const [page, setPage] = useState(0)
   const [pageSize, setPageSize] = useState(defaultPageSize)
+  const [selectedRows, setSelectedRows] = useState<Set<number>>(new Set())
   const pickerRef = useRef<HTMLDivElement>(null)
 
   // 表示カラムのインデックスを計算
@@ -96,6 +103,27 @@ const DataTable: FC<DataTableProps> = ({
 
   if (headers.length === 0) return null
 
+  function toggleRowSelection(rowIndex: number) {
+    setSelectedRows((prev) => {
+      const next = new Set(prev)
+      if (next.has(rowIndex)) next.delete(rowIndex)
+      else next.add(rowIndex)
+      onSelectionChange?.(next)
+      return next
+    })
+  }
+
+  function toggleAllSelection() {
+    if (selectedRows.size === sortedRows.length) {
+      setSelectedRows(new Set())
+      onSelectionChange?.(new Set())
+    } else {
+      const all = new Set(sortedRows.map((_, i) => i))
+      setSelectedRows(all)
+      onSelectionChange?.(all)
+    }
+  }
+
   function handleSort(ci: number) {
     if (sortColumn === ci) {
       if (sortOrder === 'asc') setSortOrder('desc')
@@ -128,7 +156,9 @@ const DataTable: FC<DataTableProps> = ({
             onChange={(e) => setFilterText(e.target.value)}
           />
           <span className={styles.rowCount}>
-            {filterText ? `${sortedRows.length} / ${rows.length} 件` : `${rows.length} 件`}
+            {selectedRows.size > 0
+              ? `${selectedRows.size} 件選択中`
+              : filterText ? `${sortedRows.length} / ${rows.length} 件` : `${rows.length} 件`}
           </span>
         </div>
         <div className={styles.toolbarRight}>
@@ -166,6 +196,15 @@ const DataTable: FC<DataTableProps> = ({
         <table className={styles.table}>
           <thead>
             <tr>
+              {selectable && (
+                <th className={styles.th} style={{ width: 32 }}>
+                  <input
+                    type="checkbox"
+                    checked={selectedRows.size === sortedRows.length && sortedRows.length > 0}
+                    onChange={toggleAllSelection}
+                  />
+                </th>
+              )}
               {columnIndices.map((ci) => (
                 <th
                   key={ci}
@@ -183,22 +222,35 @@ const DataTable: FC<DataTableProps> = ({
             </tr>
           </thead>
           <tbody>
-            {displayRows.map((row, ri) => (
+            {displayRows.map((row, ri) => {
+              const globalIndex = safePageIndex * pageSize + ri
+              return (
               <tr
                 key={ri}
-                className={cn(styles.tr, onRowClick && styles.trClickable)}
-                onClick={onRowClick ? () => onRowClick(safePageIndex * pageSize + ri, row) : undefined}
+                className={cn(styles.tr, onRowClick && styles.trClickable, selectedRows.has(globalIndex) && styles.trSelected)}
+                onClick={onRowClick ? () => onRowClick(globalIndex, row) : undefined}
               >
+                {selectable && (
+                  <td className={styles.td} style={{ width: 32 }}>
+                    <input
+                      type="checkbox"
+                      checked={selectedRows.has(globalIndex)}
+                      onChange={(e) => { e.stopPropagation(); toggleRowSelection(globalIndex) }}
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  </td>
+                )}
                 {columnIndices.map((ci) => (
                   <td key={ci} className={styles.td}>
                     {row[ci] ?? ''}
                   </td>
                 ))}
               </tr>
-            ))}
+              )
+            })}
             {displayRows.length === 0 && (
               <tr>
-                <td colSpan={columnIndices.length} className={styles.emptyRow}>
+                <td colSpan={columnIndices.length + (selectable ? 1 : 0)} className={styles.emptyRow}>
                   {filterText ? '該当するデータがありません' : 'データなし'}
                 </td>
               </tr>
