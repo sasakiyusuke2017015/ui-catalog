@@ -19,7 +19,9 @@ export const VERSION_REGISTRY = {
   Card: '1.1.0',
   Checkbox: '1.0.0',
   ExternalLink: '1.0.0',
+  FileLink: '1.0.0',
   Icon: '1.4.0',
+  IconButton: '1.0.0',
   Input: '1.0.0',
   InternalLink: '1.0.0',
   LineChart: '1.0.0',
@@ -48,6 +50,8 @@ export const VERSION_REGISTRY = {
   SubHeader: '1.0.0',
 
   // molecules
+  StatusBar: '1.0.0',
+  TreeView: '1.0.0',
   AdjustmentBanner: '1.0.0',
   AlertDialog: '1.0.0',
   AuthFormCard: '1.0.0',
@@ -80,7 +84,6 @@ export const VERSION_REGISTRY = {
   Toast: '1.0.0',
   RefreshButton: '1.0.0',
   FilterField: '1.0.0',
-  StatusBar: '1.0.0',
   ChatFab: '1.0.0',
   ActionBreadcrumb: '1.0.0',
   EmptyState: '1.0.0',
@@ -88,6 +91,8 @@ export const VERSION_REGISTRY = {
   ToggleableSection: '1.0.0',
 
   // organisms
+  DiffViewer: '1.0.0',
+  ModalCheckboxList: '1.0.0',
   ContentBlock: '1.0.0',
   DropdownMenu: '1.0.0',
   FixedTabBar: '1.0.0',

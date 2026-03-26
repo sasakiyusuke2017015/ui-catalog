@@ -9,6 +9,8 @@ export * from './Dialog'
 export * from './Modal'
 export * from './AlertDialog'
 export * from './ConfirmDialog'
+export * from './ModalCheckboxList'
+export * from './DiffViewer'
 
 // Menus
 export * from './DropdownMenu'
@@ -21,6 +23,9 @@ export * from './Toast'
 export * from './LoadingOverlay'
 export * from './LoadingZone'
 export * from './EmptyState'
+
+// Data
+export * from './DataTable'
 
 // Content
 export * from './ContentBlock'
