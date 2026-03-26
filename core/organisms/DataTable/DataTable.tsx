@@ -17,6 +17,8 @@ export interface DataTableProps {
   selectable?: boolean
   /** 選択行の変更コールバック（行インデックスの Set） */
   onSelectionChange?: (selected: Set<number>) => void
+  /** ヘッダーの表示ラベル（キー=カラム名, 値=表示名） */
+  headerLabels?: Record<string, string>
   /** 追加クラス */
   className?: string
   /** 1ページあたりの行数（省略時は 50） */
@@ -35,6 +37,7 @@ const DataTable: FC<DataTableProps> = ({
   onRowClick,
   selectable = false,
   onSelectionChange,
+  headerLabels,
   className,
   pageSize: defaultPageSize = 50,
 }) => {
@@ -181,7 +184,7 @@ const DataTable: FC<DataTableProps> = ({
                         checked={activeColumns.includes(h)}
                         onChange={() => toggleColumn(h)}
                       />
-                      <span>{h}</span>
+                      <span>{headerLabels?.[h] ?? h}</span>
                     </label>
                   ))}
                 </div>
@@ -211,7 +214,7 @@ const DataTable: FC<DataTableProps> = ({
                   className={cn(styles.th, styles.thSortable)}
                   onClick={() => handleSort(ci)}
                 >
-                  <span>{headers[ci]}</span>
+                  <span>{headerLabels?.[headers[ci]] ?? headers[ci]}</span>
                   <span className={styles.sortIcon}>
                     {sortColumn === ci
                       ? sortOrder === 'asc' ? '▲' : '▼'
