@@ -250,9 +250,11 @@ const DataTable: FC<DataTableProps> = ({
                   const raw = row[ci] ?? ''
                   const colName = headers[ci]
                   const display = cellLabels?.[colName]?.[raw] ?? raw
+                  // 改行を含む場合は1行目のみ表示
+                  const firstLine = display.includes('\n') ? display.split('\n')[0] + '…' : display
                   return (
-                    <td key={ci} className={styles.td}>
-                      {display}
+                    <td key={ci} className={styles.td} title={display !== firstLine ? display : undefined}>
+                      {firstLine}
                     </td>
                   )
                 })}
