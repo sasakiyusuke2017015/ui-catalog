@@ -22,5 +22,8 @@ export * from './calend'
 // ticker プロジェクト固有
 export * from './ticker'
 
+// meetcribe プロジェクト固有
+export * from './meetcribe'
+
 // 複数プロジェクト共有
 export * from './shared'

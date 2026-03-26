@@ -63,6 +63,18 @@ export const ALL_ICON_TYPES = [
   'trend-down',
   'trash',
   'save',
+  'star',
+  'star-filled',
+  'cloud-upload',
+  'inbox',
+  'archive',
+  // Meetscribe ブランド（洗練版）
+  'meetscribe-brand',        // メイン: 音声波形+ドキュメント
+  'meetscribe-brand-wave',   // M字波形（ロゴ的）
+  'meetscribe-brand-mic',    // マイク+テキストライン
+  'meetscribe-brand-play',   // 再生+ドキュメント
+  'meetscribe-brand-chat',   // 吹き出し波形
+  'meetscribe-brand-shield', // シールド型
   // LOADING
   'spinner',
   'spinner-thin',

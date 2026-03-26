@@ -30,6 +30,9 @@
     "./extensions/calend/hooks": "./extensions/calend/hooks/index.ts",
     "./extensions/calend/utils": "./extensions/calend/utils/index.ts",
     "./extensions/shared": "./extensions/shared/index.ts",
+    "./extensions/meetcribe": "./extensions/meetcribe/index.ts",
+    "./extensions/meetcribe/atoms": "./extensions/meetcribe/atoms/index.ts",
+    "./extensions/meetcribe/molecules": "./extensions/meetcribe/molecules/index.ts",
     "./tailwind-preset": "./tailwind.preset.ts"
   },
   "scripts": {

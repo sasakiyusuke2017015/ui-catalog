@@ -13,6 +13,7 @@ type ButtonVariant =
   | 'danger'
   | 'default'
   | 'success'
+  | 'nav'
   | 'ghost'
 type ButtonSize = 'small' | 'medium' | 'large'
 
@@ -32,6 +33,12 @@ interface ButtonProps
   triggerShake?: boolean
   /** borderRadius（形状設定用） - Layout から props で渡す */
   borderRadius?: string
+  /** 選択状態（nav variant 用） */
+  selected?: boolean
+  /** フルワイド表示 */
+  fullWidth?: boolean
+  /** 左ボーダーのアクセントカラー（nav variant 用） */
+  accentColor?: 'blue' | 'yellow' | 'orange' | 'green' | 'gray' | 'purple'
 }
 
 const Button: FC<ButtonProps> = ({
@@ -48,6 +55,9 @@ const Button: FC<ButtonProps> = ({
   enableShimmer = true,
   triggerShake: _triggerShake = false,
   borderRadius = '0.375rem',
+  selected = false,
+  fullWidth = false,
+  accentColor,
   ...props
 }) => {
   const [isHovered, setIsHovered] = useState(false)
@@ -61,6 +71,7 @@ const Button: FC<ButtonProps> = ({
     danger: 'inset 0 0 0 3px rgba(239, 68, 68, 0.4)',
     default: 'inset 0 0 0 3px rgba(156, 163, 175, 0.4)',
     success: 'inset 0 0 0 3px rgba(34, 197, 94, 0.4)',
+    nav: 'none',
     ghost: 'none',
   }
 
@@ -84,9 +95,12 @@ const Button: FC<ButtonProps> = ({
     styles.button,
     styles[variant],
     styles[size],
-    enableShimmer && styles.shimmer,
+    enableShimmer && variant !== 'nav' && variant !== 'ghost' && styles.shimmer,
     enableHopEffect && styles.hopEffect,
     disabled && styles.disabled,
+    selected && styles.selected,
+    fullWidth && styles.fullWidth,
+    accentColor && styles[`accent-${accentColor}`],
     className,
   ]
     .filter(Boolean)

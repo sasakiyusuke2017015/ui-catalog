@@ -605,6 +605,135 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
       d="M12 20V4m0 16l-4-4m4 4l4-4"
     />
   ),
+  ['star']: () => (
+    <path
+      className={styles.stroke}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+    />
+  ),
+  ['star-filled']: () => (
+    <path
+      className={styles.fill}
+      d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+    />
+  ),
+  ['cloud-upload']: () => (
+    <path
+      className={styles.stroke}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+    />
+  ),
+  ['inbox']: () => (
+    <path
+      className={styles.stroke}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+    />
+  ),
+  ['archive']: () => (
+    <path
+      className={styles.stroke}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+    />
+  ),
+
+  // ========================================
+  // Meetscribe ブランドアイコン（洗練版）
+  // ========================================
+
+  // メイン: 音声波形がドキュメントに変換されるイメージ
+  // シンプルで認識しやすい、24x24で映える
+  ['meetscribe-brand']: () => (
+    <g className={styles.body}>
+      {/* 角丸ドキュメント */}
+      <rect className={styles.stroke} x="5" y="2" width="14" height="20" rx="2.5" strokeWidth="1.8" />
+      {/* 動的な音声波形（5本、中央が高い） */}
+      <line className={styles.stroke} x1="8" y1="9" x2="8" y2="15" strokeWidth="2" strokeLinecap="round" />
+      <line className={styles.stroke} x1="10.5" y1="7" x2="10.5" y2="17" strokeWidth="2" strokeLinecap="round" />
+      <line className={styles.stroke} x1="13" y1="5.5" x2="13" y2="18.5" strokeWidth="2.2" strokeLinecap="round" />
+      <line className={styles.stroke} x1="15.5" y1="7" x2="15.5" y2="17" strokeWidth="2" strokeLinecap="round" />
+      <line className={styles.stroke} x1="18" y1="9" x2="18" y2="15" strokeWidth="2" strokeLinecap="round" />
+    </g>
+  ),
+
+  // バリエーション1: M字波形（ロゴ的、ミニマル）
+  ['meetscribe-brand-wave']: () => (
+    <g className={styles.body}>
+      {/* M字が音声波形を表現 */}
+      <path
+        className={styles.stroke}
+        d="M2 16V10l4.5 4 5.5-10 5.5 10 4.5-4v6"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+      />
+      {/* ベースライン */}
+      <line className={styles.stroke} x1="2" y1="20" x2="22" y2="20" strokeWidth="1.5" strokeLinecap="round" />
+    </g>
+  ),
+
+  // バリエーション2: 円形マイク + テキストライン（バランス型）
+  ['meetscribe-brand-mic']: () => (
+    <g className={styles.body}>
+      {/* マイク */}
+      <rect className={styles.stroke} x="9" y="3" width="6" height="9" rx="3" strokeWidth="1.8" />
+      <path className={styles.stroke} d="M6 10v1.5a6 6 0 0012 0V10" strokeWidth="1.8" />
+      <line className={styles.stroke} x1="12" y1="17.5" x2="12" y2="19" strokeWidth="1.8" />
+      {/* テキストライン（議事録を表現） */}
+      <line className={styles.stroke} x1="6" y1="21" x2="18" y2="21" strokeWidth="2" strokeLinecap="round" />
+    </g>
+  ),
+
+  // バリエーション3: 再生+ドキュメント（動画→文字起こし）
+  ['meetscribe-brand-play']: () => (
+    <g className={styles.body}>
+      {/* ドキュメント */}
+      <path className={styles.stroke} d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" strokeWidth="1.8" />
+      <path className={styles.stroke} d="M14 2v6h6" strokeWidth="1.8" />
+      {/* 再生ボタン（大きめ、中央配置） */}
+      <path className={styles.fill} d="M9 10v6l6-3-6-3z" />
+    </g>
+  ),
+
+  // バリエーション4: 吹き出し波形（会話→テキスト）
+  ['meetscribe-brand-chat']: () => (
+    <g className={styles.body}>
+      {/* 吹き出し */}
+      <path
+        className={styles.stroke}
+        d="M21 12a9 9 0 01-9 9H4l2.5-2.5A9 9 0 1121 12z"
+        strokeWidth="1.8"
+      />
+      {/* 音声波形（3本） */}
+      <line className={styles.stroke} x1="9" y1="10" x2="9" y2="14" strokeWidth="2" strokeLinecap="round" />
+      <line className={styles.stroke} x1="12" y1="8" x2="12" y2="16" strokeWidth="2" strokeLinecap="round" />
+      <line className={styles.stroke} x1="15" y1="10" x2="15" y2="14" strokeWidth="2" strokeLinecap="round" />
+    </g>
+  ),
+
+  // バリエーション5: シールド型（信頼性・セキュリティ感）
+  ['meetscribe-brand-shield']: () => (
+    <g className={styles.body}>
+      {/* シールド */}
+      <path
+        className={styles.stroke}
+        d="M12 2L4 6v6c0 5.5 3.4 10.3 8 12 4.6-1.7 8-6.5 8-12V6l-8-4z"
+        strokeWidth="1.8"
+      />
+      {/* 音声波形（3本） */}
+      <line className={styles.stroke} x1="9" y1="10" x2="9" y2="14" strokeWidth="2" strokeLinecap="round" />
+      <line className={styles.stroke} x1="12" y1="8" x2="12" y2="16" strokeWidth="2.2" strokeLinecap="round" />
+      <line className={styles.stroke} x1="15" y1="10" x2="15" y2="14" strokeWidth="2" strokeLinecap="round" />
+    </g>
+  ),
 
   // ========================================
   // LOADING アイコン
