@@ -21,6 +21,7 @@ export const VERSION_REGISTRY = {
   ExternalLink: '1.0.0',
   FileLink: '1.0.0',
   Icon: '1.4.0',
+  IconButton: '1.0.0',
   Input: '1.0.0',
   InternalLink: '1.0.0',
   LineChart: '1.0.0',
