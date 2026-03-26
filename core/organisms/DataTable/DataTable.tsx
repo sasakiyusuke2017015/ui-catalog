@@ -19,6 +19,8 @@ export interface DataTableProps {
   onSelectionChange?: (selected: Set<number>) => void
   /** ヘッダーの表示ラベル（キー=カラム名, 値=表示名） */
   headerLabels?: Record<string, string>
+  /** セル値の変換マップ（キー=カラム名, 値={rawValue: displayLabel}） */
+  cellLabels?: Record<string, Record<string, string>>
   /** 追加クラス */
   className?: string
   /** 1ページあたりの行数（省略時は 50） */
@@ -38,6 +40,7 @@ const DataTable: FC<DataTableProps> = ({
   selectable = false,
   onSelectionChange,
   headerLabels,
+  cellLabels,
   className,
   pageSize: defaultPageSize = 50,
 }) => {
@@ -243,11 +246,16 @@ const DataTable: FC<DataTableProps> = ({
                     />
                   </td>
                 )}
-                {columnIndices.map((ci) => (
-                  <td key={ci} className={styles.td}>
-                    {row[ci] ?? ''}
-                  </td>
-                ))}
+                {columnIndices.map((ci) => {
+                  const raw = row[ci] ?? ''
+                  const colName = headers[ci]
+                  const display = cellLabels?.[colName]?.[raw] ?? raw
+                  return (
+                    <td key={ci} className={styles.td}>
+                      {display}
+                    </td>
+                  )
+                })}
               </tr>
               )
             })}
