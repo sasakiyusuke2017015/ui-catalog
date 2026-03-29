@@ -7,7 +7,6 @@
 // Dialogs & Modals
 export * from './Dialog'
 export * from './Modal'
-export * from './AlertDialog'
 export * from './ConfirmDialog'
 export * from './ModalCheckboxList'
 export * from './DiffViewer'
@@ -16,7 +15,6 @@ export * from './DiffViewer'
 export * from './DropdownMenu'
 export * from './FloatingMenuButton'
 export * from './MenuItemList'
-export * from './Select'
 
 // Feedback
 export * from './Toast'
