@@ -4,6 +4,7 @@
  */
 import { FC, Fragment } from 'react';
 
+import { IconButton } from '../../atoms/IconButton';
 import { useOperationLog } from '../../../infra/devtools';
 import styles from './TabBar.module.scss';
 
@@ -100,18 +101,16 @@ const TabBar: FC<TabBarProps> = ({
                 {tab.label}
               </span>
               {onCloseTab && (
-                <button
+                <IconButton
+                  icon="x"
+                  size={12}
+                  label={`${tab.label}のタブを閉じる`}
                   className={styles.tabBar__closeButton}
                   onClick={(e) => {
                     e.stopPropagation();
                     handleCloseTab(tab.id, tab.label);
                   }}
-                  aria-label={`${tab.label}のタブを閉じる`}
-                >
-                  <svg className={styles.tabBar__closeButton__icon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+                />
               )}
             </div>
           </Fragment>

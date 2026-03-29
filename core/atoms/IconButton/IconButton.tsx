@@ -32,6 +32,7 @@ export default function IconButton({
       title={label}
       aria-label={label}
       disabled={disabled}
+      data-component="icon-button"
       className={`inline-flex items-center justify-center p-1 rounded text-[var(--color-text-muted)] transition-colors cursor-pointer ${
         disabled ? 'opacity-30 cursor-default' : variantClass
       } ${className}`}

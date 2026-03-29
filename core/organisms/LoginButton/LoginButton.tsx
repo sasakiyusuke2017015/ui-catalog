@@ -329,6 +329,7 @@ const LoginButton = ({
       shimmerSize={shimmerSettings.shimmerSize}
       shimmerDuration={shimmerSettings.shimmerDuration}
       borderRadius="12px"
+      data-component="login-button"
       className={`${getSizeStyles()} ${fullWidth ? 'w-full' : ''} ${animationClass} ${authenticatedClass} ${className}`}
     >
       {getContent()}

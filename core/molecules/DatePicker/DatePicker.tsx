@@ -6,7 +6,7 @@ import Icon from '../../atoms/Icon';
 
 import { useAlert } from '../../hooks/ui';
 import { useOperationLog } from '../../../infra/devtools';
-import { AlertDialog } from '../../organisms/AlertDialog';
+import { AlertDialog } from '../../atoms/AlertDialog';
 
 import { useDatePickerState } from './useDatePickerState';
 import { NavigationButton } from './NavigationButton';

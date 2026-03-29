@@ -1,6 +1,6 @@
 import { FC, ReactNode, useEffect } from 'react';
 
-import Icon from '../../atoms/Icon';
+import { IconButton } from '../../atoms/IconButton';
 import { useOperationLog } from '../../../infra/devtools';
 import styles from './Modal.module.scss';
 
@@ -64,12 +64,13 @@ const Modal: FC<ModalProps> = ({
       >
         <div className={styles.header}>
           <h3 className={styles.title}>{title}</h3>
-          <button
+          <IconButton
+            icon="x"
+            size={20}
+            label="閉じる"
             onClick={() => { log('close', { title, trigger: 'button' }); onClose(); }}
             className={styles.closeButton}
-          >
-            <Icon name="x" size={20} />
-          </button>
+          />
         </div>
         <div className={styles.content}>{children}</div>
       </div>

@@ -1026,6 +1026,7 @@ const Icon: React.FC<IconProps> = ({
     'aria-label': ariaLabel,
     'aria-hidden': ariaHidden ?? !ariaLabel,
     'data-icon': name,
+    'data-component': 'icon',
   };
 
   // Path をレンダリング

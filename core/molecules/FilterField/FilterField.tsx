@@ -4,7 +4,7 @@
  */
 import { FC, ReactNode } from 'react';
 
-import { Select } from '../../organisms/Select';
+import { Select } from '../../atoms/Select';
 import { Input } from '../../atoms/Input';
 import styles from './FilterField.module.scss';
 

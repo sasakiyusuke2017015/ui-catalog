@@ -57,7 +57,7 @@ const FloatingElements = ({
   elements = defaultElements,
 }: FloatingElementsProps) => {
   return (
-    <>
+    <div data-component="floating-elements">
       {elements.map((element, index) => (
         <div
           key={index}
@@ -69,7 +69,7 @@ const FloatingElements = ({
           }
         />
       ))}
-    </>
+    </div>
   );
 };
 

@@ -1,4 +1,5 @@
 import { cn } from '../../utils/cn'
+import { IconButton } from '../../atoms/IconButton'
 import styles from './DiffViewer.module.scss'
 
 export interface LineDiff {
@@ -132,13 +133,13 @@ export default function DiffViewer({
               <span className={styles.statChanged}>~{summary.changed}</span>
             </div>
           </div>
-          <button
-            type="button"
-            className={styles.closeButton}
+          <IconButton
+            icon="x"
+            size={18}
+            label="閉じる"
             onClick={onClose}
-          >
-            ×
-          </button>
+            className={styles.closeButton}
+          />
         </div>
 
         {/* Entries */}
