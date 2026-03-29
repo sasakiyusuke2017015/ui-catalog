@@ -6,6 +6,7 @@ storybook-static/
 # Dependencies
 node_modules/
 .pnpm-store/
+package-lock.json
 
 # Test results
 coverage/
