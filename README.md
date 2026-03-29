@@ -155,7 +155,9 @@ ui-catalog リポジトリ
 └── project/<name>       ← 各プロジェクト専用
 ```
 
-**重要**: main への直接コミットは禁止。必ず PR 経由で Squash Merge する。
+**重要**: project/* の変更を main に取り込む際は、必ず GitHub PR 経由で **Squash Merge** する。直接 merge/rebase は禁止。
+
+> Squash Merge に限定する理由: sync 時に「マージ済みブランチ」を差分の内容で検出し `reset --hard main` するため。通常 Merge や Rebase Merge だと検出が困難になる。
 
 ### 運用フロー
 
@@ -164,7 +166,7 @@ ui-catalog リポジトリ
     ↓
 【PR】/ui-catalog pr で PR 作成
     ↓
-【レビュー】GitHub で確認 → Squash Merge
+【レビュー】GitHub で確認 → Squash Merge（必須: 他のマージ方法は禁止）
     ↓
 【同期】/ui-catalog sync で全ブランチを同期
 ```

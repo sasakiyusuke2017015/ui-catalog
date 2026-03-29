@@ -152,8 +152,6 @@ ui-catalog/
 │   └── shared/              #   複数プロジェクトで使用（昇格候補）
 │
 ├── infra/                   # 育成・観測の仕組み
-│   ├── commands/            #   Claude Code コマンド
-│   │   └── ui-catalog.md
 │   ├── devtools/            #   開発ツール
 │   ├── version/             #   バージョン管理
 │   └── theme/               #   テーマ機能
@@ -301,6 +299,9 @@ project-a, project-b, ...
 ```
 project/1on1 ブランチ → main（安定版）
 ```
+
+**重要**: GitHub PR 経由の **Squash Merge のみ**。直接 merge/rebase は禁止。
+Squash Merge に限定する理由は、sync 時のマージ済み検出（差分ベース）が正しく機能するため。
 
 ---
 
