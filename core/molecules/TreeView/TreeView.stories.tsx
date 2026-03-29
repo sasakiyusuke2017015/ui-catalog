@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react'
-import { TreeView, type TreeNode } from './TreeView'
+import TreeView from './TreeView'
+import type { TreeNode } from './TreeView'
 
 const meta: Meta<typeof TreeView> = {
   title: 'molecules/TreeView',
