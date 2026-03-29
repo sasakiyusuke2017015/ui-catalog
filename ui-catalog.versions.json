@@ -112,5 +112,6 @@
   "Timeline": "1.0.0",
   "WeekView": "1.0.0",
   "DragOverlay": "1.0.0",
-  "CountdownRing": "1.0.0"
+  "CountdownRing": "1.0.0",
+  "MathView": "1.0.0"
 }

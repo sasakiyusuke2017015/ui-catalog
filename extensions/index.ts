@@ -25,5 +25,8 @@ export * from './ticker'
 // meetcribe プロジェクト固有
 export * from './meetcribe'
 
+// wordman プロジェクト固有
+export * from './wordman'
+
 // 複数プロジェクト共有
 export * from './shared'

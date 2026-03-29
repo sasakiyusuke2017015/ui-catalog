@@ -139,6 +139,9 @@ export const VERSION_REGISTRY = {
   // magicui
   BlurFade: '1.0.0',
 
+  // wordman
+  MathView: '1.0.0',
+
   // ticker
   CountdownRing: '1.0.0',
 } as const
