@@ -50,6 +50,6 @@ export * from './BackgroundImage'
 export * from './Media'
 export * from './ResponsiveContainer'
 
-// Form selects & dialogs
+
+// Form selects
 export * from './Select'
-export * from './AlertDialog'

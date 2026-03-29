@@ -7,6 +7,7 @@
 // Dialogs & Modals
 export * from './Dialog'
 export * from './Modal'
+export * from './AlertDialog'
 export * from './ConfirmDialog'
 export * from './ModalCheckboxList'
 export * from './DiffViewer'
