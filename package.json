@@ -29,6 +29,7 @@
     "./extensions/calend/types": "./extensions/calend/types/index.ts",
     "./extensions/calend/hooks": "./extensions/calend/hooks/index.ts",
     "./extensions/calend/utils": "./extensions/calend/utils/index.ts",
+    "./extensions/wordman": "./extensions/wordman/index.ts",
     "./extensions/shared": "./extensions/shared/index.ts",
     "./extensions/meetcribe": "./extensions/meetcribe/index.ts",
     "./extensions/meetcribe/atoms": "./extensions/meetcribe/atoms/index.ts",
