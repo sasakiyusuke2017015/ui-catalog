@@ -1,93 +1,129 @@
-import { useState, useCallback, useRef, useEffect } from 'react'
-import { useSetAtom, useStore } from 'jotai'
+import { useState, useRef, useEffect, useCallback } from 'react'
+import { useAtomValue, useSetAtom, useStore } from 'jotai'
 import { selectedDateAtom } from '../state/calendar'
-import { generateDateRange, extendDateRange } from '../utils/dates'
 
-const INITIAL_DAYS_BEFORE = 7
-const INITIAL_DAYS_AFTER = 30
-const LOAD_MORE_COUNT = 14
-const SCROLL_THRESHOLD = 500
+// 前後24か月 = 約730日ずつ（合計48か月）
+const MONTHS_BEFORE = 24
+const MONTHS_AFTER = 24
+// DayFrame の高さ（Timeline.tsx と同じ値）
+const DAY_FRAME_HEIGHT = 1404
+
+/** 指定日を基準に前後の月数分の日付配列を生成 */
+function generateFixedDateRange(baseDate: Date, monthsBefore: number, monthsAfter: number): readonly Date[] {
+  const dates: Date[] = []
+  const base = new Date(baseDate)
+  base.setHours(0, 0, 0, 0)
+
+  // 開始日: baseDate から monthsBefore 月前の1日
+  const startDate = new Date(base.getFullYear(), base.getMonth() - monthsBefore, 1)
+  // 終了日: baseDate から monthsAfter 月後の末日
+  const endDate = new Date(base.getFullYear(), base.getMonth() + monthsAfter + 1, 0)
+
+  const current = new Date(startDate)
+  while (current <= endDate) {
+    dates.push(new Date(current))
+    current.setDate(current.getDate() + 1)
+  }
+
+  return dates
+}
+
+/** 日付のインデックスを検索（日付配列内） */
+function findDateIndex(dates: readonly Date[], targetDate: Date): number {
+  const targetStr = targetDate.toDateString()
+  return dates.findIndex((d) => d.toDateString() === targetStr)
+}
 
 export function useInfiniteTimeline(scrollRef: React.RefObject<HTMLDivElement | null>) {
   const store = useStore()
+  const selectedDate = useAtomValue(selectedDateAtom)
   const setSelectedDate = useSetAtom(selectedDateAtom)
   const initialDateRef = useRef(store.get(selectedDateAtom))
 
-  const [dates, setDates] = useState<readonly Date[]>(() =>
-    generateDateRange(initialDateRef.current, INITIAL_DAYS_BEFORE, INITIAL_DAYS_AFTER)
+  // 固定48か月分の日付を生成（初回のみ）
+  const [dates] = useState<readonly Date[]>(() =>
+    generateFixedDateRange(initialDateRef.current, MONTHS_BEFORE, MONTHS_AFTER)
   )
-  const isLoadingRef = useRef(false)
+
   const lastSyncedDateRef = useRef('')
+  const isScrollingToDateRef = useRef(false)
 
-  const loadMore = useCallback(
-    (direction: 'past' | 'future') => {
-      if (isLoadingRef.current) return
-      isLoadingRef.current = true
+  // 日付インデックスからスクロール位置を計算してスクロール
+  const scrollToDate = useCallback((targetDate: Date, behavior: ScrollBehavior = 'auto') => {
+    const el = scrollRef.current
+    if (!el) return false
 
-      setDates((prev) => extendDateRange(prev, direction, LOAD_MORE_COUNT))
+    const index = findDateIndex(dates, targetDate)
+    if (index === -1) {
+      console.warn(`Date ${targetDate.toDateString()} is out of range`)
+      return false
+    }
 
-      requestAnimationFrame(() => {
-        isLoadingRef.current = false
-      })
-    },
-    []
-  )
+    const scrollTop = index * DAY_FRAME_HEIGHT
+    el.scrollTo({ top: scrollTop, behavior })
+    return true
+  }, [dates, scrollRef])
 
-  // Scroll to selectedDate on mount
+  // マウント時に selectedDate にスクロール
   useEffect(() => {
     const el = scrollRef.current
     if (!el) return
 
+    // 少し遅延させてDOMが準備されるのを待つ
     requestAnimationFrame(() => {
-      const targetDateStr = initialDateRef.current.toDateString()
-      const dayEls = el.querySelectorAll<HTMLElement>('[data-date]')
-      for (const dayEl of dayEls) {
-        const dateStr = dayEl.getAttribute('data-date')
-        if (dateStr && new Date(dateStr).toDateString() === targetDateStr) {
-          dayEl.scrollIntoView({ block: 'start' })
-          break
-        }
-      }
+      scrollToDate(initialDateRef.current, 'auto')
+      lastSyncedDateRef.current = initialDateRef.current.toISOString()
     })
-  }, [scrollRef])
+  }, [scrollRef, scrollToDate])
 
+  // selectedDate が外部から変更されたときにスクロール（Header の DatePicker など）
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+
+    // 既に同じ日付なら何もしない（スクロールによる更新との無限ループ防止）
+    if (lastSyncedDateRef.current === selectedDate.toISOString()) return
+
+    // スクロール実行
+    isScrollingToDateRef.current = true
+    lastSyncedDateRef.current = selectedDate.toISOString()
+
+    scrollToDate(selectedDate, 'smooth')
+
+    // スクロール完了後にフラグをリセット
+    setTimeout(() => {
+      isScrollingToDateRef.current = false
+    }, 500)
+  }, [selectedDate, scrollToDate])
+
+  // スクロール位置から表示中の日付を計算して selectedDate に同期
   useEffect(() => {
     const el = scrollRef.current
     if (!el) return
 
     function handleScroll() {
       if (!el) return
+      // プログラム的なスクロール中は同期をスキップ
+      if (isScrollingToDateRef.current) return
 
-      if (el.scrollTop < SCROLL_THRESHOLD) {
-        loadMore('past')
-      }
+      // スクロール位置から日付インデックスを計算
+      const scrollTop = el.scrollTop
+      const index = Math.round(scrollTop / DAY_FRAME_HEIGHT)
+      const clampedIndex = Math.max(0, Math.min(dates.length - 1, index))
+      const visibleDate = dates[clampedIndex]
 
-      if (
-        el.scrollHeight - el.scrollTop - el.clientHeight <
-        SCROLL_THRESHOLD
-      ) {
-        loadMore('future')
-      }
-
-      // Sync selectedDate with visible day (debounced by checking if changed)
-      const dayEls = el.querySelectorAll<HTMLElement>('[data-date]')
-      const elRect = el.getBoundingClientRect()
-      for (const dayEl of dayEls) {
-        const rect = dayEl.getBoundingClientRect()
-        if (rect.top <= elRect.top + 80 && rect.bottom > elRect.top + 80) {
-          const dateStr = dayEl.getAttribute('data-date')
-          if (dateStr && dateStr !== lastSyncedDateRef.current) {
-            lastSyncedDateRef.current = dateStr
-            setSelectedDate(new Date(dateStr))
-          }
-          break
+      if (visibleDate) {
+        const newDateIso = visibleDate.toISOString()
+        if (newDateIso !== lastSyncedDateRef.current) {
+          lastSyncedDateRef.current = newDateIso
+          setSelectedDate(visibleDate)
         }
       }
     }
 
     el.addEventListener('scroll', handleScroll, { passive: true })
     return () => el.removeEventListener('scroll', handleScroll)
-  }, [scrollRef, loadMore, setSelectedDate])
+  }, [scrollRef, setSelectedDate, dates])
 
   return { dates }
 }
