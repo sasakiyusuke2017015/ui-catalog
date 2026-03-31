@@ -2,7 +2,8 @@ import { startOfDay } from 'date-fns'
 import { IconLabel } from '../../atoms/IconLabel/IconLabel'
 import type { CalendarEvent } from '../../types'
 
-const LANE_H = 20
+const IS_TOUCH = typeof window !== 'undefined' && 'ontouchstart' in window
+const LANE_H = IS_TOUCH ? 28 : 20
 
 interface SpanningBarProps {
   readonly event: CalendarEvent

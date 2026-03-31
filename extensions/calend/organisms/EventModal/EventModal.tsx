@@ -225,7 +225,10 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
   const vh = typeof window !== 'undefined' ? window.innerHeight : 800
   const availableH = pos ? vh - pos.top! - 12 : vh * 0.8
   const panelMaxH = `${Math.max(availableH, 200)}px`
-  const panelStyle: React.CSSProperties = pos
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 640
+  const panelStyle: React.CSSProperties = isMobile
+    ? { position: 'fixed', inset: 0, width: '100%', height: '100%', maxHeight: '100vh', zIndex: 10000, borderRadius: 0 }
+    : pos
     ? { position: 'fixed', top: `${pos.top}px`, left: pos.left !== undefined ? `${pos.left}px` : undefined, right: pos.right !== undefined ? `${pos.right}px` : undefined, width: '380px', maxHeight: panelMaxH, zIndex: 10000 }
     : { width: '380px', maxHeight: '80vh' }
 
