@@ -1,6 +1,6 @@
 import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react'
 import { useAtom, useSetAtom, useAtomValue } from 'jotai'
-import { eventModalAtom, activeSlotAtom, viewModeAtom, eventsAtom } from '../../hooks/calend/calendar'
+import { eventModalAtom, activeSlotAtom, eventsAtom } from '../../hooks/calend/calendar'
 import { format } from 'date-fns'
 import { Button, Input } from '../../molecules'
 import { TextArea } from '../../atoms'
@@ -26,7 +26,6 @@ interface EventModalProps {
 export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
   const [modal, setModal] = useAtom(eventModalAtom)
   const setActiveSlot = useSetAtom(activeSlotAtom)
-  const viewMode = useAtomValue(viewModeAtom)
   const allEvents = useAtomValue(eventsAtom)
   const titleRef = useRef<HTMLInputElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)

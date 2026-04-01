@@ -29,7 +29,7 @@ export interface SurveyCardProps {
  * アンケート一覧で使用する再利用可能なカード
  */
 const SurveyCard: FC<SurveyCardProps> = ({
-  id,
+  id: _id,
   title,
   description,
   period,

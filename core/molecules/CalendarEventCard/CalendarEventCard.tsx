@@ -143,8 +143,8 @@ function useStickyTitle(cardRef: React.RefObject<HTMLDivElement | null>) {
 function TimelineEventCard({
   title,
   icon,
-  startLabel,
-  endLabel,
+  startLabel: _startLabel,
+  endLabel: _endLabel,
   top,
   height,
   color,
