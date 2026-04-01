@@ -195,10 +195,13 @@ PR を作成しますか？ (y/n)
    - data-component 属性の漏れ
    - .stories.tsx / .test.tsx の漏れ
    - 依存方向の違反
+   - **昇格残骸（消込チェック）**: core/ と extensions/ の両方に同名コンポーネントが存在
+   - **deprecation re-export の検出**: extensions/ 内の `@deprecated` 付き re-export
 
 2. **未使用コードの検出**
    - 未使用のコンポーネント・型定義・ユーティリティ
    - deprecated な残骸
+   - 昇格済みコンポーネントの extensions/ 側残存ファイル
 
 3. **修正の実行**（ユーザー確認後）
 
@@ -218,6 +221,8 @@ PR を作成しますか？ (y/n)
 │ versions.json 同期             │ ✅ OK  │                             │
 │ data-component 属性            │ ⚠️ 2   │ Badge, Card                 │
 │ 依存方向                        │ ✅ OK  │                             │
+│ 昇格残骸（消込）                 │ ⚠️ 1   │ StatusBar: core/ と 1on1/ の両方に存在 │
+│ deprecation re-export           │ ✅ OK  │                             │
 └────────────────────────────────┴────────┴─────────────────────────────┘
 
 修正を実行しますか？

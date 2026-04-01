@@ -1,0 +1,41 @@
+@use '../../../tokens' as *;
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 4px;
+  border-radius: 6px;
+  cursor: grab;
+  transition: background-color 0.15s;
+  overflow: hidden;
+
+  &:hover {
+    background-color: rgba($color-gray-200, 0.5);
+  }
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  min-width: 8px;
+  border-radius: 50%;
+}
+
+.time {
+  font-size: 10px;
+  font-weight: 500;
+  color: $color-text-secondary;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.title {
+  font-size: 10px;
+  font-weight: 500;
+  color: $color-text-primary;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-left: 4px;
+}

@@ -1,4 +1,4 @@
-import { cn } from '../../utils/cn'
+import styles from './StatusBar.module.scss'
 
 export interface StatusBarProps {
   message: string
@@ -13,20 +13,10 @@ export default function StatusBar({
 }: StatusBarProps) {
   if (!message) return null
 
-  const variantStyles = {
-    success: 'bg-(--color-success-bg) text-(--color-success) border-(--color-success)/20',
-    error: 'bg-(--color-error-bg) text-(--color-error) border-(--color-error)/20',
-    info: 'bg-(--color-accent-bg) text-(--color-accent) border-(--color-accent)/20',
-  }
-
   return (
     <footer
       data-component="status-bar"
-      className={cn(
-        'shrink-0 px-4 py-1.5 text-xs font-medium border-t',
-        variantStyles[variant],
-        className,
-      )}
+      className={`${styles.statusBar} ${styles[`statusBar--${variant}`]}${className ? ` ${className}` : ''}`}
     >
       {message}
     </footer>

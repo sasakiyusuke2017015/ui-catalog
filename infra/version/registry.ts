@@ -15,6 +15,7 @@ export const VERSION_REGISTRY = {
   BackgroundImage: '1.0.0',
   Badge: '1.1.0',
   Banner: '1.0.0',
+  Box: '1.0.0',
   Button: '1.2.0',
   Card: '1.1.0',
   Checkbox: '1.0.0',
@@ -34,6 +35,8 @@ export const VERSION_REGISTRY = {
   Segment: '1.0.0',
   Select: '1.0.0',
   Slider: '1.0.0',
+  Stack: '1.0.0',
+  Text: '1.0.0',
   TextArea: '1.0.0',
   Toggle: '1.0.0',
   Tooltip: '1.0.0',
@@ -50,68 +53,79 @@ export const VERSION_REGISTRY = {
   SubHeader: '1.0.0',
 
   // molecules
+  Calendar: '1.0.0',
   StatusBar: '1.0.0',
   TreeView: '1.0.0',
-  AdjustmentBanner: '1.0.0',
+  ViewModeToggle: '1.0.0',
   AlertDialog: '1.0.0',
   AuthFormCard: '1.0.0',
   Breadcrumb: '1.0.0',
   CardGrid: '1.0.0',
   ConfirmDialog: '1.0.0',
-  DataCountDisplay: '1.0.0',
   DatePicker: '1.0.0',
-  DevelopmentBanner: '1.0.0',
   Dialog: '1.0.0',
   FloatingMenuButton: '1.0.0',
   FormField: '1.0.0',
   KeyButton: '1.0.0',
-  LoadingZone: '1.0.0',
-  MemberCard: '1.0.0',
   MenuItem: '1.0.0',
   MenuItemList: '1.0.0',
   Modal: '1.0.0',
   PasswordValidation: '1.0.0',
-  PieChart: '1.0.0',
-  PWAInstallPrompt: '1.0.0',
-  QACardList: '1.0.0',
-  Question: '1.0.0',
-  ScoreBadge: '1.0.0',
   StarRating: '1.0.0',
-  StatisticItem: '1.0.0',
-  StatisticList: '1.0.0',
   StepIndicator: '1.0.0',
-  SurveyCard: '1.0.0',
   Toast: '1.0.0',
-  RefreshButton: '1.0.0',
   FilterField: '1.0.0',
-  ChatFab: '1.0.0',
   ActionBreadcrumb: '1.0.0',
   EmptyState: '1.0.0',
   Tabs: '1.0.0',
   ToggleableSection: '1.0.0',
 
   // organisms
+  DataTable: '1.0.0',
   DiffViewer: '1.0.0',
+  DotPattern: '1.0.0',
+  GridPattern: '1.0.0',
   ModalCheckboxList: '1.0.0',
   ContentBlock: '1.0.0',
   DropdownMenu: '1.0.0',
   FixedTabBar: '1.0.0',
-  InteractiveTable: '1.0.0',
   LoadingOverlay: '1.0.0',
   LoginButton: '1.0.0',
+  NumberTicker: '1.0.0',
+  ShimmerButton: '1.0.0',
   SortableToggleList: '1.0.0',
-  StatisticPanel: '1.0.0',
   TabBar: '1.1.0',
+  DetailHeader: '1.0.0',
+  PieChart: '1.0.0',
+  LoadingZone: '1.0.0',
+  RefreshButton: '1.0.0',
+
+  // --- extensions/1on1 ---
+  AdjustmentBanner: '1.0.0',
+  ChatFab: '1.0.0',
+  DataCountDisplay: '1.0.0',
+  DevelopmentBanner: '1.0.0',
+  MemberCard: '1.0.0',
+  PWAInstallPrompt: '1.0.0',
+  QACardList: '1.0.0',
+  Question: '1.0.0',
+  ScoreBadge: '1.0.0',
+  StatisticItem: '1.0.0',
+  StatisticList: '1.0.0',
+  StatisticPanel: '1.0.0',
+  SurveyCard: '1.0.0',
+
+  // --- extensions/shared ---
+  InteractiveTable: '1.0.0',
   TransferList: '1.0.0',
   TrendChart: '1.1.0',
-  DetailHeader: '1.0.0',
 
-  // calend - atoms
+  // --- extensions/calend - atoms ---
   EventCard: '1.0.0',
   IconLabel: '1.0.0',
   MonthEventCard: '1.0.0',
   TimeSlotRow: '1.0.0',
-  // calend - molecules
+  // --- extensions/calend - molecules ---
   ColorPicker: '1.0.0',
   IconPicker: '1.0.0',
   DayOfWeekPicker: '1.0.0',
@@ -120,7 +134,7 @@ export const VERSION_REGISTRY = {
   PillSelect: '1.0.0',
   SpanningBar: '1.0.0',
   TimeSelect: '1.0.0',
-  // calend - organisms
+  // --- extensions/calend - organisms ---
   DayColumn: '1.0.0',
   DayFrame: '1.0.0',
   EventModal: '1.0.0',
@@ -131,6 +145,12 @@ export const VERSION_REGISTRY = {
   WeekView: '1.0.0',
   DragOverlay: '1.0.0',
 
+  // --- extensions/meetcribe ---
+  NavItem: '1.0.0',
+  ContextMenu: '1.0.0',
+  ProjectItem: '1.0.0',
+  TagItem: '1.0.0',
+
   // decorations
   BackgroundTexture: '1.0.0',
   GradientOverlay: '1.0.0',
@@ -139,10 +159,10 @@ export const VERSION_REGISTRY = {
   // magicui
   BlurFade: '1.0.0',
 
-  // wordman
+  // --- extensions/wordman ---
   MathView: '1.0.0',
 
-  // ticker
+  // --- extensions/ticker ---
   CountdownRing: '1.0.0',
 } as const
 

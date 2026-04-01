@@ -55,6 +55,18 @@ export * from './BackgroundTexture'
 export * from './FloatingElements'
 export * from './GradientOverlay'
 
+// Statistics
+export * from './StatisticPanel'
+
+// Tables
+export * from './InteractiveTable'
+
+// Transfer
+export * from './TransferList'
+
+// Charts (extended)
+export * from './TrendChart'
+
 // Animations (Magic UI)
 export * from './BlurFade'
 export * from './DotPattern'

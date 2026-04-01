@@ -255,9 +255,10 @@ Tailwind/CSS-in-JS のままでOK。
 「DatePicker に時間選択を追加して」
 ```
 
-### 3. 洗練（Refine） + 昇格
+### 3. 洗練（Refine） + 昇格 + 消込
 
 コードベースをクリーンアップし、core/ に昇格させる。
+昇格後は extensions/ 側の残骸除去（消込）も同一 PR 内で行う。
 
 ```
 「コードベースをクリーンアップして」
@@ -268,6 +269,13 @@ Tailwind/CSS-in-JS のままでOK。
 - Tailwind → SCSS Module 変換
 - ビジネスロジックの完全除去
 - Props の汎用化
+
+**消込（昇格と同一 PR で実施）**:
+- extensions/ から昇格元のディレクトリを削除
+- extensions/ の barrel export を更新
+- VERSION_REGISTRY を core/ セクションに移動
+- 旧パスのインポートを検索・更新
+- PR 本文に移行パス（旧 → 新インポート）を記載
 
 ---
 
@@ -371,12 +379,17 @@ const MyComponent: FC<Props> = ({ label, onAction }) => {
 - [ ] data-component 属性を追加したか
 - [ ] 操作ログ（useOperationLog）を追加したか
 
-### core/ 昇格時
+### core/ 昇格時（消込含む）
 
 - [ ] **SCSS Module で実装したか**（Tailwind → SCSS 変換）
 - [ ] ビジネスロジックを完全に除去したか
 - [ ] Props を汎用的にしたか
 - [ ] テストを追加したか
+- [ ] extensions/ から昇格元を削除したか（消込）
+- [ ] extensions/ の barrel export を更新したか（消込）
+- [ ] VERSION_REGISTRY を core/ セクションに移動したか（消込）
+- [ ] 旧パスのインポートが残っていないか確認したか（消込）
+- [ ] `tsc --noEmit` で重複エクスポートがないか確認したか（消込）
 
 ### バージョン更新時
 

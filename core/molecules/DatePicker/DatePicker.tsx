@@ -4,9 +4,7 @@
 import { FC, useRef, useState, useEffect, useCallback } from 'react';
 import Icon from '../../atoms/Icon';
 
-import { useAlert } from '../../hooks/ui';
 import { useOperationLog } from '../../../infra/devtools';
-import AlertDialog from '../../organisms/AlertDialog/AlertDialog';
 
 import { useDatePickerState } from './useDatePickerState';
 import { NavigationButton } from './NavigationButton';
@@ -44,8 +42,6 @@ const DatePicker: FC<DatePickerProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const { alertState, closeAlert } = useAlert();
-
   const log = useOperationLog('DatePicker');
 
   const {
@@ -110,7 +106,6 @@ const DatePicker: FC<DatePickerProps> = ({
   }, [isPopupOpen, log, pickerMode]);
 
   return (
-    <>
       <div
         id={id}
         ref={containerRef}
@@ -192,8 +187,6 @@ const DatePicker: FC<DatePickerProps> = ({
           <NavigationButton direction="next" size={size} borderRadius={borderRadius} disabled={!canNavigate('next')} onClick={() => navigateMonth('next')} />
         )}
       </div>
-      <AlertDialog {...alertState} onClose={closeAlert} />
-    </>
   );
 };
 

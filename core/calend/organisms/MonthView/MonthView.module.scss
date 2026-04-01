@@ -1,0 +1,35 @@
+@use '../../../tokens' as *;
+
+.todayCell {
+  background-color: $color-today-bg;
+}
+
+.dropTarget {
+  transition: background-color 200ms ease-in-out, box-shadow 200ms ease-in-out;
+}
+
+.weekRowEven {
+  background-color: $color-weekday-even-bg;
+}
+
+.grid {
+  flex: 1;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba($color-gray-400, 0.3);
+    border-radius: 3px;
+
+    &:hover {
+      background: rgba($color-gray-400, 0.5);
+    }
+  }
+}

@@ -1,0 +1,95 @@
+@use '../../tokens' as *;
+
+.root {
+  position: relative;
+  width: 100%;
+}
+
+.legendWrapper {
+  margin-bottom: $spacing-4;
+  display: flex;
+  justify-content: center;
+  outline: none;
+}
+
+.legendBar {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $spacing-4;
+  border: 1px solid $color-gray-200;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: $spacing-2 $spacing-4;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  outline: none;
+  backdrop-filter: blur(4px);
+}
+
+.legendItem {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  gap: $spacing-2;
+  outline: none;
+  transition: opacity $transition-duration-150;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.legendLine {
+  display: inline-block;
+  width: 1rem;
+}
+
+.legendLabel {
+  font-size: $font-size-xs;
+
+  &--hidden {
+    color: $color-gray-400;
+    text-decoration: line-through;
+  }
+
+  &--bold {
+    font-weight: $font-weight-bold;
+    color: $color-gray-900;
+  }
+
+  &--normal {
+    color: $color-gray-700;
+  }
+}
+
+.chartContainer {
+  position: relative;
+}
+
+.canvasOverlay {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+}
+
+.tooltip {
+  border: 1px solid $color-gray-200;
+  background-color: #fff;
+  padding: $spacing-3;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+.tooltipLabel {
+  margin-bottom: $spacing-2;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-gray-900;
+}
+
+.tooltipEntry {
+  font-size: $font-size-sm;
+}
+
+.tooltipEntryName {
+  font-weight: $font-weight-medium;
+}

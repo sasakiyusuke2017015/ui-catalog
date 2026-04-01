@@ -1,0 +1,37 @@
+@use '../../../tokens' as *;
+
+.container {
+  display: flex;
+  gap: $spacing-1;
+  flex-wrap: wrap;
+}
+
+.iconButton {
+  border-radius: $radius-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.iconButtonSelected {
+  box-shadow: 0 0 0 2px $color-surface-primary, 0 0 0 4px $color-primary-500;
+  background-color: rgba($color-primary-500, 0.1);
+}
+
+.iconButtonUnselected {
+  &:hover {
+    background-color: $color-surface-hover;
+  }
+}
+
+.iconContent {
+  transition: transform $transition-fast;
+
+  &:hover {
+    transform: scale(1.25);
+  }
+}
