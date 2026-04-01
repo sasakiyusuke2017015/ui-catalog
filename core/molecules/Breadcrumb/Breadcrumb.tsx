@@ -1,7 +1,7 @@
 // src/components/common/molecules/Breadcrumb.tsx
 import { FC, CSSProperties } from 'react';
 
-import InternalLink from '../../atoms/InternalLink/InternalLink';
+import InternalLink from '../../molecules/InternalLink/InternalLink';
 import { type ColorTheme } from '../../constants';
 import styles from './Breadcrumb.module.scss';
 

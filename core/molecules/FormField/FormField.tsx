@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
 
-import { Input } from '../../atoms/Input';
+import { Input } from '../../molecules/Input';
 
 interface FormFieldProps {
   id?: string;

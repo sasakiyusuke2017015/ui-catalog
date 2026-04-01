@@ -4,7 +4,7 @@
  */
 import { FC, Fragment } from 'react';
 
-import { IconButton } from '../../atoms/IconButton';
+import { IconButton } from '../../molecules/IconButton';
 import { useOperationLog } from '../../../infra/devtools';
 import styles from './TabBar.module.scss';
 

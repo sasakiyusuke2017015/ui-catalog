@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { format } from 'date-fns'
 import { isToday, isSameMonth } from '../../utils/calend/dates'
-import { MonthEventCard } from '../../atoms/MonthEventCard/MonthEventCard'
+import { MonthEventCard } from '../../molecules/MonthEventCard/MonthEventCard'
 import type { CalendarEvent } from '../../types/calend'
 import styles from './MonthDayCell.module.scss'
 

@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import Icon from '../Icon'
+import Icon from '../../atoms/Icon'
 import type { IconName } from '../../constants'
 import type { CalendarEvent } from '../../types/calend'
 import styles from './MonthEventCard.module.scss'

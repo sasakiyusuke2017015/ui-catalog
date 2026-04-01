@@ -1,6 +1,6 @@
 import { FC, ReactNode, useEffect } from 'react';
 
-import { IconButton } from '../../atoms/IconButton';
+import { IconButton } from '../../molecules/IconButton';
 import { useOperationLog } from '../../../infra/devtools';
 import styles from './Modal.module.scss';
 

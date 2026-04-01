@@ -1,4 +1,4 @@
-import Icon from '../Icon'
+import Icon from '../../atoms/Icon'
 import type { IconName } from '../../constants'
 import type { ReactNode } from 'react'
 import styles from './IconLabel.module.scss'

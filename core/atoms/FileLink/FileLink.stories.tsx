@@ -33,7 +33,7 @@ export const WithLabel: Story = {
 
 export const NestedPath: Story = {
   args: {
-    path: '/workspaces/ui-catalog/core/atoms/Button/Button.tsx',
+    path: '/workspaces/ui-catalog/core/molecules/Button/Button.tsx',
     onOpen: (path) => console.log('open', path),
   },
 }

@@ -71,7 +71,6 @@ export * from './TrendChart'
 export * from './BlurFade'
 export * from './DotPattern'
 export * from './GridPattern'
-export * from './NumberTicker'
 export * from './ShimmerButton'
 
 // Calend

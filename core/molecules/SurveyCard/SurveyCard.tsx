@@ -2,7 +2,7 @@
 import { FC } from 'react';
 
 import { Badge } from '../../atoms/Badge';
-import { Button } from '../../atoms/Button';
+import { Button } from '../../molecules/Button';
 import Icon from '../../atoms/Icon';
 import { type IconName } from '../../constants';
 

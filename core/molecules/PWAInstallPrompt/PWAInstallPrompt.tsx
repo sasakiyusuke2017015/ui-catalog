@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Button } from '../../atoms/Button';
+import { Button } from '../../molecules/Button';
 
 import styles from './PWAInstallPrompt.module.scss';
 

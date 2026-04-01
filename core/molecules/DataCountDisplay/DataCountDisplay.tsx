@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { NumberTicker } from '../../organisms';
+import { NumberTicker } from '../../atoms';
 import styles from './DataCountDisplay.module.scss';
 
 interface DataCountDisplayProps {

@@ -4,7 +4,7 @@
  */
 import { useRef, useEffect, useState, useCallback, type ReactNode } from 'react'
 import { getStickyBottom } from '../../utils/calend/dom'
-import { IconLabel } from '../../atoms/IconLabel/IconLabel'
+import { IconLabel } from '../../molecules/IconLabel/IconLabel'
 import styles from './CalendarEventCard.module.scss'
 
 interface EventCardBaseProps {

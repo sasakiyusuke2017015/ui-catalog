@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import { IconLabel } from '../../atoms/IconLabel/IconLabel'
+import { IconLabel } from '../../molecules/IconLabel/IconLabel'
 import type { CalendarEvent } from '../../types/calend'
 import styles from './MonthDragOverlay.module.scss'
 

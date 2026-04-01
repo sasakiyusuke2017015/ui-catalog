@@ -1,5 +1,5 @@
 import { startOfDay } from 'date-fns'
-import { IconLabel } from '../../atoms/IconLabel/IconLabel'
+import { IconLabel } from '../../molecules/IconLabel/IconLabel'
 import type { CalendarEvent } from '../../types/calend'
 import styles from './SpanningBar.module.scss'
 

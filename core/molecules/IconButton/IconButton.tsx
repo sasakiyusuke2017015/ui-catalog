@@ -1,6 +1,6 @@
 import { type ButtonHTMLAttributes } from 'react'
 import { type IconName } from '../../constants'
-import Icon from '../Icon'
+import Icon from '../../atoms/Icon'
 
 interface IconButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   /** アイコン名 */
