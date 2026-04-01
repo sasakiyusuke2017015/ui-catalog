@@ -62,3 +62,22 @@
   padding: $spacing-3 $spacing-4;
   border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
+
+// -----------------------------------------------------------------------------
+// SectionCard
+// -----------------------------------------------------------------------------
+.sectionHeader {
+  padding: $spacing-4 $spacing-6;
+  border-bottom: 2px solid $color-gray-200;
+}
+
+.sectionTitle {
+  font-size: 1.125rem; // text-lg
+  font-weight: 700; // font-bold
+  color: $color-gray-900;
+  margin: 0;
+}
+
+.sectionContent {
+  padding: $spacing-6;
+}
