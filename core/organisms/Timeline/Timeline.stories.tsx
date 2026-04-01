@@ -3,7 +3,7 @@ import { Timeline } from './Timeline'
 import type { CalendarEvent } from '../../types/calend'
 
 export default {
-  title: 'calend/Timeline',
+  title: 'カレンダー/Timeline',
   component: Timeline,
   tags: ['autodocs'],
   parameters: {

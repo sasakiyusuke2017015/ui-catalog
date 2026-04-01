@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { NumberTicker } from './NumberTicker'
 
 const meta: Meta<typeof NumberTicker> = {
-  title: 'MagicUI/NumberTicker',
+  title: 'アニメーション/NumberTicker',
   component: NumberTicker,
   parameters: {
     layout: 'centered',

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { IconLabel } from './IconLabel'
 
 const meta: Meta<typeof IconLabel> = {
-  title: 'calend/atoms/IconLabel',
+  title: 'カレンダー/IconLabel',
   component: IconLabel,
 }
 

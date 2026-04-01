@@ -4,7 +4,7 @@ import { dragAtom } from '../../hooks/calend/calendar'
 import type { DragState } from '../../hooks/calend/calendar'
 
 export default {
-  title: 'calend/DragOverlay',
+  title: 'カレンダー/CalendarDragOverlay',
   component: DragOverlay,
   tags: ['autodocs'],
   parameters: {

@@ -4,7 +4,7 @@ import { selectedDateAtom } from '../../hooks/calend/calendar'
 import type { CalendarEvent } from '../../types/calend'
 
 export default {
-  title: 'calend/WeekView',
+  title: 'カレンダー/WeekView',
   component: WeekView,
   tags: ['autodocs'],
   parameters: {

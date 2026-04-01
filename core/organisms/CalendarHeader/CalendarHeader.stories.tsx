@@ -2,7 +2,7 @@ import { Provider } from 'jotai'
 import { CalendarHeader } from './CalendarHeader'
 
 export default {
-  title: 'calend/CalendarHeader',
+  title: 'カレンダー/CalendarHeader',
   component: CalendarHeader,
   tags: ['autodocs'],
   parameters: {

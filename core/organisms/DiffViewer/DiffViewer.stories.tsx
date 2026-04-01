@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import DiffViewer from './DiffViewer'
 
 const meta: Meta<typeof DiffViewer> = {
-  title: 'organisms/DiffViewer',
+  title: 'データ表示/DiffViewer',
   component: DiffViewer,
   parameters: { layout: 'padded' },
   tags: ['autodocs'],

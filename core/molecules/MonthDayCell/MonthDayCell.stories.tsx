@@ -2,7 +2,7 @@ import { MonthDayCell } from './MonthDayCell'
 import type { CalendarEvent } from '../../types/calend'
 
 export default {
-  title: 'calend/MonthDayCell',
+  title: 'カレンダー/MonthDayCell',
   component: MonthDayCell,
   tags: ['autodocs'],
   parameters: {

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { MathView } from './MathView';
 
 const meta: Meta<typeof MathView> = {
-  title: 'Core/atoms/MathView',
+  title: 'データ表示/MathView',
   component: MathView,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

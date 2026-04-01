@@ -3,7 +3,7 @@ import { DayOfWeekPicker } from './DayOfWeekPicker'
 import type { DayOfWeek } from '../../types/calend'
 
 export default {
-  title: 'calend/DayOfWeekPicker',
+  title: 'カレンダー/DayOfWeekPicker',
   component: DayOfWeekPicker,
   tags: ['autodocs'],
   parameters: {

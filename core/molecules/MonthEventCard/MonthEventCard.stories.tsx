@@ -2,7 +2,7 @@ import { MonthEventCard } from './MonthEventCard'
 import type { CalendarEvent } from '../../types/calend'
 
 export default {
-  title: 'calend/MonthEventCard',
+  title: 'カレンダー/MonthEventCard',
   component: MonthEventCard,
   tags: ['autodocs'],
   parameters: {

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { TimeSelect } from './TimeSelect'
 
 export default {
-  title: 'calend/TimeSelect',
+  title: 'カレンダー/TimeSelect',
   component: TimeSelect,
   tags: ['autodocs'],
   parameters: {

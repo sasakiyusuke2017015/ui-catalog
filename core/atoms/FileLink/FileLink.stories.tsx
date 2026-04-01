@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import FileLink from './FileLink'
 
 const meta: Meta<typeof FileLink> = {
-  title: 'atoms/FileLink',
+  title: 'ナビゲーション/FileLink',
   component: FileLink,
   parameters: { layout: 'centered' },
   tags: ['autodocs'],

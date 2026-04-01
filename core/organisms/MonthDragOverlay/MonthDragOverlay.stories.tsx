@@ -2,7 +2,7 @@ import { MonthDragOverlay } from './MonthDragOverlay'
 import type { CalendarEvent } from '../../types/calend'
 
 export default {
-  title: 'calend/MonthDragOverlay',
+  title: 'カレンダー/MonthDragOverlay',
   component: MonthDragOverlay,
   tags: ['autodocs'],
   parameters: {

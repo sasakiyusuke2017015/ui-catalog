@@ -2,7 +2,7 @@ import { EventPopover } from './EventPopover'
 import type { HoveredEvent } from '../../hooks/calend/calendar'
 
 export default {
-  title: 'calend/EventPopover',
+  title: 'カレンダー/EventPopover',
   component: EventPopover,
   tags: ['autodocs'],
   parameters: {

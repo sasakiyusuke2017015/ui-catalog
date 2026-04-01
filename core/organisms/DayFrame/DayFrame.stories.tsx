@@ -3,7 +3,7 @@ import { DayFrame } from './DayFrame'
 import type { CalendarEvent } from '../../types/calend'
 
 export default {
-  title: 'calend/DayFrame',
+  title: 'カレンダー/DayFrame',
   component: DayFrame,
   tags: ['autodocs'],
   parameters: {
