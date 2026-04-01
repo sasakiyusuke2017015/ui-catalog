@@ -1,0 +1,1 @@
+function i(o=4){const n=document.querySelectorAll("header, [data-sticky-header]"),c=window.innerHeight/3;let t=0;for(const r of n){const e=r.getBoundingClientRect().bottom;e>t&&e<c&&(t=e)}return t+o}export{i as g};

@@ -1,0 +1,1 @@
+import{c as r,s as n}from"./startOfDay-Bun0zCfR.js";import{n as c}from"./format-RPpwwwsr.js";function e(t){return r(t,Date.now())}function u(t,o,s){const[a,i]=c(s?.in,t,o);return+n(a)==+n(i)}function p(t,o){return u(r(t,t),e(t))}export{p as i};

@@ -1,0 +1,1 @@
+const E={HEADER_HEIGHT:48,LEFT_PANE_WIDTH:36};export{E as L};
