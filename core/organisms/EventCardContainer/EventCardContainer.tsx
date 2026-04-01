@@ -1,7 +1,7 @@
 import { useCallback, useRef, useEffect } from 'react'
 import { format } from 'date-fns'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { CalendarEventCard as EventCardBase } from '../../atoms/CalendarEventCard/CalendarEventCard'
+import { CalendarEventCard as EventCardBase } from '../../molecules/CalendarEventCard/CalendarEventCard'
 import { useDragEvent } from '../../hooks/calend/useDragEvent'
 import { dragAtom, hoveredEventAtom, eventModalAtom, anyDragActiveAtom, eventsAtom } from '../../hooks/calend/calendar'
 import type { CalendarEvent } from '../../types/calend'
