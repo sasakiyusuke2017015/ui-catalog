@@ -4,7 +4,7 @@ import { FC, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { useOperationLog } from '../../../infra/devtools';
-import { Button } from '../../atoms/Button';
+import { Button } from '../../molecules/Button';
 import Icon from '../../atoms/Icon';
 
 

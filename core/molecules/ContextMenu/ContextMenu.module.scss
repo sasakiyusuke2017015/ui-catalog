@@ -1,0 +1,46 @@
+// =============================================================================
+// ContextMenu Component Styles
+// =============================================================================
+
+@use '../../tokens' as *;
+
+// -----------------------------------------------------------------------------
+// Container
+// -----------------------------------------------------------------------------
+.menu {
+  position: fixed;
+  z-index: 50;
+  background-color: var(--color-slate-700, $color-gray-700);
+  border: 1px solid var(--color-slate-600, $color-gray-600);
+  border-radius: $border-radius-default;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  padding: $spacing-1 0;
+  min-width: 120px;
+}
+
+// -----------------------------------------------------------------------------
+// Menu Item
+// -----------------------------------------------------------------------------
+.item {
+  width: 100%;
+  text-align: left;
+  padding: 0.375rem $spacing-3;
+  font-size: $font-size-xs;
+  transition: background-color $transition-duration-150;
+  color: var(--color-slate-200, $color-gray-200);
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--color-slate-600, $color-gray-600);
+  }
+}
+
+.itemDanger {
+  color: var(--color-red-400, #f87171);
+
+  &:hover {
+    background-color: rgba(239, 68, 68, 0.2);
+  }
+}

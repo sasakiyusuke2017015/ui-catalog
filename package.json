@@ -22,18 +22,10 @@
     "./infra/devtools": "./infra/devtools/index.ts",
     "./infra/version": "./infra/version/index.ts",
     "./infra/theme": "./infra/theme/index.ts",
-    "./extensions": "./extensions/index.ts",
-    "./extensions/1on1": "./extensions/1on1/index.ts",
-    "./extensions/calend": "./extensions/calend/index.ts",
-    "./extensions/calend/state": "./extensions/calend/state/calendar.ts",
-    "./extensions/calend/types": "./extensions/calend/types/index.ts",
-    "./extensions/calend/hooks": "./extensions/calend/hooks/index.ts",
-    "./extensions/calend/utils": "./extensions/calend/utils/index.ts",
-    "./extensions/wordman": "./extensions/wordman/index.ts",
-    "./extensions/shared": "./extensions/shared/index.ts",
-    "./extensions/meetcribe": "./extensions/meetcribe/index.ts",
-    "./extensions/meetcribe/atoms": "./extensions/meetcribe/atoms/index.ts",
-    "./extensions/meetcribe/molecules": "./extensions/meetcribe/molecules/index.ts",
+    "./calend/state": "./core/hooks/calend/calendar.ts",
+    "./calend/types": "./core/types/calend.ts",
+    "./calend/hooks": "./core/hooks/calend/index.ts",
+    "./calend/utils": "./core/utils/calend/index.ts",
     "./tailwind-preset": "./tailwind.preset.ts"
   },
   "scripts": {
@@ -44,6 +36,7 @@
     "storybook:localhost": "storybook dev -p 6006 --no-open",
     "storybook:down": "docker compose -f infra/docker/docker-compose.yml down",
     "storybook:build": "storybook build -o storybook-static",
+    "storybook:deploy": "pnpm storybook:build && gh-pages -d storybook-static",
     "test:storybook": "vitest --project storybook",
     "export-versions": "npx tsx infra/version/export-versions-cli.ts"
   },
@@ -56,15 +49,17 @@
     "date-fns": "^3.0.0 || ^4.0.0",
     "framer-motion": "^11.0.0 || ^12.0.0",
     "jotai": "^2.0.0",
+    "katex": "^0.16.0",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0",
     "react-router-dom": "^6.0.0 || ^7.0.0",
     "recharts": "^2.0.0 || ^3.0.0",
-    "katex": "^0.16.0",
     "tailwind-merge": "^2.0.0 || ^3.0.0"
   },
   "peerDependenciesMeta": {
-    "katex": { "optional": true }
+    "katex": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -89,6 +84,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.34.4",
+    "gh-pages": "^6.3.0",
     "glob": "^13.0.6",
     "jotai": "^2.12.4",
     "jsdom": "^29.0.1",

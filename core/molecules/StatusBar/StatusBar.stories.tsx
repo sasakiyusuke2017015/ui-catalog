@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import StatusBar from './StatusBar'
 
 const meta: Meta<typeof StatusBar> = {
-  title: 'molecules/StatusBar',
+  title: 'フィードバック/StatusBar',
   component: StatusBar,
   parameters: { layout: 'fullscreen' },
   tags: ['autodocs'],

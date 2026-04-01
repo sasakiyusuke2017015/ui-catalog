@@ -1,5 +1,5 @@
 import { cn } from '../../utils/cn'
-import { IconButton } from '../../atoms/IconButton'
+import { IconButton } from '../../molecules/IconButton'
 import styles from './DiffViewer.module.scss'
 
 export interface LineDiff {

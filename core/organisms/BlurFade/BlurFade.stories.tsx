@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { BlurFade } from './BlurFade'
 
 const meta: Meta<typeof BlurFade> = {
-  title: 'MagicUI/BlurFade',
+  title: 'アニメーション/BlurFade',
   component: BlurFade,
   parameters: {
     layout: 'centered',

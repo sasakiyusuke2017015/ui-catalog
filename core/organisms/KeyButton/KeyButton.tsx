@@ -1,5 +1,5 @@
 // components/molecules/KeyButton.tsx
-import { Button } from '../../atoms/Button';
+import { Button } from '../../molecules/Button';
 
 interface ActionItem {
   label?: string;

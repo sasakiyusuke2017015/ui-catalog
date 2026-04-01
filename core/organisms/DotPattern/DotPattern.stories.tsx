@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { DotPattern } from './DotPattern'
 
 const meta: Meta<typeof DotPattern> = {
-  title: 'MagicUI/DotPattern',
+  title: '背景効果/DotPattern',
   component: DotPattern,
   parameters: {
     layout: 'fullscreen',

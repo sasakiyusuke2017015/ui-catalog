@@ -3,7 +3,7 @@ import { FC, useEffect } from 'react';
 
 import { createPortal } from 'react-dom';
 
-import { Button } from '../../atoms/Button';
+import { Button } from '../../molecules/Button';
 import Icon from '../../atoms/Icon';
 import { useOperationLog } from '../../../infra/devtools';
 

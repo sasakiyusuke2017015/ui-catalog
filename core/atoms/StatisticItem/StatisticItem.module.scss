@@ -1,0 +1,23 @@
+@use '../../tokens' as *;
+
+.root {
+  display: flex;
+  align-items: center;
+  gap: $spacing-1;
+  font-size: $font-size-xs;
+}
+
+.dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: $border-radius-full;
+}
+
+.label {
+  font-weight: $font-weight-semibold;
+}
+
+.value {
+  color: $color-gray-800;
+}

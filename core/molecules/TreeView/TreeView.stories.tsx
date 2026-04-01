@@ -4,7 +4,7 @@ import TreeView from './TreeView'
 import type { TreeNode } from './TreeView'
 
 const meta: Meta<typeof TreeView> = {
-  title: 'molecules/TreeView',
+  title: 'データ表示/TreeView',
   component: TreeView,
   parameters: { layout: 'centered' },
   tags: ['autodocs'],

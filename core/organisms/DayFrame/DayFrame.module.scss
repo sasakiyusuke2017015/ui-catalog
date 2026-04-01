@@ -1,0 +1,35 @@
+@use 'sass:color';
+@use '../../tokens' as *;
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  border-bottom: 1px solid $color-border-secondary;
+  padding: 12px 16px;
+}
+
+// Variant: blur (default)
+.blur {
+  background-color: rgba($color-white, 0.9);
+  backdrop-filter: blur(12px);
+}
+
+// Variant: subtle (ほぼ不透明、ぼかしなし)
+.subtle {
+  background-color: $color-white;
+}
+
+// Day-of-week overrides
+.todayHeader {
+  background-color: color.mix($color-white, #fbbf24, 85%);
+  border-color: $color-today-border;
+}
+
+.sundayHeader {
+  background-color: color.mix($color-white, #ef4444, 92%);
+}
+
+.saturdayHeader {
+  background-color: color.mix($color-white, #3b82f6, 92%);
+}

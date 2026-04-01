@@ -12,45 +12,33 @@
 ## 段階的成熟モデル
 
 ui-catalog は単なる Design System ではなく、**「育てる仕組み」を内包したUIカタログ**です。
-コンポーネントは **初期 → 安定 → 洗練** の段階を経て成長します。
+コンポーネントは **absorb → refine** の流れで core/ に取り込まれます。
+extensions/ 層は廃止済み — 外部アプリから直接 core/ に SCSS Module で取り込みます。
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│  【初期フェーズ】スピード優先                                      │
+│  【外部アプリ】                                                  │
 │  ┌──────────────────────────────────────┐                       │
-│  │ extensions/<project>/                │                       │
-│  │ - Tailwind / CSS-in-JS OK            │                       │
-│  │ - 素早くプロトタイプ                   │                       │
-│  │ - ビジネスロジック混在もOK             │                       │
+│  │ apps/<project>/src/components/       │                       │
+│  │ - Tailwind / CSS-in-JS              │                       │
+│  │ - ビジネスロジック混在                 │                       │
 │  └──────────────────────────────────────┘                       │
-│                     ↓ absorb                                    │
+│                     ↓ absorb（UI抽出 + SCSS変換）                │
 │                                                                 │
-│  【安定フェーズ】再利用性の確保                                     │
+│  【core/】プロダクト品質                                          │
 │  ┌──────────────────────────────────────┐                       │
-│  │ extensions/<project>/ (整理後)        │                       │
-│  │ - ビジネスロジック分離                 │                       │
-│  │ - Props 設計の安定化                  │                       │
-│  │ - Tailwind のままでOK                 │                       │
-│  └──────────────────────────────────────┘                       │
-│                     ↓ refine + 昇格                              │
-│                                                                 │
-│  【洗練フェーズ】プロダクト品質                                     │
-│  ┌──────────────────────────────────────┐                       │
-│  │ core/                                │                       │
+│  │ core/atoms/molecules/organisms/      │                       │
 │  │ - SCSS Module で実装                  │                       │
-│  │ - デザインの微細なこだわり             │                       │
-│  │ - トークン活用で一貫性                │                       │
+│  │ - ビジネスロジックゼロ                │                       │
+│  │ - デザイントークンで一貫性             │                       │
 │  │ - 他プロジェクトへ移植可能             │                       │
 │  └──────────────────────────────────────┘                       │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### スタイリングの選択基準
+### スタイリング
 
-| フェーズ | スタイリング | 理由 |
-|---------|------------|------|
-| 初期・安定 | Tailwind / CSS-in-JS | 素早い実装、試行錯誤しやすい |
-| 洗練（core/） | SCSS Module | 微細な調整、トークン一貫性、移植性 |
+core/ のコンポーネントは全て **SCSS Module** で実装する。
 
 ### SCSS化は「洗練化」の象徴
 
@@ -77,9 +65,6 @@ packages/ui-catalog/
 │   ├── styles/              #   グローバルスタイル
 │   └── utils/               #   ユーティリティ（cn, isNullish 等）
 │
-├── extensions/              # プロジェクト拡張用
-│   ├── <project>/           #   各プロジェクト固有（例: 1on1/）
-│   └── shared/              #   複数プロジェクトで使用（昇格候補）
 │
 ├── infra/                   # 育成・観測の仕組み
 │   ├── commands/            #   Claude Code コマンド
@@ -129,9 +114,9 @@ atoms ← molecules ← organisms ← templates
 | **SCSS Module** | core/ | 汎用性、他プロジェクトへの移植性、Tailwind 非依存 |
 | Tailwind/CSS-in-JS | extensions/ | プロジェクト固有、速度優先（OK） |
 
-### core/ 昇格時のルール
+### absorb 時のルール
 
-extensions/ から core/ に昇格する際、**Tailwind → SCSS への変換が必須**。
+外部アプリから core/ に取り込む際、**Tailwind → SCSS への変換が必須**。
 
 ```scss
 // core/atoms/Button/Button.module.scss
@@ -243,8 +228,7 @@ ui-catalog:animationSpeed
 「shadcn/ui の Drawer を取り込みたい」
 ```
 
-**重要**: project/* ブランチでは `extensions/<project>/` に配置。
-Tailwind/CSS-in-JS のままでOK。
+**重要**: 直接 core/ の適切な層に配置。SCSS Module で実装。
 
 ### 2. 発展（Develop）
 
@@ -255,19 +239,14 @@ Tailwind/CSS-in-JS のままでOK。
 「DatePicker に時間選択を追加して」
 ```
 
-### 3. 洗練（Refine） + 昇格
+### 3. 洗練（Refine）
 
-コードベースをクリーンアップし、core/ に昇格させる。
+コードベースをクリーンアップし、品質を上げる。
 
 ```
 「コードベースをクリーンアップして」
-「extensions/1on1/ScoreBadge を core/atoms/ に昇格して」
+「ScoreBadge の Props を汎用化して」
 ```
-
-**昇格時の必須作業**:
-- Tailwind → SCSS Module 変換
-- ビジネスロジックの完全除去
-- Props の汎用化
 
 ---
 
@@ -371,12 +350,15 @@ const MyComponent: FC<Props> = ({ label, onAction }) => {
 - [ ] data-component 属性を追加したか
 - [ ] 操作ログ（useOperationLog）を追加したか
 
-### core/ 昇格時
+### absorb 時（外部アプリ → core/）
 
 - [ ] **SCSS Module で実装したか**（Tailwind → SCSS 変換）
 - [ ] ビジネスロジックを完全に除去したか
 - [ ] Props を汎用的にしたか
-- [ ] テストを追加したか
+- [ ] テスト・ストーリーを追加したか
+- [ ] VERSION_REGISTRY に登録したか
+- [ ] `tsc --noEmit` でエラーがないか確認したか
+- [ ] `storybook build` が成功するか確認したか
 
 ### バージョン更新時
 

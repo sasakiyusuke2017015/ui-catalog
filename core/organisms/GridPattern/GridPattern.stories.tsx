@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { GridPattern } from './GridPattern'
 
 const meta: Meta<typeof GridPattern> = {
-  title: 'MagicUI/GridPattern',
+  title: '背景効果/GridPattern',
   component: GridPattern,
   parameters: {
     layout: 'fullscreen',

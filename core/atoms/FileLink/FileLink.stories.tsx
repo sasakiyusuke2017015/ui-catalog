@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import FileLink from './FileLink'
 
 const meta: Meta<typeof FileLink> = {
-  title: 'atoms/FileLink',
+  title: 'ナビゲーション/FileLink',
   component: FileLink,
   parameters: { layout: 'centered' },
   tags: ['autodocs'],
@@ -33,7 +33,7 @@ export const WithLabel: Story = {
 
 export const NestedPath: Story = {
   args: {
-    path: '/workspaces/ui-catalog/core/atoms/Button/Button.tsx',
+    path: '/workspaces/ui-catalog/core/molecules/Button/Button.tsx',
     onOpen: (path) => console.log('open', path),
   },
 }
