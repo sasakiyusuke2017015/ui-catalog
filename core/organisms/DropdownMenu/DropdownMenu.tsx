@@ -42,6 +42,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [shakeKey, setShakeKey] = useState(0); // アニメーション再トリガー用のキー
   const dropdownRef = useRef<HTMLDivElement>(null);
   const log = useOperationLog('DropdownMenu');
 
@@ -49,6 +50,11 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
     const newState = !isOpen;
     log(newState ? 'open' : 'close', { label });
     setIsOpen(newState);
+
+    // クリック時に shake アニメーションを再生（keyを変更して再マウント）
+    if (iconShake) {
+      setShakeKey((prev) => prev + 1);
+    }
   };
 
   // iconが文字列の場合はIconコンポーネントに変換
@@ -62,11 +68,12 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
     if (typeof iconProp === 'string') {
       return (
         <Icon
+          key={iconShake ? shakeKey : undefined} // keyを変更してアニメーションを再トリガー
           name={iconProp as IconName}
           size={size}
           fill={filled ? 'white' : 'none'}
           animation={iconShake ? 'shake' : undefined}
-          hover="pop"
+          hover="auto"
         />
       );
     }
