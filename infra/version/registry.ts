@@ -115,38 +115,43 @@ export const VERSION_REGISTRY = {
   StatisticPanel: '1.0.0',
   SurveyCard: '1.0.0',
 
-  // --- extensions/shared ---
+  // organisms (shared)
   InteractiveTable: '1.0.0',
   TransferList: '1.0.0',
   TrendChart: '1.1.0',
 
-  // --- extensions/calend - atoms ---
-  EventCard: '1.0.0',
+  // atoms (calendar)
+  CalendarEventCard: '1.0.0',
   IconLabel: '1.0.0',
   MonthEventCard: '1.0.0',
   TimeSlotRow: '1.0.0',
-  // --- extensions/calend - molecules ---
+
+  // molecules (calendar)
   ColorPicker: '1.0.0',
-  IconPicker: '1.0.0',
   DayOfWeekPicker: '1.0.0',
   EventPopover: '1.0.0',
+  IconPicker: '1.0.0',
   MonthDayCell: '1.0.0',
   PillSelect: '1.0.0',
   SpanningBar: '1.0.0',
   TimeSelect: '1.0.0',
-  // --- extensions/calend - organisms ---
+
+  // organisms (calendar)
+  CalendarDragOverlay: '1.0.0',
+  CalendarHeader: '1.0.0',
   DayColumn: '1.0.0',
   DayFrame: '1.0.0',
+  EventCardContainer: '1.0.0',
   EventModal: '1.0.0',
-  'calend/Header': '1.0.0',
   MonthDragOverlay: '1.0.0',
   MonthView: '1.0.0',
   Timeline: '1.0.0',
   WeekView: '1.0.0',
-  DragOverlay: '1.0.0',
 
-  // --- extensions/meetcribe ---
+  // atoms (navigation)
   NavItem: '1.0.0',
+
+  // molecules (navigation)
   ContextMenu: '1.0.0',
   ProjectItem: '1.0.0',
   TagItem: '1.0.0',
@@ -159,11 +164,9 @@ export const VERSION_REGISTRY = {
   // magicui
   BlurFade: '1.0.0',
 
-  // --- extensions/wordman ---
-  MathView: '1.0.0',
-
-  // --- extensions/ticker ---
+  // atoms (visualization)
   CountdownRing: '1.0.0',
+  MathView: '1.0.0',
 } as const
 
 export type ComponentName = keyof typeof VERSION_REGISTRY

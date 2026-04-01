@@ -22,11 +22,10 @@
     "./infra/devtools": "./infra/devtools/index.ts",
     "./infra/version": "./infra/version/index.ts",
     "./infra/theme": "./infra/theme/index.ts",
-    "./calend": "./core/calend/index.ts",
-    "./calend/state": "./core/calend/state/calendar.ts",
-    "./calend/types": "./core/calend/types/index.ts",
-    "./calend/hooks": "./core/calend/hooks/index.ts",
-    "./calend/utils": "./core/calend/utils/index.ts",
+    "./calend/state": "./core/hooks/calend/calendar.ts",
+    "./calend/types": "./core/types/calend.ts",
+    "./calend/hooks": "./core/hooks/calend/index.ts",
+    "./calend/utils": "./core/utils/calend/index.ts",
     "./tailwind-preset": "./tailwind.preset.ts"
   },
   "scripts": {

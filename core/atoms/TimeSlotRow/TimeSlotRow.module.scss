@@ -1,0 +1,63 @@
+@use '../../tokens' as *;
+
+.row {
+  display: grid;
+  border-bottom: 1px solid rgba($color-border-secondary, 0.5);
+  cursor: pointer;
+}
+
+.label {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  padding: $spacing-2 $spacing-3 $spacing-2 0;
+  text-align: right;
+  user-select: none;
+}
+
+.slot {
+  position: relative;
+  border-left: 1px solid rgba($color-border-secondary, 0.5);
+  transition: background-color $transition-duration-150;
+
+  &:hover {
+    background-color: $color-gray-100;
+  }
+}
+
+.currentHour {
+  background-color: rgba($color-primary-500, 0.05);
+}
+
+.active {
+  background-color: rgba($color-primary-500, 0.05);
+}
+
+.activeIndicator {
+  position: absolute;
+  inset: 0;
+  border: 2px solid $color-primary-500;
+  border-radius: $border-radius-sm;
+  pointer-events: none;
+  z-index: 20;
+}
+
+.currentTimeLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background-color: $color-danger-500;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.currentTimeDot {
+  position: absolute;
+  left: -4px;
+  top: -4px;
+  width: 10px;
+  height: 10px;
+  background-color: $color-danger-500;
+  border-radius: 50%;
+}
