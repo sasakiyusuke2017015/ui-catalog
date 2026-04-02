@@ -329,16 +329,8 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
 
   const hoveredEventId = hovered?.event.id ?? null
 
-  const handleDelete = useCallback(
-    async (id: string) => {
-      try {
-        await removeEvent(id)
-      } catch (error) {
-        throw new Error(`Failed to delete event: ${error}`)
-      }
-    },
-    [removeEvent]
-  )
+  // removeEvent is available for future use (e.g., context menu delete)
+  void removeEvent
 
   return (
     <div data-component="MonthView" className="h-full flex flex-col p-4">
