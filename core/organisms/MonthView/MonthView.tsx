@@ -10,13 +10,14 @@ import { MonthDragOverlay } from '../MonthDragOverlay/MonthDragOverlay'
 import { MonthDayCell } from '../../molecules/MonthDayCell/MonthDayCell'
 import { layoutSpanningEvents } from '../../utils/calend/layoutSpanning'
 import { ja } from 'date-fns/locale'
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import type { CalendarEvent } from '../../types/calend'
 import { resolveOriginalEvent } from '../../utils/calend/repeatUtils'
 import styles from './MonthView.module.scss'
 
 const WEEKDAY_LABELS = ['日', '月', '火', '水', '木', '金', '土']
-const LANE_H = 20
+const IS_TOUCH = typeof window !== 'undefined' && 'ontouchstart' in window
+const LANE_H = IS_TOUCH ? 28 : 20
 const DRAG_THRESHOLD = 5
 
 /* ------------------------------------------------------------------ */
@@ -63,12 +64,18 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
   const activeSlot = useAtomValue(activeSlotAtom)
   const setActiveSlot = useSetAtom(activeSlotAtom)
   const setModal = useSetAtom(eventModalAtom)
-  const calendarDates = getMonthCalendarDates(selectedDate)
+  const calendarDates = useMemo(
+    () => getMonthCalendarDates(selectedDate),
+    [selectedDate]
+  )
 
-  const weeks: Date[][] = []
-  for (let i = 0; i < calendarDates.length; i += 7) {
-    weeks.push(calendarDates.slice(i, i + 7) as Date[])
-  }
+  const weeks = useMemo(() => {
+    const result: Date[][] = []
+    for (let i = 0; i < calendarDates.length; i += 7) {
+      result.push(calendarDates.slice(i, i + 7) as Date[])
+    }
+    return result
+  }, [calendarDates])
 
   // Drag state
   const [dragEventId, setDragEventId] = useState<string | null>(null)

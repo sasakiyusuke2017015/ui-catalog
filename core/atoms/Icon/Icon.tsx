@@ -913,7 +913,7 @@ const ANIMATION_CLASSES: Record<AnimationPreset, string> = {
   ripple: styles.ripple,
 };
 
-const HOVER_CLASSES: Record<HoverPreset, string> = {
+const HOVER_CLASSES: Record<Exclude<HoverPreset, 'auto'>, string> = {
   scale: styles.hoverScale,
   'scale-large': styles.hoverScaleLarge,
   rotate: styles.hoverRotate,
@@ -924,6 +924,7 @@ const HOVER_CLASSES: Record<HoverPreset, string> = {
   pop: styles.hoverPop,
   wiggle: styles.hoverWiggle,
   shake: styles.hoverShake,
+  swing: styles.hoverSwing,
   spin: styles.hoverSpin,
   flip: styles.hoverFlip,
   'flip-x': styles.hoverFlipX,
@@ -943,6 +944,98 @@ const COLOR_CLASSES: Record<ColorVariant, string> = {
   danger: styles.colorError,
   info: styles.colorInfo,
   muted: styles.colorMuted,
+};
+
+// ========================================
+// アイコンごとのデフォルトホバーアニメーション
+// ========================================
+const DEFAULT_HOVER_MAP: Partial<Record<string, HoverPreset>> = {
+  // 通知・アラート系
+  bell: 'swing',
+  'info-triangle': 'shake',
+  'info-circle': 'pop',
+
+  // 設定・操作系
+  gear: 'rotate',
+  sliders: 'pop',
+  funnel: 'pop',
+
+  // ナビゲーション系
+  home: 'pop',
+  dashboard: 'pop',
+  'chart-bar': 'pop',
+  list: 'pop',
+  folder: 'pop',
+  file: 'pop',
+  survey: 'pop',
+  calendar: 'pop',
+  'chevron-left': 'pop',
+  'chevron-right': 'pop',
+  'chevron-up': 'pop',
+  'chevron-down': 'pop',
+  'chevrons-left': 'pop',
+  'chevrons-right': 'pop',
+
+  // ユーザー系
+  person: 'pop',
+  employee: 'pop',
+  'users-group': 'pop',
+
+  // アクション系
+  save: 'pop',
+  trash: 'shake',
+  'arrow-rotate': 'rotate',
+  'arrow-up-right': 'pop',
+  'arrow-in': 'pop',
+  'arrow-turn-left': 'pop',
+  'arrow-u-turn': 'pop',
+  'sync-pull': 'bounce',
+  'sync-push': 'bounce',
+  'cloud-upload': 'float',
+
+  // 認証系
+  lock: 'shake',
+  unlock: 'pop',
+  'door-out': 'pop',
+
+  // チャート・トレンド系
+  'trend-up': 'float',
+  'trend-up-right': 'float',
+  'trend-right': 'pop',
+  'trend-down-right': 'bounce',
+  'trend-down': 'bounce',
+
+  // その他
+  star: 'pop',
+  'star-filled': 'heartbeat',
+  chat: 'pop',
+  'comment-check': 'pop',
+  clock: 'rotate',
+  eye: 'pop',
+  'eye-slashed': 'pop',
+  'magnifying-glass': 'pop',
+  check: 'pop',
+  'check-circle': 'pop',
+  'x-circle': 'shake',
+  x: 'pop',
+  hamburger: 'pop',
+  expand: 'scale',
+  keyboard: 'pop',
+  palette: 'pop',
+  brush: 'wiggle',
+  diamond: 'glow',
+  'paint-roller': 'wiggle',
+  inbox: 'pop',
+  archive: 'pop',
+  dot: 'pop',
+
+  // ブランド
+  'meetscribe-brand': 'pop',
+  'meetscribe-brand-wave': 'wiggle',
+  'meetscribe-brand-mic': 'pop',
+  'meetscribe-brand-play': 'pop',
+  'meetscribe-brand-chat': 'pop',
+  'meetscribe-brand-shield': 'glow',
 };
 
 // ========================================
@@ -982,6 +1075,10 @@ const Icon: React.FC<IconProps> = ({
   // ローディングアイコン判定
   const isLoadingIcon = name.startsWith('loading-') || name.startsWith('spinner');
 
+  // ホバーアニメーションを解決（'auto' の場合はデフォルトを使用）
+  const resolvedHover =
+    hover === 'auto' ? DEFAULT_HOVER_MAP[name] : hover;
+
   // クラス名を構築
   const iconClasses = cn(
     styles.icon,
@@ -989,8 +1086,8 @@ const Icon: React.FC<IconProps> = ({
     animate && animation && ANIMATION_CLASSES[animation],
     // ローディングアイコンは自動でスピン
     isLoadingIcon && !animation && styles.spin,
-    // ホバー
-    hover && HOVER_CLASSES[hover],
+    // ホバー（'auto' は解決済みなので除外）
+    resolvedHover && resolvedHover !== 'auto' && HOVER_CLASSES[resolvedHover],
     // カラー
     color !== 'current' && COLOR_CLASSES[color],
     // グロー

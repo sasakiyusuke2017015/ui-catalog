@@ -4,5 +4,5 @@
  * Storybook 設定プリセット
  */
 
-export { storybookConfig, withDockerHmr } from './preset.ts'
-export { baseDecorators, baseParameters } from './preview.tsx'
+export { storybookConfig, withDockerHmr } from './preset'
+export { baseDecorators, baseParameters } from './preview'
