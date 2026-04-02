@@ -1,4 +1,4 @@
-export { default } from './TrendChart';
+export { default as TrendChart } from './TrendChart';
 export type {
   Dataset,
   ChartData,
