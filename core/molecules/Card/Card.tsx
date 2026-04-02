@@ -74,4 +74,32 @@ export function CardFooter({ children, className = '' }: CardSectionProps) {
   )
 }
 
+export interface SectionCardProps {
+  /** セクションタイトル */
+  title: string
+  children: ReactNode
+  className?: string
+}
+
+/**
+ * SectionCard - タイトル付きセクションカード
+ *
+ * Usage:
+ * <SectionCard title="セクション別議事録">
+ *   <Content />
+ * </SectionCard>
+ */
+export function SectionCard({ title, children, className = '' }: SectionCardProps) {
+  return (
+    <Card className={className} padding={false}>
+      <div className={styles.sectionHeader} data-component="section-header">
+        <h2 className={styles.sectionTitle}>{title}</h2>
+      </div>
+      <div className={styles.sectionContent} data-component="section-content">
+        {children}
+      </div>
+    </Card>
+  )
+}
+
 export default Card

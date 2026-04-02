@@ -9,6 +9,7 @@ export type BadgeSemanticVariant =
   | 'success'
   | 'warning'
   | 'error'
+  | 'info'
   | 'secondary'
 export type BadgeSize = 'small' | 'medium' | 'large'
 export type BadgeColor = 'blue' | 'green' | 'red' | 'yellow' | 'gray' | 'orange'
@@ -19,6 +20,7 @@ const SEMANTIC_TO_COLOR: Record<BadgeSemanticVariant, BadgeColor> = {
   success: 'green',
   warning: 'yellow',
   error: 'red',
+  info: 'blue',
   secondary: 'gray',
 }
 

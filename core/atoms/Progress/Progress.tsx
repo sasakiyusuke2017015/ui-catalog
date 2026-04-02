@@ -12,6 +12,10 @@ export interface ProgressProps {
   color?: ProgressColor
   className?: string
   showLabel?: boolean
+  /** 停滞状態（警告色に自動変更） */
+  isStalled?: boolean
+  /** パルスアニメーション */
+  animate?: boolean
 }
 
 const Progress: FC<ProgressProps> = ({
@@ -21,9 +25,13 @@ const Progress: FC<ProgressProps> = ({
   color = 'blue',
   className = '',
   showLabel = false,
+  isStalled = false,
+  animate = false,
 }) => {
   const percent = Math.min(Math.max((value / max) * 100, 0), 100)
-  const capitalColor = color.charAt(0).toUpperCase() + color.slice(1)
+  // 停滞時は yellow（警告色）を使用
+  const effectiveColor = isStalled ? 'yellow' : color
+  const capitalColor = effectiveColor.charAt(0).toUpperCase() + effectiveColor.slice(1)
 
   const trackClasses = [
     styles.track,
@@ -36,6 +44,8 @@ const Progress: FC<ProgressProps> = ({
   const indicatorClasses = [
     styles.indicator,
     styles[`color${capitalColor}`],
+    animate && styles.animate,
+    isStalled && styles.stalled,
   ]
     .filter(Boolean)
     .join(' ')
@@ -48,6 +58,7 @@ const Progress: FC<ProgressProps> = ({
       aria-valuemin={0}
       aria-valuemax={max}
       data-component="progress"
+      data-stalled={isStalled || undefined}
     >
       <div
         className={indicatorClasses}

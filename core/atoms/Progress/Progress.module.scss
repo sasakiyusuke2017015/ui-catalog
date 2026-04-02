@@ -80,3 +80,23 @@
   font-weight: $font-weight-medium;
   color: $color-white;
 }
+
+// -----------------------------------------------------------------------------
+// Animations
+// -----------------------------------------------------------------------------
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.animate {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.stalled {
+  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

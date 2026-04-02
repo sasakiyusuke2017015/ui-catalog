@@ -28,21 +28,38 @@
   transition: background-color $transition-duration-150 $transition-ease-in-out;
   border: none;
   background: transparent;
-  color: var(--color-text);
+  color: $color-gray-300;
 
   &:hover {
-    background-color: var(--color-hover-bg);
+    background-color: rgba($color-gray-500, 0.2);
   }
 }
 
 .rowSelected {
-  background-color: var(--color-selected-bg);
-  color: var(--color-selected-text);
+  background-color: rgba($color-info-500, 0.2);
+  color: #60a5fa; // blue-400
   font-weight: $font-weight-medium;
 
   &:hover {
-    background-color: var(--color-selected-bg);
+    background-color: rgba($color-info-500, 0.2);
   }
+}
+
+// Drag states
+.rowDragging {
+  opacity: 0.5;
+}
+
+.rowDragOver {
+  background-color: rgba(59, 130, 246, 0.15);
+  outline: 1px dashed rgba(59, 130, 246, 0.5);
+  outline-offset: -1px;
+}
+
+.rowDropTarget {
+  background-color: rgba(59, 130, 246, 0.2);
+  outline: 2px solid rgba(59, 130, 246, 0.6);
+  outline-offset: -2px;
 }
 
 // -----------------------------------------------------------------------------
@@ -57,7 +74,7 @@
 }
 
 .guideLine {
-  stroke: var(--color-text-muted);
+  stroke: $color-gray-600;
   stroke-width: 1;
 }
 
@@ -75,7 +92,7 @@
 }
 
 .chevronFill {
-  fill: var(--color-text-muted);
+  fill: $color-gray-500;
 }
 
 // リーフノード — 三角なし、幅ゼロ
@@ -121,4 +138,33 @@
   .row:hover & {
     opacity: 1;
   }
+}
+
+// -----------------------------------------------------------------------------
+// Color dot (プロジェクトカラー表示用)
+// -----------------------------------------------------------------------------
+.colorDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+// -----------------------------------------------------------------------------
+// Insert indicator (ドラッグ中の挿入位置表示)
+// -----------------------------------------------------------------------------
+.insertIndicator {
+  height: 2px;
+  background-color: #60a5fa; // blue-400
+  border-radius: 2px;
+  margin: 2px 4px;
+}
+
+// -----------------------------------------------------------------------------
+// Edit row (編集モード時)
+// -----------------------------------------------------------------------------
+.editRow {
+  display: flex;
+  align-items: center;
+  padding: $spacing-0-5 0;
 }
