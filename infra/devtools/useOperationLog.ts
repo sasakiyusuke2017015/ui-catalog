@@ -100,14 +100,8 @@ function isEnabled(): boolean {
   if (globalConfig.enabled !== undefined) {
     return globalConfig.enabled
   }
-  // import.meta.env.DEV が使えない環境ではprocess.env.NODE_ENVをフォールバック
-  if (typeof import.meta !== 'undefined' && import.meta.env) {
-    return import.meta.env.DEV === true
-  }
-  if (typeof process !== 'undefined' && process.env) {
-    return process.env.NODE_ENV === 'development'
-  }
-  return false
+  // Next.jsではprocess.env.NODE_ENVを使用
+  return process.env.NODE_ENV === 'development'
 }
 
 /**

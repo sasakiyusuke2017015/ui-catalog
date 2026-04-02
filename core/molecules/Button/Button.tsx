@@ -22,6 +22,8 @@ interface ButtonProps
   variant?: ButtonVariant
   size?: ButtonSize
   disabled?: boolean
+  /** ローディング状態（スピナー表示） */
+  loading?: boolean
   onClick?: () => void
   children: ReactNode
   className?: string
@@ -45,6 +47,7 @@ const Button: FC<ButtonProps> = ({
   variant = 'default',
   size = 'medium',
   disabled = false,
+  loading = false,
   onClick,
   children,
   className = '',
@@ -60,6 +63,7 @@ const Button: FC<ButtonProps> = ({
   accentColor,
   ...props
 }) => {
+  const isDisabled = disabled || loading
   const [isHovered, setIsHovered] = useState(false)
   const log = useOperationLog('Button')
 
@@ -97,7 +101,7 @@ const Button: FC<ButtonProps> = ({
     styles[size],
     enableShimmer && variant !== 'nav' && variant !== 'ghost' && styles.shimmer,
     enableHopEffect && styles.hopEffect,
-    disabled && styles.disabled,
+    isDisabled && styles.disabled,
     selected && styles.selected,
     fullWidth && styles.fullWidth,
     accentColor && styles[`accent-${accentColor}`],
@@ -108,29 +112,56 @@ const Button: FC<ButtonProps> = ({
 
   // カスタムスタイル
   const customStyle: React.CSSProperties = {
-    ...(!disabled && isHovered ? { boxShadow: hoverShadowColors[variant] } : {}),
+    ...(!isDisabled && isHovered ? { boxShadow: hoverShadowColors[variant] } : {}),
     borderRadius,
   }
+
+  // ローディングスピナー
+  const LoadingSpinner = () => (
+    <svg
+      data-testid="loading-spinner"
+      className={styles.spinner}
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <circle
+        style={{ opacity: 0.25 }}
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        strokeWidth="4"
+      />
+      <path
+        style={{ opacity: 0.75 }}
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+      />
+    </svg>
+  )
 
   const buttonElement = (
     <button
       type="button"
       className={buttonClasses}
-      disabled={disabled}
+      disabled={isDisabled}
       style={customStyle}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={enableHopEffect ? undefined : disabled ? undefined : () => {
-        log('click', { variant, size, disabled })
+      onClick={enableHopEffect ? undefined : isDisabled ? undefined : () => {
+        log('click', { variant, size, disabled, loading })
         onClick?.()
       }}
       data-component="button"
       data-variant={variant}
       data-size={size}
+      data-loading={loading || undefined}
       {...props}
     >
       <span className={styles.content}>
-        {leftIcon && (
+        {loading && <LoadingSpinner />}
+        {!loading && leftIcon && (
           <Icon
             name={leftIcon}
             size={getIconSize()}
@@ -139,7 +170,7 @@ const Button: FC<ButtonProps> = ({
           />
         )}
         {children}
-        {rightIcon && (
+        {!loading && rightIcon && (
           <Icon
             name={rightIcon}
             size={getIconSize()}
@@ -157,13 +188,13 @@ const Button: FC<ButtonProps> = ({
       <div
         className={styles.hopWrapper}
         role="button"
-        tabIndex={disabled ? -1 : 0}
-        onClick={disabled ? undefined : () => {
-          log('click', { variant, size, disabled, hopEffect: true })
+        tabIndex={isDisabled ? -1 : 0}
+        onClick={isDisabled ? undefined : () => {
+          log('click', { variant, size, disabled, loading, hopEffect: true })
           onClick?.()
         }}
         onKeyDown={(e) => {
-          if (!disabled && (e.key === 'Enter' || e.key === ' ')) {
+          if (!isDisabled && (e.key === 'Enter' || e.key === ' ')) {
             e.preventDefault()
             onClick?.()
           }

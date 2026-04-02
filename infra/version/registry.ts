@@ -328,7 +328,7 @@ export function initUICatalog(versionsJson: VersionRegistry | undefined | null):
   }
 
   // 開発環境でのみバージョンチェックを実行
-  if (import.meta.env?.DEV) {
+  if (process.env.NODE_ENV === 'development') {
     checkVersions(versionsJson)
   }
 }
