@@ -1073,32 +1073,87 @@
 }
 
 .hoverBounce {
+  transform: translateY(0);
+
   &:hover {
-    animation: bounce 0.5s ease-in-out;
+    animation: bounce 0.5s ease-in-out forwards;
+  }
+
+  &:not(:hover) {
+    animation: none;
+    transform: translateY(0);
+    transition: transform 0.15s ease-out;
   }
 }
 
 .hoverPop {
+  transform: scale(1);
+
   &:hover {
-    animation: pop 0.3s ease-out;
+    animation: pop 0.3s ease-out forwards;
+  }
+
+  &:not(:hover) {
+    animation: none;
+    transform: scale(1);
+    transition: transform 0.15s ease-out;
   }
 }
 
 .hoverWiggle {
+  transform: rotate(0deg);
+
   &:hover {
-    animation: wiggle 0.3s ease-in-out;
+    animation: wiggle 0.3s ease-in-out forwards;
+  }
+
+  &:not(:hover) {
+    animation: none;
+    transform: rotate(0deg);
+    transition: transform 0.15s ease-out;
   }
 }
 
 .hoverShake {
+  transform: translateX(0);
+
   &:hover {
-    animation: shake 0.5s ease-in-out;
+    animation: shake 0.5s ease-in-out forwards;
+  }
+
+  &:not(:hover) {
+    animation: none;
+    transform: translateX(0);
+    transition: transform 0.15s ease-out;
+  }
+}
+
+.hoverSwing {
+  transform: rotate(0deg);
+  transform-origin: top center;
+
+  &:hover {
+    animation: swing 0.6s ease-in-out forwards;
+  }
+
+  &:not(:hover) {
+    animation: none;
+    transform: rotate(0deg);
+    transition: transform 0.15s ease-out;
   }
 }
 
 .hoverSpin {
+  transform: rotate(0deg);
+
   &:hover {
-    animation: spin 0.5s linear;
+    animation: spin 0.5s linear forwards;
+  }
+
+  &:not(:hover) {
+    animation: none;
+    transform: rotate(0deg);
+    transition: transform 0.15s ease-out;
   }
 }
 
@@ -1119,33 +1174,75 @@
 }
 
 .hoverFloat {
+  transform: translateY(0);
+  filter: none;
+
   &:hover {
     transform: translateY(-4px);
     filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    transition: transform 0.15s ease-out, filter 0.15s ease-out;
+  }
+
+  &:not(:hover) {
+    transform: translateY(0);
+    filter: none;
+    transition: transform 0.15s ease-out, filter 0.15s ease-out;
   }
 }
 
 .hoverRubberBand {
+  transform: scale(1, 1);
+
   &:hover {
-    animation: rubber-band 0.6s ease-out;
+    animation: rubber-band 0.6s ease-out forwards;
+  }
+
+  &:not(:hover) {
+    animation: none;
+    transform: scale(1, 1);
+    transition: transform 0.15s ease-out;
   }
 }
 
 .hoverJello {
+  transform: skewX(0deg) skewY(0deg);
+
   &:hover {
-    animation: jello 0.6s ease-in-out;
+    animation: jello 0.6s ease-in-out forwards;
+  }
+
+  &:not(:hover) {
+    animation: none;
+    transform: skewX(0deg) skewY(0deg);
+    transition: transform 0.15s ease-out;
   }
 }
 
 .hoverTada {
+  transform: scale(1) rotate(0deg);
+
   &:hover {
-    animation: tada 0.8s ease-in-out;
+    animation: tada 0.8s ease-in-out forwards;
+  }
+
+  &:not(:hover) {
+    animation: none;
+    transform: scale(1) rotate(0deg);
+    transition: transform 0.15s ease-out;
   }
 }
 
 .hoverHeartbeat {
+  transform: scale(1);
+
   &:hover {
-    animation: heartbeat 0.8s ease-in-out;
+    animation: heartbeat 0.8s ease-in-out forwards;
+  }
+
+  &:not(:hover) {
+    animation: none;
+    transform: scale(1);
+    transition: transform 0.15s ease-out;
   }
 }
 
