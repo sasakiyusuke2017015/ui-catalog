@@ -8,7 +8,8 @@
  * - version/    バージョン管理、互換性チェック
  * - theme/      テーマ機能（カラー、シェイプ、背景）
  * - storybook/  Storybook 設定プリセット
- * - commands/   育成コマンド（absorb, refine, distribute, merge）
+ * - commands/   育成コマンド（absorb, clean, optimize, merge, sync）
+ * - scripts/    セットアップスクリプト
  */
 
 // DevTools
