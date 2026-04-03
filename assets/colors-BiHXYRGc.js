@@ -1,0 +1,1 @@
+const e={gray:{100:"#f3f4f6",200:"#e5e7eb",300:"#d1d5db",400:"#9ca3af",500:"#6b7280",600:"#4b5563",900:"#111827"},semantic:{success:"#10b981",warning:"#f59e0b",error:"#ef4444",info:"#3b82f6"},text:{primary:"#1e293b",secondary:"#64748b",muted:"#475569"},border:{primary:"#e2e8f0",light:"#f1f5f9"},surface:{popover:"#e2e5eb"},danger:"#dc2626",white:"#ffffff"};export{e as c};
