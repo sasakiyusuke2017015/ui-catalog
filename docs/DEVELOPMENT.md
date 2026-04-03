@@ -12,8 +12,8 @@
 ## 段階的成熟モデル
 
 ui-catalog は単なる Design System ではなく、**「育てる仕組み」を内包したUIカタログ**です。
-コンポーネントは **absorb → refine** の流れで core/ に取り込まれます。
-extensions/ 層は廃止済み — 外部アプリから直接 core/ に SCSS Module で取り込みます。
+コンポーネントは **absorb → clean** の流れで core/ に取り込まれます。
+extensions/ は project/* ブランチにのみ存在し、プロジェクト固有のコンポーネントを置きます。
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -67,11 +67,13 @@ packages/ui-catalog/
 │
 │
 ├── infra/                   # 育成・観測の仕組み
-│   ├── commands/            #   Claude Code コマンド
+│   ├── commands/            #   育成コマンド
 │   ├── devtools/            #   操作ログ、デバッグツール
 │   ├── version/             #   バージョン管理（VERSION_REGISTRY）
-│   └── theme/               #   テーマ機能
-│
+│   ├── theme/               #   テーマ機能
+│   ├── storybook/           #   Storybook 設定
+│   ├── scripts/             #   セットアップスクリプト
+│   └── docker/              #   Docker 設定
 │
 ├── docs/                    # ドキュメント
 └── index.ts                 # エントリポイント
@@ -181,7 +183,7 @@ export const Button: FC<ButtonProps> = ({ variant = 'primary', children }) => (
 | `@ui-catalog/core/utils` | ユーティリティ |
 | `@ui-catalog/core/styles` | グローバルCSS |
 | `@ui-catalog/core/infra` | infra/ 全体 |
-| `@ui-catalog/core/extensions/<project>` | プロジェクト固有 |
+| `@ui-catalog/core/extensions/<project>` | プロジェクト固有（project/* ブランチのみ） |
 
 ---
 
@@ -239,7 +241,7 @@ ui-catalog:animationSpeed
 「DatePicker に時間選択を追加して」
 ```
 
-### 3. 洗練（Refine）
+### 3. 洗練（Clean）
 
 コードベースをクリーンアップし、品質を上げる。
 
@@ -265,8 +267,8 @@ atoms → molecules      ❌ 禁止（逆方向）
 - jotai（テーマ機能用）
 - framer-motion
 
-**注意**: Tailwind は core/ の peerDependencies から削除予定。
-extensions/ でのみ使用可能。
+**注意**: Tailwind は extensions/ やアプリ側での使用を想定。
+core/ は SCSS Module で実装する。
 
 ---
 
@@ -279,10 +281,7 @@ extensions/ でのみ使用可能。
 
 ```bash
 # versions.json を VERSION_REGISTRY から生成
-pnpm sync:versions
-
-# 同期状態を検証（CI 用、差分があれば exit 1）
-pnpm check:versions
+pnpm export-versions
 ```
 
 ### 初期化
@@ -364,4 +363,4 @@ const MyComponent: FC<Props> = ({ label, onAction }) => {
 
 - [ ] 後方互換性は保たれているか
 - [ ] VERSION_REGISTRY のバージョンを上げたか
-- [ ] `pnpm sync:versions` を実行したか
+- [ ] `pnpm export-versions` を実行したか

@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import React from 'react'
+import 'katex/dist/katex.min.css'
 
 import styles from './MathView.module.scss'
 
@@ -7,7 +8,6 @@ export interface MathViewProps {
   inline?: boolean
   textColor?: string
   fontSize?: number
-  katexCssUrl?: string
 }
 
 // LaTeX command → Unicode mapping
@@ -76,20 +76,7 @@ if (typeof window !== 'undefined') {
   } catch {}
 }
 
-const KATEX_CSS_DEFAULT = 'https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css'
-
-export function MathView({ latex, inline, textColor, fontSize, katexCssUrl }: MathViewProps) {
-  // KaTeX CSS をヘッドに注入（KaTeX が利用可能な場合のみ）
-  useEffect(() => {
-    if (!katexRenderToString) return
-    const href = katexCssUrl ?? KATEX_CSS_DEFAULT
-    if (document.querySelector(`link[href="${href}"]`)) return
-    const link = document.createElement('link')
-    link.rel = 'stylesheet'
-    link.href = href
-    document.head.appendChild(link)
-  }, [katexCssUrl])
-
+export function MathView({ latex, inline, textColor, fontSize }: MathViewProps) {
   const customStyle: React.CSSProperties = {
     ...(fontSize ? { fontSize } : undefined),
     ...(textColor ? { color: textColor } : undefined),
