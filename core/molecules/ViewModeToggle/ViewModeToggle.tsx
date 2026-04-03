@@ -1,45 +1,25 @@
-import { motion, AnimatePresence } from 'framer-motion'
+import { useRef } from 'react'
 import Icon from '../../atoms/Icon'
 import type { IconName } from '../../constants'
 import styles from './ViewModeToggle.module.scss'
 import { cn } from '../../utils'
 
-/**
- * 表示モードの選択肢
- */
 export interface ViewModeOption<T extends string = string> {
-  /** モードの値 */
   value: T
-  /** 表示ラベル */
   label: string
-  /** アイコン名 */
   icon: IconName
 }
 
 export interface ViewModeToggleProps<T extends string = string> {
-  /** 現在選択されているモード */
   value: T
-  /** モード変更時のコールバック */
   onChange: (value: T) => void
-  /** 選択肢の配列 */
   options: ViewModeOption<T>[]
-  /** ラベルを常に表示するか（false: lg以上で表示） */
   showLabel?: boolean
-  /** サイズ */
   size?: 'small' | 'medium' | 'large'
-  /** バリアント */
-  variant?: 'default' | 'primary' | 'teal'
-  /** 追加のクラス名 */
+  variant?: 'default' | 'primary' | 'teal' | 'dark'
   className?: string
 }
 
-/**
- * 表示モード切り替えトグル
- *
- * テーブル/カード表示などの切り替えに使用
- * ホバー時にパルスグローアニメーション、
- * 選択時にシマー（きらめき）エフェクトを表示
- */
 export const ViewModeToggle = <T extends string = string>({
   value,
   onChange,
@@ -49,54 +29,52 @@ export const ViewModeToggle = <T extends string = string>({
   variant = 'default',
   className,
 }: ViewModeToggleProps<T>) => {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const activeIdx = options.findIndex((o) => o.value === value)
+  const count = options.length
+
+  // Slider position: percentage-based
+  const sliderLeft = count > 0 ? `${(activeIdx / count) * 100}%` : '0%'
+  const sliderWidth = count > 0 ? `${100 / count}%` : '100%'
+
   return (
-    <div className={cn(styles.container, className)}>
-      <AnimatePresence mode="wait">
-        {options.map((option) => {
-          const isActive = value === option.value
-          return (
-            <motion.button
-              key={option.value}
-              type="button"
-              onClick={() => onChange(option.value)}
-              className={cn(
-                styles.button,
-                styles.buttonWrapper,
-                styles[size],
-                styles[variant],
-                isActive ? styles.active : styles.inactive
-              )}
-              title={option.label}
-              whileHover={{ scale: isActive ? 1 : 1.02 }}
-              whileTap={{ scale: 0.95 }}
-              layout
-            >
-              {/* アクティブ時のバックグラウンドスライダー */}
-              {isActive && (
-                <motion.div
-                  className={styles.activeBackground}
-                  layoutId="activeBackground"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                />
-              )}
-              <span className={styles.icon}>
-                <Icon
-                  name={option.icon}
-                  size={size === 'small' ? 14 : size === 'large' ? 18 : 16}
-                  hover={isActive ? undefined : 'pop'}
-                  glow={isActive}
-                />
-              </span>
-              <span className={cn(styles.label, !showLabel && styles.labelHidden)}>
-                {option.label}
-              </span>
-            </motion.button>
-          )
-        })}
-      </AnimatePresence>
+    <div
+      ref={containerRef}
+      className={cn(styles.container, styles[variant], className)}
+    >
+      {/* Sliding background */}
+      <div
+        className={styles.slider}
+        style={{ left: sliderLeft, width: sliderWidth }}
+      />
+
+      {/* Buttons */}
+      {options.map((option) => {
+        const isActive = value === option.value
+        return (
+          <button
+            key={option.value}
+            type="button"
+            onClick={() => onChange(option.value)}
+            className={cn(
+              styles.button,
+              styles[size],
+              isActive && styles.active,
+            )}
+            title={option.label}
+          >
+            <span className={styles.icon}>
+              <Icon
+                name={option.icon}
+                size={size === 'small' ? 14 : size === 'large' ? 18 : 16}
+              />
+            </span>
+            {showLabel && option.label && (
+              <span className={styles.label}>{option.label}</span>
+            )}
+          </button>
+        )
+      })}
     </div>
   )
 }

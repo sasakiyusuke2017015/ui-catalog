@@ -799,6 +799,69 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
       </circle>
     </g>
   ),
+  // ========================================
+  // メディアプレイヤー
+  // ========================================
+  ['volume-off']: () => (
+    <g className={styles.body}>
+      <path className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" d="M11 5L6 9H2v6h4l5 4V5z" />
+      <line className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" x1="23" y1="9" x2="17" y2="15" />
+      <line className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" x1="17" y1="9" x2="23" y2="15" />
+    </g>
+  ),
+  ['volume-low']: () => (
+    <g className={styles.body}>
+      <path className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" d="M11 5L6 9H2v6h4l5 4V5z" />
+      <path className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+    </g>
+  ),
+  ['volume-high']: () => (
+    <g className={styles.body}>
+      <path className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" d="M11 5L6 9H2v6h4l5 4V5z" />
+      <path className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+      <path className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+    </g>
+  ),
+  ['fullscreen']: () => (
+    <g className={styles.body}>
+      <polyline className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" points="15 3 21 3 21 9" />
+      <polyline className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" points="9 21 3 21 3 15" />
+      <line className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" x1="21" y1="3" x2="14" y2="10" />
+      <line className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" x1="3" y1="21" x2="10" y2="14" />
+    </g>
+  ),
+  ['fullscreen-exit']: () => (
+    <g className={styles.body}>
+      <polyline className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" points="4 14 10 14 10 20" />
+      <polyline className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" points="20 10 14 10 14 4" />
+      <line className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" x1="14" y1="10" x2="21" y2="3" />
+      <line className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" x1="3" y1="21" x2="10" y2="14" />
+    </g>
+  ),
+  ['shuffle']: () => (
+    <g className={styles.body}>
+      <polyline className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" points="16 3 21 3 21 8" />
+      <line className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" x1="4" y1="20" x2="21" y2="3" />
+      <polyline className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" points="21 16 21 21 16 21" />
+      <line className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" x1="15" y1="15" x2="21" y2="21" />
+      <line className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" x1="4" y1="4" x2="9" y2="9" />
+    </g>
+  ),
+  ['skip-forward']: () => (
+    <g className={styles.body}>
+      <polygon className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" points="5 4 15 12 5 20 5 4" />
+      <line className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" x1="19" y1="5" x2="19" y2="19" />
+    </g>
+  ),
+  ['sidebar']: () => (
+    <g className={styles.body}>
+      <rect className={styles.stroke} strokeLinecap="round" x="3" y="3" width="18" height="18" rx="2" />
+      <line className={styles.stroke} x1="9" y1="3" x2="9" y2="21" />
+    </g>
+  ),
+  // ========================================
+  // LOADING アイコン
+  // ========================================
   ['loading-pulse']: () => (
     <circle
       className={cn(styles.stroke, styles.pulse)}
@@ -1028,6 +1091,16 @@ const DEFAULT_HOVER_MAP: Partial<Record<string, HoverPreset>> = {
   inbox: 'pop',
   archive: 'pop',
   dot: 'pop',
+
+  // メディアプレイヤー
+  'volume-off': 'pop',
+  'volume-low': 'pop',
+  'volume-high': 'pop',
+  fullscreen: 'scale',
+  'fullscreen-exit': 'scale',
+  shuffle: 'wiggle',
+  'skip-forward': 'pop',
+  sidebar: 'pop',
 
   // ブランド
   'meetscribe-brand': 'pop',
