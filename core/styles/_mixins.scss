@@ -119,6 +119,27 @@
 }
 
 // -----------------------------------------------------------------------------
+// Interactive Affordance Base
+// タッチデバイス対応 + focus-visible + active 状態を一括適用
+// -----------------------------------------------------------------------------
+@mixin interactive-affordance($focus-color: $color-primary-500) {
+  &:focus-visible {
+    @include focus-ring($focus-color);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  // タッチデバイス: hover が使えない環境でのフォールバック
+  @media (hover: none) {
+    &:active {
+      opacity: 0.8;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
 // Gradient Backgrounds
 // -----------------------------------------------------------------------------
 @mixin gradient-primary {

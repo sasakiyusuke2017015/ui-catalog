@@ -20,10 +20,23 @@
 
   &__link {
     font-size: $font-size-sm;
+    cursor: pointer;
+    border-radius: $border-radius-sm;
+    transition: opacity $transition-duration-150 $transition-ease-in-out,
+                text-decoration $transition-duration-150 $transition-ease-in-out;
 
     &:hover {
       text-decoration: underline;
       opacity: 0.8;
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba($color-primary-500, 0.5);
+    }
+
+    &:active {
+      opacity: 0.6;
     }
   }
 
