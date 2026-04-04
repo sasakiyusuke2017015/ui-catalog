@@ -199,32 +199,28 @@ sync（配布）    : 各 project/* に配布
 
 ## プロジェクトへの導入
 
-`pnpm install` だけで ui-catalog の clone とバージョン固定が完了する仕組み。
+`pnpm install` だけで ui-catalog の clone とバージョン固定が完了する。
 
-### Step 1: ブランチ作成
+### 事前準備
 
-ui-catalog リポジトリで `project/<name>` ブランチを作成。
+ui-catalog リポジトリで `project/<name>` ブランチを作成しておく:
 
 ```bash
-# ui-catalog リポジトリで
-git checkout main
-git checkout -b project/<name>
-git push -u origin project/<name>
+git checkout main && git checkout -b project/<name> && git push -u origin project/<name>
 ```
 
-### Step 2: package.json に ui-catalog の設定を追加
+### アプリ側の設定
 
-アプリ側の `package.json` に以下を追加:
+**package.json** に追加:
 
-```json
+```jsonc
 {
   "ui-catalog": {
-    "repo": "https://github.com/sasakiyusuke2017015/ui-catalog.git",
     "branch": "project/<name>",
-    "commit": "<コミットハッシュ>"
+    "commit": "<コミットハッシュ>"  // git rev-parse --short HEAD で取得
   },
   "scripts": {
-    "postinstall": "node packages/ui-catalog/infra/scripts/setup-ui-catalog.js"
+    "postinstall": "test -d packages/ui-catalog || git clone https://github.com/sasakiyusuke2017015/ui-catalog.git packages/ui-catalog; node packages/ui-catalog/infra/scripts/setup-ui-catalog.js"
   },
   "dependencies": {
     "@ui-catalog/core": "workspace:*"
@@ -232,28 +228,7 @@ git push -u origin project/<name>
 }
 ```
 
-コミットハッシュは ui-catalog リポジトリで確認:
-
-```bash
-git rev-parse --short HEAD
-```
-
-> **注意**: 初回は setup スクリプト自体がまだないので、先に手動で clone が必要。
-
-```bash
-mkdir -p packages
-git clone -b project/<name> https://github.com/sasakiyusuke2017015/ui-catalog.git packages/ui-catalog
-```
-
-2回目以降は `pnpm install` だけで自動セットアップされる。
-
-### Step 3: .gitignore
-
-```
-packages/ui-catalog/
-```
-
-### Step 4: pnpm-workspace.yaml
+**pnpm-workspace.yaml**:
 
 ```yaml
 packages:
@@ -261,77 +236,37 @@ packages:
   - 'packages/*'
 ```
 
-### Step 5: バージョン初期化
+**.gitignore** に追加: `packages/ui-catalog/`
 
-アプリのエントリポイント（例: `apps/web/src/main.tsx`）で初期化:
+**.vscode/settings.json** に追加: `{ "git.repositoryScanMaxDepth": 3 }`
+
+### アプリのエントリポイントで初期化
 
 ```typescript
 import { initUICatalog } from '@ui-catalog/core'
 import versions from '../../packages/ui-catalog/ui-catalog.versions.json'
-
 initUICatalog(versions)
 ```
 
-### Step 6: Claude Code コマンド登録
+### Claude Code コマンド登録
 
 ```bash
 mkdir -p .claude/commands
 cp packages/ui-catalog/infra/commands/ui-catalog.md .claude/commands/
 ```
 
-`/ui-catalog sync` 実行時にも自動で上書きされる。
+`/ui-catalog sync` で自動更新される。
 
-### Step 7: VSCode で packages/ui-catalog の Git を認識させる
-
-`.vscode/settings.json` に追加:
-
-```json
-{
-  "git.repositoryScanMaxDepth": 3
-}
-```
-
----
-
-## 環境の再現
-
-### 新しいメンバーが参加したとき
+### 環境の再現
 
 ```bash
-git clone <アプリのリポ>
-pnpm install
+# 新メンバー
+git clone <アプリのリポ> && pnpm install
+
+# ui-catalog を更新 → package.json の commit を書き換えてコミット
+# 他のメンバーが受け取る
+git pull && pnpm install
 ```
-
-これだけ。`postinstall` が自動で:
-1. `packages/ui-catalog` を clone
-2. 指定ブランチ・コミットに checkout
-
-### ui-catalog を更新したいとき
-
-```bash
-cd packages/ui-catalog
-git pull  # または /ui-catalog sync
-cd ../..
-```
-
-動作確認したら、アプリ側の `package.json` のコミットハッシュを更新してコミット:
-
-```json
-{
-  "ui-catalog": {
-    "commit": "<新しいハッシュ>"
-  }
-}
-```
-
-### 他のメンバーがその更新を受け取る
-
-```bash
-git pull
-pnpm install
-```
-
-`postinstall` が走り、新しいコミットに自動で切り替わる
 
 ---
 
