@@ -164,8 +164,8 @@ ui-catalog リポジトリで `project/<name>` ブランチを作成しておく
     "commit": "<コミットハッシュ>"  // git rev-parse --short HEAD で取得
   },
   "scripts": {
-    "setup": "node infra/scripts/setup-ui-catalog.js",
-    "postinstall": "node packages/ui-catalog/infra/scripts/setup-ui-catalog.js"
+    "setup": "node infra/scripts/setup-ui-catalog.cjs",
+    "postinstall": "node packages/ui-catalog/infra/scripts/setup-ui-catalog.cjs"
   },
   "dependencies": {
     "@ui-catalog/core": "workspace:*"
