@@ -189,7 +189,7 @@ packages:
 
 ```bash
 # 初回のみ
-git clone https://github.com/sasakiyusuke2017015/ui-catalog.git packages/ui-catalog
+git clone -b project/<name> https://github.com/sasakiyusuke2017015/ui-catalog.git packages/ui-catalog
 
 pnpm install
 ```
