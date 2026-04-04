@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
 /**
- * pnpm install 時に自動実行される ui-catalog セットアップスクリプト。
+ * pnpm install の postinstall で自動実行される ui-catalog セットアップスクリプト。
  *
  * package.json の "ui-catalog" フィールドを読み、
  * 指定されたブランチ・コミットに checkout する。
- * clone は postinstall のシェルコマンドで行われるため、
+ * clone は pnpm install の前に手動で行う必要がある
+ * （pnpm はスクリプト実行前にワークスペース解析を行うため）。
  * このスクリプトは branch + commit の固定のみを担当する。
  *
  * {

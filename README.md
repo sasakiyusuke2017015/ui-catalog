@@ -87,58 +87,6 @@ import { cn } from '@ui-catalog/core/utils'
 // 拡張コンポーネント（project/* ブランチのみ）
 import { SurveyCard, ScoreBadge } from '@ui-catalog/core/extensions/1on1'
 import { VideoThumb } from '@ui-catalog/core/extensions/ticker'
-
-// インフラ
-import { configureDevTools, useOperationLog } from '@ui-catalog/core/infra/devtools'
-import { ThemeProvider, useTheme } from '@ui-catalog/core/infra/theme'
-```
-
-### テーマ機能
-
-```tsx
-import { Provider as JotaiProvider } from 'jotai'
-import { ThemeProvider, useTheme } from '@ui-catalog/core/infra/theme'
-
-function App() {
-  return (
-    <JotaiProvider>
-      <ThemeProvider>
-        <YourApp />
-      </ThemeProvider>
-    </JotaiProvider>
-  )
-}
-
-function SettingsPage() {
-  const { colors } = useTheme()
-  return <div style={{ backgroundColor: colors.primaryBgColor }}>...</div>
-}
-```
-
-### 操作ログ（DevTools）
-
-```tsx
-// apps/web/src/main.tsx
-import { configureDevTools } from '@ui-catalog/core/infra/devtools'
-
-if (import.meta.env.DEV) {
-  configureDevTools({
-    enabled: true,
-    logOperations: true,
-    consoleOutput: true,
-    uidPrefix: 'myapp',
-  })
-}
-```
-
-### バージョン管理
-
-```typescript
-// apps/web/src/main.tsx
-import { initUICatalog } from '@ui-catalog/core'
-import versions from '../../packages/ui-catalog/ui-catalog.versions.json'
-
-initUICatalog(versions)
 ```
 
 ---
@@ -199,15 +147,11 @@ sync（配布）    : 各 project/* に配布
 
 ## プロジェクトへの導入
 
-`pnpm install` だけで ui-catalog の clone とバージョン固定が完了する。
+セットアップスクリプトが clone とバージョン固定を行う。
 
 ### 事前準備
 
-ui-catalog リポジトリで `project/<name>` ブランチを作成しておく:
-
-```bash
-git checkout main && git checkout -b project/<name> && git push -u origin project/<name>
-```
+ui-catalog リポジトリで `project/<name>` ブランチを作成しておく。
 
 ### アプリ側の設定
 
@@ -220,7 +164,8 @@ git checkout main && git checkout -b project/<name> && git push -u origin projec
     "commit": "<コミットハッシュ>"  // git rev-parse --short HEAD で取得
   },
   "scripts": {
-    "postinstall": "test -d packages/ui-catalog || git clone https://github.com/sasakiyusuke2017015/ui-catalog.git packages/ui-catalog; node packages/ui-catalog/infra/scripts/setup-ui-catalog.js"
+    "setup": "node infra/scripts/setup-ui-catalog.js",
+    "postinstall": "node packages/ui-catalog/infra/scripts/setup-ui-catalog.js"
   },
   "dependencies": {
     "@ui-catalog/core": "workspace:*"
@@ -236,16 +181,17 @@ packages:
   - 'packages/*'
 ```
 
-**.gitignore** に追加: `packages/ui-catalog/`
+**.gitignore** に追加: `packages`
 
-**.vscode/settings.json** に追加: `{ "git.repositoryScanMaxDepth": 3 }`
+**.vscode/settings.json** に追加: `{ "git.scanRepositories": ["packages"] }`
 
-### アプリのエントリポイントで初期化
+### 導入手順
 
-```typescript
-import { initUICatalog } from '@ui-catalog/core'
-import versions from '../../packages/ui-catalog/ui-catalog.versions.json'
-initUICatalog(versions)
+```bash
+# 初回のみ
+git clone https://github.com/sasakiyusuke2017015/ui-catalog.git packages/ui-catalog
+
+pnpm install
 ```
 
 ### Claude Code コマンド登録
@@ -256,17 +202,6 @@ cp packages/ui-catalog/infra/commands/ui-catalog.md .claude/commands/
 ```
 
 `/ui-catalog sync` で自動更新される。
-
-### 環境の再現
-
-```bash
-# 新メンバー
-git clone <アプリのリポ> && pnpm install
-
-# ui-catalog を更新 → package.json の commit を書き換えてコミット
-# 他のメンバーが受け取る
-git pull && pnpm install
-```
 
 ---
 
