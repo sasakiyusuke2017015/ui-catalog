@@ -115,6 +115,8 @@ main の最新を現在の project/* ブランチに merge で取り込む。
 3. `git merge origin/main`
 4. コンフリクト発生時 → 解決方法を案内（自動解決しない）
 5. `git push origin project/<name>`
+6. アプリ側にコピーしているファイルを更新:
+   - `cp packages/ui-catalog/infra/commands/ui-catalog.md .claude/commands/`（存在する場合）
 
 **コンフリクト時:**
 ```

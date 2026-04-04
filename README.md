@@ -279,6 +279,8 @@ mkdir -p .claude/commands
 cp packages/ui-catalog/infra/commands/ui-catalog.md .claude/commands/
 ```
 
+`/ui-catalog sync` 実行時にも自動で上書きされる。
+
 ### Step 7: VSCode で packages/ui-catalog の Git を認識させる
 
 `.vscode/settings.json` に追加:
