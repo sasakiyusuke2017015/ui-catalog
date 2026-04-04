@@ -6,7 +6,7 @@ export function getStickyBottom(gap = 4): number {
   const els = document.querySelectorAll('header, [data-sticky-header]')
   const threshold = window.innerHeight / 3
   let bottom = 0
-  for (const el of els) {
+  for (const el of Array.from(els)) {
     const b = el.getBoundingClientRect().bottom
     if (b > bottom && b < threshold) bottom = b
   }

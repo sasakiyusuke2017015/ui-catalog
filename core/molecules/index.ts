@@ -84,3 +84,6 @@ export * from './Select'
 
 // Menu
 export * from './Dropdown'
+
+// Search
+export * from './SearchBar'

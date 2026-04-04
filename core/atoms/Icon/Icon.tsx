@@ -1205,7 +1205,7 @@ const Icon: React.FC<IconProps> = ({
     if (pathRenderer) {
       return pathRenderer({});
     }
-    if (import.meta.env?.DEV) {
+    if (process.env.NODE_ENV === 'development') {
       console.warn(`Icon "${name}" not found`);
     }
     return null;
