@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import Icon from '../../atoms/Icon'
 import type { IconName } from '../../constants'
 import styles from './ViewModeToggle.module.scss'
@@ -30,12 +30,25 @@ export const ViewModeToggle = <T extends string = string>({
   className,
 }: ViewModeToggleProps<T>) => {
   const containerRef = useRef<HTMLDivElement>(null)
-  const activeIdx = options.findIndex((o) => o.value === value)
-  const count = options.length
+  const buttonRefs = useRef<(HTMLButtonElement | null)[]>([])
+  const [sliderStyle, setSliderStyle] = useState<{ left: number; width: number }>({ left: 0, width: 0 })
 
-  // Slider position: percentage-based
-  const sliderLeft = count > 0 ? `${(activeIdx / count) * 100}%` : '0%'
-  const sliderWidth = count > 0 ? `${100 / count}%` : '100%'
+  const updateSlider = useCallback(() => {
+    const activeIdx = options.findIndex((o) => o.value === value)
+    const btn = buttonRefs.current[activeIdx]
+    const container = containerRef.current
+    if (!btn || !container) return
+    const containerRect = container.getBoundingClientRect()
+    const btnRect = btn.getBoundingClientRect()
+    setSliderStyle({
+      left: btnRect.left - containerRect.left,
+      width: btnRect.width,
+    })
+  }, [value, options])
+
+  useEffect(() => {
+    updateSlider()
+  }, [updateSlider])
 
   return (
     <div
@@ -45,15 +58,16 @@ export const ViewModeToggle = <T extends string = string>({
       {/* Sliding background */}
       <div
         className={styles.slider}
-        style={{ left: sliderLeft, width: sliderWidth }}
+        style={{ left: sliderStyle.left, width: sliderStyle.width }}
       />
 
       {/* Buttons */}
-      {options.map((option) => {
+      {options.map((option, idx) => {
         const isActive = value === option.value
         return (
           <button
             key={option.value}
+            ref={(el) => { buttonRefs.current[idx] = el }}
             type="button"
             onClick={() => onChange(option.value)}
             className={cn(

@@ -172,7 +172,7 @@ ui-catalog リポジトリ
 | コマンド | 使用ブランチ | やること |
 |----------|-------------|---------|
 | `/ui-catalog` | どこでも | 状態表示（読み取り専用） |
-| `/ui-catalog sync` | project/* のみ | main の最新を merge で取り込む |
+| `/ui-catalog sync` | どこでも | main の最新を project/* に merge で配布 |
 | `/ui-catalog merge` | main のみ | project/* の変更を merge で取り込む |
 | `/ui-catalog clean` | project/* のみ | 整合性チェック・修正 |
 | `/ui-catalog optimize` | main のみ | 依存最適化 |
@@ -278,6 +278,8 @@ initUICatalog(versions)
 mkdir -p .claude/commands
 cp packages/ui-catalog/infra/commands/ui-catalog.md .claude/commands/
 ```
+
+`/ui-catalog sync` 実行時にも自動で上書きされる。
 
 ### Step 7: VSCode で packages/ui-catalog の Git を認識させる
 
