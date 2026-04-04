@@ -32,7 +32,7 @@
 // -----------------------------------------------------------------------------
 .clickable {
   cursor: pointer;
-  transition-property: box-shadow;
+  transition-property: box-shadow, transform;
   transition-duration: $transition-duration-150;
   transition-timing-function: $transition-ease-in-out;
 
@@ -43,6 +43,17 @@
   &:focus-visible {
     outline: none;
     box-shadow: $shadow-md, 0 0 0 3px rgba($color-primary-500, 0.3);
+  }
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: $shadow-default;
+  }
+
+  @media (hover: none) {
+    &:active {
+      opacity: 0.9;
+    }
   }
 }
 
