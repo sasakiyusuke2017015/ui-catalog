@@ -147,7 +147,7 @@ sync（配布）    : 各 project/* に配布
 
 ## プロジェクトへの導入
 
-セットアップスクリプトが clone とバージョン固定を行う。
+Git Submodule として導入する。
 
 ### 事前準備
 
@@ -159,13 +159,8 @@ ui-catalog リポジトリで `project/<name>` ブランチを作成しておく
 
 ```jsonc
 {
-  "ui-catalog": {
-    "branch": "project/<name>",
-    "commit": "<コミットハッシュ>"  // git rev-parse --short HEAD で取得
-  },
   "scripts": {
-    "setup": "node infra/scripts/setup-ui-catalog.cjs",
-    "postinstall": "node packages/ui-catalog/infra/scripts/setup-ui-catalog.cjs"
+    "ui:update": "git submodule update --remote packages/ui-catalog"
   },
   "dependencies": {
     "@ui-catalog/core": "workspace:*"
@@ -181,16 +176,23 @@ packages:
   - 'packages/*'
 ```
 
-**.gitignore** に追加: `packages`
-
 **.vscode/settings.json** に追加: `{ "git.scanRepositories": ["packages"] }`
 
 ### 導入手順
 
 ```bash
-# 初回のみ
-git clone -b project/<name> https://github.com/sasakiyusuke2017015/ui-catalog.git packages/ui-catalog
+# 初回クローン（--recurse-submodules で submodule も取得）
+git clone --recurse-submodules <your-repo>
 
+# 既存リポジトリに submodule を追加
+git submodule add -b project/<name> https://github.com/sasakiyusuke2017015/ui-catalog.git packages/ui-catalog
+
+# submodule の更新
+pnpm ui:update
+# または
+git submodule update --remote packages/ui-catalog
+
+# 依存関係インストール
 pnpm install
 ```
 
