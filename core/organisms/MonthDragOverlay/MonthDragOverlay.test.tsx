@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/react'
 import { MonthDragOverlay } from './MonthDragOverlay'
-import type { CalendarEvent } from '../../types/calend'
+import type { CalendarEvent } from '../../types/calendar'
 
 const mockEvent: CalendarEvent = {
   id: '1',

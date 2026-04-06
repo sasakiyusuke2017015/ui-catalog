@@ -1,4 +1,4 @@
-import type { CalendarEvent } from '../../types/calend'
+import type { CalendarEvent } from '../../types/calendar'
 
 const MINUTES_PER_HOUR = 60
 

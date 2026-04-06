@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { EventPopover } from './EventPopover'
-import type { HoveredEvent } from '../../hooks/calend/calendar'
+import type { HoveredEvent } from '../../hooks/calendar/calendar'
 
 const mockHovered: HoveredEvent = {
   event: {

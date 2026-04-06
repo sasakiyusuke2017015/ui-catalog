@@ -12,6 +12,8 @@ export {
   isSameMonth,
   isToday,
   getDay,
+  coversFullDay,
+  getEventsForDay,
 } from './dates'
 
 export {
@@ -26,3 +28,16 @@ export {
   applyResizeDelta,
   clampToDay,
 } from './dragUtils'
+
+export {
+  resolveOriginalEvent,
+  getEffectiveDayOffset,
+} from './repeatUtils'
+
+export {
+  layoutSpanningEvents,
+  isMultiDayEvent,
+} from './layoutSpanning'
+export type { SpanningEvent } from './layoutSpanning'
+
+export { getStickyBottom } from './dom'

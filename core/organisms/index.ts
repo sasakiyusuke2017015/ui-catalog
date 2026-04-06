@@ -73,7 +73,10 @@ export * from './DotPattern'
 export * from './GridPattern'
 export * from './ShimmerButton'
 
-// Calend
+// Calendar
+export * from './CalendarEventCard'
+export * from './EventPopover'
+export * from './MonthDayCell'
 export * from './DayColumn'
 export * from './DayFrame'
 export * from './CalendarDragOverlay'

@@ -28,7 +28,7 @@ export interface DayData {
   readonly slots: readonly TimeSlot[]
 }
 
-export interface DateRange {
+export interface CalendarDateRange {
   readonly start: Date
   readonly end: Date
 }

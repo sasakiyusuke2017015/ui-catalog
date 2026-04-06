@@ -1,5 +1,5 @@
 import { startOfDay, endOfDay } from 'date-fns'
-import type { CalendarEvent } from '../../types/calend'
+import type { CalendarEvent } from '../../types/calendar'
 
 export interface SpanningEvent {
   readonly event: CalendarEvent

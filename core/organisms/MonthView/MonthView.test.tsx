@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'jotai'
 import { MonthView } from './MonthView'
-import type { CalendarEvent } from '../../types/calend'
+import type { CalendarEvent } from '../../types/calendar'
 
 const defaultProps = {
   events: [] as readonly CalendarEvent[],

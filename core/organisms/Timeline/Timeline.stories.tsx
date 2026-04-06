@@ -1,6 +1,6 @@
 import { Provider } from 'jotai'
 import { Timeline } from './Timeline'
-import type { CalendarEvent } from '../../types/calend'
+import type { CalendarEvent } from '../../types/calendar'
 
 export default {
   title: 'カレンダー/Timeline',

@@ -1,8 +1,8 @@
 import { useRef, useCallback, useState, useEffect, useMemo } from 'react'
-import { useInfiniteTimeline } from '../../hooks/calend/useInfiniteTimeline'
+import { useInfiniteTimeline } from '../../hooks/calendar/useInfiniteTimeline'
 import { DayFrame } from '../DayFrame/DayFrame'
 import { CalendarDragOverlay } from '../CalendarDragOverlay/CalendarDragOverlay'
-import type { CalendarEvent } from '../../types/calend'
+import type { CalendarEvent } from '../../types/calendar'
 
 // DayFrame の高さ: 24スロット × 56px + ヘッダー約60px = 約1404px
 const DAY_FRAME_HEIGHT = 1404

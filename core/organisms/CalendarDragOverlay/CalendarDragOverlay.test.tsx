@@ -2,8 +2,8 @@ import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/react'
 import { Provider, createStore } from 'jotai'
 import { CalendarDragOverlay } from './CalendarDragOverlay'
-import { dragAtom } from '../../hooks/calend/calendar'
-import type { DragState } from '../../hooks/calend/calendar'
+import { dragAtom } from '../../hooks/calendar/calendar'
+import type { DragState } from '../../hooks/calendar/calendar'
 
 const mockDrag: DragState = {
   eventId: '1',

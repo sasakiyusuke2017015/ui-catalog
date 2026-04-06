@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render } from '@testing-library/react'
 import { Provider } from 'jotai'
 import { DayColumn } from './DayColumn'
-import type { CalendarEvent } from '../../types/calend'
+import type { CalendarEvent } from '../../types/calendar'
 
 const mockEvent: CalendarEvent = {
   id: '1',

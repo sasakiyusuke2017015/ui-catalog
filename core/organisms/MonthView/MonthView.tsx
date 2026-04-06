@@ -1,18 +1,18 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { selectedDateAtom, activeSlotAtom, eventModalAtom, hoveredEventAtom, anyDragActiveAtom } from '../../hooks/calend/calendar'
+import { selectedDateAtom, activeSlotAtom, eventModalAtom, hoveredEventAtom, anyDragActiveAtom } from '../../hooks/calendar/calendar'
 import {
   getMonthCalendarDates,
   getEventsForDay,
-} from '../../utils/calend/dates'
+} from '../../utils/calendar/dates'
 import { format, startOfDay, differenceInCalendarDays } from 'date-fns'
 import { SpanningBar } from '../../molecules/SpanningBar/SpanningBar'
 import { MonthDragOverlay } from '../MonthDragOverlay/MonthDragOverlay'
-import { MonthDayCell } from '../../molecules/MonthDayCell/MonthDayCell'
-import { layoutSpanningEvents } from '../../utils/calend/layoutSpanning'
+import { MonthDayCell } from '../../organisms/MonthDayCell/MonthDayCell'
+import { layoutSpanningEvents } from '../../utils/calendar/layoutSpanning'
 import { ja } from 'date-fns/locale'
 import { useCallback, useMemo, useRef, useState } from 'react'
-import type { CalendarEvent } from '../../types/calend'
-import { resolveOriginalEvent } from '../../utils/calend/repeatUtils'
+import type { CalendarEvent } from '../../types/calendar'
+import { resolveOriginalEvent } from '../../utils/calendar/repeatUtils'
 import styles from './MonthView.module.scss'
 
 const WEEKDAY_LABELS = ['日', '月', '火', '水', '木', '金', '土']

@@ -6,9 +6,9 @@ import {
   snapToInterval,
   applyMoveDelta,
   applyResizeDelta,
-} from '../../utils/calend/dragUtils'
-import type { CalendarEvent } from '../../types/calend'
-import { getEffectiveDayOffset, resolveOriginalEvent } from '../../utils/calend/repeatUtils'
+} from '../../utils/calendar/dragUtils'
+import type { CalendarEvent } from '../../types/calendar'
+import { getEffectiveDayOffset, resolveOriginalEvent } from '../../utils/calendar/repeatUtils'
 
 const DRAG_THRESHOLD = 5
 

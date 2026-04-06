@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { format } from 'date-fns'
-import { isToday, isSameMonth } from '../../utils/calend/dates'
+import { isToday, isSameMonth } from '../../utils/calendar/dates'
 import { MonthEventCard } from '../../molecules/MonthEventCard/MonthEventCard'
-import type { CalendarEvent } from '../../types/calend'
+import type { CalendarEvent } from '../../types/calendar'
 import styles from './MonthDayCell.module.scss'
 
 interface MonthDayCellProps {

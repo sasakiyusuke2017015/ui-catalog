@@ -1,5 +1,5 @@
 import { colors } from '@ui-catalog/core/tokens'
-import type { DayOfWeek } from '../../types/calend'
+import type { DayOfWeek } from '../../types/calendar'
 import styles from './DayOfWeekPicker.module.scss'
 
 const DAY_LABELS = ['日', '月', '火', '水', '木', '金', '土'] as const
