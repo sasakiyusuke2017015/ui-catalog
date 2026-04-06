@@ -645,12 +645,12 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
   ),
 
   // ========================================
-  // Meetscribe ブランドアイコン（洗練版）
+  // 議事録・音声関連アイコン
   // ========================================
 
   // メイン: 音声波形がドキュメントに変換されるイメージ
   // シンプルで認識しやすい、24x24で映える
-  ['meetscribe-brand']: () => (
+  ['transcript-doc']: () => (
     <g className={styles.body}>
       {/* 角丸ドキュメント */}
       <rect className={styles.stroke} x="5" y="2" width="14" height="20" rx="2.5" strokeWidth="1.8" />
@@ -664,7 +664,7 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
   ),
 
   // バリエーション1: M字波形（ロゴ的、ミニマル）
-  ['meetscribe-brand-wave']: () => (
+  ['audio-wave']: () => (
     <g className={styles.body}>
       {/* M字が音声波形を表現 */}
       <path
@@ -681,7 +681,7 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
   ),
 
   // バリエーション2: 円形マイク + テキストライン（バランス型）
-  ['meetscribe-brand-mic']: () => (
+  ['mic-text']: () => (
     <g className={styles.body}>
       {/* マイク */}
       <rect className={styles.stroke} x="9" y="3" width="6" height="9" rx="3" strokeWidth="1.8" />
@@ -693,7 +693,7 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
   ),
 
   // バリエーション3: 再生+ドキュメント（動画→文字起こし）
-  ['meetscribe-brand-play']: () => (
+  ['play-doc']: () => (
     <g className={styles.body}>
       {/* ドキュメント */}
       <path className={styles.stroke} d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" strokeWidth="1.8" />
@@ -704,7 +704,7 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
   ),
 
   // バリエーション4: 吹き出し波形（会話→テキスト）
-  ['meetscribe-brand-chat']: () => (
+  ['chat-wave']: () => (
     <g className={styles.body}>
       {/* 吹き出し */}
       <path
@@ -720,7 +720,7 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
   ),
 
   // バリエーション5: シールド型（信頼性・セキュリティ感）
-  ['meetscribe-brand-shield']: () => (
+  ['shield-audio']: () => (
     <g className={styles.body}>
       {/* シールド */}
       <path
@@ -1102,13 +1102,13 @@ const DEFAULT_HOVER_MAP: Partial<Record<string, HoverPreset>> = {
   'skip-forward': 'pop',
   sidebar: 'pop',
 
-  // ブランド
-  'meetscribe-brand': 'pop',
-  'meetscribe-brand-wave': 'wiggle',
-  'meetscribe-brand-mic': 'pop',
-  'meetscribe-brand-play': 'pop',
-  'meetscribe-brand-chat': 'pop',
-  'meetscribe-brand-shield': 'glow',
+  // 議事録・音声関連
+  'transcript-doc': 'pop',
+  'audio-wave': 'wiggle',
+  'mic-text': 'pop',
+  'play-doc': 'pop',
+  'chat-wave': 'pop',
+  'shield-audio': 'glow',
 };
 
 // ========================================
