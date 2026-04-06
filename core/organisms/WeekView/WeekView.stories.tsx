@@ -1,7 +1,7 @@
 import { Provider, createStore } from 'jotai'
 import { WeekView } from './WeekView'
-import { selectedDateAtom } from '../../hooks/calend/calendar'
-import type { CalendarEvent } from '../../types/calend'
+import { selectedDateAtom } from '../../hooks/calendar/calendar'
+import type { CalendarEvent } from '../../types/calendar'
 
 export default {
   title: 'カレンダー/WeekView',

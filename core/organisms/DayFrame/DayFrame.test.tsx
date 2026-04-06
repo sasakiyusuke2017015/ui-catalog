@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'jotai'
 import { DayFrame } from './DayFrame'
-import type { CalendarEvent } from '../../types/calend'
+import type { CalendarEvent } from '../../types/calendar'
 
 const defaultProps = {
   date: new Date('2026-03-20'),

@@ -1,13 +1,8 @@
 import { useRef, useCallback, useState, useEffect, useMemo } from 'react'
-import { useInfiniteTimeline } from '../../hooks/calend/useInfiniteTimeline'
+import { useInfiniteTimeline } from '../../hooks/calendar/useInfiniteTimeline'
 import { DayFrame } from '../DayFrame/DayFrame'
 import { CalendarDragOverlay } from '../CalendarDragOverlay/CalendarDragOverlay'
-import type { CalendarEvent } from '../../types/calend'
-
-// DayFrame の高さ: 24スロット × 56px + ヘッダー約60px = 約1404px
-const DAY_FRAME_HEIGHT = 1404
-// 前後何日分を追加でレンダリングするか（バッファ）
-const RENDER_BUFFER = 3
+import type { CalendarEvent } from '../../types/calendar'
 
 // DayFrame の高さ: 24スロット × 56px + ヘッダー約60px = 約1404px
 const DAY_FRAME_HEIGHT = 1404

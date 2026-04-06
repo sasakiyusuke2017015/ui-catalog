@@ -1,4 +1,4 @@
-import type { CalendarEvent } from '../../types/calend'
+import type { CalendarEvent } from '../../types/calendar'
 
 /**
  * 繰り返しイベントの不変条件:

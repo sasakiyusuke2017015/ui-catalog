@@ -1,5 +1,5 @@
 import { EventPopover } from './EventPopover'
-import type { HoveredEvent } from '../../hooks/calend/calendar'
+import type { HoveredEvent } from '../../hooks/calendar/calendar'
 
 export default {
   title: 'カレンダー/EventPopover',

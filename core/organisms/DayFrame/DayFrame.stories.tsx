@@ -1,6 +1,6 @@
 import { Provider } from 'jotai'
 import { DayFrame } from './DayFrame'
-import type { CalendarEvent } from '../../types/calend'
+import type { CalendarEvent } from '../../types/calendar'
 
 export default {
   title: 'カレンダー/DayFrame',

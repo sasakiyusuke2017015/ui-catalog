@@ -1,6 +1,6 @@
 import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react'
 import { useAtom, useSetAtom, useAtomValue } from 'jotai'
-import { eventModalAtom, activeSlotAtom, eventsAtom } from '../../hooks/calend/calendar'
+import { eventModalAtom, activeSlotAtom, eventsAtom } from '../../hooks/calendar/calendar'
 import { format } from 'date-fns'
 import { Button, Input } from '../../molecules'
 import { TextArea } from '../../atoms'
@@ -10,8 +10,8 @@ import { ColorPicker, EVENT_COLORS } from '../../molecules/ColorPicker/ColorPick
 import { PillSelect } from '../../molecules/PillSelect/PillSelect'
 import { DayOfWeekPicker } from '../../molecules/DayOfWeekPicker/DayOfWeekPicker'
 import { IconPicker } from '../../molecules/IconPicker/IconPicker'
-import type { CalendarEvent, EventMode, DayOfWeek } from '../../types/calend'
-import { resolveOriginalEvent } from '../../utils/calend/repeatUtils'
+import type { CalendarEvent, EventMode, DayOfWeek } from '../../types/calendar'
+import { resolveOriginalEvent } from '../../utils/calendar/repeatUtils'
 
 function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`

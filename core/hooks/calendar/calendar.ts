@@ -1,5 +1,5 @@
 import { atom } from 'jotai'
-import type { CalendarEvent, ViewMode } from '../../types/calend'
+import type { CalendarEvent, ViewMode } from '../../types/calendar'
 
 export const eventsAtom = atom<readonly CalendarEvent[]>([])
 

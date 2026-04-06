@@ -7,8 +7,8 @@ import { createPortal } from 'react-dom'
 import { useAtomValue } from 'jotai'
 import { format } from 'date-fns'
 import { IconLabel } from '../../molecules/IconLabel/IconLabel'
-import { dragAtom } from '../../hooks/calend/calendar'
-import type { DragState } from '../../hooks/calend/calendar'
+import { dragAtom } from '../../hooks/calendar/calendar'
+import type { DragState } from '../../hooks/calendar/calendar'
 import styles from './CalendarDragOverlay.module.scss'
 
 function GhostCard({ drag }: { readonly drag: DragState }) {

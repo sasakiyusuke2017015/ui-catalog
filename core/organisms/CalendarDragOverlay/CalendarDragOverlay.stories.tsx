@@ -1,7 +1,7 @@
 import { Provider, createStore } from 'jotai'
 import { CalendarDragOverlay } from './CalendarDragOverlay'
-import { dragAtom } from '../../hooks/calend/calendar'
-import type { DragState } from '../../hooks/calend/calendar'
+import { dragAtom } from '../../hooks/calendar/calendar'
+import type { DragState } from '../../hooks/calendar/calendar'
 
 export default {
   title: 'カレンダー/CalendarDragOverlay',

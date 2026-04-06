@@ -1,5 +1,5 @@
 import { MonthDayCell } from './MonthDayCell'
-import type { CalendarEvent } from '../../types/calend'
+import type { CalendarEvent } from '../../types/calendar'
 
 export default {
   title: 'カレンダー/MonthDayCell',

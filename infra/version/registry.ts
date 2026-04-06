@@ -120,23 +120,21 @@ export const VERSION_REGISTRY = {
   TransferList: '1.0.0',
   TrendChart: '1.1.0',
 
-  // atoms (calendar)
-  CalendarEventCard: '1.0.0',
-  IconLabel: '1.0.0',
-  MonthEventCard: '1.0.0',
-  TimeSlotRow: '1.0.0',
-
   // molecules (calendar)
   ColorPicker: '1.0.0',
   DayOfWeekPicker: '1.0.0',
-  EventPopover: '1.0.0',
+  IconLabel: '1.0.0',
   IconPicker: '1.0.0',
-  MonthDayCell: '1.0.0',
+  MonthEventCard: '1.0.0',
   PillSelect: '1.0.0',
   SpanningBar: '1.0.0',
   TimeSelect: '1.0.0',
+  TimeSlotRow: '1.0.0',
 
   // organisms (calendar)
+  CalendarEventCard: '1.1.0',
+  EventPopover: '1.1.0',
+  MonthDayCell: '1.1.0',
   CalendarDragOverlay: '1.0.0',
   CalendarHeader: '1.0.0',
   DayColumn: '1.0.0',

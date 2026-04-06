@@ -1,11 +1,11 @@
 import { useCallback } from 'react'
 import { format, addDays, subDays } from 'date-fns'
 import { useAtom } from 'jotai'
-import { viewModeAtom, selectedDateAtom } from '../../hooks/calend/calendar'
-import { navigateDate } from '../../utils/calend/dates'
+import { viewModeAtom, selectedDateAtom } from '../../hooks/calendar/calendar'
+import { navigateDate } from '../../utils/calendar/dates'
 import { Button } from '../../molecules'
 import { DatePicker } from '../../molecules'
-import type { ViewMode } from '../../types/calend'
+import type { ViewMode } from '../../types/calendar'
 import styles from './CalendarHeader.module.scss'
 
 const VIEW_MODES: { readonly value: ViewMode; readonly label: string }[] = [

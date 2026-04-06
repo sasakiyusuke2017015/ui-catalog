@@ -1,7 +1,7 @@
 import { Provider, createStore } from 'jotai'
 import { EventModal } from './EventModal'
-import { eventModalAtom } from '../../hooks/calend/calendar'
-import type { CalendarEvent } from '../../types/calend'
+import { eventModalAtom } from '../../hooks/calendar/calendar'
+import type { CalendarEvent } from '../../types/calendar'
 
 export default {
   title: 'カレンダー/EventModal',

@@ -1,5 +1,5 @@
 import { MonthEventCard } from './MonthEventCard'
-import type { CalendarEvent } from '../../types/calend'
+import type { CalendarEvent } from '../../types/calendar'
 
 export default {
   title: 'カレンダー/MonthEventCard',

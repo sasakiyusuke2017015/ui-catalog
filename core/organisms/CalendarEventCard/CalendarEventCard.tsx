@@ -3,7 +3,7 @@
  * タイムライン（日・週）とコンパクト（月）の2モードで描画
  */
 import { useRef, useEffect, useState, useCallback, type ReactNode } from 'react'
-import { getStickyBottom } from '../../utils/calend/dom'
+import { getStickyBottom } from '../../utils/calendar/dom'
 import { IconLabel } from '../../molecules/IconLabel/IconLabel'
 import styles from './CalendarEventCard.module.scss'
 

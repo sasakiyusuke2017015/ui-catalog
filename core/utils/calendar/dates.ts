@@ -21,7 +21,7 @@ import {
   getDay,
 } from 'date-fns'
 import { ja } from 'date-fns/locale'
-import type { DayData, TimeSlot, CalendarEvent } from '../../types/calend'
+import type { DayData, TimeSlot, CalendarEvent } from '../../types/calendar'
 
 export function generateDayData(
   date: Date,
