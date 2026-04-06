@@ -23,6 +23,16 @@
       color: var(--color-text-secondary, $color-gray-700);
     }
 
+    &:focus-visible {
+      outline: none;
+      box-shadow: inset 0 0 0 2px rgba($color-primary-500, 0.5);
+    }
+
+    &:active:not(&--active) {
+      color: var(--color-text-secondary, $color-gray-700);
+      opacity: 0.8;
+    }
+
     &--active {
       border-bottom-color: var(--color-accent, $color-primary-500);
       color: var(--color-accent, $color-primary-500);

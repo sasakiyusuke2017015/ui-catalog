@@ -21,7 +21,7 @@ export const VERSION_REGISTRY = {
   Checkbox: '1.0.0',
   ExternalLink: '1.0.0',
   FileLink: '1.0.0',
-  Icon: '1.4.0',
+  Icon: '1.5.0',
   IconButton: '1.0.0',
   Input: '1.0.0',
   InternalLink: '1.0.0',
@@ -167,6 +167,9 @@ export const VERSION_REGISTRY = {
   // atoms (visualization)
   CountdownRing: '1.0.0',
   MathView: '1.0.0',
+
+  // --- extensions/ticker ---
+  VideoThumb: '1.0.0',
 } as const
 
 export type ComponentName = keyof typeof VERSION_REGISTRY
@@ -328,7 +331,7 @@ export function initUICatalog(versionsJson: VersionRegistry | undefined | null):
   }
 
   // 開発環境でのみバージョンチェックを実行
-  if (import.meta.env?.DEV) {
+  if (process.env.NODE_ENV === 'development') {
     checkVersions(versionsJson)
   }
 }

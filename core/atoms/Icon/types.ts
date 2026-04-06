@@ -110,6 +110,8 @@ export type AnimationPreset =
  * ホバー時のアニメーションプリセット
  */
 export type HoverPreset =
+  // === 自動（アイコンごとのデフォルト） ===
+  | 'auto'
   // === スケール ===
   | 'scale'
   | 'scale-large'
@@ -124,6 +126,7 @@ export type HoverPreset =
   | 'pop'
   | 'wiggle'
   | 'shake'
+  | 'swing'
   // === 回転系 ===
   | 'spin'
   | 'flip'

@@ -157,7 +157,7 @@ const Calendar: FC<CalendarProps> = ({
     <div
       className={`bg-white border border-gray-200 shadow-lg overflow-hidden ${className || ''}`}
       style={containerStyle}
-      data-component="Calendar"
+      data-component="calendar"
       data-mode={mode}
     >
       {/* 上ナビゲーションボタン */}

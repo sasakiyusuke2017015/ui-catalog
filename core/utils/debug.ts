@@ -6,14 +6,14 @@
 const timers = new Map<string, number>();
 
 export const debugLog = (data: unknown, label: string) => {
-  if (import.meta.env.DEV) {
+  if (process.env.NODE_ENV === 'development') {
     const time = new Date().toLocaleTimeString('ja-JP');
     console.log(`🔍 【${label}】 (${time})`, data);
   }
 };
 
 export const debugLogGroup = (label: string, callback: () => void) => {
-  if (import.meta.env.DEV) {
+  if (process.env.NODE_ENV === 'development') {
     console.group(`📊 【${label}】`);
     callback();
     console.groupEnd();
@@ -25,7 +25,7 @@ export const debugCompare = (
   processedData: unknown,
   label: string = 'データ比較'
 ) => {
-  if (import.meta.env.DEV) {
+  if (process.env.NODE_ENV === 'development') {
     const time = new Date().toLocaleTimeString('ja-JP');
     console.group(`⚖️ 【${label}】 (${time})`);
     console.log('📥 生データ:', rawData);
@@ -42,7 +42,7 @@ export const debugCompare = (
 
 // 時間計測開始
 export const debugTimeStart = (processName: string) => {
-  if (import.meta.env.DEV) {
+  if (process.env.NODE_ENV === 'development') {
     timers.set(processName, window.performance.now());
     console.log(`⏱️ 【処理開始】 ${processName}`);
   }
@@ -50,7 +50,7 @@ export const debugTimeStart = (processName: string) => {
 
 // 時間計測終了
 export const debugTimeEnd = (processName: string) => {
-  if (import.meta.env.DEV) {
+  if (process.env.NODE_ENV === 'development') {
     const startTime = timers.get(processName);
     if (startTime) {
       const duration = (window.performance.now() - startTime) / 1000;
@@ -69,7 +69,7 @@ export const debugWithTime = <T>(
   data: T,
   label: string
 ): T => {
-  if (import.meta.env.DEV) {
+  if (process.env.NODE_ENV === 'development') {
     debugTimeStart(processName);
     debugLog(data, label);
     debugTimeEnd(processName);
@@ -86,7 +86,7 @@ export const debugWithTime = <T>(
  * @example debugRender('LoginButton', { state: 'ready', variant: 'success' })
  */
 export const debugRender = (componentName: string, props?: Record<string, unknown>) => {
-  if (import.meta.env.DEV) {
+  if (process.env.NODE_ENV === 'development') {
     const time = new Date().toLocaleTimeString('ja-JP');
     if (props) {
       console.log(`🎨 [${componentName}] rendered (${time})`, props);
@@ -125,7 +125,7 @@ export const debugAction = (
   action: string,
   details?: Record<string, unknown>
 ) => {
-  if (import.meta.env.DEV) {
+  if (process.env.NODE_ENV === 'development') {
     const time = new Date().toLocaleTimeString('ja-JP');
     const emoji = ACTION_EMOJIS[action] ?? '🔹';
     if (details) {
@@ -146,7 +146,7 @@ export const debugStateChange = (
   from: unknown,
   to: unknown
 ) => {
-  if (import.meta.env.DEV) {
+  if (process.env.NODE_ENV === 'development') {
     const time = new Date().toLocaleTimeString('ja-JP');
     console.log(`🔄 [${componentName}] ${stateName}: ${String(from)} → ${String(to)} (${time})`);
   }

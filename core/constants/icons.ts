@@ -68,6 +68,15 @@ export const ALL_ICON_TYPES = [
   'cloud-upload',
   'inbox',
   'archive',
+  // メディアプレイヤー
+  'volume-off',
+  'volume-low',
+  'volume-high',
+  'fullscreen',
+  'fullscreen-exit',
+  'shuffle',
+  'skip-forward',
+  'sidebar',
   // Meetscribe ブランド（洗練版）
   'meetscribe-brand',        // メイン: 音声波形+ドキュメント
   'meetscribe-brand-wave',   // M字波形（ロゴ的）

@@ -81,3 +81,9 @@ export * from './ResetButton'
 export * from './ScoreBadge'
 export * from './Segment'
 export * from './Select'
+
+// Menu
+export * from './Dropdown'
+
+// Search
+export * from './SearchBar'

@@ -139,3 +139,21 @@ export default function TagItem({
 
 /** 利用可能なタグ色オプション */
 export const TAG_COLOR_OPTIONS = ['red', 'blue', 'green', 'orange', 'purple', 'teal', 'pink', 'indigo', 'yellow']
+
+/** タグ色 → Tailwind bg クラス変換（アプリ側での利用向け） */
+const TAG_COLOR_BG_MAP: Record<string, string> = {
+  red: 'bg-red-500',
+  blue: 'bg-blue-500',
+  green: 'bg-green-500',
+  orange: 'bg-orange-500',
+  purple: 'bg-purple-500',
+  teal: 'bg-teal-500',
+  pink: 'bg-pink-500',
+  indigo: 'bg-indigo-500',
+  yellow: 'bg-yellow-500',
+  gray: 'bg-gray-500',
+}
+
+export function getTagBgColor(color: string): string {
+  return TAG_COLOR_BG_MAP[color] || 'bg-gray-500'
+}

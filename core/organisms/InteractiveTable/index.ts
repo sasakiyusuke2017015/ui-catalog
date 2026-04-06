@@ -1,4 +1,4 @@
-export { default } from './InteractiveTable';
+export { default as InteractiveTable } from './InteractiveTable';
 export type {
   Column,
   FocusedCell,

@@ -16,6 +16,15 @@
   &:hover {
     background-color: var(--color-hover-bg);
   }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba($color-primary-500, 0.5);
+  }
+
+  &:active {
+    opacity: 0.8;
+  }
 }
 
 .label {

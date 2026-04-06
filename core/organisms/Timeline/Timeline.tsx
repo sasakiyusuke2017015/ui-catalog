@@ -3,7 +3,11 @@ import { useInfiniteTimeline } from '../../hooks/calend/useInfiniteTimeline'
 import { DayFrame } from '../DayFrame/DayFrame'
 import { CalendarDragOverlay } from '../CalendarDragOverlay/CalendarDragOverlay'
 import type { CalendarEvent } from '../../types/calend'
-import styles from './Timeline.module.scss'
+
+// DayFrame の高さ: 24スロット × 56px + ヘッダー約60px = 約1404px
+const DAY_FRAME_HEIGHT = 1404
+// 前後何日分を追加でレンダリングするか（バッファ）
+const RENDER_BUFFER = 3
 
 // DayFrame の高さ: 24スロット × 56px + ヘッダー約60px = 約1404px
 const DAY_FRAME_HEIGHT = 1404
@@ -88,7 +92,7 @@ export function Timeline({ events, headerVariant, persistEvent, removeEvent }: C
     <div
       data-component="Timeline"
       ref={scrollRef}
-      className={styles.container}
+      className="h-full overflow-y-auto"
     >
       {/* 仮想スクロール用コンテナ */}
       <div style={{ height: totalHeight, position: 'relative' }}>

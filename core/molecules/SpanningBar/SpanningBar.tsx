@@ -1,7 +1,6 @@
 import { startOfDay } from 'date-fns'
-import { IconLabel } from '../../molecules/IconLabel/IconLabel'
+import { IconLabel } from '../IconLabel/IconLabel'
 import type { CalendarEvent } from '../../types/calend'
-import styles from './SpanningBar.module.scss'
 
 const IS_TOUCH = typeof window !== 'undefined' && 'ontouchstart' in window
 const LANE_H = IS_TOUCH ? 28 : 20
@@ -61,13 +60,15 @@ export function SpanningBar({
     >
       {/* Bar body */}
       <div
-        className={styles.bar}
+        className="h-full flex items-center gap-1 px-4 text-white text-[10px] font-medium truncate cursor-grab hover:brightness-110"
         style={{
           backgroundColor: event.color,
           borderRadius,
+          boxShadow: 'inset 0 0 0 1.5px rgba(255,255,255,0.45)',
           outline: `2px solid ${isHovered ? event.color : 'transparent'}`,
           outlineOffset: '0px',
           filter: isHovered ? 'brightness(1.15)' : 'none',
+          transition: 'outline-color 150ms ease, filter 150ms ease',
         }}
         onMouseEnter={(e) => {
           (e.currentTarget as HTMLElement).style.outlineColor = event.color
@@ -86,7 +87,16 @@ export function SpanningBar({
       {/* Left resize handle */}
       {!continuesLeft && (
         <div
-          className={`${styles.resizeHandle} ${styles.resizeHandleLeft}`}
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            bottom: 0,
+            width: '10px',
+            cursor: 'ew-resize',
+            borderRadius: '10px 0 0 10px',
+            zIndex: 3,
+          }}
           onPointerDown={(e) => {
             e.stopPropagation()
             onDragStart(event, startOfDay(event.startTime), e, 'resize-left')
@@ -97,7 +107,16 @@ export function SpanningBar({
       {/* Right resize handle */}
       {!continuesRight && (
         <div
-          className={`${styles.resizeHandle} ${styles.resizeHandleRight}`}
+          style={{
+            position: 'absolute',
+            right: 0,
+            top: 0,
+            bottom: 0,
+            width: '10px',
+            cursor: 'ew-resize',
+            borderRadius: '0 10px 10px 0',
+            zIndex: 3,
+          }}
           onPointerDown={(e) => {
             e.stopPropagation()
             onDragStart(event, startOfDay(event.endTime), e, 'resize-right')

@@ -799,6 +799,69 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
       </circle>
     </g>
   ),
+  // ========================================
+  // メディアプレイヤー
+  // ========================================
+  ['volume-off']: () => (
+    <g className={styles.body}>
+      <path className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" d="M11 5L6 9H2v6h4l5 4V5z" />
+      <line className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" x1="23" y1="9" x2="17" y2="15" />
+      <line className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" x1="17" y1="9" x2="23" y2="15" />
+    </g>
+  ),
+  ['volume-low']: () => (
+    <g className={styles.body}>
+      <path className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" d="M11 5L6 9H2v6h4l5 4V5z" />
+      <path className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+    </g>
+  ),
+  ['volume-high']: () => (
+    <g className={styles.body}>
+      <path className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" d="M11 5L6 9H2v6h4l5 4V5z" />
+      <path className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+      <path className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+    </g>
+  ),
+  ['fullscreen']: () => (
+    <g className={styles.body}>
+      <polyline className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" points="15 3 21 3 21 9" />
+      <polyline className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" points="9 21 3 21 3 15" />
+      <line className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" x1="21" y1="3" x2="14" y2="10" />
+      <line className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" x1="3" y1="21" x2="10" y2="14" />
+    </g>
+  ),
+  ['fullscreen-exit']: () => (
+    <g className={styles.body}>
+      <polyline className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" points="4 14 10 14 10 20" />
+      <polyline className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" points="20 10 14 10 14 4" />
+      <line className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" x1="14" y1="10" x2="21" y2="3" />
+      <line className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" x1="3" y1="21" x2="10" y2="14" />
+    </g>
+  ),
+  ['shuffle']: () => (
+    <g className={styles.body}>
+      <polyline className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" points="16 3 21 3 21 8" />
+      <line className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" x1="4" y1="20" x2="21" y2="3" />
+      <polyline className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" points="21 16 21 21 16 21" />
+      <line className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" x1="15" y1="15" x2="21" y2="21" />
+      <line className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" x1="4" y1="4" x2="9" y2="9" />
+    </g>
+  ),
+  ['skip-forward']: () => (
+    <g className={styles.body}>
+      <polygon className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" points="5 4 15 12 5 20 5 4" />
+      <line className={styles.stroke} strokeLinecap="round" strokeLinejoin="round" x1="19" y1="5" x2="19" y2="19" />
+    </g>
+  ),
+  ['sidebar']: () => (
+    <g className={styles.body}>
+      <rect className={styles.stroke} strokeLinecap="round" x="3" y="3" width="18" height="18" rx="2" />
+      <line className={styles.stroke} x1="9" y1="3" x2="9" y2="21" />
+    </g>
+  ),
+  // ========================================
+  // LOADING アイコン
+  // ========================================
   ['loading-pulse']: () => (
     <circle
       className={cn(styles.stroke, styles.pulse)}
@@ -913,7 +976,7 @@ const ANIMATION_CLASSES: Record<AnimationPreset, string> = {
   ripple: styles.ripple,
 };
 
-const HOVER_CLASSES: Record<HoverPreset, string> = {
+const HOVER_CLASSES: Record<Exclude<HoverPreset, 'auto'>, string> = {
   scale: styles.hoverScale,
   'scale-large': styles.hoverScaleLarge,
   rotate: styles.hoverRotate,
@@ -924,6 +987,7 @@ const HOVER_CLASSES: Record<HoverPreset, string> = {
   pop: styles.hoverPop,
   wiggle: styles.hoverWiggle,
   shake: styles.hoverShake,
+  swing: styles.hoverSwing,
   spin: styles.hoverSpin,
   flip: styles.hoverFlip,
   'flip-x': styles.hoverFlipX,
@@ -943,6 +1007,108 @@ const COLOR_CLASSES: Record<ColorVariant, string> = {
   danger: styles.colorError,
   info: styles.colorInfo,
   muted: styles.colorMuted,
+};
+
+// ========================================
+// アイコンごとのデフォルトホバーアニメーション
+// ========================================
+const DEFAULT_HOVER_MAP: Partial<Record<string, HoverPreset>> = {
+  // 通知・アラート系
+  bell: 'swing',
+  'info-triangle': 'shake',
+  'info-circle': 'pop',
+
+  // 設定・操作系
+  gear: 'rotate',
+  sliders: 'pop',
+  funnel: 'pop',
+
+  // ナビゲーション系
+  home: 'pop',
+  dashboard: 'pop',
+  'chart-bar': 'pop',
+  list: 'pop',
+  folder: 'pop',
+  file: 'pop',
+  survey: 'pop',
+  calendar: 'pop',
+  'chevron-left': 'pop',
+  'chevron-right': 'pop',
+  'chevron-up': 'pop',
+  'chevron-down': 'pop',
+  'chevrons-left': 'pop',
+  'chevrons-right': 'pop',
+
+  // ユーザー系
+  person: 'pop',
+  employee: 'pop',
+  'users-group': 'pop',
+
+  // アクション系
+  save: 'pop',
+  trash: 'shake',
+  'arrow-rotate': 'rotate',
+  'arrow-up-right': 'pop',
+  'arrow-in': 'pop',
+  'arrow-turn-left': 'pop',
+  'arrow-u-turn': 'pop',
+  'sync-pull': 'bounce',
+  'sync-push': 'bounce',
+  'cloud-upload': 'float',
+
+  // 認証系
+  lock: 'shake',
+  unlock: 'pop',
+  'door-out': 'pop',
+
+  // チャート・トレンド系
+  'trend-up': 'float',
+  'trend-up-right': 'float',
+  'trend-right': 'pop',
+  'trend-down-right': 'bounce',
+  'trend-down': 'bounce',
+
+  // その他
+  star: 'pop',
+  'star-filled': 'heartbeat',
+  chat: 'pop',
+  'comment-check': 'pop',
+  clock: 'rotate',
+  eye: 'pop',
+  'eye-slashed': 'pop',
+  'magnifying-glass': 'pop',
+  check: 'pop',
+  'check-circle': 'pop',
+  'x-circle': 'shake',
+  x: 'pop',
+  hamburger: 'pop',
+  expand: 'scale',
+  keyboard: 'pop',
+  palette: 'pop',
+  brush: 'wiggle',
+  diamond: 'glow',
+  'paint-roller': 'wiggle',
+  inbox: 'pop',
+  archive: 'pop',
+  dot: 'pop',
+
+  // メディアプレイヤー
+  'volume-off': 'pop',
+  'volume-low': 'pop',
+  'volume-high': 'pop',
+  fullscreen: 'scale',
+  'fullscreen-exit': 'scale',
+  shuffle: 'wiggle',
+  'skip-forward': 'pop',
+  sidebar: 'pop',
+
+  // ブランド
+  'meetscribe-brand': 'pop',
+  'meetscribe-brand-wave': 'wiggle',
+  'meetscribe-brand-mic': 'pop',
+  'meetscribe-brand-play': 'pop',
+  'meetscribe-brand-chat': 'pop',
+  'meetscribe-brand-shield': 'glow',
 };
 
 // ========================================
@@ -982,6 +1148,10 @@ const Icon: React.FC<IconProps> = ({
   // ローディングアイコン判定
   const isLoadingIcon = name.startsWith('loading-') || name.startsWith('spinner');
 
+  // ホバーアニメーションを解決（'auto' の場合はデフォルトを使用）
+  const resolvedHover =
+    hover === 'auto' ? DEFAULT_HOVER_MAP[name] : hover;
+
   // クラス名を構築
   const iconClasses = cn(
     styles.icon,
@@ -989,8 +1159,8 @@ const Icon: React.FC<IconProps> = ({
     animate && animation && ANIMATION_CLASSES[animation],
     // ローディングアイコンは自動でスピン
     isLoadingIcon && !animation && styles.spin,
-    // ホバー
-    hover && HOVER_CLASSES[hover],
+    // ホバー（'auto' は解決済みなので除外）
+    resolvedHover && resolvedHover !== 'auto' && HOVER_CLASSES[resolvedHover],
     // カラー
     color !== 'current' && COLOR_CLASSES[color],
     // グロー
@@ -1035,7 +1205,7 @@ const Icon: React.FC<IconProps> = ({
     if (pathRenderer) {
       return pathRenderer({});
     }
-    if (import.meta.env?.DEV) {
+    if (process.env.NODE_ENV === 'development') {
       console.warn(`Icon "${name}" not found`);
     }
     return null;
