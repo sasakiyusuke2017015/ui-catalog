@@ -21,7 +21,7 @@ export const VERSION_REGISTRY = {
   Checkbox: '1.0.0',
   ExternalLink: '1.0.0',
   FileLink: '1.0.0',
-  Icon: '1.4.0',
+  Icon: '1.5.0',
   IconButton: '1.0.0',
   Input: '1.0.0',
   InternalLink: '1.0.0',
@@ -120,23 +120,21 @@ export const VERSION_REGISTRY = {
   TransferList: '1.0.0',
   TrendChart: '1.1.0',
 
-  // atoms (calendar)
-  CalendarEventCard: '1.0.0',
-  IconLabel: '1.0.0',
-  MonthEventCard: '1.0.0',
-  TimeSlotRow: '1.0.0',
-
   // molecules (calendar)
   ColorPicker: '1.0.0',
   DayOfWeekPicker: '1.0.0',
-  EventPopover: '1.0.0',
+  IconLabel: '1.0.0',
   IconPicker: '1.0.0',
-  MonthDayCell: '1.0.0',
+  MonthEventCard: '1.0.0',
   PillSelect: '1.0.0',
   SpanningBar: '1.0.0',
   TimeSelect: '1.0.0',
+  TimeSlotRow: '1.0.0',
 
   // organisms (calendar)
+  CalendarEventCard: '1.1.0',
+  EventPopover: '1.1.0',
+  MonthDayCell: '1.1.0',
   CalendarDragOverlay: '1.0.0',
   CalendarHeader: '1.0.0',
   DayColumn: '1.0.0',
@@ -167,6 +165,9 @@ export const VERSION_REGISTRY = {
   // atoms (visualization)
   CountdownRing: '1.0.0',
   MathView: '1.0.0',
+
+  // --- extensions/ticker ---
+  VideoThumb: '1.0.0',
 } as const
 
 export type ComponentName = keyof typeof VERSION_REGISTRY
@@ -328,7 +329,7 @@ export function initUICatalog(versionsJson: VersionRegistry | undefined | null):
   }
 
   // 開発環境でのみバージョンチェックを実行
-  if (import.meta.env?.DEV) {
+  if (process.env.NODE_ENV === 'development') {
     checkVersions(versionsJson)
   }
 }

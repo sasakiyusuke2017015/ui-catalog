@@ -6,7 +6,7 @@ import Banner from './Banner';
  * 情報、警告、成功、エラーなどの通知を表示するバナー。
  */
 export default {
-  title: '表示/Banner',
+  title: '表示/バナー/Banner',
   component: Banner,
   tags: ['autodocs'],
   parameters: {

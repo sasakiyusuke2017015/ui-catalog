@@ -4,7 +4,7 @@ import StatisticList from './StatisticList';
  * StatisticList コンポーネントの Storybook 設定
  */
 export default {
-  title: 'データ可視化/StatisticList',
+  title: 'データ表示/統計/StatisticList',
   component: StatisticList,
   tags: ['autodocs'],
   parameters: {

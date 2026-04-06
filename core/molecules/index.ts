@@ -55,16 +55,13 @@ export * from './Question'
 // PWA
 export * from './PWAInstallPrompt'
 
-// Calend
+// Calendar
 export * from './ColorPicker'
 export * from './DayOfWeekPicker'
-export * from './EventPopover'
 export * from './IconPicker'
-export * from './MonthDayCell'
 export * from './PillSelect'
 export * from './SpanningBar'
 export * from './TimeSelect'
-export * from './CalendarEventCard'
 
 // Promoted from atoms (compose other atoms)
 export * from './BackButton'
@@ -81,3 +78,9 @@ export * from './ResetButton'
 export * from './ScoreBadge'
 export * from './Segment'
 export * from './Select'
+
+// Menu
+export * from './Dropdown'
+
+// Search
+export * from './SearchBar'

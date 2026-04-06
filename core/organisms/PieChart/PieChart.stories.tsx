@@ -3,7 +3,7 @@ import PieChart from './PieChart';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof PieChart> = {
-  title: 'データ可視化/PieChart',
+  title: 'データ可視化/チャート/PieChart',
   component: PieChart,
   tags: ['autodocs'],
   parameters: {

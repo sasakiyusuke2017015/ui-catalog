@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 
 const meta: Meta<typeof CardGrid> = {
-  title: 'レイアウト/CardGrid',
+  title: '表示/カード/CardGrid',
   component: CardGrid,
   parameters: {
     layout: 'padded',

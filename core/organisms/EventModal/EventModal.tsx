@@ -1,6 +1,6 @@
 import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react'
 import { useAtom, useSetAtom, useAtomValue } from 'jotai'
-import { eventModalAtom, activeSlotAtom, viewModeAtom, eventsAtom } from '../../hooks/calend/calendar'
+import { eventModalAtom, activeSlotAtom, eventsAtom } from '../../hooks/calendar/calendar'
 import { format } from 'date-fns'
 import { Button, Input } from '../../molecules'
 import { TextArea } from '../../atoms'
@@ -10,13 +10,14 @@ import { ColorPicker, EVENT_COLORS } from '../../molecules/ColorPicker/ColorPick
 import { PillSelect } from '../../molecules/PillSelect/PillSelect'
 import { DayOfWeekPicker } from '../../molecules/DayOfWeekPicker/DayOfWeekPicker'
 import { IconPicker } from '../../molecules/IconPicker/IconPicker'
-import type { CalendarEvent, EventMode, DayOfWeek } from '../../types/calend'
-import { resolveOriginalEvent } from '../../utils/calend/repeatUtils'
-import styles from './EventModal.module.scss'
+import type { CalendarEvent, EventMode, DayOfWeek } from '../../types/calendar'
+import { resolveOriginalEvent } from '../../utils/calendar/repeatUtils'
 
 function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
 }
+
+const labelClass = 'text-xs text-text-secondary font-medium'
 
 interface EventModalProps {
   readonly persistEvent: (event: CalendarEvent) => Promise<void>
@@ -26,7 +27,6 @@ interface EventModalProps {
 export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
   const [modal, setModal] = useAtom(eventModalAtom)
   const setActiveSlot = useSetAtom(activeSlotAtom)
-  const viewMode = useAtomValue(viewModeAtom)
   const allEvents = useAtomValue(eventsAtom)
   const titleRef = useRef<HTMLInputElement>(null)
   const panelRef = useRef<HTMLDivElement>(null)
@@ -225,51 +225,58 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
   const vh = typeof window !== 'undefined' ? window.innerHeight : 800
   const availableH = pos ? vh - pos.top! - 12 : vh * 0.8
   const panelMaxH = `${Math.max(availableH, 200)}px`
-  const panelStyle: React.CSSProperties = pos
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 640
+  const panelStyle: React.CSSProperties = isMobile
+    ? { position: 'fixed', inset: 0, width: '100%', height: '100%', maxHeight: '100vh', zIndex: 10000, borderRadius: 0 }
+    : pos
     ? { position: 'fixed', top: `${pos.top}px`, left: pos.left !== undefined ? `${pos.left}px` : undefined, right: pos.right !== undefined ? `${pos.right}px` : undefined, width: '380px', maxHeight: panelMaxH, zIndex: 10000 }
     : { width: '380px', maxHeight: '80vh' }
 
   return (
     <div
       data-component="EventModal"
-      className={styles.backdrop}
       style={{
-        backgroundColor: posReady ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0)',
+        position: 'fixed', inset: 0, display: 'flex',
         alignItems: pos ? 'flex-start' : 'center',
         justifyContent: pos ? 'flex-start' : 'center',
+        backgroundColor: posReady ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0)',
+        transition: 'background-color 0.2s ease-out', zIndex: 10000,
       }}
       onClick={(e) => { if (e.target === e.currentTarget) close() }}
     >
       <div
         ref={panelRef}
-        className={styles.panel}
         style={{
           ...panelStyle,
+          background: '#fff', borderRadius: '16px',
+          boxShadow: '0 24px 48px rgba(0,0,0,0.2)', overflow: 'hidden',
+          display: 'flex', flexDirection: 'column' as const,
           opacity: posReady ? 1 : 0,
           transform: posReady ? 'scale(1) translateY(0)' : 'scale(0.96) translateY(6px)',
+          transition: 'opacity 0.2s ease-out, transform 0.2s ease-out',
         }}
       >
         {/* Header */}
-        <div className={styles.panelHeader}>
-          <h3 className={styles.panelTitle}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', borderBottom: `1px solid ${colors.border.primary}` }}>
+          <h3 style={{ fontSize: '18px', fontWeight: 700, color: colors.text.primary, margin: 0 }}>
             {modal.editingEvent ? 'イベントを編集' : 'イベントを追加'}
           </h3>
           <button
             type="button"
             onClick={close}
-            className={styles.closeButton}
+            className="flex items-center justify-center w-8 h-8 border-none bg-transparent cursor-pointer rounded-lg text-text-secondary hover:bg-surface-hover transition-colors text-lg"
           >
             &times;
           </button>
         </div>
 
         {/* Body */}
-        <div className={styles.panelBody}>
+        <div style={{ padding: '20px 24px', overflowY: 'auto', flex: 1, minHeight: 0 }}>
           <form onSubmit={handleSubmit}>
-            <div className={styles.formFields}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {/* タイトル */}
               <div>
-                <div className={styles.label} style={{ color: submitted && isTitleEmpty ? colors.danger : undefined }}>タイトル</div>
+                <div className={labelClass} style={{ marginBottom: '4px', color: submitted && isTitleEmpty ? colors.danger : undefined }}>タイトル</div>
                 <Input ref={titleRef} type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="タイトルを追加" size="large" style={submitted && isTitleEmpty ? errorBorder : undefined} />
               </div>
 
@@ -287,7 +294,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
               {/* 繰り返し曜日 */}
               {mode === 'repeat' && (
                 <div>
-                  <div className={styles.label} style={{ color: submitted && isRepeatDaysEmpty ? colors.danger : undefined }}>曜日</div>
+                  <div className={labelClass} style={{ marginBottom: '6px', color: submitted && isRepeatDaysEmpty ? colors.danger : undefined }}>曜日</div>
                   <DayOfWeekPicker value={repeatDays} onChange={setRepeatDays} />
                 </div>
               )}
@@ -295,7 +302,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
               {/* 日時 */}
               {allDay ? (
                 <div>
-                  <div className={styles.label} style={{ color: submitted && isDateRangeInvalid ? colors.danger : undefined }}>期間</div>
+                  <div className={labelClass} style={{ marginBottom: '4px', color: submitted && isDateRangeInvalid ? colors.danger : undefined }}>期間</div>
                   <div className="flex items-center gap-2">
                     <Input type="date" value={startDateStr} onChange={(e) => { setStartDateStr(e.target.value); if (e.target.value > endDateStr) setEndDateStr(e.target.value) }} size="small" />
                     <span className="text-text-secondary text-sm">-</span>
@@ -305,7 +312,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
               ) : mode === 'repeat' ? (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   <div>
-                    <div className={styles.label} style={{ color: submitted && isDateRangeInvalid ? colors.danger : undefined }}>期間</div>
+                    <div className={labelClass} style={{ marginBottom: '4px', color: submitted && isDateRangeInvalid ? colors.danger : undefined }}>期間</div>
                     <div className="flex items-center gap-2">
                       <Input type="date" value={startDateStr} onChange={(e) => { setStartDateStr(e.target.value); if (e.target.value > endDateStr) setEndDateStr(e.target.value) }} size="small" />
                       <span className="text-text-secondary text-sm">-</span>
@@ -314,7 +321,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
                   </div>
                   <div className="flex items-center gap-2">
                     <div style={{ flex: 1 }}>
-                      <div className={styles.label}>開始時刻</div>
+                      <div className={labelClass} style={{ marginBottom: '4px' }}>開始時刻</div>
                       <TimeSelect
                         value={startMin}
                         onChange={(m) => {
@@ -325,7 +332,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
                     </div>
                     <span className="text-text-secondary text-sm" style={{ marginTop: '20px' }}>-</span>
                     <div style={{ flex: 1 }}>
-                      <div className={styles.label} style={{ color: submitted && isTimeInvalid ? colors.danger : undefined }}>
+                      <div className={labelClass} style={{ marginBottom: '4px', color: submitted && isTimeInvalid ? colors.danger : undefined }}>
                         終了時刻
                       </div>
                       <TimeSelect value={endMin} onChange={setEndMin} error={submitted && isTimeInvalid} />
@@ -334,7 +341,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
                 </div>
               ) : (
                 <div>
-                  <div className={styles.label}>開始日時</div>
+                  <div className={labelClass} style={{ marginBottom: '4px' }}>開始日時</div>
                   <div className="flex items-center gap-2" style={{ marginBottom: '8px' }}>
                     <Input type="date" value={startDateStr} onChange={(e) => { setStartDateStr(e.target.value); if (e.target.value > endDateStr) setEndDateStr(e.target.value) }} size="small" />
                     <TimeSelect
@@ -345,7 +352,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
                       }}
                     />
                   </div>
-                  <div className={styles.label} style={{ color: submitted && (isTimeInvalid || isDateRangeInvalid) ? colors.danger : undefined }}>
+                  <div className={labelClass} style={{ marginBottom: '4px', color: submitted && (isTimeInvalid || isDateRangeInvalid) ? colors.danger : undefined }}>
                     終了日時
                   </div>
                   <div className="flex items-center gap-2">
@@ -357,32 +364,32 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
 
               {/* アイコン */}
               <div>
-                <div className={styles.label}>アイコン</div>
+                <div className={labelClass} style={{ marginBottom: '4px' }}>アイコン</div>
                 <IconPicker value={icon} onChange={setIcon} />
               </div>
 
               {/* カラー */}
               <div>
-                <div className={styles.label}>カラー</div>
+                <div className={labelClass} style={{ marginBottom: '4px' }}>カラー</div>
                 <ColorPicker value={color} onChange={setColor} allowCustom nowrap />
               </div>
 
               {/* 説明 */}
               <div>
-                <div className={styles.label}>説明</div>
+                <div className={labelClass} style={{ marginBottom: '4px' }}>説明</div>
                 <TextArea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="説明を追加" rows={4} size="small" />
               </div>
             </div>
 
             {submitted && validationErrors.length > 0 && (
-              <div className={styles.validationErrors}>
+              <div style={{ marginTop: '12px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
                 {validationErrors.map((msg) => (
-                  <div key={msg} className={styles.validationError}>※ {msg}</div>
+                  <div key={msg} style={{ fontSize: '11px', color: colors.danger }}>※ {msg}</div>
                 ))}
               </div>
             )}
 
-            <div className={styles.actions}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
               {modal.editingEvent ? (
                 <Button variant="danger" leftIcon="trash" onClick={handleDelete}>削除</Button>
               ) : <div />}

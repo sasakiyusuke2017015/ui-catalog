@@ -9,7 +9,7 @@ import Toast from './Toast';
  * 成功メッセージやエラー通知などに使用します。
  */
 export default {
-  title: 'フィードバック/Toast',
+  title: 'フィードバック/通知/Toast',
   component: Toast,
   tags: ['autodocs'],
   parameters: {

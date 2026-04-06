@@ -6,7 +6,7 @@ import Modal from './Modal';
  * Modal コンポーネントの Storybook 設定
  */
 export default {
-  title: 'フィードバック/Modal',
+  title: 'フィードバック/ダイアログ/Modal',
   component: Modal,
   tags: ['autodocs'],
   parameters: {

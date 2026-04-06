@@ -1,7 +1,7 @@
 import ExternalLink from './ExternalLink';
 
 export default {
-  title: 'ナビゲーション/ExternalLink',
+  title: 'ナビゲーション/リンク/ExternalLink',
   component: ExternalLink,
   parameters: {
     layout: 'centered',

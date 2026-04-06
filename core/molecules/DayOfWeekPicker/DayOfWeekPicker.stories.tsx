@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { DayOfWeekPicker } from './DayOfWeekPicker'
-import type { DayOfWeek } from '../../types/calend'
+import type { DayOfWeek } from '../../types/calendar'
 
 export default {
-  title: 'カレンダー/DayOfWeekPicker',
+  title: 'カレンダー/入力/DayOfWeekPicker',
   component: DayOfWeekPicker,
   tags: ['autodocs'],
   parameters: {

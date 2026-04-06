@@ -1,0 +1,68 @@
+// =============================================================================
+// SearchBar Component Styles
+// =============================================================================
+
+@use '../../tokens' as *;
+
+.wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: $color-gray-400;
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  height: 3rem;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+  font-size: $font-size-base;
+  color: $color-gray-800;
+  background-color: $color-white;
+  border: 1px solid $color-gray-200;
+  border-radius: $border-radius-xl;
+  transition: border-color $transition-duration-150 $transition-ease-in-out,
+              box-shadow $transition-duration-150 $transition-ease-in-out;
+
+  &::placeholder {
+    color: $color-gray-400;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: transparent;
+    box-shadow: 0 0 0 2px $color-primary-500;
+  }
+}
+
+.clearButton {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0.25rem;
+  color: $color-gray-400;
+  background: transparent;
+  border: none;
+  border-radius: $border-radius-full;
+  cursor: pointer;
+  transition: background-color $transition-duration-150 $transition-ease-in-out,
+              color $transition-duration-150 $transition-ease-in-out;
+
+  &:hover {
+    background-color: $color-gray-100;
+    color: $color-gray-600;
+  }
+}

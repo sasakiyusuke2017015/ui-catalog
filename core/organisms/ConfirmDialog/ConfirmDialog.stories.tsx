@@ -6,7 +6,7 @@ import ConfirmDialog from './ConfirmDialog';
  * ConfirmDialog コンポーネントの Storybook 設定
  */
 export default {
-  title: 'フィードバック/ConfirmDialog',
+  title: 'フィードバック/ダイアログ/ConfirmDialog',
   component: ConfirmDialog,
   tags: ['autodocs'],
   parameters: {

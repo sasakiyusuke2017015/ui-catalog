@@ -6,7 +6,7 @@ import StatisticItem from './StatisticItem';
  * StatisticItem コンポーネントの Storybook 設定
  */
 export default {
-  title: 'データ可視化/StatisticItem',
+  title: 'データ表示/統計/StatisticItem',
   component: StatisticItem,
   tags: ['autodocs'],
   parameters: {

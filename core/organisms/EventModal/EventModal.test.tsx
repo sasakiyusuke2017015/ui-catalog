@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { Provider, createStore } from 'jotai'
 import { EventModal } from './EventModal'
-import { eventModalAtom } from '../../hooks/calend/calendar'
+import { eventModalAtom } from '../../hooks/calendar/calendar'
 
 function renderWithModal(isOpen: boolean, editingEvent?: Parameters<typeof EventModal>[0] extends infer P ? P : never) {
   const store = createStore()

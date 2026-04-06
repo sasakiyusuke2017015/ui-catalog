@@ -27,7 +27,7 @@ const meta: Meta<typeof ViewModeToggle> = {
     },
     variant: {
       control: 'select',
-      options: ['default', 'primary', 'teal'],
+      options: ['default', 'primary', 'teal', 'dark'],
       description: 'バリアント（カラーテーマ）',
     },
   },
@@ -51,29 +51,27 @@ const displayOptions: ViewModeOption<DisplayMode>[] = [
 ]
 
 /**
- * インタラクティブなトグル
- */
-const InteractiveToggle = () => {
-  const [mode, setMode] = useState<ViewMode>('table')
-  return (
-    <div className="space-y-4">
-      <ViewModeToggle
-        value={mode}
-        onChange={setMode}
-        options={tableCardOptions}
-      />
-      <div className="text-sm text-gray-500">
-        選択中: <span className="font-semibold">{mode}</span>
-      </div>
-    </div>
-  )
-}
-
-/**
- * デフォルト
+ * デフォルト（インタラクティブ）
  */
 export const Default: Story = {
-  render: () => <InteractiveToggle />,
+  render: () => {
+    const Toggle = () => {
+      const [mode, setMode] = useState<ViewMode>('table')
+      return (
+        <div className="space-y-4">
+          <ViewModeToggle
+            value={mode}
+            onChange={setMode}
+            options={tableCardOptions}
+          />
+          <div className="text-sm text-gray-500">
+            選択中: <span className="font-semibold">{mode}</span>
+          </div>
+        </div>
+      )
+    }
+    return <Toggle />
+  },
 }
 
 /**
@@ -81,7 +79,7 @@ export const Default: Story = {
  */
 export const WithLabel: Story = {
   render: () => {
-    const WithLabelToggle = () => {
+    const Toggle = () => {
       const [mode, setMode] = useState<ViewMode>('card')
       return (
         <ViewModeToggle
@@ -92,7 +90,7 @@ export const WithLabel: Story = {
         />
       )
     }
-    return <WithLabelToggle />
+    return <Toggle />
   },
 }
 
@@ -133,20 +131,22 @@ export const Sizes: Story = {
 }
 
 /**
- * バリアントカラー
+ * バリアントカラー（全variant比較）
  */
 export const Variants: Story = {
   render: () => {
-    const VariantToggle = ({ variant }: { variant: 'default' | 'primary' | 'teal' }) => {
+    const VariantToggle = ({ variant, bg }: { variant: 'default' | 'primary' | 'teal' | 'dark'; bg?: string }) => {
       const [mode, setMode] = useState<ViewMode>('table')
       return (
-        <ViewModeToggle
-          value={mode}
-          onChange={setMode}
-          options={tableCardOptions}
-          variant={variant}
-          showLabel
-        />
+        <div className="rounded-lg p-4" style={{ backgroundColor: bg }}>
+          <ViewModeToggle
+            value={mode}
+            onChange={setMode}
+            options={tableCardOptions}
+            variant={variant}
+            showLabel
+          />
+        </div>
       )
     }
     return (
@@ -163,8 +163,66 @@ export const Variants: Story = {
           <p className="mb-2 text-sm font-semibold">Teal</p>
           <VariantToggle variant="teal" />
         </div>
+        <div>
+          <p className="mb-2 text-sm font-semibold text-white">Dark</p>
+          <VariantToggle variant="dark" bg="#1a1a2e" />
+        </div>
       </div>
     )
+  },
+}
+
+/**
+ * Dark variant（ダークテーマ向け）
+ */
+export const Dark: Story = {
+  render: () => {
+    const Toggle = () => {
+      const [mode, setMode] = useState<ViewMode>('table')
+      return (
+        <div className="rounded-xl p-8" style={{ backgroundColor: '#1a1a2e' }}>
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <span className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>表示切替</span>
+              <ViewModeToggle
+                value={mode}
+                onChange={setMode}
+                options={tableCardOptions}
+                variant="dark"
+                size="small"
+              />
+            </div>
+            <div className="text-sm" style={{ color: 'rgba(255,255,255,0.4)' }}>
+              選択中: <span style={{ color: 'rgba(255,255,255,0.9)' }}>{mode === 'table' ? 'テーブル' : 'カード'}</span>
+            </div>
+          </div>
+        </div>
+      )
+    }
+    return <Toggle />
+  },
+}
+
+/**
+ * Dark variant + 3オプション
+ */
+export const DarkThreeOptions: Story = {
+  render: () => {
+    const Toggle = () => {
+      const [mode, setMode] = useState<DisplayMode>('list')
+      return (
+        <div className="rounded-xl p-8" style={{ backgroundColor: '#1a1a2e' }}>
+          <ViewModeToggle
+            value={mode}
+            onChange={setMode}
+            options={displayOptions}
+            variant="dark"
+            showLabel
+          />
+        </div>
+      )
+    }
+    return <Toggle />
   },
 }
 
@@ -173,7 +231,7 @@ export const Variants: Story = {
  */
 export const ThreeOptions: Story = {
   render: () => {
-    const ThreeOptionsToggle = () => {
+    const Toggle = () => {
       const [mode, setMode] = useState<DisplayMode>('list')
       return (
         <div className="space-y-4">
@@ -189,7 +247,7 @@ export const ThreeOptions: Story = {
         </div>
       )
     }
-    return <ThreeOptionsToggle />
+    return <Toggle />
   },
 }
 
@@ -198,7 +256,7 @@ export const ThreeOptions: Story = {
  */
 export const IconOnly: Story = {
   render: () => {
-    const IconOnlyToggle = () => {
+    const Toggle = () => {
       const [mode, setMode] = useState<ViewMode>('table')
       return (
         <ViewModeToggle
@@ -209,7 +267,7 @@ export const IconOnly: Story = {
         />
       )
     }
-    return <IconOnlyToggle />
+    return <Toggle />
   },
 }
 
@@ -218,7 +276,7 @@ export const IconOnly: Story = {
  */
 export const InHeaderBar: Story = {
   render: () => {
-    const HeaderExample = () => {
+    const Example = () => {
       const [mode, setMode] = useState<ViewMode>('table')
       return (
         <div className="flex items-center justify-between rounded-lg bg-gray-100 px-6 py-4">
@@ -235,50 +293,37 @@ export const InHeaderBar: Story = {
         </div>
       )
     }
-    return <HeaderExample />
+    return <Example />
   },
 }
 
 /**
- * 実践例：フィルターパネル
+ * 実践例：ダークサイドバー
  */
-export const InFilterPanel: Story = {
+export const InDarkSidebar: Story = {
   render: () => {
-    const FilterPanelExample = () => {
-      const [viewMode, setViewMode] = useState<ViewMode>('card')
-      const [displayMode, setDisplayMode] = useState<DisplayMode>('grid')
+    const Example = () => {
+      const [mode, setMode] = useState<ViewMode>('table')
       return (
-        <div className="w-80 space-y-6 rounded-lg bg-white p-6 shadow-lg">
-          <h3 className="text-lg font-semibold">表示設定</h3>
-
-          <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700">
-              ビューモード
-            </label>
+        <div className="w-52 rounded-lg p-4" style={{ backgroundColor: '#16161e', borderRight: '1px solid rgba(255,255,255,0.1)' }}>
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-xs font-mono" style={{ color: 'rgba(255,255,255,0.4)' }}>#42 / 509</span>
             <ViewModeToggle
-              value={viewMode}
-              onChange={setViewMode}
+              value={mode}
+              onChange={setMode}
               options={tableCardOptions}
-              variant="primary"
-              showLabel
+              variant="dark"
+              size="small"
             />
           </div>
-
-          <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700">
-              レイアウト
-            </label>
-            <ViewModeToggle
-              value={displayMode}
-              onChange={setDisplayMode}
-              options={displayOptions}
-              variant="teal"
-              showLabel
-            />
+          <div className="space-y-1">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-10 rounded" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }} />
+            ))}
           </div>
         </div>
       )
     }
-    return <FilterPanelExample />
+    return <Example />
   },
 }

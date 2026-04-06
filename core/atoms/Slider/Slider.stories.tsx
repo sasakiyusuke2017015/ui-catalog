@@ -11,7 +11,7 @@ type SliderProps = ComponentProps<typeof Slider>;
  * 音量調整や設定値の変更などに使用します。
  */
 export default {
-  title: '基本入力/Slider',
+  title: '入力/選択/Slider',
   component: Slider,
   tags: ['autodocs'],
   parameters: {

@@ -5,7 +5,7 @@ import type { Meta } from '@storybook/react';
 import Question from './Question';
 
 const meta: Meta<typeof Question> = {
-  title: 'フォーム/Question',
+  title: 'フォーム/フィールド/Question',
   component: Question,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

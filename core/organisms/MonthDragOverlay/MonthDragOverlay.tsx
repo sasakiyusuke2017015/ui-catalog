@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { IconLabel } from '../../molecules/IconLabel/IconLabel'
-import type { CalendarEvent } from '../../types/calend'
+import type { CalendarEvent } from '../../types/calendar'
 import styles from './MonthDragOverlay.module.scss'
 
 interface MonthDragOverlayProps {

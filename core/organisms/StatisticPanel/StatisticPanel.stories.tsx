@@ -4,7 +4,7 @@ import StatisticPanel from './StatisticPanel';
 import type { StatisticPanelItem, StatusDefinition } from './StatisticPanel';
 
 const meta: Meta<typeof StatisticPanel> = {
-  title: 'データ表示/StatisticPanel',
+  title: 'データ表示/統計/StatisticPanel',
   component: StatisticPanel,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

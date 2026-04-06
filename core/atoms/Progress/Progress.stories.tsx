@@ -4,7 +4,7 @@ import Progress from './Progress';
 type Story = StoryObj<typeof Progress>;
 
 const meta: Meta<typeof Progress> = {
-  title: 'フィードバック/Progress',
+  title: 'フィードバック/通知/Progress',
   component: Progress,
   parameters: {
     layout: 'centered',
@@ -32,6 +32,15 @@ const meta: Meta<typeof Progress> = {
     showLabel: {
       description: 'パーセントラベルを表示',
       control: { type: 'boolean' },
+    },
+    isStalled: {
+      description: '停滞状態（警告色に自動変更）',
+      control: { type: 'boolean' },
+    },
+    animation: {
+      description: 'アニメーション種類',
+      control: { type: 'select' },
+      options: ['none', 'pulse', 'shimmer'],
     },
   },
 };
@@ -81,6 +90,36 @@ export const WithLabel: Story = {
     showLabel: true,
   },
   decorators: [(Story) => <div style={{ width: '300px' }}><Story /></div>],
+};
+
+export const Stalled: Story = {
+  name: '停滞状態',
+  args: {
+    value: 45,
+    size: 'medium',
+    isStalled: true,
+  },
+  decorators: [(Story) => <div style={{ width: '300px' }}><Story /></div>],
+};
+
+export const Animations: Story = {
+  name: 'アニメーション',
+  render: () => (
+    <div style={{ width: '300px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div>
+        <span style={{ fontSize: '0.75rem', marginBottom: '4px', display: 'block' }}>none（静止）</span>
+        <Progress value={60} animation="none" />
+      </div>
+      <div>
+        <span style={{ fontSize: '0.75rem', marginBottom: '4px', display: 'block' }}>pulse（点滅）</span>
+        <Progress value={60} animation="pulse" />
+      </div>
+      <div>
+        <span style={{ fontSize: '0.75rem', marginBottom: '4px', display: 'block' }}>shimmer（流れる光）</span>
+        <Progress value={60} animation="shimmer" />
+      </div>
+    </div>
+  ),
 };
 
 export const FoodHPExample: Story = {

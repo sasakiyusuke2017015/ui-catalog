@@ -5,7 +5,7 @@ import ContentBlock from './ContentBlock';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof ContentBlock> = {
-  title: '表示/ContentBlock',
+  title: '表示/コンテンツ/ContentBlock',
   component: ContentBlock,
   parameters: {
     layout: 'padded',

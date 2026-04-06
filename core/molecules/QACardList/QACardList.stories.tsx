@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import QACardList from './QACardList';
 
 const meta: Meta<typeof QACardList> = {
-  title: 'データ表示/QACardList',
+  title: '表示/カード/QACardList',
   component: QACardList,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

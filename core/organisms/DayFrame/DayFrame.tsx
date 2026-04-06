@@ -1,8 +1,8 @@
 import { useAtomValue } from 'jotai'
-import { formatDayHeader, isToday, getEventsForDay } from '../../utils/calend/dates'
+import { formatDayHeader, isToday, getEventsForDay } from '../../utils/calendar/dates'
 import { DayColumn } from '../DayColumn/DayColumn'
-import { anyDragActiveAtom } from '../../hooks/calend/calendar'
-import type { CalendarEvent } from '../../types/calend'
+import { anyDragActiveAtom } from '../../hooks/calendar/calendar'
+import type { CalendarEvent } from '../../types/calendar'
 import styles from './DayFrame.module.scss'
 
 const SLOT_HEIGHT = 56

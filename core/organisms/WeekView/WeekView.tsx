@@ -1,13 +1,13 @@
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { selectedDateAtom, eventModalAtom, hoveredEventAtom, anyDragActiveAtom } from '../../hooks/calend/calendar'
-import { getWeekDates, formatHour, isToday, coversFullDay, getEventsForDay } from '../../utils/calend/dates'
+import { selectedDateAtom, eventModalAtom, hoveredEventAtom, anyDragActiveAtom } from '../../hooks/calendar/calendar'
+import { getWeekDates, formatHour, isToday, coversFullDay, getEventsForDay } from '../../utils/calendar/dates'
 import { DayColumn } from '../DayColumn/DayColumn'
-import { CalendarEventCard as EventCardBase } from '../../molecules/CalendarEventCard/CalendarEventCard'
+import { CalendarEventCard as EventCardBase } from '../../organisms/CalendarEventCard/CalendarEventCard'
 import { CalendarDragOverlay } from '../CalendarDragOverlay/CalendarDragOverlay'
 import { format } from 'date-fns'
 import { ja } from 'date-fns/locale'
 import { useCallback, useRef, useState, useEffect } from 'react'
-import type { CalendarEvent } from '../../types/calend'
+import type { CalendarEvent } from '../../types/calendar'
 import wvStyles from './WeekView.module.scss'
 
 const HOURS = Array.from({ length: 24 }, (_, i) => i)
@@ -66,7 +66,8 @@ export function WeekView({ events, showAllDayBar = true, persistEvent, removeEve
   )
 
   return (
-    <div data-component="WeekView" className="h-full overflow-auto">
+    <div data-component="WeekView" className="h-full overflow-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+      <div style={{ minWidth: '640px' }}>
       {/* Header */}
       <div data-sticky-header className="sticky top-0 bg-surface border-b border-border" style={{ zIndex: 40 }}>
         <div className="grid grid-cols-[64px_repeat(7,1fr)]">
@@ -189,6 +190,7 @@ export function WeekView({ events, showAllDayBar = true, persistEvent, removeEve
         })}
       </div>
       <CalendarDragOverlay />
+      </div>
     </div>
   )
 }

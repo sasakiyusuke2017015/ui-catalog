@@ -1,7 +1,7 @@
 import { TimeSlotRow } from './TimeSlotRow'
 
 export default {
-  title: 'カレンダー/TimeSlotRow',
+  title: 'カレンダー/日表示/TimeSlotRow',
   component: TimeSlotRow,
   tags: ['autodocs'],
   parameters: {

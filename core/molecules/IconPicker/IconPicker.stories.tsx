@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { IconPicker } from './IconPicker'
 
 const meta: Meta<typeof IconPicker> = {
-  title: 'カレンダー/IconPicker',
+  title: 'カレンダー/入力/IconPicker',
   component: IconPicker,
 }
 

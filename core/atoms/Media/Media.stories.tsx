@@ -3,7 +3,7 @@ import Media, { MediaProps } from './Media';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Media> = {
-  title: '表示/Media',
+  title: '表示/コンテンツ/Media',
   component: Media,
   parameters: {
     layout: 'centered',

@@ -1,11 +1,11 @@
 import { useCallback, useRef, useEffect } from 'react'
 import { format } from 'date-fns'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { CalendarEventCard as EventCardBase } from '../../molecules/CalendarEventCard/CalendarEventCard'
-import { useDragEvent } from '../../hooks/calend/useDragEvent'
-import { dragAtom, hoveredEventAtom, eventModalAtom, anyDragActiveAtom, eventsAtom } from '../../hooks/calend/calendar'
-import type { CalendarEvent } from '../../types/calend'
-import { resolveOriginalEvent } from '../../utils/calend/repeatUtils'
+import { CalendarEventCard as EventCardBase } from '../../organisms/CalendarEventCard/CalendarEventCard'
+import { useDragEvent } from '../../hooks/calendar/useDragEvent'
+import { dragAtom, hoveredEventAtom, eventModalAtom, anyDragActiveAtom, eventsAtom } from '../../hooks/calendar/calendar'
+import type { CalendarEvent } from '../../types/calendar'
+import { resolveOriginalEvent } from '../../utils/calendar/repeatUtils'
 
 interface EventCardProps {
   readonly event: CalendarEvent

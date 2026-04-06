@@ -1,10 +1,10 @@
 import { useCallback, useMemo, useState } from 'react'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { activeSlotAtom, eventModalAtom, dragAtom, selectedDateAtom, anyDragActiveAtom, hoveredEventAtom } from '../../hooks/calend/calendar'
-import { formatHour, isToday } from '../../utils/calend/dates'
-import { layoutEvents } from '../../utils/calend/layoutEvents'
+import { activeSlotAtom, eventModalAtom, dragAtom, selectedDateAtom, anyDragActiveAtom, hoveredEventAtom } from '../../hooks/calendar/calendar'
+import { formatHour, isToday } from '../../utils/calendar/dates'
+import { layoutEvents } from '../../utils/calendar/layoutEvents'
 import { EventCardContainer } from '../EventCardContainer/EventCardContainer'
-import type { CalendarEvent } from '../../types/calend'
+import type { CalendarEvent } from '../../types/calendar'
 import dcStyles from './DayColumn.module.scss'
 
 const HOURS = Array.from({ length: 24 }, (_, i) => i)

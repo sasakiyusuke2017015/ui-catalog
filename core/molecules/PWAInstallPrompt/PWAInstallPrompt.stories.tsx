@@ -7,7 +7,7 @@ import PWAInstallPrompt from './PWAInstallPrompt';
  * beforeinstallpromptイベントをハンドリングして表示します。
  */
 export default {
-  title: 'フィードバック/PWAInstallPrompt',
+  title: 'フィードバック/通知/PWAInstallPrompt',
   component: PWAInstallPrompt,
   tags: ['autodocs'],
   parameters: {

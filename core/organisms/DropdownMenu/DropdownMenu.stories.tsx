@@ -6,7 +6,7 @@ import DropdownMenu from './DropdownMenu';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof DropdownMenu> = {
-  title: 'ナビゲーション/DropdownMenu',
+  title: 'ナビゲーション/メニュー/DropdownMenu',
   component: DropdownMenu,
   parameters: {
     layout: 'centered',

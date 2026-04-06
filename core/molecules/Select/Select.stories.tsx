@@ -1,7 +1,7 @@
 import Select from './Select';
 
 export default {
-  title: '基本入力/Select',
+  title: '入力/選択/Select',
   component: Select,
   parameters: {
     layout: 'centered',

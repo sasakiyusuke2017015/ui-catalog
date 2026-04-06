@@ -68,13 +68,22 @@ export const ALL_ICON_TYPES = [
   'cloud-upload',
   'inbox',
   'archive',
-  // Meetscribe ブランド（洗練版）
-  'meetscribe-brand',        // メイン: 音声波形+ドキュメント
-  'meetscribe-brand-wave',   // M字波形（ロゴ的）
-  'meetscribe-brand-mic',    // マイク+テキストライン
-  'meetscribe-brand-play',   // 再生+ドキュメント
-  'meetscribe-brand-chat',   // 吹き出し波形
-  'meetscribe-brand-shield', // シールド型
+  // メディアプレイヤー
+  'volume-off',
+  'volume-low',
+  'volume-high',
+  'fullscreen',
+  'fullscreen-exit',
+  'shuffle',
+  'skip-forward',
+  'sidebar',
+  // 議事録・音声関連アイコン
+  'transcript-doc',   // メイン: 音声波形+ドキュメント
+  'audio-wave',       // M字波形（ロゴ的）
+  'mic-text',         // マイク+テキストライン
+  'play-doc',         // 再生+ドキュメント
+  'chat-wave',        // 吹き出し波形
+  'shield-audio',     // シールド型
   // LOADING
   'spinner',
   'spinner-thin',

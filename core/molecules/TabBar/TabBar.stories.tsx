@@ -9,7 +9,7 @@ import TabBar, { TabItem } from './TabBar';
  * 複数のコンテンツを切り替える際に使用します。
  */
 export default {
-  title: 'ナビゲーション/TabBar',
+  title: 'ナビゲーション/タブ/TabBar',
   component: TabBar,
   tags: ['autodocs'],
   parameters: {

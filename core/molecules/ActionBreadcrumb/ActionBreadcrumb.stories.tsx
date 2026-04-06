@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ActionBreadcrumb from './ActionBreadcrumb';
 
 const meta: Meta<typeof ActionBreadcrumb> = {
-  title: 'ナビゲーション/ActionBreadcrumb',
+  title: 'ナビゲーション/パンくず/ActionBreadcrumb',
   component: ActionBreadcrumb,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

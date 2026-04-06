@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import DataCountDisplay from './DataCountDisplay';
 
 const meta: Meta<typeof DataCountDisplay> = {
-  title: 'データ表示/DataCountDisplay',
+  title: 'データ表示/統計/DataCountDisplay',
   component: DataCountDisplay,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

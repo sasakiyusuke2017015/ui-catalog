@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import Tabs from './Tabs';
 
 const meta: Meta<typeof Tabs> = {
-  title: 'ナビゲーション/Tabs',
+  title: 'ナビゲーション/タブ/Tabs',
   component: Tabs,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },
