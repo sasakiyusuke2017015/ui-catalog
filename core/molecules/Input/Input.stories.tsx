@@ -5,7 +5,7 @@ import Input from './Input';
 type InputProps = ComponentProps<typeof Input>;
 
 export default {
-  title: '基本入力/Input',
+  title: '入力/テキスト/Input',
   component: Input,
   parameters: {
     layout: 'centered',

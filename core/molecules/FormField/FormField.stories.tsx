@@ -1,7 +1,7 @@
 import FormField from './FormField';
 
 export default {
-  title: 'フォーム/FormField',
+  title: 'フォーム/フィールド/FormField',
   component: FormField,
   tags: ['autodocs'],
   parameters: {

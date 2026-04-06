@@ -5,7 +5,7 @@ import type { Meta } from '@storybook/react';
 import FloatingMenuButton from './FloatingMenuButton';
 
 const meta: Meta<typeof FloatingMenuButton> = {
-  title: 'ナビゲーション/FloatingMenuButton',
+  title: 'ナビゲーション/メニュー/FloatingMenuButton',
   component: FloatingMenuButton,
   tags: ['autodocs'],
   parameters: { layout: 'fullscreen' },

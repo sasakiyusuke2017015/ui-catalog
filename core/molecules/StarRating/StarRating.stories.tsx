@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import StarRating from './StarRating'
 
 const meta: Meta<typeof StarRating> = {
-  title: 'データ可視化/StarRating',
+  title: 'データ可視化/その他/StarRating',
   component: StarRating,
   parameters: {
     layout: 'centered',

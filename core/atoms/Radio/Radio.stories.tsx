@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Radio from './Radio';
 
 export default {
-  title: '基本入力/Radio',
+  title: '入力/選択/Radio',
   component: Radio,
   parameters: {
     layout: 'centered',

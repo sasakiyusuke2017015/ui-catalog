@@ -3,7 +3,7 @@ import { DayColumn } from './DayColumn'
 import type { CalendarEvent } from '../../types/calendar'
 
 export default {
-  title: 'カレンダー/DayColumn',
+  title: 'カレンダー/日表示/DayColumn',
   component: DayColumn,
   tags: ['autodocs'],
   parameters: {

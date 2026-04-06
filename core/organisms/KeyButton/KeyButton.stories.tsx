@@ -7,7 +7,7 @@ import KeyButton from './KeyButton';
  * 状態管理とアクションの有効/無効を自動化します。
  */
 export default {
-  title: '基本入力/KeyButton',
+  title: '入力/ボタン/KeyButton',
   component: KeyButton,
   tags: ['autodocs'],
   parameters: {

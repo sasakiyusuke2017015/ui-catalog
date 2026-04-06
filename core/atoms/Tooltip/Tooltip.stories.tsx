@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import Tooltip from './Tooltip'
 
 const meta: Meta<typeof Tooltip> = {
-  title: 'フィードバック/Tooltip',
+  title: 'フィードバック/通知/Tooltip',
   component: Tooltip,
   parameters: {
     layout: 'centered',

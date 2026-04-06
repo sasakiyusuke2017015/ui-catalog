@@ -8,7 +8,7 @@ import { Button } from '../Button';
  * Button コンポーネントの Storybook 設定
  */
 export default {
-  title: '基本入力/Button',
+  title: '入力/ボタン/Button',
   component: Button, // ドキュメントやアドオンで参照されるコンポーネント本体
   tags: ['autodocs'],
   parameters: {

@@ -5,7 +5,7 @@ import type { Meta } from '@storybook/react';
 import PasswordValidation from './PasswordValidation';
 
 const meta: Meta<typeof PasswordValidation> = {
-  title: 'フォーム/PasswordValidation',
+  title: 'フォーム/フィールド/PasswordValidation',
   component: PasswordValidation,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

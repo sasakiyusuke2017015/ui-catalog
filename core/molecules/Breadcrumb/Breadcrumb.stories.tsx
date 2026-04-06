@@ -4,7 +4,7 @@ import type { StoryFn } from '@storybook/react';
 import Breadcrumb from './Breadcrumb';
 
 export default {
-  title: 'ナビゲーション/Breadcrumb',
+  title: 'ナビゲーション/パンくず/Breadcrumb',
   component: Breadcrumb,
   tags: ['autodocs'],
   decorators: [

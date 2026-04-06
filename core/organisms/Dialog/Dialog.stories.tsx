@@ -9,7 +9,7 @@ import Dialog from '../Dialog/Dialog';
  * 統一されたデザインで通知や確認を行えます。
  */
 export default {
-  title: 'フィードバック/Dialog',
+  title: 'フィードバック/ダイアログ/Dialog',
   component: Dialog,
   tags: ['autodocs'],
   parameters: {

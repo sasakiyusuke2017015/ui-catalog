@@ -7,7 +7,7 @@ import RadarChart from './RadarChart';
  * 従業員の満足度分析やスキル評価などに使用します。
  */
 export default {
-  title: 'データ可視化/RadarChart',
+  title: 'データ可視化/チャート/RadarChart',
   component: RadarChart,
   tags: ['autodocs'],
   parameters: {

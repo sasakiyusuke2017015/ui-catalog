@@ -10,7 +10,7 @@ import Segment from './Segment';
  * 立体的なデザインと滑らかなアニメーションを備えています。
  */
 export default {
-  title: '基本入力/Segment',
+  title: '入力/選択/Segment',
   component: Segment,
   tags: ['autodocs'],
   parameters: {

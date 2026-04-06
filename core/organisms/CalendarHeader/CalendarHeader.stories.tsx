@@ -4,7 +4,7 @@ import { viewModeAtom, selectedDateAtom } from '../../hooks/calendar/calendar'
 import type { ViewMode } from '../../types/calendar'
 
 export default {
-  title: 'カレンダー/CalendarHeader',
+  title: 'カレンダー/ヘッダー/CalendarHeader',
   component: CalendarHeader,
   tags: ['autodocs'],
   parameters: {

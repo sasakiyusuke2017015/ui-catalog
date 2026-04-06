@@ -207,6 +207,20 @@ cp packages/ui-catalog/infra/commands/ui-catalog.md .claude/commands/
 
 ---
 
+## Storybook
+
+公開: https://sasakiyusuke2017015.github.io/ui-catalog/
+
+```bash
+# ローカルでホットリロード（http://localhost:6006）
+pnpm storybook:localhost
+
+# GitHub Pages にデプロイ
+pnpm storybook:deploy
+```
+
+---
+
 ## 各層の責務
 
 | 層 | 責務 | ビジネスロジック |

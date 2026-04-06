@@ -7,7 +7,7 @@ import DatePicker from './DatePicker';
  * min/max制限やバリデーション機能を含みます。
  */
 export default {
-  title: 'フォーム/DatePicker',
+  title: 'フォーム/日付/DatePicker',
   component: DatePicker,
   tags: ['autodocs'],
   parameters: {

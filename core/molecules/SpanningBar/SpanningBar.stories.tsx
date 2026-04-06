@@ -2,7 +2,7 @@ import { SpanningBar } from './SpanningBar'
 import type { CalendarEvent } from '../../types/calendar'
 
 export default {
-  title: 'カレンダー/SpanningBar',
+  title: 'カレンダー/ドラッグ/SpanningBar',
   component: SpanningBar,
   tags: ['autodocs'],
   parameters: {

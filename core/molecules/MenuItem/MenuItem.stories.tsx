@@ -3,7 +3,7 @@ import MenuItem from '../../molecules/MenuItem/MenuItem';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof MenuItem> = {
-  title: 'ナビゲーション/MenuItem',
+  title: 'ナビゲーション/メニュー/MenuItem',
   component: MenuItem,
   tags: ['autodocs'],
   parameters: {

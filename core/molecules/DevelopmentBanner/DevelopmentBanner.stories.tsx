@@ -7,7 +7,7 @@ import DevelopmentBanner from './DevelopmentBanner';
  * Bannerコンポーネントのラッパーで、warningバリアントを使用します。
  */
 export default {
-  title: '表示/DevelopmentBanner',
+  title: '表示/バナー/DevelopmentBanner',
   component: DevelopmentBanner,
   tags: ['autodocs'],
   parameters: {
