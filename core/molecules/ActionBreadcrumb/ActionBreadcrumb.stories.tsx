@@ -32,3 +32,22 @@ export const CustomSeparator: Story = {
     separator: '>',
   },
 };
+
+export const SingleItem: Story = {
+  args: {
+    items: [{ label: 'ダッシュボード' }],
+  },
+};
+
+export const DeepHierarchy: Story = {
+  args: {
+    items: [
+      { label: 'ホーム', onClick: () => {} },
+      { label: '管理', onClick: () => {} },
+      { label: 'ユーザー', onClick: () => {} },
+      { label: 'ロール設定', onClick: () => {} },
+      { label: '権限詳細' },
+    ],
+    separator: '/',
+  },
+};
