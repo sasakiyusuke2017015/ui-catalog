@@ -327,7 +327,7 @@ export function DayColumn({
             const nowMinutes = now.getHours() * 60 + now.getMinutes()
             const topPx = (nowMinutes / 60) * slotHeight
             return (
-              <div className="absolute left-0 right-0" style={{ top: `${topPx}px`, zIndex: 25 }}>
+              <div className="absolute left-0 right-0" style={{ top: `${topPx}px`, zIndex: 10 }}>
                 <div className="h-0.5 bg-red-500">
                   <div className="absolute -left-1 -top-1 w-2.5 h-2.5 bg-red-500 rounded-full" />
                 </div>
