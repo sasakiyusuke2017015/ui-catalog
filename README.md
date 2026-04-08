@@ -178,22 +178,24 @@ packages:
 
 **.vscode/settings.json** に追加: `{ "git.scanRepositories": ["packages"] }`
 
-### 導入手順
+### 新規プロジェクトに導入
 
 ```bash
-# 初回クローン（--recurse-submodules で submodule も取得）
-git clone --recurse-submodules <your-repo>
-
-# 既存リポジトリに submodule を追加
 git submodule add -b project/<name> https://github.com/sasakiyusuke2017015/ui-catalog.git packages/ui-catalog
-
-# submodule の更新
-pnpm ui:update
-# または
-git submodule update --remote packages/ui-catalog
-
-# 依存関係インストール
 pnpm install
+```
+
+### 既存プロジェクトをクローン
+
+```bash
+git clone --recurse-submodules <your-repo>
+pnpm install
+```
+
+### ui-catalog を更新
+
+```bash
+pnpm ui:update
 ```
 
 ### Claude Code コマンド登録
