@@ -60,10 +60,6 @@ export function CalendarHeader() {
   return (
     <header data-component="CalendarHeader" className={styles.header}>
       <div className={styles.leftSection}>
-        <h1 className={styles.title}>
-          Calendar
-        </h1>
-
         <div className={styles.navButtons}>
           {viewMode === 'week' && (
             <Button
