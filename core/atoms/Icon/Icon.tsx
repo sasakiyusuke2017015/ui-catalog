@@ -1109,6 +1109,14 @@ const DEFAULT_HOVER_MAP: Partial<Record<string, HoverPreset>> = {
   'play-doc': 'pop',
   'chat-wave': 'pop',
   'shield-audio': 'glow',
+
+  // ブランド
+  'meetscribe-brand': 'pop',
+  'meetscribe-brand-wave': 'wiggle',
+  'meetscribe-brand-mic': 'pop',
+  'meetscribe-brand-play': 'pop',
+  'meetscribe-brand-chat': 'pop',
+  'meetscribe-brand-shield': 'glow',
 };
 
 // ========================================

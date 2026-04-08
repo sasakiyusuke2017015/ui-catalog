@@ -120,7 +120,7 @@ export function formatMonthHeader(date: Date): string {
 export function navigateDate(
   date: Date,
   direction: 'prev' | 'next',
-  mode: 'day' | 'week' | 'month'
+  mode: 'day' | 'week' | 'month' | 'agenda'
 ): Date {
   const amount = direction === 'next' ? 1 : -1
   switch (mode) {
@@ -129,6 +129,7 @@ export function navigateDate(
     case 'week':
       return amount > 0 ? addWeeks(date, 1) : subWeeks(date, 1)
     case 'month':
+    case 'agenda':
       return amount > 0 ? addMonths(date, 1) : subMonths(date, 1)
   }
 }

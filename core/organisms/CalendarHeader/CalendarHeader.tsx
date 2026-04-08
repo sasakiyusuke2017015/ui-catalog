@@ -12,6 +12,7 @@ const VIEW_MODES: { readonly value: ViewMode; readonly label: string }[] = [
   { value: 'day', label: '日' },
   { value: 'week', label: '週' },
   { value: 'month', label: '月' },
+  { value: 'agenda', label: '予定' },
 ]
 
 export function CalendarHeader() {
