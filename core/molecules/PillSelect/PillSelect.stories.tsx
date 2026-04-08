@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { PillSelect } from './PillSelect'
 
 export default {
-  title: 'カレンダー/PillSelect',
+  title: 'カレンダー/入力/PillSelect',
   component: PillSelect,
   tags: ['autodocs'],
   parameters: {

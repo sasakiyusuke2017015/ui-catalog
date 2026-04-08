@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import Text from '../../atoms/Text'
 import styles from './EmptyState.module.scss'
 
 export interface EmptyStateProps {
@@ -21,9 +22,9 @@ export default function EmptyState({
   return (
     <div data-component="empty-state" className={containerClasses}>
       {icon && <div className={styles.emptyState__icon}>{icon}</div>}
-      <h3 className={styles.emptyState__title}>{title}</h3>
+      <Text as="h3" size="lg" weight="semibold" className={styles.emptyState__title}>{title}</Text>
       {description && (
-        <p className={styles.emptyState__description}>{description}</p>
+        <Text as="p" variant="muted" className={styles.emptyState__description}>{description}</Text>
       )}
       {action}
     </div>

@@ -9,7 +9,7 @@ import ResetButton from './ResetButton';
  * フォームやフィルターのリセットに使用します。
  */
 export default {
-  title: '基本入力/ResetButton',
+  title: '入力/ボタン/ResetButton',
   component: ResetButton,
   tags: ['autodocs'],
   parameters: {

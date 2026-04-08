@@ -9,7 +9,7 @@ import Toggle from './Toggle';
  * 設定項目やフィーチャーフラグなどに使用します。
  */
 export default {
-  title: '基本入力/Toggle',
+  title: '入力/選択/Toggle',
   component: Toggle,
   tags: ['autodocs'],
   parameters: {

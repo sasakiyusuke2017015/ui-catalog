@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "../../molecules/Button";
 
 export interface DetailHeaderField {
   label: string;
@@ -32,6 +33,14 @@ export interface DetailHeaderProps {
   variant?: "compact" | "split" | "minimal";
 }
 
+/** variant マッピング */
+const variantMap = {
+  primary: "primary",
+  danger: "danger",
+  outline: "outline",
+  default: "default",
+} as const;
+
 /** コンパクト: 1カード、縦積みラベル・値 + ボタン行 */
 function CompactLayout({ icon, title, badge, fields, actions }: DetailHeaderProps) {
   return (
@@ -49,13 +58,15 @@ function CompactLayout({ icon, title, badge, fields, actions }: DetailHeaderProp
           <div key={i} className="flex items-baseline gap-2 text-[12px]">
             <span className="w-20 text-(--color-text-muted) shrink-0">{f.label}</span>
             {f.onClick ? (
-              <button
-                type="button"
-                className={`text-(--color-accent) hover:underline cursor-pointer truncate text-left ${f.mono ? "font-mono" : ""}`}
+              <Button
+                variant="ghost"
+                size="small"
                 onClick={f.onClick}
+                enableHopEffect={false}
+                className={`!p-0 text-(--color-accent) hover:underline truncate text-left ${f.mono ? "font-mono" : ""}`}
               >
                 {f.value}
-              </button>
+              </Button>
             ) : (
               <span className={`text-(--color-text) truncate ${f.mono ? "font-mono" : ""}`}>
                 {f.value}
@@ -69,30 +80,19 @@ function CompactLayout({ icon, title, badge, fields, actions }: DetailHeaderProp
       {actions && actions.length > 0 && (
         <div className="flex flex-wrap gap-2 pt-2 border-t border-(--color-border)">
           {actions.map((a, i) => (
-            <button
+            <Button
               key={i}
-              type="button"
+              variant={variantMap[a.variant ?? "default"]}
+              size="small"
               disabled={a.disabled}
-              className={`px-3 py-1 text-[12px] rounded font-medium transition-colors ${
-                a.disabled
-                  ? "opacity-50 cursor-not-allowed"
-                  : `cursor-pointer ${
-                      a.variant === "danger"
-                        ? "bg-(--color-error) text-white hover:opacity-90"
-                        : a.variant === "primary"
-                          ? "bg-(--color-accent) text-white hover:opacity-90"
-                          : a.variant === "outline"
-                            ? "border border-(--color-border) text-(--color-text) hover:bg-(--color-hover-bg)"
-                            : "bg-(--color-bg) text-(--color-text) hover:bg-(--color-hover-bg)"
-                    }`
-              }`}
-              onClick={a.disabled ? undefined : a.onClick}
+              onClick={a.onClick}
+              enableHopEffect={false}
             >
               <span className="flex items-center gap-1.5">
                 {a.icon}
                 {a.label}
               </span>
-            </button>
+            </Button>
           ))}
         </div>
       )}
@@ -138,30 +138,19 @@ function SplitLayout({ icon, title, badge, fields, actions }: DetailHeaderProps)
         {actions && actions.length > 0 && (
           <div className="flex flex-col gap-1.5 shrink-0">
             {actions.map((a, i) => (
-              <button
+              <Button
                 key={i}
-                type="button"
+                variant={variantMap[a.variant ?? "default"]}
+                size="small"
                 disabled={a.disabled}
-                className={`px-3 py-1.5 text-[12px] rounded font-medium transition-colors whitespace-nowrap ${
-                  a.disabled
-                    ? "opacity-50 cursor-not-allowed"
-                    : `cursor-pointer ${
-                        a.variant === "danger"
-                          ? "bg-(--color-error) text-white hover:opacity-90"
-                          : a.variant === "primary"
-                            ? "bg-(--color-accent) text-white hover:opacity-90"
-                            : a.variant === "outline"
-                              ? "border border-(--color-border) text-(--color-text) hover:bg-(--color-hover-bg)"
-                              : "bg-(--color-bg) text-(--color-text) hover:bg-(--color-hover-bg)"
-                      }`
-                }`}
-                onClick={a.disabled ? undefined : a.onClick}
+                onClick={a.onClick}
+                enableHopEffect={false}
               >
                 <span className="flex items-center gap-1.5">
                   {a.icon}
                   {a.label}
                 </span>
-              </button>
+              </Button>
             ))}
           </div>
         )}
@@ -182,30 +171,19 @@ function MinimalLayout({ icon, title, badge, fields, actions }: DetailHeaderProp
         {actions && actions.length > 0 && (
           <div className="flex gap-1.5 ml-auto shrink-0">
             {actions.map((a, i) => (
-              <button
+              <Button
                 key={i}
-                type="button"
+                variant={variantMap[a.variant ?? "default"]}
+                size="small"
                 disabled={a.disabled}
-                className={`group/action px-2.5 py-1 text-[11px] rounded font-medium transition-colors ${
-                  a.disabled
-                    ? "opacity-50 cursor-not-allowed"
-                    : `cursor-pointer ${
-                        a.variant === "danger"
-                          ? "bg-(--color-error) text-white hover:opacity-90"
-                          : a.variant === "primary"
-                            ? "bg-(--color-accent) text-white hover:opacity-90"
-                            : a.variant === "outline"
-                              ? "border border-(--color-border) text-(--color-text-muted) hover:bg-(--color-hover-bg)"
-                              : "text-(--color-text-muted) hover:bg-(--color-hover-bg)"
-                      }`
-                }`}
-                onClick={a.disabled ? undefined : a.onClick}
+                onClick={a.onClick}
+                enableHopEffect={false}
               >
-                <span className={`flex items-center gap-1 transition-transform ${a.disabled ? "" : "group-hover/action:scale-125"}`}>
+                <span className="flex items-center gap-1">
                   {a.icon}
                   {a.label}
                 </span>
-              </button>
+              </Button>
             ))}
           </div>
         )}
@@ -217,13 +195,15 @@ function MinimalLayout({ icon, title, badge, fields, actions }: DetailHeaderProp
           <span key={i} className="flex items-baseline gap-1">
             <span className="text-(--color-text-muted)">{f.label}:</span>
             {f.onClick ? (
-              <button
-                type="button"
-                className={`text-(--color-accent) hover:underline cursor-pointer ${f.mono ? "font-mono" : ""}`}
+              <Button
+                variant="ghost"
+                size="small"
                 onClick={f.onClick}
+                enableHopEffect={false}
+                className={`!p-0 text-(--color-accent) hover:underline ${f.mono ? "font-mono" : ""}`}
               >
                 {f.value}
-              </button>
+              </Button>
             ) : (
               <span className={`text-(--color-text) ${f.mono ? "font-mono" : ""}`}>
                 {f.value}

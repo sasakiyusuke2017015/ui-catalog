@@ -4,7 +4,7 @@ import { eventsAtom } from '../../hooks/calendar/calendar'
 import type { CalendarEvent } from '../../types/calendar'
 
 export default {
-  title: 'カレンダー/EventCardContainer',
+  title: 'カレンダー/イベント/EventCardContainer',
   component: EventCardContainer,
   tags: ['autodocs'],
   parameters: {

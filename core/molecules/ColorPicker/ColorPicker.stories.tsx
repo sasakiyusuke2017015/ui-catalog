@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ColorPicker, EVENT_COLORS } from './ColorPicker'
 
 export default {
-  title: 'カレンダー/ColorPicker',
+  title: 'カレンダー/入力/ColorPicker',
   component: ColorPicker,
   tags: ['autodocs'],
   parameters: {

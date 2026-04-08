@@ -1,5 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { Button } from '../../molecules/Button';
+import { IconButton } from '../../molecules/IconButton';
+import Text from '../../atoms/Text';
 
 import styles from './PWAInstallPrompt.module.scss';
 
@@ -63,27 +65,20 @@ const PWAInstallPrompt: FC = () => {
       <div className={styles.card}>
         <div className={styles.contentRow}>
           <div className={styles.contentBody}>
-            <h3 className={styles.title}>
+            <Text as="h3" size="sm" weight="semibold" className={styles.title}>
               アプリをインストール
-            </h3>
-            <p className={styles.subtitle}>
+            </Text>
+            <Text as="p" size="xs" variant="muted" className={styles.subtitle}>
               ホーム画面に追加して、アプリのように使用できます
-            </p>
+            </Text>
           </div>
-          <button
+          <IconButton
+            icon="x"
+            size={20}
+            label="閉じる"
             onClick={handleDismiss}
             className={styles.closeButton}
-            aria-label="閉じる"
-          >
-            <svg className={styles.closeIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
+          />
         </div>
         <div className={styles.actions}>
           <Button

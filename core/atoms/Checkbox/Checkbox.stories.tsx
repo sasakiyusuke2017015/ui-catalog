@@ -5,7 +5,7 @@ import Checkbox from './Checkbox';
 type CheckboxProps = ComponentProps<typeof Checkbox>;
 
 export default {
-  title: '基本入力/Checkbox',
+  title: '入力/選択/Checkbox',
   component: Checkbox,
   parameters: {
     layout: 'centered',

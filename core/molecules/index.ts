@@ -49,9 +49,6 @@ export * from './ChatFab'
 export * from './MemberCard'
 export * from './SurveyCard'
 
-// Form (promoted)
-export * from './Question'
-
 // PWA
 export * from './PWAInstallPrompt'
 

@@ -16,7 +16,7 @@ const ALL_ANIMATION_EASE = [
 ] as const;
 
 const meta: Meta<typeof LoadingZone> = {
-  title: 'フィードバック/LoadingZone',
+  title: 'フィードバック/ローディング/LoadingZone',
   component: LoadingZone,
   parameters: {
     layout: 'padded',

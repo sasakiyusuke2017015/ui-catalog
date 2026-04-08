@@ -4,7 +4,7 @@ import { selectedDateAtom } from '../../hooks/calendar/calendar'
 import type { CalendarEvent } from '../../types/calendar'
 
 export default {
-  title: 'カレンダー/MonthView',
+  title: 'カレンダー/月表示/MonthView',
   component: MonthView,
   tags: ['autodocs'],
   parameters: {

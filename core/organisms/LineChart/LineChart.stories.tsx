@@ -1,7 +1,7 @@
 import LineChart from './LineChart';
 
 export default {
-  title: 'データ可視化/LineChart',
+  title: 'データ可視化/チャート/LineChart',
   component: LineChart,
   tags: ['autodocs'],
   parameters: {

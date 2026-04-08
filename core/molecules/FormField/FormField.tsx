@@ -1,6 +1,7 @@
 import { FC, ReactNode } from 'react';
 
 import { Input } from '../../molecules/Input';
+import Text from '../../atoms/Text';
 
 interface FormFieldProps {
   id?: string;
@@ -69,7 +70,7 @@ const FormField: FC<FormFieldProps> = ({
 
       {children || <Input {...inputProps} />}
 
-      {error && <p className="mt-1 text-fluid-sm text-red-600">{error}</p>}
+      {error && <Text as="p" variant="error" size="sm" className="mt-1">{error}</Text>}
     </div>
   );
 };

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import SurveyCard from './SurveyCard';
 
 const meta: Meta<typeof SurveyCard> = {
-  title: 'データ表示/SurveyCard',
+  title: '表示/カード/SurveyCard',
   component: SurveyCard,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

@@ -5,7 +5,7 @@ import TextArea from './TextArea';
 type TextAreaProps = ComponentProps<typeof TextArea>;
 
 export default {
-  title: '基本入力/TextArea',
+  title: '入力/テキスト/TextArea',
   component: TextArea,
   parameters: {
     layout: 'centered',

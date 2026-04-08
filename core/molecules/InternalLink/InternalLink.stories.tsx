@@ -3,7 +3,7 @@ import InternalLink from './InternalLink';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof InternalLink> = {
-  title: 'ナビゲーション/InternalLink',
+  title: 'ナビゲーション/リンク/InternalLink',
   component: InternalLink,
   tags: ['autodocs'],
   decorators: [

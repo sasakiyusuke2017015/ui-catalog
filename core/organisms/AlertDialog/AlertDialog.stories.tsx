@@ -6,7 +6,7 @@ import AlertDialog from './AlertDialog';
  * AlertDialog コンポーネントの Storybook 設定
  */
 export default {
-  title: 'フィードバック/AlertDialog',
+  title: 'フィードバック/ダイアログ/AlertDialog',
   component: AlertDialog,
   tags: ['autodocs'],
   parameters: {

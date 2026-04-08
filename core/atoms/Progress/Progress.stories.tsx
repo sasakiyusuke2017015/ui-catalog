@@ -4,7 +4,7 @@ import Progress from './Progress';
 type Story = StoryObj<typeof Progress>;
 
 const meta: Meta<typeof Progress> = {
-  title: 'フィードバック/Progress',
+  title: 'フィードバック/通知/Progress',
   component: Progress,
   parameters: {
     layout: 'centered',

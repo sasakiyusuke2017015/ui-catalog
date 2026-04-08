@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import Icon from '../../atoms/Icon';
+import Text from '../../atoms/Text';
 import styles from './QACardList.module.scss';
 
 export interface QACardItem {
@@ -45,10 +46,10 @@ const QACardList: FC<QACardListProps> = ({
       {/* 情報バナー（先頭に表示） */}
       {infoMessage && (
         <div className={`${styles.infoBanner} ${bannerClass}`}>
-          <p className={styles.infoBannerText}>
+          <Text as="p" className={styles.infoBannerText}>
             <Icon name={'info-circle'} size={16} className={styles.infoBannerIcon} />
             {infoMessage}
-          </p>
+          </Text>
         </div>
       )}
 
@@ -67,10 +68,10 @@ const QACardList: FC<QACardListProps> = ({
             </span>
           </div>
           <div className={styles.aiCommentBody}>
-            <p className={styles.aiCommentBodyText}>
+            <Text as="p" className={styles.aiCommentBodyText}>
               {aiComment}
               {aiCommentStreaming && <span className={styles.aiCommentCursor}>▌</span>}
-            </p>
+            </Text>
           </div>
         </div>
       )}
@@ -82,13 +83,13 @@ const QACardList: FC<QACardListProps> = ({
               {index + 1}
             </div>
             <div className={styles.cardBody}>
-              <p className={styles.question}>
+              <Text as="p" className={styles.question}>
                 {String(item.question || '').replace(/\.\n\s*/g, '')}
-              </p>
+              </Text>
               <div className={styles.answerBox}>
-                <p className={styles.answerText}>
+                <Text as="p" className={styles.answerText}>
                   {String(item.answer || '（未回答）')}
-                </p>
+                </Text>
               </div>
             </div>
           </div>

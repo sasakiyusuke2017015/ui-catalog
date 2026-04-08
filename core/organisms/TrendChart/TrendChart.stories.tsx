@@ -7,7 +7,7 @@ import TrendChart from './TrendChart';
  * 複数のデータセットを同時に表示し、推移や変化の比較を可能にします。
  */
 export default {
-  title: 'データ可視化/TrendChart',
+  title: 'データ可視化/チャート/TrendChart',
   component: TrendChart,
   tags: ['autodocs'],
   parameters: {

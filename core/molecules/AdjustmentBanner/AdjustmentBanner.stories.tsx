@@ -7,7 +7,7 @@ import AdjustmentBanner from './AdjustmentBanner';
  * Bannerコンポーネントのラッパーで、infoバリアントを使用します。
  */
 export default {
-  title: '表示/AdjustmentBanner',
+  title: '表示/バナー/AdjustmentBanner',
   component: AdjustmentBanner,
   tags: ['autodocs'],
   parameters: {

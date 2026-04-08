@@ -1,5 +1,8 @@
 import { type FC, useState, useMemo, useRef, useEffect } from 'react'
 import { cn } from '../../utils/cn'
+import { Input } from '../../molecules/Input'
+import { Button } from '../../molecules/Button'
+import { Checkbox } from '../../atoms/Checkbox'
 import styles from './DataTable.module.scss'
 
 export interface DataTableProps {
@@ -154,12 +157,13 @@ const DataTable: FC<DataTableProps> = ({
       {/* ツールバー */}
       <div className={styles.toolbar}>
         <div className={styles.toolbarLeft}>
-          <input
+          <Input
             type="text"
             className={styles.searchInput}
             placeholder="検索..."
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)}
+            size="small"
           />
           <span className={styles.rowCount}>
             {selectedRows.size > 0
@@ -170,25 +174,26 @@ const DataTable: FC<DataTableProps> = ({
         <div className={styles.toolbarRight}>
           {onColumnsChange && (
             <div className={styles.pickerContainer} ref={pickerRef}>
-              <button
-                type="button"
-                className={styles.gearButton}
+              <Button
+                variant="ghost"
+                size="small"
                 onClick={() => setShowColumnPicker((v) => !v)}
                 title="表示カラム設定"
+                className={styles.gearButton}
               >
                 ⚙
-              </button>
+              </Button>
               {showColumnPicker && (
                 <div className={styles.picker}>
                   {headers.map((h) => (
-                    <label key={h} className={styles.pickerItem}>
-                      <input
-                        type="checkbox"
-                        checked={activeColumns.includes(h)}
-                        onChange={() => toggleColumn(h)}
-                      />
-                      <span>{headerLabels?.[h] ?? h}</span>
-                    </label>
+                    <Checkbox
+                      key={h}
+                      label={headerLabels?.[h] ?? h}
+                      checked={activeColumns.includes(h)}
+                      onChange={() => toggleColumn(h)}
+                      size="small"
+                      className={styles.pickerItem}
+                    />
                   ))}
                 </div>
               )}
@@ -204,10 +209,10 @@ const DataTable: FC<DataTableProps> = ({
             <tr>
               {selectable && (
                 <th className={styles.th} style={{ width: 32 }}>
-                  <input
-                    type="checkbox"
+                  <Checkbox
                     checked={selectedRows.size === sortedRows.length && sortedRows.length > 0}
                     onChange={toggleAllSelection}
+                    size="small"
                   />
                 </th>
               )}
@@ -237,12 +242,11 @@ const DataTable: FC<DataTableProps> = ({
                 onClick={onRowClick ? () => onRowClick(globalIndex, row) : undefined}
               >
                 {selectable && (
-                  <td className={styles.td} style={{ width: 32 }}>
-                    <input
-                      type="checkbox"
+                  <td className={styles.td} style={{ width: 32 }} onClick={(e) => e.stopPropagation()}>
+                    <Checkbox
                       checked={selectedRows.has(globalIndex)}
-                      onChange={(e) => { e.stopPropagation(); toggleRowSelection(globalIndex) }}
-                      onClick={(e) => e.stopPropagation()}
+                      onChange={() => toggleRowSelection(globalIndex)}
+                      size="small"
                     />
                   </td>
                 )}
@@ -275,25 +279,27 @@ const DataTable: FC<DataTableProps> = ({
       {/* ページネーション */}
       {sortedRows.length > pageSize && (
         <div className={styles.pagination}>
-          <button
-            type="button"
-            className={styles.pageButton}
+          <Button
+            variant="outline"
+            size="small"
             disabled={safePageIndex === 0}
             onClick={() => setPage((p) => p - 1)}
+            className={styles.pageButton}
           >
             ‹
-          </button>
+          </Button>
           <span className={styles.pageInfo}>
             {safePageIndex + 1} / {totalPages}
           </span>
-          <button
-            type="button"
-            className={styles.pageButton}
+          <Button
+            variant="outline"
+            size="small"
             disabled={safePageIndex >= totalPages - 1}
             onClick={() => setPage((p) => p + 1)}
+            className={styles.pageButton}
           >
             ›
-          </button>
+          </Button>
           <select
             className={styles.pageSizeSelect}
             value={pageSize}

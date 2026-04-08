@@ -3,7 +3,7 @@ import LoadingOverlay from './LoadingOverlay';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof LoadingOverlay> = {
-  title: 'フィードバック/LoadingOverlay',
+  title: 'フィードバック/ローディング/LoadingOverlay',
   component: LoadingOverlay,
   tags: ['autodocs'],
   parameters: {

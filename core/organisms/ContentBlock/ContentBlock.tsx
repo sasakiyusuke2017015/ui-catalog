@@ -2,6 +2,7 @@ import React from 'react';
 
 import Icon from '../../atoms/Icon';
 import Media from '../../atoms/Media/Media';
+import Text from '../../atoms/Text';
 import LoadingZone from '../LoadingZone/LoadingZone';
 import { type IconName } from '../../constants';
 import type { LoadingPreset } from '../../atoms/Icon';
@@ -155,11 +156,14 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
 
         {/* タイトル */}
         {title && (
-          <h3
-            className={`mb-4 text-fluid-lg font-semibold ${titleColor} ${alignClass} ${titleClassName}`}
+          <Text
+            as="h3"
+            size="lg"
+            weight="semibold"
+            className={`mb-4 ${titleColor} ${alignClass} ${titleClassName}`}
           >
             {title}
-          </h3>
+          </Text>
         )}
 
         {/* 子要素 */}

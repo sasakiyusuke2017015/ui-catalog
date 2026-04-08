@@ -96,8 +96,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
     }
 
     requestAnimationFrame(() => setPosReady(true))
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [modal.isOpen])
+  }, [modal.isOpen, modal.date])
 
   useEffect(() => {
     if (modal.isOpen) {

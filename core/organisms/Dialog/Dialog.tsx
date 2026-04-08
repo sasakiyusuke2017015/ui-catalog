@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 
 import { Button } from '../../molecules/Button';
 import Icon from '../../atoms/Icon';
+import Text from '../../atoms/Text';
 import { useOperationLog } from '../../../infra/devtools';
 
 
@@ -168,7 +169,7 @@ const Dialog: FC<DialogProps> = (props) => {
         {title && (
           <div className={`flex items-center gap-3 px-6 py-4 ${config.headerBg}`}>
             <Icon name={config.icon} size={24} className={config.iconColor} />
-            <h3 className="text-fluid-lg font-bold text-gray-800">{title}</h3>
+            <Text as="h3" size="lg" weight="bold" className="text-gray-800">{title}</Text>
           </div>
         )}
 
@@ -179,7 +180,7 @@ const Dialog: FC<DialogProps> = (props) => {
               <Icon name={config.icon} size={48} className={config.iconColor} />
             </div>
           )}
-          <p className="whitespace-pre-wrap text-gray-700">{message}</p>
+          <Text as="p" className="whitespace-pre-wrap text-gray-700">{message}</Text>
         </div>
 
         {/* ボタン */}

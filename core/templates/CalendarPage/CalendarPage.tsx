@@ -16,6 +16,9 @@ const WeekView = lazy(() =>
 const MonthView = lazy(() =>
   import('../../organisms/MonthView/MonthView').then((m) => ({ default: m.MonthView }))
 )
+const AgendaView = lazy(() =>
+  import('../../organisms/AgendaView/AgendaView').then((m) => ({ default: m.AgendaView }))
+)
 
 export interface CalendarPageProps {
   /** イベント一覧 */
@@ -57,6 +60,14 @@ function ViewSwitch({
       case 'month':
         return (
           <MonthView
+            events={events}
+            persistEvent={persistEvent}
+            removeEvent={removeEvent}
+          />
+        )
+      case 'agenda':
+        return (
+          <AgendaView
             events={events}
             persistEvent={persistEvent}
             removeEvent={removeEvent}

@@ -1,7 +1,7 @@
 import { CalendarEventCard } from './CalendarEventCard'
 
 export default {
-  title: 'カレンダー/CalendarEventCard',
+  title: 'カレンダー/イベント/CalendarEventCard',
   component: CalendarEventCard,
   tags: ['autodocs'],
   parameters: {

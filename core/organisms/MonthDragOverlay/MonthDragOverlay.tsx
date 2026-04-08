@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { IconLabel } from '../../molecules/IconLabel/IconLabel'
+import { useDragGhost } from '../../hooks/calendar/useDragGhost'
 import type { CalendarEvent } from '../../types/calendar'
 import styles from './MonthDragOverlay.module.scss'
 
@@ -10,33 +10,12 @@ interface MonthDragOverlayProps {
 }
 
 export function MonthDragOverlay({ event, initialPointer }: MonthDragOverlayProps) {
-  const ghostRef = useRef<HTMLDivElement | null>(null)
-  const rafRef = useRef<number>(0)
-
-  // Set initial position once on mount
-  useEffect(() => {
-    if (!ghostRef.current || !initialPointer) return
-    ghostRef.current.style.transform = `translate(${initialPointer.x}px, ${initialPointer.y - 12}px)`
-  }, []) // intentionally run once for initial position
-
-  // Track pointer via document events + rAF (no React state re-renders)
-  useEffect(() => {
-    if (!event || !initialPointer) return
-
-    const handleMove = (e: PointerEvent) => {
-      cancelAnimationFrame(rafRef.current)
-      rafRef.current = requestAnimationFrame(() => {
-        if (!ghostRef.current) return
-        ghostRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY - 12}px)`
-      })
-    }
-
-    document.addEventListener('pointermove', handleMove)
-    return () => {
-      document.removeEventListener('pointermove', handleMove)
-      cancelAnimationFrame(rafRef.current)
-    }
-  }, [event, initialPointer !== null])
+  const ghostRef = useDragGhost({
+    initialX: initialPointer?.x ?? 0,
+    initialY: initialPointer?.y ?? 0,
+    offsetY: -12,
+    enabled: !!event && !!initialPointer,
+  })
 
   if (!event || !initialPointer) return null
 

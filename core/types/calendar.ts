@@ -33,4 +33,4 @@ export interface CalendarDateRange {
   readonly end: Date
 }
 
-export type ViewMode = 'day' | 'week' | 'month'
+export type ViewMode = 'day' | 'week' | 'month' | 'agenda'

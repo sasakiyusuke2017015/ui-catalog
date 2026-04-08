@@ -1,20 +1,24 @@
 /**
  * DragOverlay - ghost card that follows the cursor during drag operations.
- * Uses ref-based DOM manipulation + rAF to avoid React re-renders on every pointermove.
+ * Uses useDragGhost hook for ref-based DOM manipulation + rAF.
  */
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useAtomValue } from 'jotai'
 import { format } from 'date-fns'
 import { IconLabel } from '../../molecules/IconLabel/IconLabel'
 import { dragAtom } from '../../hooks/calendar/calendar'
+import { useDragGhost } from '../../hooks/calendar/useDragGhost'
 import type { DragState } from '../../hooks/calendar/calendar'
 import styles from './CalendarDragOverlay.module.scss'
 
 function GhostCard({ drag }: { readonly drag: DragState }) {
-  const overlayRef = useRef<HTMLDivElement>(null)
-  const rafRef = useRef<number>(0)
   const [visible, setVisible] = useState(false)
+  const ghostRef = useDragGhost({
+    initialX: drag.pointerX,
+    initialY: drag.pointerY,
+    offsetY: -16,
+  })
 
   // Entry animation: show after mount
   useEffect(() => {
@@ -22,37 +26,11 @@ function GhostCard({ drag }: { readonly drag: DragState }) {
     return () => cancelAnimationFrame(timer)
   }, [])
 
-  // Set initial position from dragAtom pointer coords
-  useEffect(() => {
-    const el = overlayRef.current
-    if (!el) return
-    el.style.transform = `translate(${drag.pointerX}px, ${drag.pointerY - 16}px)`
-  }, []) // intentionally run once for initial position
-
-  // Track pointer via document events + rAF
-  useEffect(() => {
-    const el = overlayRef.current
-    if (!el) return
-
-    const handlePointerMove = (e: PointerEvent) => {
-      cancelAnimationFrame(rafRef.current)
-      rafRef.current = requestAnimationFrame(() => {
-        el.style.transform = `translate(${e.clientX}px, ${e.clientY - 16}px)`
-      })
-    }
-
-    document.addEventListener('pointermove', handlePointerMove)
-    return () => {
-      document.removeEventListener('pointermove', handlePointerMove)
-      cancelAnimationFrame(rafRef.current)
-    }
-  }, [])
-
   const startLabel = format(drag.currentStartTime, 'HH:mm')
   const endLabel = format(drag.currentEndTime, 'HH:mm')
 
   return (
-    <div ref={overlayRef} className={styles.overlay}>
+    <div ref={ghostRef} className={styles.overlay}>
       <div
         className={`${styles.ghost} ${visible ? styles.ghostVisible : ''}`}
         style={{ backgroundColor: `${drag.originalEvent.color}e6` }}

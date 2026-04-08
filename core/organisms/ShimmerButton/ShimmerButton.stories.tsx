@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { ShimmerButton } from './ShimmerButton'
 
 const meta: Meta<typeof ShimmerButton> = {
-  title: 'アニメーション/ShimmerButton',
+  title: '入力/ボタン/ShimmerButton',
   component: ShimmerButton,
   parameters: {
     layout: 'centered',

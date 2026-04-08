@@ -14,7 +14,7 @@ import type { InteractiveTableProps, Column, TableRowData, LinkData, InternalLin
  * ユーザー操作に対応したテーブルコンポーネントです。
  */
 export default {
-  title: 'データ操作/InteractiveTable',
+  title: 'データ表示/テーブル/InteractiveTable',
   component: InteractiveTable,
   tags: ['autodocs'],
   decorators: [

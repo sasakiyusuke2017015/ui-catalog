@@ -3,7 +3,7 @@ import BackgroundImage from './BackgroundImage';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof BackgroundImage> = {
-  title: '表示/BackgroundImage',
+  title: '表示/コンテンツ/BackgroundImage',
   component: BackgroundImage,
   tags: ['autodocs'],
   parameters: {

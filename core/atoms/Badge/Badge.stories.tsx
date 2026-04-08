@@ -10,7 +10,7 @@ type Story = StoryObj<typeof Badge>;
  * MetricBadge、ScoreBadge、StatusBadgeの機能を1つに統合しました。
  */
 const meta: Meta<typeof Badge> = {
-  title: '表示/Badge',
+  title: '表示/コンテンツ/Badge',
   component: Badge,
   parameters: {
     layout: 'centered',

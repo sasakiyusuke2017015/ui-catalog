@@ -11,7 +11,7 @@ type FixedTabBarProps = ComponentProps<typeof FixedTabBar>;
  * 左ペインの開閉状態に応じて位置が自動調整されます。
  */
 export default {
-  title: 'ナビゲーション/FixedTabBar',
+  title: 'ナビゲーション/タブ/FixedTabBar',
   component: FixedTabBar,
   tags: ['autodocs'],
   parameters: {

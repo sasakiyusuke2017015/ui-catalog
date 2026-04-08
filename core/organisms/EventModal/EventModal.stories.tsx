@@ -4,7 +4,7 @@ import { eventModalAtom } from '../../hooks/calendar/calendar'
 import type { CalendarEvent } from '../../types/calendar'
 
 export default {
-  title: 'カレンダー/EventModal',
+  title: 'カレンダー/イベント/EventModal',
   component: EventModal,
   tags: ['autodocs'],
   parameters: {

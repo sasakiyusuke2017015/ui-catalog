@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import EmptyState from './EmptyState';
 
 const meta: Meta<typeof EmptyState> = {
-  title: 'フィードバック/EmptyState',
+  title: 'フィードバック/通知/EmptyState',
   component: EmptyState,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

@@ -129,21 +129,23 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
       case 'default':
       default:
         return (
-          <button
+          <Button
+            variant="ghost"
             onClick={toggleMenu}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             className={cn(
-              'relative flex cursor-pointer items-center gap-2 rounded-full px-4 py-2 text-fluid-sm font-medium transition-all duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2',
+              'rounded-full',
               buttonClassName
             )}
             style={getButtonStyle()}
+            enableHopEffect={false}
           >
             <span className="relative z-10 flex items-center gap-2">
               {renderIcon(icon, 20, isOpen, isHovered)}
               {label && <span>{label}</span>}
             </span>
-          </button>
+          </Button>
         );
     }
   };

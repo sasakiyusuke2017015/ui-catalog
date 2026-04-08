@@ -6,7 +6,7 @@ import Calendar from './Calendar';
  * 日付/月選択カレンダー。単体でも DatePicker 内でも利用可能。
  */
 export default {
-  title: 'フォーム/Calendar',
+  title: 'フォーム/日付/Calendar',
   component: Calendar,
   tags: ['autodocs'],
   parameters: {
