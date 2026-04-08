@@ -1,5 +1,9 @@
 import { useState } from 'react'
 import { cn } from '../../utils/cn'
+import Modal from '../Modal/Modal'
+import { Button } from '../../molecules/Button'
+import { Checkbox } from '../../atoms/Checkbox'
+import Text from '../../atoms/Text'
 
 export interface CheckboxItem {
   id: string
@@ -34,8 +38,6 @@ export default function ModalCheckboxList({
 }: ModalCheckboxListProps) {
   const [selected, setSelected] = useState<Set<string>>(new Set())
 
-  if (!isOpen) return null
-
   const handleToggle = (id: string) => {
     setSelected((prev) => {
       const next = new Set(prev)
@@ -69,87 +71,58 @@ export default function ModalCheckboxList({
   const isConfirmDisabled = requireSelection && selected.size === 0
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-      onClick={handleCancel}
-      data-component="modal-checkbox-list"
+    <Modal
+      isOpen={isOpen}
+      onClose={handleCancel}
+      title={title}
+      maxWidth="400px"
     >
-      <div
-        className={cn(
-          'bg-(--color-bg-surface) rounded-[12px] border border-(--color-border) shadow-xl',
-          'w-[400px] max-h-[80vh] flex flex-col',
-          className,
+      <div className={cn('flex flex-col max-h-[60vh]', className)} data-component="modal-checkbox-list">
+        {description && (
+          <Text as="p" size="xs" variant="muted" className="px-5 pb-2">{description}</Text>
         )}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Header */}
-        <div className="px-5 py-4 border-b border-(--color-border)">
-          <h2 className="text-[15px] font-semibold text-(--color-text)">{title}</h2>
-          {description && (
-            <p className="mt-1 text-[12px] text-(--color-text-muted)">{description}</p>
-          )}
-        </div>
 
         {/* Select all */}
         <div className="px-5 py-2 border-b border-(--color-border)/50">
-          <label className="flex items-center gap-2 cursor-pointer text-[12px] text-(--color-text-muted)">
-            <input
-              type="checkbox"
-              checked={selected.size === items.length}
-              onChange={handleSelectAll}
-              className="w-3.5 h-3.5 rounded"
-            />
-            すべて選択
-          </label>
+          <Checkbox
+            label="すべて選択"
+            checked={selected.size === items.length}
+            onChange={handleSelectAll}
+            size="small"
+          />
         </div>
 
         {/* Items */}
         <div className="flex-1 overflow-y-auto px-5 py-2">
           {items.map((item) => (
-            <label
-              key={item.id}
-              className="flex items-start gap-2.5 py-2 cursor-pointer hover:bg-(--color-hover-bg) rounded px-1 -mx-1"
-            >
-              <input
-                type="checkbox"
+            <div key={item.id} className="py-2 hover:bg-(--color-hover-bg) rounded px-1 -mx-1">
+              <Checkbox
+                label={item.label}
                 checked={selected.has(item.id)}
                 onChange={() => handleToggle(item.id)}
-                className="w-4 h-4 rounded mt-0.5 shrink-0"
               />
-              <div>
-                <span className="text-[13px] text-(--color-text)">{item.label}</span>
-                {item.description && (
-                  <p className="text-[11px] text-(--color-text-muted) mt-0.5">{item.description}</p>
-                )}
-              </div>
-            </label>
+              {item.description && (
+                <Text as="p" size="xs" variant="muted" className="ml-6 mt-0.5">{item.description}</Text>
+              )}
+            </div>
           ))}
         </div>
 
         {/* Footer */}
         <div className="flex items-center justify-end gap-2 px-5 py-3 border-t border-(--color-border)">
-          <button
-            type="button"
-            className="px-3 py-1.5 text-[13px] rounded-[6px] border border-(--color-border) text-(--color-text) hover:bg-(--color-hover-bg) cursor-pointer"
-            onClick={handleCancel}
-          >
+          <Button variant="outline" size="small" onClick={handleCancel}>
             {cancelText}
-          </button>
-          <button
-            type="button"
-            className={cn(
-              'px-3 py-1.5 text-[13px] rounded-[6px] font-medium cursor-pointer',
-              isConfirmDisabled
-                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                : 'bg-(--color-accent) text-white hover:opacity-90',
-            )}
+          </Button>
+          <Button
+            variant="primary"
+            size="small"
             disabled={isConfirmDisabled}
             onClick={handleConfirm}
           >
             {confirmText}
-          </button>
+          </Button>
         </div>
       </div>
-    </div>
+    </Modal>
   )
 }

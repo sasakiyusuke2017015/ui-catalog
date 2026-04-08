@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 
 import { type ColorTheme } from '../../constants';
 import Icon from '../../atoms/Icon';
+import Spinner from '../../atoms/Spinner';
+import Text from '../../atoms/Text';
 import type { LoadingPreset } from '../../atoms/Icon/types';
 
 import styles from './LoadingOverlay.module.scss';
@@ -84,12 +86,9 @@ export default function LoadingOverlay({
               style={{ color: accentBgColor }}
             />
           ) : (
-            <div
-              className={styles.loadingOverlay__spinner}
-              style={{ borderColor: accentBgColor }}
-            />
+            <Spinner size="lg" variant="info" className={styles.loadingOverlay__spinner} />
           )}
-          <p className={styles.loadingOverlay__message}>{message}</p>
+          <Text as="p" variant="muted" className={styles.loadingOverlay__message}>{message}</Text>
         </div>
       </div>
     </div>
