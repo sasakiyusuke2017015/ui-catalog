@@ -86,3 +86,37 @@ export const WithoutLabel = {
     placeholder: 'ラベルなしの入力フィールド',
   },
 };
+
+// question バリアント（必須）
+export const QuestionRequired = {
+  args: {
+    variant: 'question',
+    label: 'お名前を教えてください',
+    description: 'フルネームでご記入ください。',
+    placeholder: '山田 太郎',
+    required: true,
+  },
+};
+
+// question バリアント（任意）
+export const QuestionOptional = {
+  args: {
+    variant: 'question',
+    label: 'ご意見・ご要望',
+    description: '改善してほしい点があれば自由にご記入ください。',
+    placeholder: '自由にご記入ください',
+  },
+};
+
+// question バリアント（エラー）
+export const QuestionWithError = {
+  args: {
+    variant: 'question',
+    label: 'メールアドレス',
+    description: '確認メールの送信先として使用します。',
+    type: 'email',
+    placeholder: 'example@example.com',
+    required: true,
+    error: '有効なメールアドレスを入力してください',
+  },
+};

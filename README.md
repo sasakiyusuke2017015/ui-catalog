@@ -173,7 +173,7 @@ ui-catalog リポジトリで `project/<name>` ブランチを作成しておく
 ```yaml
 packages:
   - 'apps/*'
-  - 'packages/*'
+  - 'packages/ui-catalog'
 ```
 
 **.vscode/settings.json** に追加: `{ "git.scanRepositories": ["packages"] }`
