@@ -5,25 +5,8 @@ export const eventsAtom = atom<readonly CalendarEvent[]>([])
 
 export const selectedDateAtom = atom<Date>(new Date())
 
-function getViewModeFromPath(): ViewMode {
-  const path = window.location.pathname.replace(/^\//, '')
-  if (path === 'week') return 'week'
-  if (path === 'month') return 'month'
-  return 'day'
-}
-
-const viewModeBaseAtom = atom<ViewMode>(getViewModeFromPath())
-
-export const viewModeAtom = atom(
-  (get) => get(viewModeBaseAtom),
-  (_get, set, mode: ViewMode) => {
-    set(viewModeBaseAtom, mode)
-    const path = mode === 'day' ? '/' : `/${mode}`
-    if (window.location.pathname !== path) {
-      window.history.pushState(null, '', path)
-    }
-  }
-)
+/** ビューモード（URL 同期はアプリ側で行う） */
+export const viewModeAtom = atom<ViewMode>('day')
 
 export const editingEventAtom = atom<CalendarEvent | null>(null)
 

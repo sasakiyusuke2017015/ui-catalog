@@ -7,17 +7,21 @@ import styles from './MonthDragOverlay.module.scss'
 interface MonthDragOverlayProps {
   readonly event: CalendarEvent | null
   readonly initialPointer: { x: number; y: number } | null
+  /** リサイズ時は ghost を表示しない */
+  readonly mode?: 'move' | 'resize-left' | 'resize-right'
 }
 
-export function MonthDragOverlay({ event, initialPointer }: MonthDragOverlayProps) {
+export function MonthDragOverlay({ event, initialPointer, mode = 'move' }: MonthDragOverlayProps) {
+  const isMove = mode === 'move'
   const ghostRef = useDragGhost({
     initialX: initialPointer?.x ?? 0,
     initialY: initialPointer?.y ?? 0,
     offsetY: -12,
-    enabled: !!event && !!initialPointer,
+    enabled: isMove && !!event && !!initialPointer,
   })
 
-  if (!event || !initialPointer) return null
+  // リサイズ時は ghost を表示しない（元バーが伸び縮みするプレビューで代替）
+  if (!isMove || !event || !initialPointer) return null
 
   return createPortal(
     <div ref={ghostRef} className={styles.overlay} data-component="MonthDragOverlay">

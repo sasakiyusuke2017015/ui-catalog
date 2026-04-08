@@ -11,7 +11,7 @@ import {
   startOfDay,
 } from 'date-fns'
 import { ja } from 'date-fns/locale'
-import { selectedDateAtom, editingEventAtom } from '../../hooks/calendar/calendar'
+import { selectedDateAtom, eventModalAtom } from '../../hooks/calendar/calendar'
 import { getEventsForDay } from '../../utils/calendar/dates'
 import type { CalendarEvent } from '../../types/calendar'
 import Icon from '../../atoms/Icon/Icon'
@@ -40,7 +40,7 @@ interface DayGroup {
  */
 export function AgendaView({ events }: AgendaViewProps) {
   const currentDate = useAtomValue(selectedDateAtom)
-  const setEditingEvent = useSetAtom(editingEventAtom)
+  const setModal = useSetAtom(eventModalAtom)
 
   // 表示期間内の予定をグループ化
   const dayGroups = useMemo((): DayGroup[] => {
@@ -62,7 +62,12 @@ export function AgendaView({ events }: AgendaViewProps) {
   }, [currentDate, events])
 
   const handleEventClick = (event: CalendarEvent) => {
-    setEditingEvent(event)
+    setModal({
+      isOpen: true,
+      date: event.startTime,
+      hour: event.startTime.getHours(),
+      editingEvent: event,
+    })
   }
 
   if (dayGroups.length === 0) {

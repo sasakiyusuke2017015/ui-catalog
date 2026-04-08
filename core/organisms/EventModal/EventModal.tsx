@@ -42,6 +42,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
   const [icon, setIcon] = useState<string | undefined>(undefined)
   const [description, setDescription] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const [saving, setSaving] = useState(false)
   const lockedPos = useRef<{ top?: number; left?: number; right?: number } | null>(null)
   const [posReady, setPosReady] = useState(false)
 
@@ -139,19 +140,49 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
     setActiveSlot(null)
   }, [setModal, setActiveSlot])
 
+  // モーダルの時間変更を activeSlot に同期（青塗りがリアルタイム連動）
+  useEffect(() => {
+    if (!modal.isOpen) return
+    const allDay = mode === 'allDay'
+
+    if (allDay) {
+      // 終日: 0時〜24時
+      setActiveSlot({
+        date: new Date(startDateStr).toDateString(),
+        hour: 0,
+        endHour: 24,
+        endDate: startDateStr !== endDateStr ? new Date(endDateStr).toDateString() : undefined,
+      })
+    } else {
+      const startH = startMin / 60
+      const endH = endMin / 60
+      const isCrossDay = startDateStr !== endDateStr
+      setActiveSlot({
+        date: new Date(startDateStr).toDateString(),
+        hour: startH,
+        endHour: isCrossDay ? 24 : endH,
+        endDate: isCrossDay ? new Date(endDateStr).toDateString() : undefined,
+      })
+    }
+  }, [modal.isOpen, startMin, endMin, startDateStr, endDateStr, mode, setActiveSlot])
+
   const handleDelete = useCallback(async () => {
-    if (!modal.editingEvent) return
+    if (!modal.editingEvent || saving) return
+    setSaving(true)
     try {
       await removeEvent(modal.editingEvent.id)
       close()
     } catch (error) {
       throw new Error(`Failed to delete event: ${error}`)
+    } finally {
+      setSaving(false)
     }
-  }, [modal.editingEvent, removeEvent, close])
+  }, [modal.editingEvent, removeEvent, close, saving])
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault()
+      if (saving) return
       setSubmitted(true)
       const allDayMode = mode === 'allDay'
       const titleEmpty = !title.trim()
@@ -177,6 +208,7 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
         }
       }
 
+      setSaving(true)
       try {
         await persistEvent({
           id: modal.editingEvent?.id ?? generateId(),
@@ -192,9 +224,11 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
         close()
       } catch (error) {
         throw new Error(`Failed to save event: ${error}`)
+      } finally {
+        setSaving(false)
       }
     },
-    [title, startDateStr, endDateStr, mode, repeatDays, startMin, endMin, color, icon, description, modal.editingEvent, persistEvent, close]
+    [saving, title, startDateStr, endDateStr, mode, repeatDays, startMin, endMin, color, icon, description, modal.editingEvent, persistEvent, close]
   )
 
   useEffect(() => {
@@ -390,9 +424,11 @@ export function EventModal({ persistEvent, removeEvent }: EventModalProps) {
 
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
               {modal.editingEvent ? (
-                <Button variant="danger" leftIcon="trash" onClick={handleDelete}>削除</Button>
+                <Button variant="danger" leftIcon="trash" onClick={handleDelete} disabled={saving}>削除</Button>
               ) : <div />}
-              <Button type="submit" variant="primary" leftIcon="save" >保存</Button>
+              <Button type="submit" variant="primary" leftIcon="save" disabled={saving}>
+                {saving ? '保存中...' : '保存'}
+              </Button>
             </div>
           </form>
         </div>

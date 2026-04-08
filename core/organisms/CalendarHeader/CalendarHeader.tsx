@@ -15,7 +15,11 @@ const VIEW_MODES: { readonly value: ViewMode; readonly label: string }[] = [
   { value: 'agenda', label: '予定' },
 ]
 
-export function CalendarHeader() {
+interface CalendarHeaderProps {
+  readonly onViewModeChange?: (mode: ViewMode) => void
+}
+
+export function CalendarHeader({ onViewModeChange }: CalendarHeaderProps = {}) {
   const [viewMode, setViewMode] = useAtom(viewModeAtom)
   const [selectedDate, setSelectedDate] = useAtom(selectedDateAtom)
 
@@ -121,7 +125,7 @@ export function CalendarHeader() {
               key={mode.value}
               variant={viewMode === mode.value ? 'primary' : 'default'}
               size="small"
-              onClick={() => setViewMode(mode.value)}
+              onClick={() => { setViewMode(mode.value); onViewModeChange?.(mode.value) }}
               borderRadius="0"
             >
               {mode.label}

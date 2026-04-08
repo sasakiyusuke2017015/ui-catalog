@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 import { useAtomValue, useSetAtom } from 'jotai'
-import { activeSlotAtom, eventModalAtom, dragAtom, selectedDateAtom, anyDragActiveAtom, hoveredEventAtom } from '../../hooks/calendar/calendar'
+import { activeSlotAtom, eventModalAtom, dragAtom, selectedDateAtom, viewModeAtom, anyDragActiveAtom, hoveredEventAtom } from '../../hooks/calendar/calendar'
 import { formatHour, isToday } from '../../utils/calendar/dates'
 import { layoutEvents } from '../../utils/calendar/layoutEvents'
 import { EventCardContainer } from '../EventCardContainer/EventCardContainer'
@@ -32,6 +32,7 @@ export function DayColumn({
   const setActiveSlot = useSetAtom(activeSlotAtom)
   const setModal = useSetAtom(eventModalAtom)
   const setSelectedDate = useSetAtom(selectedDateAtom)
+  const viewMode = useAtomValue(viewModeAtom)
   const drag = useAtomValue(dragAtom)
   const anyDrag = useAtomValue(anyDragActiveAtom)
   const setAnyDrag = useSetAtom(anyDragActiveAtom)
@@ -82,13 +83,12 @@ export function DayColumn({
         if (!prev) return null
 
         if (prev.isDragging) {
-          // ドラッグ時: 開始スロットの上端からドラッグ先スロットの上端まで
-          // 例: 23時スロットから2スロット下にドラッグ → currentHour = 25
-          // → 選択範囲は 23:00 ～ 25:00（翌日1:00）
+          // ドラッグ時: 開始スロットの上端からドラッグ先スロットの下端まで
+          // currentHour はドラッグ先スロットの「上端」なので +1 して「下端」にする
           // 同一スロット内ドラッグの場合は最低1時間を確保
           const startH = Math.min(prev.startHour, prev.currentHour)
           const rawEndH = Math.max(prev.startHour, prev.currentHour)
-          const endH = rawEndH === startH ? startH + 1 : rawEndH
+          const endH = rawEndH + 1
 
           // 負の時刻（前日にまたぐ）の場合
           if (startH < 0) {
@@ -124,7 +124,10 @@ export function DayColumn({
       // 既にドラッグ中の場合は何もしない
       if (e.button !== 0 || drag || anyDrag) return
       e.preventDefault()
-      setSelectedDate(date)
+      // 週表示中はスロット操作で selectedDate を変えない（表示週がぶれるのを防止）
+      if (viewMode !== 'week') {
+        setSelectedDate(date)
+      }
       setActiveSlot({ date: dateKey, hour })
       // startClientY を保存して相対移動量で計算できるようにする
       setSlotDrag({ startHour: hour, currentHour: hour, startClientY: e.clientY, isDragging: false })
@@ -133,7 +136,7 @@ export function DayColumn({
       document.addEventListener('pointermove', handleDocPointerMove)
       document.addEventListener('pointerup', handleDocPointerUp)
     },
-    [drag, anyDrag, date, dateKey, setActiveSlot, setSelectedDate, setHovered, setAnyDrag, handleDocPointerMove, handleDocPointerUp]
+    [drag, anyDrag, date, dateKey, viewMode, setActiveSlot, setSelectedDate, setHovered, setAnyDrag, handleDocPointerMove, handleDocPointerUp]
   )
 
   const eventLeft = labelWidth > 0 ? `${labelWidth + 4}px` : '0'
@@ -240,7 +243,7 @@ export function DayColumn({
           if (slotDrag?.isDragging) {
             const minH = Math.min(slotDrag.startHour, slotDrag.currentHour)
             const maxH = Math.max(slotDrag.startHour, slotDrag.currentHour)
-            const rawEndH = maxH === minH ? minH + 1 : maxH
+            const rawEndH = maxH + 1
             const overlayStartHour = Math.max(0, minH)
             const overlayEndHour = rawEndH
 

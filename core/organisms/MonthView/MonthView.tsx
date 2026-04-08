@@ -81,6 +81,7 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
   const [dragEventId, setDragEventId] = useState<string | null>(null)
   const [dropDateStr, setDropDateStr] = useState<string | null>(null)
   const [dragInitialPointer, setDragInitialPointer] = useState<{ x: number; y: number } | null>(null)
+  const [dragMode, setDragMode] = useState<MonthDragMode>('move')
   const dragRef = useRef<MonthDragState | null>(null)
 
   // Compute dragEvent from dragEventId and events (no separate state needed)
@@ -99,6 +100,7 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
       if (dx < threshold && dy < threshold) return
       ;(dragRef.current as { started: boolean }).started = true
       setDragEventId(state.event.id)
+      setDragMode(state.mode)
       setDragInitialPointer({ x: e.clientX, y: e.clientY })
       setHovered(null)
       setAnyDrag(true)
@@ -134,6 +136,7 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
     setDragEventId(null)
     setDropDateStr(null)
     setDragInitialPointer(null)
+    setDragMode('move')
     setAnyDrag(false)
 
     // ドラッグ直後のクリック誤発火を防止
@@ -403,24 +406,35 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
                     const originDate = dragRef.current?.originDate
                     if (!originDate) return dropDateStr === date.toISOString()
 
-                    if (dragEvent.repeat) {
-                      // 繰り返しイベント: 曜日マッチ かつ シフト後の期間内
-                      if (!dragEvent.repeat.includes(date.getDay() as 0|1|2|3|4|5|6)) return false
-                      const dayDelta = differenceInCalendarDays(dropDate, originDate)
-                      const shiftedStart = startOfDay(new Date(dragEvent.startTime.getTime() + dayDelta * 86400000))
-                      const shiftedEnd = new Date(dragEvent.endTime.getTime() + dayDelta * 86400000)
-                      shiftedEnd.setHours(23, 59, 59, 999)
-                      const cellDate = startOfDay(date)
-                      return cellDate >= shiftedStart && cellDate <= shiftedEnd
-                    }
-
+                    const DAY_MS = 86400000
                     const dayDelta = differenceInCalendarDays(dropDate, originDate)
-                    const newStart = new Date(dragEvent.startTime.getTime() + dayDelta * 86400000)
-                    const newEnd = new Date(dragEvent.endTime.getTime() + dayDelta * 86400000)
-                    const cellStart = new Date(date)
-                    cellStart.setHours(0, 0, 0, 0)
+                    const cellStart = startOfDay(date)
                     const cellEnd = new Date(date)
                     cellEnd.setHours(23, 59, 59, 999)
+
+                    if (dragEvent.repeat) {
+                      if (!dragEvent.repeat.includes(date.getDay() as 0|1|2|3|4|5|6)) return false
+                      const shiftedStart = startOfDay(new Date(dragEvent.startTime.getTime() + dayDelta * DAY_MS))
+                      const shiftedEnd = new Date(dragEvent.endTime.getTime() + dayDelta * DAY_MS)
+                      shiftedEnd.setHours(23, 59, 59, 999)
+                      return cellStart >= shiftedStart && cellStart <= shiftedEnd
+                    }
+
+                    // リサイズ時: 動かす側のみシフト、もう一方は固定
+                    let newStart: Date
+                    let newEnd: Date
+                    if (dragMode === 'resize-left') {
+                      newStart = new Date(dragEvent.startTime.getTime() + dayDelta * DAY_MS)
+                      newEnd = dragEvent.endTime
+                    } else if (dragMode === 'resize-right') {
+                      newStart = dragEvent.startTime
+                      newEnd = new Date(dragEvent.endTime.getTime() + dayDelta * DAY_MS)
+                    } else {
+                      // move: 両方シフト
+                      newStart = new Date(dragEvent.startTime.getTime() + dayDelta * DAY_MS)
+                      newEnd = new Date(dragEvent.endTime.getTime() + dayDelta * DAY_MS)
+                    }
+
                     return cellStart <= newEnd && cellEnd >= newStart
                   })()}
                   dragEventId={dragEventId}
@@ -448,7 +462,7 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
         })}
       </div>
 
-      <MonthDragOverlay event={dragEvent} initialPointer={dragInitialPointer} />
+      <MonthDragOverlay event={dragEvent} initialPointer={dragInitialPointer} mode={dragMode} />
     </div>
   )
 }

@@ -1,10 +1,10 @@
-import { lazy, Suspense } from 'react'
-import { useAtomValue } from 'jotai'
+import { lazy, Suspense, useEffect } from 'react'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { viewModeAtom, hoveredEventAtom, anyDragActiveAtom } from '../../hooks/calendar/calendar'
 import { CalendarHeader } from '../../organisms/CalendarHeader/CalendarHeader'
 import { EventModal } from '../../organisms/EventModal/EventModal'
 import { EventPopover } from '../../organisms/EventPopover/EventPopover'
-import type { CalendarEvent } from '../../types/calendar'
+import type { CalendarEvent, ViewMode } from '../../types/calendar'
 import styles from './CalendarPage.module.scss'
 
 const Timeline = lazy(() =>
@@ -27,6 +27,10 @@ export interface CalendarPageProps {
   readonly persistEvent: (event: CalendarEvent) => Promise<void>
   /** イベント削除 */
   readonly removeEvent: (id: string) => Promise<void>
+  /** 初期ビューモード（URL パスから決定） */
+  readonly initialViewMode?: ViewMode
+  /** ビューモード変更時のコールバック（URL 同期等に使用） */
+  readonly onViewModeChange?: (mode: ViewMode) => void
   /** 追加の className */
   readonly className?: string
 }
@@ -89,16 +93,26 @@ export function CalendarPage({
   events,
   persistEvent,
   removeEvent,
+  initialViewMode,
+  onViewModeChange,
   className,
 }: CalendarPageProps) {
+  const setViewMode = useSetAtom(viewModeAtom)
   const hovered = useAtomValue(hoveredEventAtom)
   const anyDrag = useAtomValue(anyDragActiveAtom)
+
+  // 初期ビューモードを設定
+  useEffect(() => {
+    if (initialViewMode) {
+      setViewMode(initialViewMode)
+    }
+  }, [initialViewMode, setViewMode])
 
   const containerClasses = [styles.calendarPage, className].filter(Boolean).join(' ')
 
   return (
     <div data-component="CalendarPage" className={containerClasses}>
-      <CalendarHeader />
+      <CalendarHeader onViewModeChange={onViewModeChange} />
       <main className={styles.calendarPage__main}>
         <ViewSwitch
           events={events}
