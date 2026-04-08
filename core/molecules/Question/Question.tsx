@@ -4,6 +4,7 @@
  */
 import { FC } from 'react';
 
+import Text from '../../atoms/Text';
 import type { QuestionProps } from './types';
 import styles from './Question.module.scss';
 
@@ -79,7 +80,7 @@ const Question: FC<QuestionProps> = ({
                 className={`${styles.textInput} ${errorBorderClass}`}
                 style={{ borderRadius }}
               />
-              {error && <p className={styles.errorText}>{error}</p>}
+              {error && <Text as="p" variant="error" className={styles.errorText}>{error}</Text>}
             </div>
           </div>
         );
@@ -100,7 +101,7 @@ const Question: FC<QuestionProps> = ({
                 className={`${styles.textArea} ${error ? styles.textAreaError : ''}`}
                 style={{ borderRadius }}
               />
-              {error && <p className={styles.errorText}>{error}</p>}
+              {error && <Text as="p" variant="error" className={styles.errorText}>{error}</Text>}
             </div>
           </div>
         );
@@ -157,7 +158,7 @@ const Question: FC<QuestionProps> = ({
                 );
               })}
             </div>
-            {error && <p className={styles.errorTextBold}>{error}</p>}
+            {error && <Text as="p" variant="error" weight="bold" className={styles.errorTextBold}>{error}</Text>}
           </div>
         );
 
@@ -182,7 +183,7 @@ const Question: FC<QuestionProps> = ({
                   </option>
                 ))}
               </select>
-              {error && <p className={styles.errorText}>{error}</p>}
+              {error && <Text as="p" variant="error" className={styles.errorText}>{error}</Text>}
             </div>
           </div>
         );
@@ -240,7 +241,7 @@ const Question: FC<QuestionProps> = ({
                 );
               })}
             </div>
-            {error && <p className={styles.errorTextBold}>{error}</p>}
+            {error && <Text as="p" variant="error" weight="bold" className={styles.errorTextBold}>{error}</Text>}
           </div>
         );
       }
@@ -264,9 +265,9 @@ const Question: FC<QuestionProps> = ({
               {error ? (
                 <p className={styles.errorText}>{error}</p>
               ) : (
-                <p className={styles.hintText}>
+                <Text as="p" variant="muted" size="sm" className={styles.hintText}>
                   ハイフン（-）を含めて入力してください
-                </p>
+                </Text>
               )}
             </div>
           </div>
@@ -292,9 +293,9 @@ const Question: FC<QuestionProps> = ({
               {error ? (
                 <p className={styles.errorText}>{error}</p>
               ) : (
-                <p className={styles.hintText}>
+                <Text as="p" variant="muted" size="sm" className={styles.hintText}>
                   7桁の数字で入力してください（ハイフンあり・なし両方可）
-                </p>
+                </Text>
               )}
             </div>
           </div>
@@ -321,7 +322,7 @@ const Question: FC<QuestionProps> = ({
     >
       {/* 質問タイトル */}
       <div className={styles.titleWrap}>
-        <p className={styles.titleText}>
+        <Text as="p" weight="medium" className={styles.titleText}>
           {required ? (
             <span
               className={styles.requiredBadge}
@@ -342,15 +343,15 @@ const Question: FC<QuestionProps> = ({
             </span>
           )}
           {title}
-        </p>
+        </Text>
       </div>
 
       {/* 質問内容 */}
       <div className={styles.contentWrap}>
-        <p className={styles.contentText}>
+        <Text as="p" className={styles.contentText}>
           <i className={`bi bi-quora ${styles.contentIcon}`}></i>
           {content}
-        </p>
+        </Text>
       </div>
 
       {/* 入力欄（variantに応じて切り替え） */}

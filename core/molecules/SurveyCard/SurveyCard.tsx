@@ -4,6 +4,7 @@ import { FC } from 'react';
 import { Badge } from '../../atoms/Badge';
 import { Button } from '../../molecules/Button';
 import Icon from '../../atoms/Icon';
+import Text from '../../atoms/Text';
 import { type IconName } from '../../constants';
 
 import styles from './SurveyCard.module.scss';
@@ -67,18 +68,18 @@ const SurveyCard: FC<SurveyCardProps> = ({
           </div>
 
           {/* タイトル */}
-          <h5 className={styles.title}>
+          <Text as="h5" weight="semibold" className={styles.title}>
             <Icon
               name={'file'}
               size={20}
               className={styles.titleIcon}
             />
             <span className={styles.titleText}>{title}</span>
-          </h5>
+          </Text>
 
           {/* 掲載内容 */}
           {description && (
-            <p className={styles.description}>{description}</p>
+            <Text as="p" variant="muted" className={styles.description}>{description}</Text>
           )}
         </div>
 

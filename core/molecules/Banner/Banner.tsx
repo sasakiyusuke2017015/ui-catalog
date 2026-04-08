@@ -1,6 +1,7 @@
 // src/components/common/atoms/Banner.tsx
 import { type ReactNode, useEffect } from 'react';
 import Icon from '../../atoms/Icon';
+import Text from '../../atoms/Text';
 import type { IconName } from '../../constants';
 import { debugRender } from '../../utils/debug';
 import styles from './Banner.module.scss';
@@ -82,9 +83,9 @@ export default function Banner({
         )}
         <div className={styles.banner__body}>
           {title && (
-            <p className={styles.banner__title}>
+            <Text as="p" weight="semibold" className={styles.banner__title}>
               {title}
-            </p>
+            </Text>
           )}
           <div className={styles.banner__message}>
             {message}
