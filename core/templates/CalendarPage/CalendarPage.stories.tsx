@@ -11,7 +11,9 @@ const meta: Meta<typeof CalendarPage> = {
   decorators: [
     (Story) => (
       <Provider>
-        <Story />
+        <div style={{ height: '100vh' }}>
+          <Story />
+        </div>
       </Provider>
     ),
   ],

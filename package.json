@@ -37,6 +37,7 @@
     "./utils": "./core/utils/index.ts",
     "./styles": "./core/styles/index.ts",
     "./styles/tokens": "./core/styles/tokens.css",
+    "./styles/globals.css": "./core/styles/globals.css",
     "./infra": "./infra/index.ts",
     "./infra/devtools": "./infra/devtools/index.ts",
     "./infra/version": "./infra/version/index.ts",
