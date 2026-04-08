@@ -1,6 +1,7 @@
 import { FC, ReactNode, useEffect } from 'react';
 
 import { IconButton } from '../../molecules/IconButton';
+import Text from '../../atoms/Text';
 import { useOperationLog } from '../../../infra/devtools';
 import styles from './Modal.module.scss';
 
@@ -63,7 +64,7 @@ const Modal: FC<ModalProps> = ({
         style={{ maxWidth, borderRadius }}
       >
         <div className={styles.header}>
-          <h3 className={styles.title}>{title}</h3>
+          <Text as="h3" size="lg" weight="bold" className={styles.title}>{title}</Text>
           <IconButton
             icon="x"
             size={20}

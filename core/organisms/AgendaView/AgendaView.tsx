@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { Badge } from '../../atoms/Badge'
 import { useAtomValue, useSetAtom } from 'jotai'
 import {
   format,
@@ -94,7 +95,7 @@ export function AgendaView({ events }: AgendaViewProps) {
                 </span>
               </div>
               {group.isToday && (
-                <span className={styles.agendaView__todayBadge}>今日</span>
+                <Badge variant="info" size="small">今日</Badge>
               )}
             </div>
 
