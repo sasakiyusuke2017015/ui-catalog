@@ -2,15 +2,13 @@
 // Card Component Styles
 // =============================================================================
 
-@use '../../tokens' as *;
-
 // -----------------------------------------------------------------------------
 // Base Card
 // -----------------------------------------------------------------------------
 .card {
-  background-color: $color-white;
-  box-shadow: $shadow-default;
-  border-radius: $border-radius-lg;
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-default);
+  border-radius: var(--border-radius-lg);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -20,10 +18,10 @@
 // Padding
 // -----------------------------------------------------------------------------
 .padding {
-  padding: $spacing-3;
+  padding: var(--spacing-3);
 
   @media (min-width: 640px) {
-    padding: $spacing-6;
+    padding: var(--spacing-6);
   }
 }
 
@@ -33,21 +31,21 @@
 .clickable {
   cursor: pointer;
   transition-property: box-shadow, transform;
-  transition-duration: $transition-duration-150;
-  transition-timing-function: $transition-ease-in-out;
+  transition-duration: var(--transition-duration-150);
+  transition-timing-function: var(--transition-ease-in-out);
 
   &:hover {
-    box-shadow: $shadow-md;
+    box-shadow: var(--shadow-md);
   }
 
   &:focus-visible {
     outline: none;
-    box-shadow: $shadow-md, 0 0 0 3px rgba($color-primary-500, 0.3);
+    box-shadow: var(--shadow-md), 0 0 0 3px color-mix(in srgb, var(--color-primary-500) 30%, transparent);
   }
 
   &:active {
     transform: scale(0.98);
-    box-shadow: $shadow-default;
+    box-shadow: var(--shadow-default);
   }
 
   @media (hover: none) {
@@ -61,16 +59,16 @@
 // Sub-components
 // -----------------------------------------------------------------------------
 .cardHeader {
-  padding: $spacing-3 $spacing-4;
+  padding: var(--spacing-3) var(--spacing-4);
 }
 
 .cardContent {
-  padding: $spacing-3 $spacing-4;
+  padding: var(--spacing-3) var(--spacing-4);
   flex: 1;
 }
 
 .cardFooter {
-  padding: $spacing-3 $spacing-4;
+  padding: var(--spacing-3) var(--spacing-4);
   border-top: 1px solid rgba(0, 0, 0, 0.06);
 }
 
@@ -78,17 +76,17 @@
 // SectionCard
 // -----------------------------------------------------------------------------
 .sectionHeader {
-  padding: $spacing-4 $spacing-6;
-  border-bottom: 2px solid $color-gray-200;
+  padding: var(--spacing-4) var(--spacing-6);
+  border-bottom: 2px solid var(--color-gray-200);
 }
 
 .sectionTitle {
   font-size: 1.125rem; // text-lg
   font-weight: 700; // font-bold
-  color: $color-gray-900;
+  color: var(--color-gray-900);
   margin: 0;
 }
 
 .sectionContent {
-  padding: $spacing-6;
+  padding: var(--spacing-6);
 }

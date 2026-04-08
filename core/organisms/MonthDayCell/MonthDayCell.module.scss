@@ -1,10 +1,8 @@
-@use '../../tokens' as *;
-
 .cell {
   position: relative;
   min-height: 80px;
   padding: 4px;
-  border-right: 1px solid rgba($color-border-secondary, 0.5);
+  border-right: 1px solid color-mix(in srgb, var(--color-border-secondary) 50%, transparent);
   cursor: pointer;
   transition: background-color 200ms ease-in-out, box-shadow 200ms ease-in-out;
 }
@@ -20,22 +18,22 @@
 }
 
 .today {
-  color: $color-primary-500;
+  color: var(--color-primary-500);
   font-weight: 700;
 }
 
 .sunday {
-  color: $color-danger-500;
+  color: var(--color-danger-500);
 }
 
 .saturday {
-  color: $color-info-500;
+  color: var(--color-info-500);
 }
 
 .timedToggle {
   font-size: 10px;
   font-weight: 500;
-  color: $color-text-secondary;
+  color: var(--color-text-secondary);
   cursor: pointer;
   padding: 1px 4px;
   border-radius: 4px;
@@ -43,8 +41,8 @@
   user-select: none;
 
   &:hover {
-    background-color: rgba($color-gray-200, 0.5);
-    color: $color-text-primary;
+    background-color: color-mix(in srgb, var(--color-gray-200) 50%, transparent);
+    color: var(--color-text-primary);
   }
 }
 

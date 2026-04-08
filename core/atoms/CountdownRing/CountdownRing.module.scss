@@ -2,8 +2,6 @@
 // CountdownRing Component Styles
 // =============================================================================
 
-@use '../../tokens' as *;
-
 // -----------------------------------------------------------------------------
 // Wrapper
 // -----------------------------------------------------------------------------
@@ -27,7 +25,7 @@
 .number {
   position: absolute;
   color: white;
-  font-size: $font-size-sm;
+  font-size: var(--font-size-sm);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     'Liberation Mono', 'Courier New', monospace;
 }

@@ -18,6 +18,7 @@ export const storybookConfig: Partial<StorybookConfig> = {
     '@storybook/addon-links',
     '@storybook/addon-docs',
     '@storybook/addon-a11y',
+    '@storybook/addon-designs',
   ],
   docs: {},
   typescript: {

@@ -1,5 +1,3 @@
-@use '../../tokens' as *;
-
 .container {
   display: flex;
   flex-direction: column;
@@ -54,9 +52,9 @@
   position: relative;
   border: 0;
   border-right: 1px solid rgba(255, 255, 255, 0.4);
-  border-bottom: 2px solid $color-gray-300;
-  padding: $spacing-3;
-  font-weight: $font-weight-semibold;
+  border-bottom: 2px solid var(--color-gray-300);
+  padding: var(--spacing-3);
+  font-weight: var(--font-weight-semibold);
   letter-spacing: 0.025em;
 
   &:last-child {
@@ -84,8 +82,8 @@
   position: relative;
   border: 0;
   border-right: 1px solid rgba(255, 255, 255, 0.4);
-  border-bottom: 2px solid $color-gray-300;
-  padding: $spacing-3;
+  border-bottom: 2px solid var(--color-gray-300);
+  padding: var(--spacing-3);
   width: 3%;
 }
 
@@ -103,7 +101,7 @@
   height: 100%;
   width: 0.75rem;
   cursor: col-resize;
-  transition: background-color $transition-duration-150;
+  transition: background-color var(--transition-duration-150);
   transform: translateX(55%);
 
   &:hover {
@@ -127,7 +125,7 @@
 .cell {
   cursor: pointer;
   overflow: hidden;
-  padding: $spacing-3;
+  padding: var(--spacing-3);
   vertical-align: top;
 
   &--hoverHighlight {
@@ -170,26 +168,26 @@
 }
 
 .tdCheckbox {
-  padding: $spacing-3;
+  padding: var(--spacing-3);
   width: 3%;
 }
 
 // renderCellContent styles
 .nullishText {
-  color: $color-gray-400;
+  color: var(--color-gray-400);
 }
 
 .linkButton {
   display: inline-flex;
   align-items: center;
-  border-radius: $border-radius-md;
+  border-radius: var(--border-radius-md);
   border: 1px solid #bfdbfe;
   background-color: #eff6ff;
-  padding: $spacing-1 $spacing-3;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
+  padding: var(--spacing-1) var(--spacing-3);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
   color: #2563eb;
-  transition: color $transition-duration-150, background-color $transition-duration-150;
+  transition: color var(--transition-duration-150), background-color var(--transition-duration-150);
 
   &:hover {
     background-color: #dbeafe;
@@ -203,7 +201,7 @@
 }
 
 .linkIcon {
-  margin-right: $spacing-1;
+  margin-right: var(--spacing-1);
 }
 
 .internalLinkFocused {

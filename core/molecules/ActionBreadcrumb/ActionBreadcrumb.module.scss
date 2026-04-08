@@ -1,37 +1,35 @@
-@use '../../tokens' as *;
-
 .actionBreadcrumb {
   display: flex;
   align-items: center;
-  gap: $spacing-1;
-  font-size: $font-size-sm;
+  gap: var(--spacing-1);
+  font-size: var(--font-size-sm);
 
   &__item {
     display: flex;
     align-items: center;
-    gap: $spacing-1;
+    gap: var(--spacing-1);
   }
 
   &__separator {
-    color: var(--color-text-muted, $color-gray-400);
+    color: var(--color-text-muted, var(--color-gray-400));
   }
 
   &__button {
     background: transparent;
     border: none;
     padding: 0;
-    color: var(--color-text-muted, $color-gray-500);
+    color: var(--color-text-muted, var(--color-gray-500));
     cursor: pointer;
-    border-radius: $border-radius-sm;
-    transition: color $transition-duration-150 $transition-ease-in-out;
+    border-radius: var(--border-radius-sm);
+    transition: color var(--transition-duration-150) var(--transition-ease-in-out);
 
     &:hover {
-      color: var(--color-accent, $color-primary-500);
+      color: var(--color-accent, var(--color-primary-500));
     }
 
     &:focus-visible {
       outline: none;
-      box-shadow: 0 0 0 2px rgba($color-primary-500, 0.5);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary-500) 50%, transparent);
     }
 
     &:active {
@@ -40,7 +38,7 @@
   }
 
   &__current {
-    color: var(--color-text, $color-gray-900);
-    font-weight: $font-weight-medium;
+    color: var(--color-text, var(--color-gray-900));
+    font-weight: var(--font-weight-medium);
   }
 }

@@ -1,29 +1,27 @@
-@use '../../tokens' as *;
-
 .todayHeader {
-  background-color: $color-today-bg;
+  background-color: var(--color-today-bg);
 }
 
 .sundayHeader {
-  background-color: $color-sunday-bg;
+  background-color: var(--color-sunday-bg);
 }
 
 .saturdayHeader {
-  background-color: $color-saturday-bg;
+  background-color: var(--color-saturday-bg);
 }
 
 .sundayCol {
-  background-color: $color-sunday-bg;
+  background-color: var(--color-sunday-bg);
 }
 
 .saturdayCol {
-  background-color: $color-saturday-bg;
+  background-color: var(--color-saturday-bg);
 }
 
 .weekdayEvenHeader {
-  background-color: $color-weekday-even-bg;
+  background-color: var(--color-weekday-even-bg);
 }
 
 .weekdayEvenCol {
-  background-color: $color-weekday-even-bg;
+  background-color: var(--color-weekday-even-bg);
 }

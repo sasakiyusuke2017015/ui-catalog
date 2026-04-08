@@ -2,13 +2,11 @@
 // MathView Component Styles
 // =============================================================================
 
-@use '../../tokens' as *;
-
 // -----------------------------------------------------------------------------
 // Fallback (no KaTeX) - plain text rendering
 // -----------------------------------------------------------------------------
 .fallback {
-  font-size: $font-size-base;
+  font-size: var(--font-size-base);
 }
 
 .fallbackInline {
@@ -24,7 +22,7 @@
 // -----------------------------------------------------------------------------
 .katexInline {
   display: inline;
-  font-size: $font-size-base;
+  font-size: var(--font-size-base);
 }
 
 // -----------------------------------------------------------------------------
@@ -32,7 +30,7 @@
 // -----------------------------------------------------------------------------
 .katexBlock {
   text-align: center;
-  margin: $spacing-1 0;
+  margin: var(--spacing-1) 0;
   overflow: auto;
 }
 
@@ -40,6 +38,6 @@
 // Error fallback
 // -----------------------------------------------------------------------------
 .errorFallback {
-  font-size: $font-size-base;
+  font-size: var(--font-size-base);
   font-style: italic;
 }

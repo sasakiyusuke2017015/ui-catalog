@@ -1,8 +1,6 @@
-@use '../../tokens' as *;
-
 .wrapper {
   border: 1px solid var(--color-border);
-  border-radius: $border-radius-default;
+  border-radius: var(--border-radius-default);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -17,16 +15,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: $spacing-1 $spacing-2;
+  padding: var(--spacing-1) var(--spacing-2);
   background-color: var(--color-bg);
   border-bottom: 1px solid var(--color-border);
-  gap: $spacing-2;
+  gap: var(--spacing-2);
 }
 
 .toolbarLeft {
   display: flex;
   align-items: center;
-  gap: $spacing-2;
+  gap: var(--spacing-2);
   flex: 1;
   min-width: 0;
 }
@@ -34,7 +32,7 @@
 .toolbarRight {
   display: flex;
   align-items: center;
-  gap: $spacing-1;
+  gap: var(--spacing-1);
   flex-shrink: 0;
 }
 
@@ -43,7 +41,7 @@
   padding: 2px 8px;
   border: 1px solid var(--color-border);
   border-radius: 4px;
-  font-size: $font-size-xs;
+  font-size: var(--font-size-xs);
   background-color: var(--color-bg-surface);
   color: var(--color-text);
   outline: none;
@@ -58,7 +56,7 @@
 }
 
 .rowCount {
-  font-size: $font-size-xs;
+  font-size: var(--font-size-xs);
   color: var(--color-text-muted);
   white-space: nowrap;
 }
@@ -78,7 +76,7 @@
   padding: 2px 4px;
   border-radius: 3px;
   color: var(--color-text-muted);
-  transition: background-color $transition-duration-150 $transition-ease-in-out;
+  transition: background-color var(--transition-duration-150) var(--transition-ease-in-out);
 
   &:hover {
     background-color: var(--color-hover-bg);
@@ -96,17 +94,17 @@
   overflow-y: auto;
   background-color: var(--color-bg-surface);
   border: 1px solid var(--color-border);
-  border-radius: $border-radius-default;
+  border-radius: var(--border-radius-default);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: $spacing-1 0;
+  padding: var(--spacing-1) 0;
 }
 
 .pickerItem {
   display: flex;
   align-items: center;
-  gap: $spacing-2;
-  padding: $spacing-1 $spacing-2;
-  font-size: $font-size-xs;
+  gap: var(--spacing-2);
+  padding: var(--spacing-1) var(--spacing-2);
+  font-size: var(--font-size-xs);
   color: var(--color-text);
   cursor: pointer;
 
@@ -133,15 +131,15 @@
 .table {
   width: 100%;
   border-collapse: collapse;
-  font-size: $font-size-xs;
+  font-size: var(--font-size-xs);
 }
 
 .th {
   position: sticky;
   top: 0;
-  padding: $spacing-1 $spacing-2;
+  padding: var(--spacing-1) var(--spacing-2);
   text-align: left;
-  font-weight: $font-weight-medium;
+  font-weight: var(--font-weight-medium);
   color: var(--color-text-muted);
   background-color: var(--color-bg);
   border-bottom: 1px solid var(--color-border);
@@ -160,7 +158,7 @@
 }
 
 .sortIcon {
-  margin-left: $spacing-1;
+  margin-left: var(--spacing-1);
   font-size: 8px;
   color: var(--color-accent);
 }
@@ -180,7 +178,7 @@
 }
 
 .td {
-  padding: $spacing-1 $spacing-2;
+  padding: var(--spacing-1) var(--spacing-2);
   border-bottom: 1px solid var(--color-border-light, var(--color-border));
   color: var(--color-text);
   white-space: nowrap;
@@ -193,7 +191,7 @@
   padding: 24px;
   text-align: center;
   color: var(--color-text-muted);
-  font-size: $font-size-sm;
+  font-size: var(--font-size-sm);
 }
 
 // -----------------------------------------------------------------------------
@@ -203,8 +201,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: $spacing-2;
-  padding: $spacing-1 $spacing-2;
+  gap: var(--spacing-2);
+  padding: var(--spacing-1) var(--spacing-2);
   background-color: var(--color-bg);
   border-top: 1px solid var(--color-border);
 }
@@ -214,7 +212,7 @@
   border: 1px solid var(--color-border);
   border-radius: 4px;
   padding: 2px 8px;
-  font-size: $font-size-xs;
+  font-size: var(--font-size-xs);
   cursor: pointer;
   color: var(--color-text);
 
@@ -229,7 +227,7 @@
 }
 
 .pageInfo {
-  font-size: $font-size-xs;
+  font-size: var(--font-size-xs);
   color: var(--color-text-muted);
 }
 
@@ -237,7 +235,7 @@
   padding: 2px 4px;
   border: 1px solid var(--color-border);
   border-radius: 4px;
-  font-size: $font-size-xs;
+  font-size: var(--font-size-xs);
   background-color: var(--color-bg-surface);
   color: var(--color-text);
   cursor: pointer;

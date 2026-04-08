@@ -1,12 +1,10 @@
-@use '../../tokens' as *;
-
 .toggleableSection {
   // デフォルトマージン
   &--defaultMargin {
-    margin-bottom: $spacing-4;
+    margin-bottom: var(--spacing-4);
 
     @media (min-width: 640px) {
-      margin-bottom: $spacing-8;
+      margin-bottom: var(--spacing-8);
     }
   }
 
@@ -14,15 +12,15 @@
     display: flex;
     align-items: center;
     width: 100%;
-    padding: $spacing-2 $spacing-3;
+    padding: var(--spacing-2) var(--spacing-3);
     border-left: 4px solid;
     background-color: rgba(255, 255, 255, 0.8);
-    font-size: $font-size-xl;
-    font-weight: $font-weight-bold;
-    color: $color-gray-800;
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-gray-800);
     text-align: left;
     cursor: pointer;
-    transition: background-color $transition-duration-150;
+    transition: background-color var(--transition-duration-150);
 
     &:hover {
       background-color: rgba(191, 219, 254, 0.8); // blue-100/80
@@ -30,7 +28,7 @@
   }
 
   &__icon {
-    margin-right: $spacing-2;
+    margin-right: var(--spacing-2);
     flex-shrink: 0;
   }
 
@@ -57,12 +55,12 @@
 
     // デフォルトパディング
     &--defaultPadding {
-      padding: $spacing-2;
-      margin: 0 $spacing-2;
+      padding: var(--spacing-2);
+      margin: 0 var(--spacing-2);
 
       @media (min-width: 640px) {
-        padding: $spacing-4;
-        margin: 0 $spacing-4;
+        padding: var(--spacing-4);
+        margin: 0 var(--spacing-4);
       }
     }
 

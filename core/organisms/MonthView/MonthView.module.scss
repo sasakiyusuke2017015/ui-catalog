@@ -1,7 +1,5 @@
-@use '../../tokens' as *;
-
 .todayCell {
-  background-color: $color-today-bg;
+  background-color: var(--color-today-bg);
 }
 
 .dropTarget {
@@ -9,7 +7,7 @@
 }
 
 .weekRowEven {
-  background-color: $color-weekday-even-bg;
+  background-color: var(--color-weekday-even-bg);
 }
 
 .grid {
@@ -25,11 +23,11 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba($color-gray-400, 0.3);
+    background: color-mix(in srgb, var(--color-gray-400) 30%, transparent);
     border-radius: 3px;
 
     &:hover {
-      background: rgba($color-gray-400, 0.5);
+      background: color-mix(in srgb, var(--color-gray-400) 50%, transparent);
     }
   }
 }

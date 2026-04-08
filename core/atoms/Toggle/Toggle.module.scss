@@ -2,15 +2,13 @@
 // Toggle Component Styles
 // =============================================================================
 
-@use '../../tokens' as *;
-
 // -----------------------------------------------------------------------------
 // Container with label
 // -----------------------------------------------------------------------------
 .container {
   display: flex;
   align-items: center;
-  gap: $spacing-3;
+  gap: var(--spacing-3);
 }
 
 // -----------------------------------------------------------------------------
@@ -22,12 +20,12 @@
   align-items: center;
   border-radius: 9999px;
   transition-property: background-color, box-shadow;
-  transition-duration: $transition-duration-200;
-  transition-timing-function: $transition-ease-in-out;
+  transition-duration: var(--transition-duration-200);
+  transition-timing-function: var(--transition-ease-in-out);
   cursor: pointer;
 
   &:focus-within {
-    box-shadow: 0 0 0 2px $color-white, 0 0 0 4px;
+    box-shadow: 0 0 0 2px var(--color-white), 0 0 0 4px;
   }
 }
 
@@ -51,13 +49,13 @@
 // -----------------------------------------------------------------------------
 .circle {
   display: inline-block;
-  background-color: $color-white;
-  box-shadow: $shadow-lg;
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-lg);
   border-radius: 9999px;
   transform: translateX(2px);
   transition-property: transform;
-  transition-duration: $transition-duration-200;
-  transition-timing-function: $transition-ease-in-out;
+  transition-duration: var(--transition-duration-200);
+  transition-timing-function: var(--transition-ease-in-out);
 }
 
 // -----------------------------------------------------------------------------
@@ -116,7 +114,7 @@
   }
 
   &:focus-within {
-    box-shadow: 0 0 0 2px $color-white, 0 0 0 4px #3b82f6;
+    box-shadow: 0 0 0 2px var(--color-white), 0 0 0 4px #3b82f6;
   }
 }
 
@@ -128,7 +126,7 @@
   }
 
   &:focus-within {
-    box-shadow: 0 0 0 2px $color-white, 0 0 0 4px #14b8a6;
+    box-shadow: 0 0 0 2px var(--color-white), 0 0 0 4px #14b8a6;
   }
 }
 
@@ -156,25 +154,25 @@
 // -----------------------------------------------------------------------------
 .label {
   user-select: none;
-  color: $color-gray-700;
+  color: var(--color-gray-700);
   cursor: pointer;
 }
 
 .labelSmall {
-  font-size: $font-size-xs;
+  font-size: var(--font-size-xs);
 }
 
 .labelMedium {
-  font-size: $font-size-sm;
+  font-size: var(--font-size-sm);
 }
 
 .labelLarge {
-  font-size: $font-size-base;
+  font-size: var(--font-size-base);
 }
 
 .labelDisabled {
   cursor: not-allowed;
-  color: $color-gray-500;
+  color: var(--color-gray-500);
 }
 
 // -----------------------------------------------------------------------------

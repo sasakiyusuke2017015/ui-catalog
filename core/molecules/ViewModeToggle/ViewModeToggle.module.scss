@@ -1,24 +1,22 @@
-@use '../../tokens' as *;
-
 // Container — positions the slider
 .container {
   position: relative;
   display: flex;
   align-items: center;
-  gap: $spacing-0-5;
-  padding: $spacing-0-5;
-  background-color: $color-gray-200;
-  border-radius: $border-radius-lg;
+  gap: var(--spacing-0-5);
+  padding: var(--spacing-0-5);
+  background-color: var(--color-gray-200);
+  border-radius: var(--border-radius-lg);
 }
 
 // Sliding background pill
 .slider {
   position: absolute;
-  top: $spacing-0-5;
-  bottom: $spacing-0-5;
-  border-radius: $border-radius-md;
-  background-color: $color-white;
-  box-shadow: $shadow-sm;
+  top: var(--spacing-0-5);
+  bottom: var(--spacing-0-5);
+  border-radius: var(--border-radius-md);
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-sm);
   transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 0;
   pointer-events: none;
@@ -32,18 +30,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: $spacing-1;
-  padding: $spacing-1 $spacing-2;
+  gap: var(--spacing-1);
+  padding: var(--spacing-1) var(--spacing-2);
   border: none;
-  border-radius: $border-radius-md;
+  border-radius: var(--border-radius-md);
   background: transparent;
-  color: $color-gray-500;
-  font-size: $font-size-sm;
+  color: var(--color-gray-500);
+  font-size: var(--font-size-sm);
   cursor: pointer;
   transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover:not(.active) {
-    color: $color-gray-700;
+    color: var(--color-gray-700);
   }
 
   &:active {
@@ -51,13 +49,13 @@
   }
 
   &:focus-visible {
-    outline: 2px solid $color-primary-500;
+    outline: 2px solid var(--color-primary-500);
     outline-offset: 2px;
   }
 }
 
 .active {
-  color: $color-gray-800;
+  color: var(--color-gray-800);
 }
 
 // Icon
@@ -75,18 +73,18 @@
 
 // Sizes
 .small {
-  padding: $spacing-0-5 $spacing-1-5;
-  font-size: $font-size-xs;
+  padding: var(--spacing-0-5) var(--spacing-1-5);
+  font-size: var(--font-size-xs);
 }
 
 .medium {
-  padding: $spacing-1 $spacing-2;
-  font-size: $font-size-sm;
+  padding: var(--spacing-1) var(--spacing-2);
+  font-size: var(--font-size-sm);
 }
 
 .large {
-  padding: $spacing-1-5 $spacing-3;
-  font-size: $font-size-base;
+  padding: var(--spacing-1-5) var(--spacing-3);
+  font-size: var(--font-size-base);
 }
 
 // Variant: default (already styled above)
@@ -95,11 +93,11 @@
 // Variant: primary
 .primary {
   .slider {
-    background-color: $color-primary-500;
-    box-shadow: 0 1px 3px rgba($color-primary-500, 0.3);
+    background-color: var(--color-primary-500);
+    box-shadow: 0 1px 3px color-mix(in srgb, var(--color-primary-500) 30%, transparent);
   }
   .active {
-    color: $color-white;
+    color: var(--color-white);
   }
 }
 
@@ -110,7 +108,7 @@
     box-shadow: 0 1px 3px rgba(#14b8a6, 0.3);
   }
   .active {
-    color: $color-white;
+    color: var(--color-white);
   }
 }
 

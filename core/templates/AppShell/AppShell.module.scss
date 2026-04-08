@@ -1,11 +1,9 @@
-@use '../../tokens' as *;
-
 .appShell {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: var(--color-bg, $color-white);
-  color: var(--color-text, $color-gray-900);
+  background-color: var(--color-bg, var(--color-white));
+  color: var(--color-text, var(--color-gray-900));
 
   &__body {
     display: flex;

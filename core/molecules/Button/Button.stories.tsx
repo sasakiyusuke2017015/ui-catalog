@@ -12,6 +12,10 @@ export default {
   component: Button, // ドキュメントやアドオンで参照されるコンポーネント本体
   tags: ['autodocs'],
   parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/ZTvv6vzLXOxlP64TLs6YHB/%E7%84%A1%E9%A1%8C?t=uGI62GQBWdy1FqLU-0',
+    },
     // 全ストーリー共通のレイアウト設定
     layout: 'centered',
     // 背景色のプリセット

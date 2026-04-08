@@ -1,9 +1,7 @@
-@use '../../tokens' as *;
-
 .root {
   display: flex;
   flex-direction: column;
-  gap: $spacing-4;
+  gap: var(--spacing-4);
 
   @media (min-width: 768px) {
     flex-direction: row;
@@ -15,58 +13,58 @@
 }
 
 .listBox {
-  border-radius: $border-radius-xl;
-  border: 2px solid $color-gray-200;
-  background-color: $color-gray-50;
-  padding: $spacing-4;
+  border-radius: var(--border-radius-xl);
+  border: 2px solid var(--color-gray-200);
+  background-color: var(--color-gray-50);
+  padding: var(--spacing-4);
 }
 
 .header {
   display: flex;
   align-items: center;
-  gap: $spacing-2;
-  margin-bottom: $spacing-3;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-3);
 }
 
 .headerLabel {
-  font-weight: $font-weight-semibold;
-  color: $color-gray-800;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-800);
 }
 
 .headerCount {
-  font-size: $font-size-sm;
-  color: $color-gray-500;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-500);
 }
 
 .selectAll {
-  margin-bottom: $spacing-2;
+  margin-bottom: var(--spacing-2);
 }
 
 .itemList {
   display: flex;
   flex-direction: column;
-  gap: $spacing-2;
+  gap: var(--spacing-2);
 }
 
 .emptyMessage {
   text-align: center;
-  color: $color-gray-400;
-  padding: $spacing-8 0;
+  color: var(--color-gray-400);
+  padding: var(--spacing-8) 0;
 }
 
 .item {
   display: flex;
   align-items: center;
-  gap: $spacing-3;
-  padding: $spacing-3;
-  border-radius: $border-radius-lg;
-  border: 1px solid $color-gray-200;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--color-gray-200);
   background-color: #fff;
-  transition: border-color $transition-duration-150, box-shadow $transition-duration-150;
+  transition: border-color var(--transition-duration-150), box-shadow var(--transition-duration-150);
 
   &--disabled {
     cursor: not-allowed;
-    background-color: $color-gray-50;
+    background-color: var(--color-gray-50);
   }
 
   &--enabled {
@@ -90,16 +88,16 @@
 }
 
 .itemLabel {
-  font-weight: $font-weight-medium;
-  color: $color-gray-800;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-800);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .itemSubLabel {
-  font-size: $font-size-xs;
-  color: $color-gray-500;
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-500);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -107,28 +105,28 @@
 
 .disabledReason {
   flex-shrink: 0;
-  font-size: $font-size-xs;
-  color: $color-gray-400;
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-400);
 }
 
 .buttonRow {
-  margin-top: $spacing-2;
+  margin-top: var(--spacing-2);
   display: flex;
   justify-content: center;
 }
 
 .moveButton {
-  padding: $spacing-2 $spacing-4;
-  border-radius: $border-radius-lg;
-  font-size: $font-size-sm;
-  font-weight: $font-weight-medium;
-  transition: background-color $transition-duration-150, color $transition-duration-150;
+  padding: var(--spacing-2) var(--spacing-4);
+  border-radius: var(--border-radius-lg);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  transition: background-color var(--transition-duration-150), color var(--transition-duration-150);
   border: none;
   cursor: pointer;
 
   &--disabled {
-    background-color: $color-gray-100;
-    color: $color-gray-400;
+    background-color: var(--color-gray-100);
+    color: var(--color-gray-400);
     cursor: not-allowed;
   }
 

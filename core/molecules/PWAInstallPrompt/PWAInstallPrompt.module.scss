@@ -1,31 +1,29 @@
-@use '../../tokens' as *;
-
 .wrapper {
   position: fixed;
-  bottom: $spacing-4;
-  right: $spacing-4;
+  bottom: var(--spacing-4);
+  right: var(--spacing-4);
   z-index: 50;
-  animation: fadeIn $transition-duration-300 ease-out;
+  animation: fadeIn var(--transition-duration-300) ease-out;
 }
 
 .card {
-  border-radius: $border-radius-lg;
+  border-radius: var(--border-radius-lg);
   background-color: #fff;
-  padding: $spacing-4;
+  padding: var(--spacing-4);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  ring: 1px solid $color-gray-200;
-  outline: 1px solid $color-gray-200;
+  ring: 1px solid var(--color-gray-200);
+  outline: 1px solid var(--color-gray-200);
 }
 
 .cardDark {
-  background-color: $color-gray-800;
-  outline-color: $color-gray-700;
+  background-color: var(--color-gray-800);
+  outline-color: var(--color-gray-700);
 }
 
 .contentRow {
   display: flex;
   align-items: flex-start;
-  gap: $spacing-3;
+  gap: var(--spacing-3);
 }
 
 .contentBody {
@@ -33,9 +31,9 @@
 }
 
 .title {
-  font-size: $font-size-sm;
-  font-weight: $font-weight-semibold;
-  color: $color-gray-900;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-900);
 }
 
 .titleDark {
@@ -43,31 +41,31 @@
 }
 
 .subtitle {
-  margin-top: $spacing-1;
-  font-size: $font-size-xs;
-  color: $color-gray-600;
+  margin-top: var(--spacing-1);
+  font-size: var(--font-size-xs);
+  color: var(--color-gray-600);
 }
 
 .subtitleDark {
-  color: $color-gray-300;
+  color: var(--color-gray-300);
 }
 
 .closeButton {
   background: none;
   border: none;
   padding: 0;
-  color: $color-gray-400;
+  color: var(--color-gray-400);
   cursor: pointer;
-  transition: color $transition-duration-150;
+  transition: color var(--transition-duration-150);
 
   &:hover {
-    color: $color-gray-600;
+    color: var(--color-gray-600);
   }
 }
 
 .closeButtonDark {
   &:hover {
-    color: $color-gray-200;
+    color: var(--color-gray-200);
   }
 }
 
@@ -77,9 +75,9 @@
 }
 
 .actions {
-  margin-top: $spacing-3;
+  margin-top: var(--spacing-3);
   display: flex;
-  gap: $spacing-2;
+  gap: var(--spacing-2);
 }
 
 @keyframes fadeIn {
