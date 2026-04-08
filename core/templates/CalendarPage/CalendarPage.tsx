@@ -5,7 +5,6 @@ import { CalendarHeader } from '../../organisms/CalendarHeader/CalendarHeader'
 import { EventModal } from '../../organisms/EventModal/EventModal'
 import { EventPopover } from '../../organisms/EventPopover/EventPopover'
 import type { CalendarEvent } from '../../types/calendar'
-
 import styles from './CalendarPage.module.scss'
 
 const Timeline = lazy(() =>
