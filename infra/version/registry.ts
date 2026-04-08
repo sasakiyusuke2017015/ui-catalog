@@ -108,7 +108,6 @@ export const VERSION_REGISTRY = {
   MemberCard: '1.0.0',
   PWAInstallPrompt: '1.0.0',
   QACardList: '1.0.0',
-  Question: '1.0.0',
   ScoreBadge: '1.0.0',
   StatisticItem: '1.0.0',
   StatisticList: '1.0.0',
