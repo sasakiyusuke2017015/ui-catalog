@@ -13,6 +13,10 @@ const meta: Meta<typeof Badge> = {
   title: '表示/コンテンツ/Badge',
   component: Badge,
   parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/ZTvv6vzLXOxlP64TLs6YHB/%E7%84%A1%E9%A1%8C?t=uGI62GQBWdy1FqLU-0',
+    },
     layout: 'centered',
     docs: {
       description: {
