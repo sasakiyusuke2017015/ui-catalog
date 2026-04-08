@@ -2,8 +2,6 @@
 // SearchBar Component Styles
 // =============================================================================
 
-@use '../../tokens' as *;
-
 .wrapper {
   position: relative;
   width: 100%;
@@ -14,7 +12,7 @@
   left: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
-  color: $color-gray-400;
+  color: var(--color-gray-400);
   pointer-events: none;
 }
 
@@ -23,22 +21,22 @@
   height: 3rem;
   padding-left: 2.5rem;
   padding-right: 2.5rem;
-  font-size: $font-size-base;
-  color: $color-gray-800;
-  background-color: $color-white;
-  border: 1px solid $color-gray-200;
-  border-radius: $border-radius-xl;
-  transition: border-color $transition-duration-150 $transition-ease-in-out,
-              box-shadow $transition-duration-150 $transition-ease-in-out;
+  font-size: var(--font-size-base);
+  color: var(--color-gray-800);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--border-radius-xl);
+  transition: border-color var(--transition-duration-150) var(--transition-ease-in-out),
+              box-shadow var(--transition-duration-150) var(--transition-ease-in-out);
 
   &::placeholder {
-    color: $color-gray-400;
+    color: var(--color-gray-400);
   }
 
   &:focus {
     outline: none;
     border-color: transparent;
-    box-shadow: 0 0 0 2px $color-primary-500;
+    box-shadow: 0 0 0 2px var(--color-primary-500);
   }
 }
 
@@ -53,16 +51,16 @@
   width: 1.5rem;
   height: 1.5rem;
   padding: 0.25rem;
-  color: $color-gray-400;
+  color: var(--color-gray-400);
   background: transparent;
   border: none;
-  border-radius: $border-radius-full;
+  border-radius: var(--border-radius-full);
   cursor: pointer;
-  transition: background-color $transition-duration-150 $transition-ease-in-out,
-              color $transition-duration-150 $transition-ease-in-out;
+  transition: background-color var(--transition-duration-150) var(--transition-ease-in-out),
+              color var(--transition-duration-150) var(--transition-ease-in-out);
 
   &:hover {
-    background-color: $color-gray-100;
-    color: $color-gray-600;
+    background-color: var(--color-gray-100);
+    color: var(--color-gray-600);
   }
 }

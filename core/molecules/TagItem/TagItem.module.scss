@@ -2,8 +2,6 @@
 // TagItem Component Styles
 // =============================================================================
 
-@use '../../tokens' as *;
-
 // -----------------------------------------------------------------------------
 // Container
 // -----------------------------------------------------------------------------
@@ -22,19 +20,19 @@
   width: 100%;
   display: flex;
   align-items: center;
-  gap: $spacing-2;
-  padding: 0.375rem $spacing-2; // py-1.5 px-2.5
+  gap: var(--spacing-2);
+  padding: 0.375rem var(--spacing-2); // py-1.5 px-2.5
   padding-left: 0.625rem;
-  padding-right: $spacing-4 + $spacing-2;
-  border-radius: $border-radius-default;
-  transition: background-color $transition-duration-150;
+  padding-right: calc(var(--spacing-4) + var(--spacing-2));
+  border-radius: var(--border-radius-default);
+  transition: background-color var(--transition-duration-150);
   cursor: pointer;
-  color: $color-gray-300;
+  color: var(--color-gray-300);
   background: none;
   border: none;
 
   &:hover {
-    background-color: var(--color-slate-700, $color-gray-700);
+    background-color: var(--color-slate-700, var(--color-gray-700));
   }
 }
 
@@ -56,9 +54,9 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border-radius: $border-radius-sm;
-  border: 1px solid var(--color-slate-500, $color-gray-500);
-  transition: background-color $transition-duration-150, border-color $transition-duration-150;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--color-slate-500, var(--color-gray-500));
+  transition: background-color var(--transition-duration-150), border-color var(--transition-duration-150);
 }
 
 .checkboxSelectedBlue {
@@ -83,7 +81,7 @@
 .colorDot {
   width: 0.625rem;
   height: 0.625rem;
-  border-radius: $border-radius-full;
+  border-radius: var(--border-radius-full);
   flex-shrink: 0;
 }
 
@@ -96,14 +94,14 @@
 .colorPink { background-color: #ec4899; }
 .colorIndigo { background-color: #6366f1; }
 .colorYellow { background-color: #eab308; }
-.colorGray { background-color: $color-gray-400; }
+.colorGray { background-color: var(--color-gray-400); }
 
 // -----------------------------------------------------------------------------
 // Tag name
 // -----------------------------------------------------------------------------
 .name {
-  font-size: $font-size-xs;
-  font-weight: $font-weight-medium;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -114,7 +112,7 @@
 // -----------------------------------------------------------------------------
 .deleteButton {
   position: absolute;
-  right: $spacing-1;
+  right: var(--spacing-1);
   top: 50%;
   transform: translateY(-50%);
   opacity: 0;
@@ -123,11 +121,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: $color-gray-400;
+  color: var(--color-gray-400);
   background: none;
   border: none;
   cursor: pointer;
-  transition: opacity $transition-duration-150, color $transition-duration-150;
+  transition: opacity var(--transition-duration-150), color var(--transition-duration-150);
 
   &:hover {
     color: var(--color-red-400, #f87171);

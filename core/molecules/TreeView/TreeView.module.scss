@@ -2,8 +2,6 @@
 // TreeView Component Styles
 // =============================================================================
 
-@use '../../tokens' as *;
-
 // -----------------------------------------------------------------------------
 // Container
 // -----------------------------------------------------------------------------
@@ -19,29 +17,29 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: $spacing-1;
+  gap: var(--spacing-1);
   width: 100%;
   text-align: left;
   cursor: pointer;
   border-radius: 3px;
-  font-size: $font-size-sm;
-  transition: background-color $transition-duration-150 $transition-ease-in-out;
+  font-size: var(--font-size-sm);
+  transition: background-color var(--transition-duration-150) var(--transition-ease-in-out);
   border: none;
   background: transparent;
-  color: $color-gray-300;
+  color: var(--color-gray-300);
 
   &:hover {
-    background-color: rgba($color-gray-500, 0.2);
+    background-color: color-mix(in srgb, var(--color-gray-500) 20%, transparent);
   }
 }
 
 .rowSelected {
-  background-color: rgba($color-info-500, 0.2);
+  background-color: color-mix(in srgb, var(--color-info-500) 20%, transparent);
   color: #60a5fa; // blue-400
-  font-weight: $font-weight-medium;
+  font-weight: var(--font-weight-medium);
 
   &:hover {
-    background-color: rgba($color-info-500, 0.2);
+    background-color: color-mix(in srgb, var(--color-info-500) 20%, transparent);
   }
 }
 
@@ -74,7 +72,7 @@
 }
 
 .guideLine {
-  stroke: $color-gray-600;
+  stroke: var(--color-gray-600);
   stroke-width: 1;
 }
 
@@ -92,7 +90,7 @@
 }
 
 .chevronFill {
-  fill: $color-gray-500;
+  fill: var(--color-gray-500);
 }
 
 // リーフノード — 三角なし、幅ゼロ
@@ -118,7 +116,7 @@
 .indicator {
   margin-left: auto;
   flex-shrink: 0;
-  padding-right: $spacing-1;
+  padding-right: var(--spacing-1);
 }
 
 // -----------------------------------------------------------------------------
@@ -126,14 +124,14 @@
 // -----------------------------------------------------------------------------
 .actions {
   position: absolute;
-  right: $spacing-1;
+  right: var(--spacing-1);
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   align-items: center;
   gap: 2px;
   opacity: 0;
-  transition: opacity $transition-duration-150 $transition-ease-in-out;
+  transition: opacity var(--transition-duration-150) var(--transition-ease-in-out);
 
   .row:hover & {
     opacity: 1;
@@ -166,5 +164,5 @@
 .editRow {
   display: flex;
   align-items: center;
-  padding: $spacing-0-5 0;
+  padding: var(--spacing-0-5) 0;
 }

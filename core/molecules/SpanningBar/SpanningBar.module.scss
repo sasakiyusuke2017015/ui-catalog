@@ -1,11 +1,9 @@
-@use '../../tokens' as *;
-
 .bar {
   height: 100%;
   display: flex;
   align-items: center;
-  gap: $spacing-1;
-  padding: 0 $spacing-4;
+  gap: var(--spacing-1);
+  padding: 0 var(--spacing-4);
   color: #fff;
   font-size: 10px;
   font-weight: 500;

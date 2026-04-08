@@ -1,7 +1,5 @@
-@use '../../tokens' as *;
-
 .todaySlot {
-  background-color: $color-today-bg;
+  background-color: var(--color-today-bg);
 }
 
 .dropTargetOverlay {

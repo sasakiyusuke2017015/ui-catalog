@@ -1,42 +1,40 @@
-@use '../../tokens' as *;
-
 .row {
   display: grid;
-  border-bottom: 1px solid rgba($color-border-secondary, 0.5);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border-secondary) 50%, transparent);
   cursor: pointer;
 }
 
 .label {
-  font-size: $font-size-xs;
-  color: $color-text-secondary;
-  padding: $spacing-2 $spacing-3 $spacing-2 0;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  padding: var(--spacing-2) var(--spacing-3) var(--spacing-2) 0;
   text-align: right;
   user-select: none;
 }
 
 .slot {
   position: relative;
-  border-left: 1px solid rgba($color-border-secondary, 0.5);
-  transition: background-color $transition-duration-150;
+  border-left: 1px solid color-mix(in srgb, var(--color-border-secondary) 50%, transparent);
+  transition: background-color var(--transition-duration-150);
 
   &:hover {
-    background-color: $color-gray-100;
+    background-color: var(--color-gray-100);
   }
 }
 
 .currentHour {
-  background-color: rgba($color-primary-500, 0.05);
+  background-color: color-mix(in srgb, var(--color-primary-500) 5%, transparent);
 }
 
 .active {
-  background-color: rgba($color-primary-500, 0.05);
+  background-color: color-mix(in srgb, var(--color-primary-500) 5%, transparent);
 }
 
 .activeIndicator {
   position: absolute;
   inset: 0;
-  border: 2px solid $color-primary-500;
-  border-radius: $border-radius-sm;
+  border: 2px solid var(--color-primary-500);
+  border-radius: var(--border-radius-sm);
   pointer-events: none;
   z-index: 20;
 }
@@ -47,7 +45,7 @@
   right: 0;
   top: 50%;
   height: 2px;
-  background-color: $color-danger-500;
+  background-color: var(--color-danger-500);
   z-index: 5;
   pointer-events: none;
 }
@@ -58,6 +56,6 @@
   top: -4px;
   width: 10px;
   height: 10px;
-  background-color: $color-danger-500;
+  background-color: var(--color-danger-500);
   border-radius: 50%;
 }

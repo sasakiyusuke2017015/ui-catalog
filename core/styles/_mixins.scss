@@ -2,19 +2,17 @@
 // SCSS Mixins
 // =============================================================================
 
-@use '../tokens' as *;
-
 // -----------------------------------------------------------------------------
 // Focus Ring
 // -----------------------------------------------------------------------------
-@mixin focus-ring($color: $color-primary-500) {
+@mixin focus-ring($color: var(--color-primary-500)) {
   outline: none;
-  box-shadow: 0 0 0 3px rgba($color, 0.5);
+  box-shadow: 0 0 0 3px color-mix(in srgb, #{$color} 50%, transparent);
 }
 
-@mixin focus-ring-inset($color: $color-primary-500) {
+@mixin focus-ring-inset($color: var(--color-primary-500)) {
   outline: none;
-  box-shadow: inset 0 0 0 2px rgba($color, 0.5);
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, #{$color} 50%, transparent);
 }
 
 // -----------------------------------------------------------------------------
@@ -24,12 +22,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: $spacing-2;
-  font-weight: $font-weight-medium;
-  border-radius: $border-radius-md;
+  gap: var(--spacing-2);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--border-radius-md);
   transition-property: color, background-color, border-color, box-shadow;
-  transition-duration: $transition-duration-150;
-  transition-timing-function: $transition-ease-in-out;
+  transition-duration: var(--transition-duration-150);
+  transition-timing-function: var(--transition-ease-in-out);
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
@@ -51,29 +49,29 @@
 @mixin input-base {
   display: block;
   width: 100%;
-  padding: $spacing-2 $spacing-3;
-  font-size: $font-size-sm;
-  line-height: $line-height-normal;
-  color: $color-text-primary;
-  background-color: $color-white;
-  border: $border-width-1 solid $color-border-primary;
-  border-radius: $border-radius-md;
+  padding: var(--spacing-2) var(--spacing-3);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  background-color: var(--color-white);
+  border: var(--border-width-1) solid var(--color-border-primary);
+  border-radius: var(--border-radius-md);
   transition-property: border-color, box-shadow;
-  transition-duration: $transition-duration-150;
-  transition-timing-function: $transition-ease-in-out;
+  transition-duration: var(--transition-duration-150);
+  transition-timing-function: var(--transition-ease-in-out);
 
   &::placeholder {
-    color: $color-text-muted;
+    color: var(--color-text-muted);
   }
 
   &:focus {
     outline: none;
-    border-color: $color-primary-500;
+    border-color: var(--color-primary-500);
     @include focus-ring;
   }
 
   &:disabled {
-    background-color: $color-bg-secondary;
+    background-color: var(--color-bg-secondary);
     cursor: not-allowed;
     opacity: 0.5;
   }
@@ -122,7 +120,7 @@
 // Interactive Affordance Base
 // タッチデバイス対応 + focus-visible + active 状態を一括適用
 // -----------------------------------------------------------------------------
-@mixin interactive-affordance($focus-color: $color-primary-500) {
+@mixin interactive-affordance($focus-color: var(--color-primary-500)) {
   &:focus-visible {
     @include focus-ring($focus-color);
   }
@@ -143,13 +141,13 @@
 // Gradient Backgrounds
 // -----------------------------------------------------------------------------
 @mixin gradient-primary {
-  background: linear-gradient(135deg, $color-primary-500 0%, $color-primary-600 100%);
+  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-600) 100%);
 }
 
 @mixin gradient-success {
-  background: linear-gradient(135deg, $color-success-500 0%, $color-success-600 100%);
+  background: linear-gradient(135deg, var(--color-success-500) 0%, var(--color-success-600) 100%);
 }
 
 @mixin gradient-danger {
-  background: linear-gradient(135deg, $color-danger-500 0%, $color-danger-600 100%);
+  background: linear-gradient(135deg, var(--color-danger-500) 0%, var(--color-danger-600) 100%);
 }

@@ -1,20 +1,18 @@
-@use '../../tokens' as *;
-
 .select {
-  font-size: $font-size-sm;
-  padding: $spacing-2 $spacing-3;
-  border-radius: $border-radius-md;
-  border: 1px solid $color-border-secondary;
-  background-color: $color-gray-100;
-  color: $color-text-primary;
+  font-size: var(--font-size-sm);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--color-border-secondary);
+  background-color: var(--color-gray-100);
+  color: var(--color-text-primary);
   outline: none;
-  transition: border-color $transition-duration-150;
+  transition: border-color var(--transition-duration-150);
 
   &:focus {
-    border-color: $color-primary-500;
+    border-color: var(--color-primary-500);
   }
 }
 
 .error {
-  border-color: $color-danger-500;
+  border-color: var(--color-danger-500);
 }

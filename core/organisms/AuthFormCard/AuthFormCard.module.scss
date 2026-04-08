@@ -1,41 +1,39 @@
-@use '../../tokens' as *;
-
 .authFormCard {
-  border-radius: $border-radius-2xl;
+  border-radius: var(--border-radius-2xl);
   background-color: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(4px);
-  box-shadow: $shadow-xl;
+  box-shadow: var(--shadow-xl);
 
   // デフォルトマージン
   &--defaultMargin {
-    margin-left: $spacing-4;
-    margin-right: $spacing-4;
-    margin-bottom: $spacing-4;
+    margin-left: var(--spacing-4);
+    margin-right: var(--spacing-4);
+    margin-bottom: var(--spacing-4);
   }
 
   // デフォルトパディング
   &--defaultPadding {
-    padding: $spacing-6 $spacing-5;
+    padding: var(--spacing-6) var(--spacing-5);
   }
 
   &__content {
     display: flex;
     flex-direction: column;
-    gap: $spacing-3;
+    gap: var(--spacing-3);
 
     @media (min-width: 640px) {
-      gap: $spacing-6;
+      gap: var(--spacing-6);
     }
   }
 
   &__copyright {
-    font-size: $font-size-xs;
-    color: $color-gray-400;
+    font-size: var(--font-size-xs);
+    color: var(--color-gray-400);
     text-align: right;
-    margin-top: $spacing-1;
+    margin-top: var(--spacing-1);
 
     @media (min-width: 640px) {
-      margin-top: $spacing-4;
+      margin-top: var(--spacing-4);
     }
   }
 }

@@ -1,23 +1,5 @@
 @import "tailwindcss";
-
-/* ============================================
- * Semantic Design Tokens (CSS Custom Properties)
- *
- * ui-catalog 全コンポーネントが参照するセマンティックカラー。
- * アプリ側で @theme や :root で上書き可能。
- * 値は core/tokens/_colors.scss と同期すること。
- * ============================================ */
-@theme {
-  --color-primary: #4f46e5;
-  --color-primary-light: #818cf8;
-  --color-primary-dark: #3730a3;
-  --color-surface: #ffffff;
-  --color-surface-hover: #f8fafc;
-  --color-border: #e2e8f0;
-  --color-text: #1e293b;
-  --color-text-secondary: #64748b;
-  --color-accent: #f59e0b;
-}
+@import "./tokens.css";
 
 :root {
   --background: #ffffff;

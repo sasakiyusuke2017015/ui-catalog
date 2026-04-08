@@ -1,11 +1,9 @@
-@use '../../tokens' as *;
-
 .calendarPage {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background-color: $color-bg-primary;
-  color: $color-text-primary;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
 
   // Mobile safe area (notch / status bar)
   padding-top: env(safe-area-inset-top, 0px);

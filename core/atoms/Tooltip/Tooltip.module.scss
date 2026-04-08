@@ -2,8 +2,6 @@
 // Tooltip Component Styles
 // =============================================================================
 
-@use '../../tokens' as *;
-
 // -----------------------------------------------------------------------------
 // Wrapper
 // -----------------------------------------------------------------------------
@@ -22,18 +20,18 @@
 .tooltip {
   position: absolute;
   z-index: 50;
-  padding: $spacing-1 $spacing-2;
+  padding: var(--spacing-1) var(--spacing-2);
   font-size: 11px;
-  font-weight: $font-weight-medium;
+  font-weight: var(--font-weight-medium);
   white-space: nowrap;
-  border-radius: $border-radius-default;
-  background-color: $color-gray-800;
-  color: $color-white;
+  border-radius: var(--border-radius-default);
+  background-color: var(--color-gray-800);
+  color: var(--color-white);
   opacity: 0;
   pointer-events: none;
   transition-property: opacity;
-  transition-duration: $transition-duration-100;
-  transition-timing-function: $transition-ease-in-out;
+  transition-duration: var(--transition-duration-100);
+  transition-timing-function: var(--transition-ease-in-out);
 }
 
 // -----------------------------------------------------------------------------
@@ -43,26 +41,26 @@
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
-  margin-bottom: $spacing-1;
+  margin-bottom: var(--spacing-1);
 }
 
 .bottom {
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  margin-top: $spacing-1;
+  margin-top: var(--spacing-1);
 }
 
 .left {
   right: 100%;
   top: 50%;
   transform: translateY(-50%);
-  margin-right: $spacing-1;
+  margin-right: var(--spacing-1);
 }
 
 .right {
   left: 100%;
   top: 50%;
   transform: translateY(-50%);
-  margin-left: $spacing-1;
+  margin-left: var(--spacing-1);
 }

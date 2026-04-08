@@ -2,8 +2,6 @@
 // Progress Component Styles
 // =============================================================================
 
-@use '../../tokens' as *;
-
 // -----------------------------------------------------------------------------
 // Track
 // -----------------------------------------------------------------------------
@@ -37,8 +35,8 @@
   height: 100%;
   border-radius: 9999px;
   transition-property: width;
-  transition-duration: $transition-duration-300;
-  transition-timing-function: $transition-ease-in-out;
+  transition-duration: var(--transition-duration-300);
+  transition-timing-function: var(--transition-ease-in-out);
 }
 
 // -----------------------------------------------------------------------------
@@ -73,12 +71,12 @@
 // -----------------------------------------------------------------------------
 .label {
   position: absolute;
-  right: $spacing-2;
+  right: var(--spacing-2);
   top: 50%;
   transform: translateY(-50%);
-  font-size: $font-size-xs;
-  font-weight: $font-weight-medium;
-  color: $color-white;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-white);
 }
 
 // -----------------------------------------------------------------------------
