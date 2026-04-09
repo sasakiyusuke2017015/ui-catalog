@@ -59,7 +59,7 @@ export function CalendarHeader({ onViewModeChange }: CalendarHeaderProps = {}) {
           value={format(selectedDate, 'yyyy-MM-dd')}
           onChange={handleDateChange}
           size="small"
-          variant="minimal"
+          variant="default"
           navigationMode={VIEW_TO_NAV[viewMode]}
         />
       </div>
