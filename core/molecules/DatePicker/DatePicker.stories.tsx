@@ -259,6 +259,140 @@ export const MonthPickerWithNavigation = {
 };
 
 // ===========================================
+// ナビゲーションモード
+// ===========================================
+
+export const NavigationDay = {
+  args: {
+    value: '2026-04-09',
+    navigationMode: 'day',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '◀ ▶ で1日ずつ移動。スケジュール日表示で使用。',
+      },
+    },
+  },
+};
+
+export const NavigationWeek = {
+  args: {
+    value: '2026-04-09',
+    navigationMode: 'week',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '◀◀ ◀ ▶ ▶▶ で1日 + 1週間移動。スケジュール週表示で使用。',
+      },
+    },
+  },
+};
+
+export const NavigationMonth = {
+  args: {
+    pickerMode: 'month',
+    value: '2026-04',
+    navigationMode: 'month',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '◀ ▶ で1ヶ月ずつ移動。回答一覧・月表示で使用。',
+      },
+    },
+  },
+};
+
+// ===========================================
+// ナビゲーション × バリアント
+// ===========================================
+
+export const NavigationDayDefault = {
+  args: {
+    value: '2026-04-09',
+    navigationMode: 'day',
+    variant: 'default',
+    size: 'small',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '日ナビ + default（白背景）。スケジュールページで使用。',
+      },
+    },
+  },
+};
+
+export const NavigationDayDark = {
+  args: {
+    value: '2026-04-09',
+    navigationMode: 'day',
+    variant: 'dark',
+    size: 'small',
+  },
+  parameters: {
+    backgrounds: { default: 'dark' },
+    docs: {
+      description: {
+        story: '日ナビ + dark。暗い背景での使用例。',
+      },
+    },
+  },
+};
+
+export const NavigationWeekDefault = {
+  args: {
+    value: '2026-04-09',
+    navigationMode: 'week',
+    variant: 'default',
+    size: 'small',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '週ナビ + default。ダブルシェブロン付き。',
+      },
+    },
+  },
+};
+
+export const NavigationMonthDefault = {
+  args: {
+    pickerMode: 'month',
+    value: '2026-04',
+    navigationMode: 'month',
+    variant: 'default',
+    size: 'small',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '月ナビ + default。回答一覧で使用。',
+      },
+    },
+  },
+};
+
+export const NavigationMonthOutlined = {
+  args: {
+    pickerMode: 'month',
+    value: '2026-04',
+    navigationMode: 'month',
+    variant: 'outlined',
+    size: 'small',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: '月ナビ + outlined。透明背景に太枠。',
+      },
+    },
+  },
+};
+
+// ===========================================
 // バリアント
 // ===========================================
 
@@ -358,26 +492,24 @@ export const RightAligned = {
 // プロジェクト実使用例
 // ===========================================
 
-export const ProjectUsage = {
+export const ProjectAnswerList = {
   args: {
     pickerMode: 'month',
-    variant: 'dark',
-    size: 'medium',
+    variant: 'default',
+    size: 'small',
     navigationMode: 'month',
     allowClear: true,
-    value: '2025-03',
+    value: '2026-04',
   },
   parameters: {
-    backgrounds: { default: 'dark' },
     docs: {
       description: {
         story: `
-**1on1プロジェクトでの実使用例**
+**回答一覧画面での実使用例**
 
-回答一覧画面で使用されている構成:
 - 月選択モード（pickerMode="month"）
-- ダークバリアント（variant="dark"）
-- ナビゲーション付き（navigationMode）
+- default バリアント（白背景）
+- 月ナビゲーション付き
 - クリア可能（allowClear）
         `,
       },
@@ -385,14 +517,56 @@ export const ProjectUsage = {
   },
 };
 
-export const ProjectUsageWithHighlight = {
+export const ProjectScheduleDay = {
+  args: {
+    value: '2026-04-09',
+    variant: 'default',
+    size: 'small',
+    navigationMode: 'day',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: `
+**スケジュール（日表示）での実使用例**
+
+- 日付モード + 日ナビゲーション
+- default バリアント
+        `,
+      },
+    },
+  },
+};
+
+export const ProjectScheduleWeek = {
+  args: {
+    value: '2026-04-09',
+    variant: 'default',
+    size: 'small',
+    navigationMode: 'week',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: `
+**スケジュール（週表示）での実使用例**
+
+- 日付モード + 週ナビゲーション（◀◀ ◀ ▶ ▶▶）
+- default バリアント
+        `,
+      },
+    },
+  },
+};
+
+export const ProjectHighlightedMonths = {
   args: {
     pickerMode: 'month',
-    variant: 'dark',
-    size: 'medium',
+    variant: 'default',
+    size: 'small',
     navigationMode: 'month',
     allowClear: true,
-    value: '2025-03',
+    value: '2026-04',
     highlightedMonths: [
       { month: '2025-01', colors: ['blue'] },
       { month: '2025-03', colors: ['green'] },
@@ -400,7 +574,6 @@ export const ProjectUsageWithHighlight = {
     ],
   },
   parameters: {
-    backgrounds: { default: 'dark' },
     docs: {
       description: {
         story: `
