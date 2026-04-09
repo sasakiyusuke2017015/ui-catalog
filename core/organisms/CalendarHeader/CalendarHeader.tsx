@@ -1,10 +1,9 @@
 import { useCallback } from 'react'
-import { format, addDays, subDays } from 'date-fns'
+import { format } from 'date-fns'
 import { useAtom } from 'jotai'
 import { viewModeAtom, selectedDateAtom } from '../../hooks/calendar/calendar'
 import { navigateDate } from '../../utils/calendar/dates'
-import { Button } from '../../molecules'
-import { DatePicker } from '../../molecules'
+import { Button, DatePicker } from '../../molecules'
 import type { ViewMode } from '../../types/calendar'
 import styles from './CalendarHeader.module.scss'
 
@@ -53,21 +52,14 @@ export function CalendarHeader({ onViewModeChange }: CalendarHeaderProps = {}) {
     setSelectedDate((prev) => navigateDate(prev, 'next', viewMode))
   }
 
-  function handlePrevDay() {
-    setSelectedDate((prev) => subDays(prev, 1))
-  }
-
-  function handleNextDay() {
-    setSelectedDate((prev) => addDays(prev, 1))
-  }
 
   return (
-    <header data-component="CalendarHeader" className={styles.header}>
+    <header data-component="CalendarHeader" className={styles.header} style={{ backgroundColor: 'transparent' }}>
       <div className={styles.leftSection}>
         <div className={styles.navButtons}>
           {viewMode === 'week' && (
             <Button
-              variant="default"
+              variant="ghost"
               size="small"
               onClick={handlePrev}
               leftIcon="chevrons-left"
@@ -77,35 +69,16 @@ export function CalendarHeader({ onViewModeChange }: CalendarHeaderProps = {}) {
               {''}
             </Button>
           )}
-          <Button
-            variant="default"
-            size="small"
-            onClick={viewMode === 'week' ? handlePrevDay : handlePrev}
-            leftIcon="chevron-left"
-            iconSize={16}
-            title={viewMode === 'week' ? '1日前' : undefined}
-          >
-            {''}
-          </Button>
           <DatePicker
             value={format(selectedDate, 'yyyy-MM-dd')}
             onChange={handleDateChange}
             size="small"
             variant="minimal"
+            showNavigation
           />
-          <Button
-            variant="default"
-            size="small"
-            onClick={viewMode === 'week' ? handleNextDay : handleNext}
-            leftIcon="chevron-right"
-            iconSize={16}
-            title={viewMode === 'week' ? '1日後' : undefined}
-          >
-            {''}
-          </Button>
           {viewMode === 'week' && (
             <Button
-              variant="default"
+              variant="ghost"
               size="small"
               onClick={handleNext}
               leftIcon="chevrons-right"

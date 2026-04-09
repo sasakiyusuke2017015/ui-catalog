@@ -95,29 +95,24 @@ export function EventCardContainer({
   const endLabel = format(event.endTime, 'HH:mm')
 
   const dayStartMs = dayStart.getTime()
+  const dayEndMs = dayStartMs + 24 * 60 * 60 * 1000 // 当日24:00
 
-  // イベントがこの日に開始するかどうか
-  const eventStartDay = new Date(event.startTime)
-  eventStartDay.setHours(0, 0, 0, 0)
-  const startsOnThisDay = eventStartDay.getTime() === dayStartMs
-
-  // この日に開始するイベントのみ、日またぎでも全体を表示
-  // 開始が前日の場合は表示しない（前日のカードが伸びてくる）
+  // 日またぎイベント: 各日に分割して描画
+  // 開始を当日0:00以降にクランプ、終了を当日24:00にクランプ
   const clampedStart = Math.max(event.startTime.getTime(), dayStartMs)
+  const clampedEnd = Math.min(event.endTime.getTime(), dayEndMs)
 
-  // 日またぎイベントの場合、終了時刻をクランプしない（次の日にはみ出す）
-  const endHoursFromDayStart = (event.endTime.getTime() - dayStartMs) / (1000 * 60 * 60)
+  // このイベントがこの日に表示されるか（クランプ後の期間が正）
+  if (clampedEnd <= clampedStart) {
+    return null
+  }
 
   const startHours = (clampedStart - dayStartMs) / (1000 * 60 * 60)
-  const durationHours = endHoursFromDayStart - startHours
+  const endHours = (clampedEnd - dayStartMs) / (1000 * 60 * 60)
+  const durationHours = endHours - startHours
 
   const top = startHours * slotHeight
   const height = Math.max(durationHours * slotHeight, slotHeight / 2)
-
-  // 前日から始まるイベントは表示しない（前日のカードが伸びてくるため）
-  if (!startsOnThisDay) {
-    return null
-  }
 
   const leftPercent = (column / totalColumns) * 100
   const widthPercent = (columnSpan / totalColumns) * 100

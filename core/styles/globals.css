@@ -79,6 +79,7 @@ body {
   100% { transform: translateX(100%); }
 }
 
+
 /* マーチングアンツ（Excelライクな動く点線）アニメーション */
 /* CSS変数で各辺の表示を制御 */
 .marching-ants {

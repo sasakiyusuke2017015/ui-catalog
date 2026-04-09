@@ -28,7 +28,8 @@
   display: flex;
   align-items: center;
   gap: 2px;
-  transition: all var(--transition-duration-150);
+  // transform は jelly animation と競合するため除外
+  transition: opacity var(--transition-duration-150), filter var(--transition-duration-150), box-shadow var(--transition-duration-150);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -55,7 +56,8 @@
   padding: 4px 8px;
   color: #fff;
   overflow: hidden;
-  transition: all var(--transition-duration-150);
+  // transform は jelly animation と競合するため除外
+  transition: opacity var(--transition-duration-150), filter var(--transition-duration-150), box-shadow var(--transition-duration-150);
 
   &.dragging {
     cursor: grabbing;

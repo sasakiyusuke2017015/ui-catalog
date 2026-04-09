@@ -61,27 +61,35 @@ const DatePicker: FC<DatePickerProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isPopupOpen]);
 
-  // ナビゲーション（空欄時・範囲外は disabled）
-  const canNavigate = useCallback((direction: 'prev' | 'next'): boolean => {
-    if (pickerMode !== 'month') return false;
+  // ナビゲーション（空欄時は disabled）
+  const canNavigate = useCallback((_direction: 'prev' | 'next'): boolean => {
     if (!selectedDate) return false;
-    const [year, month] = selectedDate.split('-').map(Number);
-    let newYear = year, newMonth = direction === 'prev' ? month - 1 : month + 1;
-    if (newMonth < 1) { newMonth = 12; newYear -= 1; }
-    else if (newMonth > 12) { newMonth = 1; newYear += 1; }
-    const newValue = `${newYear}-${String(newMonth).padStart(2, '0')}`;
-    return isInRange(newValue);
+    if (pickerMode === 'month') {
+      const [year, month] = selectedDate.split('-').map(Number);
+      let newYear = year, newMonth = _direction === 'prev' ? month - 1 : month + 1;
+      if (newMonth < 1) { newMonth = 12; newYear -= 1; }
+      else if (newMonth > 12) { newMonth = 1; newYear += 1; }
+      return isInRange(`${newYear}-${String(newMonth).padStart(2, '0')}`);
+    }
+    // date モード: 常に移動可能
+    return true;
   }, [pickerMode, selectedDate, isInRange]);
 
-  const navigateMonth = useCallback((direction: 'prev' | 'next') => {
+  const navigateDate = useCallback((direction: 'prev' | 'next') => {
     if (!canNavigate(direction) || !selectedDate) return;
-    const [year, month] = selectedDate.split('-').map(Number);
-    let newYear = year, newMonth = direction === 'prev' ? month - 1 : month + 1;
-    if (newMonth < 1) { newMonth = 12; newYear -= 1; }
-    else if (newMonth > 12) { newMonth = 1; newYear += 1; }
-    const newValue = `${newYear}-${String(newMonth).padStart(2, '0')}`;
-    updateDate(newValue);
-  }, [canNavigate, selectedDate, updateDate]);
+    if (pickerMode === 'month') {
+      const [year, month] = selectedDate.split('-').map(Number);
+      let newYear = year, newMonth = direction === 'prev' ? month - 1 : month + 1;
+      if (newMonth < 1) { newMonth = 12; newYear -= 1; }
+      else if (newMonth > 12) { newMonth = 1; newYear += 1; }
+      updateDate(`${newYear}-${String(newMonth).padStart(2, '0')}`);
+    } else {
+      // date モード: 1日ずつ移動
+      const d = new Date(selectedDate);
+      d.setDate(d.getDate() + (direction === 'prev' ? -1 : 1));
+      updateDate(formatDateValue(d, pickerMode));
+    }
+  }, [canNavigate, selectedDate, pickerMode, updateDate]);
 
   const handlePopupSelect = useCallback((date: Date) => {
     const newValue = formatDateValue(date, pickerMode);
@@ -114,8 +122,8 @@ const DatePicker: FC<DatePickerProps> = ({
         data-picker-mode={pickerMode}
         {...props}
       >
-        {showNavigation && pickerMode === 'month' && (
-          <NavigationButton direction="prev" size={size} borderRadius={borderRadius} disabled={!canNavigate('prev')} onClick={() => navigateMonth('prev')} />
+        {showNavigation && (
+          <NavigationButton direction="prev" size={size} borderRadius={borderRadius} disabled={!canNavigate('prev')} onClick={() => navigateDate('prev')} />
         )}
 
         <div className="relative">
@@ -183,8 +191,8 @@ const DatePicker: FC<DatePickerProps> = ({
           )}
         </div>
 
-        {showNavigation && pickerMode === 'month' && (
-          <NavigationButton direction="next" size={size} borderRadius={borderRadius} disabled={!canNavigate('next')} onClick={() => navigateMonth('next')} />
+        {showNavigation && (
+          <NavigationButton direction="next" size={size} borderRadius={borderRadius} disabled={!canNavigate('next')} onClick={() => navigateDate('next')} />
         )}
       </div>
   );

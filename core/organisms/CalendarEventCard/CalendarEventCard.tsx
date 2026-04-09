@@ -2,7 +2,7 @@
  * EventCard コンポーネント
  * タイムライン（日・週）とコンパクト（月）の2モードで描画
  */
-import { useRef, useEffect, useState, useCallback, type ReactNode } from 'react'
+import { useRef, useEffect, useState, useCallback, useMemo, type ReactNode } from 'react'
 import { getStickyBottom } from '../../utils/calendar/dom'
 import { IconLabel } from '../../molecules/IconLabel/IconLabel'
 import styles from './CalendarEventCard.module.scss'
@@ -41,6 +41,54 @@ interface CompactProps extends EventCardBaseProps {
 
 type CalendarEventCardProps = TimelineProps | CompactProps
 
+// ゼリーアニメーションの @keyframes をランタイムで1回だけインジェクト
+let jellyInjected = false
+function ensureJellyKeyframes() {
+  if (jellyInjected) return
+  jellyInjected = true
+  const style = document.createElement('style')
+  style.textContent = `
+    @keyframes uic-jelly {
+      0%   { transform: scale(1, 1); }
+      20%  { transform: scale(1.008, 0.992) skewX(-0.3deg); }
+      40%  { transform: scale(0.995, 1.005) skewX(0.15deg); }
+      60%  { transform: scale(1.003, 0.997); }
+      100% { transform: scale(1, 1); }
+    }
+  `
+  document.head.appendChild(style)
+}
+
+/**
+ * ゼリー揺れアニメーション（控えめ・1回のみ）
+ * マウント時 + isDragging が true→false に変化した時にトリガー
+ */
+function useJellyAnimation(isDragging: boolean): React.CSSProperties | undefined {
+  const [animKey, setAnimKey] = useState(0)
+  const wasDragging = useRef(isDragging)
+  const mounted = useRef(false)
+
+  useEffect(() => {
+    ensureJellyKeyframes()
+    // マウント時に1回だけトリガー（StrictMode の二重実行を回避）
+    if (!mounted.current) {
+      mounted.current = true
+      setAnimKey(1)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (wasDragging.current && !isDragging) {
+      setAnimKey((k) => k + 1) // キーを変えて再トリガー
+    }
+    wasDragging.current = isDragging
+  }, [isDragging])
+
+  // animKey が 0 = まだトリガーされていない
+  if (animKey === 0 || isDragging) return undefined
+  return { animation: 'uic-jelly 0.3s ease-out' }
+}
+
 function DeleteButton({ onDelete }: { readonly onDelete: () => void }) {
   return (
     <button
@@ -70,6 +118,7 @@ function CompactEventCard({
   children,
   className = '',
 }: CompactProps) {
+  const jellyStyle = useJellyAnimation(isDragging)
   return (
     <div
       data-component="CalendarEventCard"
@@ -82,6 +131,7 @@ function CompactEventCard({
         opacity: isDragging ? 0.3 : 1,
         filter: isDragging ? 'grayscale(0.3)' : isHovered ? 'brightness(1.15)' : 'none',
         transition: 'opacity 150ms ease, filter 150ms ease',
+        ...jellyStyle,
       }}
       onClick={onClick}
       onPointerDown={onPointerDown}
@@ -165,6 +215,7 @@ function TimelineEventCard({
 }: TimelineProps) {
   const cardRef = useRef<HTMLDivElement>(null)
   const { offsetY, animating } = useStickyTitle(cardRef)
+  const jellyStyle = useJellyAnimation(isDragging)
 
   const positionStyle = leftPercent !== undefined && widthPercent !== undefined
     ? {
@@ -194,6 +245,7 @@ function TimelineEventCard({
           ? `0 4px 16px rgba(0,0,0,0.2), inset 0 0 0 1.5px rgba(255,255,255,0.6), 0 0 0 2px ${color}`
           : '0 1px 3px rgba(0,0,0,0.12), inset 0 0 0 1.5px rgba(255,255,255,0.45)',
         ...positionStyle,
+        ...jellyStyle,
       }}
       onClick={onClick}
       onPointerDown={onPointerDown}

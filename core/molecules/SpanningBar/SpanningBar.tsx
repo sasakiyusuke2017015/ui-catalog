@@ -1,6 +1,25 @@
+import { useState, useEffect, useRef, type CSSProperties } from 'react'
 import { startOfDay } from 'date-fns'
 import { IconLabel } from '../IconLabel/IconLabel'
 import type { CalendarEvent } from '../../types/calendar'
+
+// jellyX keyframes をランタイムで1回だけインジェクト（控えめ版）
+let jellyXInjected = false
+function ensureJellyXKeyframes() {
+  if (jellyXInjected) return
+  jellyXInjected = true
+  const style = document.createElement('style')
+  style.textContent = `
+    @keyframes uic-jelly-x {
+      0%   { transform: scaleX(1); }
+      20%  { transform: scaleX(1.008) skewX(-0.2deg); }
+      40%  { transform: scaleX(0.996) skewX(0.1deg); }
+      60%  { transform: scaleX(1.002); }
+      100% { transform: scaleX(1); }
+    }
+  `
+  document.head.appendChild(style)
+}
 
 const IS_TOUCH = typeof window !== 'undefined' && 'ontouchstart' in window
 const LANE_H = IS_TOUCH ? 28 : 20
@@ -38,6 +57,25 @@ export function SpanningBar({
   onMouseLeave,
   weekDates,
 }: SpanningBarProps) {
+  // ゼリー揺れ（マウント時1回 + ドラッグ終了時）
+  const [animKey, setAnimKey] = useState(0)
+  const wasDragging = useRef(isDragging)
+  const mounted = useRef(false)
+  useEffect(() => {
+    ensureJellyXKeyframes()
+    if (!mounted.current) {
+      mounted.current = true
+      setAnimKey(1)
+    }
+  }, [])
+  useEffect(() => {
+    if (wasDragging.current && !isDragging) setAnimKey((k) => k + 1)
+    wasDragging.current = isDragging
+  }, [isDragging])
+  const jellyStyle: CSSProperties | undefined = animKey > 0 && !isDragging
+    ? { animation: 'uic-jelly-x 0.3s ease-out' }
+    : undefined
+
   const padL = continuesLeft ? 0 : 2
   const padR = continuesRight ? 0 : 2
   const borderRadius = `${continuesLeft ? 0 : 10}px ${continuesRight ? 0 : 10}px ${continuesRight ? 0 : 10}px ${continuesLeft ? 0 : 10}px`
@@ -56,6 +94,7 @@ export function SpanningBar({
         filter: isDragging ? 'grayscale(0.4)' : 'none',
         transition: 'opacity 150ms ease, filter 150ms ease',
         pointerEvents: isDragActive ? 'none' : 'auto',
+        ...jellyStyle,
       }}
     >
       {/* Bar body */}

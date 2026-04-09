@@ -64,8 +64,8 @@ export function DayColumn({
         const deltaY = e.clientY - prev.startClientY
         const hourDelta = Math.floor(deltaY / slotHeight)
         const newHour = prev.startHour + hourDelta
-        // -23〜47 の範囲（上方向は前日1時まで、下方向は翌日23時まで許可）
-        const clampedHour = Math.max(-23, Math.min(47, newHour))
+        // 0〜23 の範囲（当日内のみ）
+        const clampedHour = Math.max(0, Math.min(23, newHour))
 
         if (prev.currentHour === clampedHour && prev.isDragging) return prev
         return { ...prev, currentHour: clampedHour, isDragging: true }
@@ -85,28 +85,11 @@ export function DayColumn({
         if (prev.isDragging) {
           // ドラッグ時: 開始スロットの上端からドラッグ先スロットの下端まで
           // currentHour はドラッグ先スロットの「上端」なので +1 して「下端」にする
-          // 同一スロット内ドラッグの場合は最低1時間を確保
           const startH = Math.min(prev.startHour, prev.currentHour)
-          const rawEndH = Math.max(prev.startHour, prev.currentHour)
-          const endH = rawEndH + 1
+          const endH = Math.max(prev.startHour, prev.currentHour) + 1
 
-          // 負の時刻（前日にまたぐ）の場合
-          if (startH < 0) {
-            const startDate = new Date(date)
-            startDate.setDate(startDate.getDate() - 1)
-            const actualStartH = 24 + startH // 例: -2 → 22時
-            setActiveSlot({ date: startDate.toDateString(), hour: actualStartH, endHour: Math.min(endH, 24), endDate: dateKey })
-            setModal({ isOpen: true, date: startDate, hour: actualStartH, endHour: Math.min(endH, 24), endDate: date })
-          // 24時を超えた場合は翌日にまたぐイベント
-          } else if (endH > 24) {
-            const endDate = new Date(date)
-            endDate.setDate(endDate.getDate() + 1)
-            setActiveSlot({ date: dateKey, hour: startH, endHour: endH, endDate: endDate.toDateString() })
-            setModal({ isOpen: true, date, hour: startH, endHour: endH - 24, endDate })
-          } else {
-            setActiveSlot({ date: dateKey, hour: startH, endHour: endH })
-            setModal({ isOpen: true, date, hour: startH, endHour: endH })
-          }
+          setActiveSlot({ date: dateKey, hour: startH, endHour: Math.min(endH, 24) })
+          setModal({ isOpen: true, date, hour: startH, endHour: Math.min(endH, 24) })
         } else {
           // クリックのみ（ドラッグなし）: 1時間のスロットを選択
           setActiveSlot({ date: dateKey, hour: prev.startHour, endHour: prev.startHour + 1 })
@@ -245,7 +228,7 @@ export function DayColumn({
             const maxH = Math.max(slotDrag.startHour, slotDrag.currentHour)
             const rawEndH = maxH + 1
             const overlayStartHour = Math.max(0, minH)
-            const overlayEndHour = rawEndH
+            const overlayEndHour = Math.min(rawEndH, 24)
 
             if (overlayEndHour <= 0) return null
             return (
