@@ -19,7 +19,7 @@ export default {
 
 - **日付/月選択**: pickerModeで日付（date）または月（month）を選択
 - **バリアント**: default（白背景）、dark（暗い背景）、outlined（透明・太枠）
-- **ナビゲーション**: showNavigationで前後月への移動ボタンを表示
+- **ナビゲーション**: navigationModeで移動ボタンを表示（day/month/week）
 - **制限設定**: minDate/maxDateによる選択可能範囲の制限
 - **クリア機能**: allowClearでクリアボタンを表示
 - **ハイライト**: highlightedMonthsで特定月をマーク
@@ -92,9 +92,10 @@ export default {
       control: 'select',
       options: ['small', 'medium', 'large'],
     },
-    showNavigation: {
-      description: '前後月ナビゲーションボタンを表示（monthモードのみ）',
-      control: 'boolean',
+    navigationMode: {
+      description: 'ナビゲーションモード',
+      control: 'select',
+      options: ['none', 'day', 'month', 'week'],
     },
     allowClear: {
       description: 'クリアボタンを表示',
@@ -246,7 +247,7 @@ export const MonthPickerWithNavigation = {
   args: {
     pickerMode: 'month',
     value: '2025-03',
-    showNavigation: true,
+    navigationMode: 'month',
   },
   parameters: {
     docs: {
@@ -362,7 +363,7 @@ export const ProjectUsage = {
     pickerMode: 'month',
     variant: 'dark',
     size: 'medium',
-    showNavigation: true,
+    navigationMode: 'month',
     allowClear: true,
     value: '2025-03',
   },
@@ -376,7 +377,7 @@ export const ProjectUsage = {
 回答一覧画面で使用されている構成:
 - 月選択モード（pickerMode="month"）
 - ダークバリアント（variant="dark"）
-- ナビゲーション付き（showNavigation）
+- ナビゲーション付き（navigationMode）
 - クリア可能（allowClear）
         `,
       },
@@ -389,7 +390,7 @@ export const ProjectUsageWithHighlight = {
     pickerMode: 'month',
     variant: 'dark',
     size: 'medium',
-    showNavigation: true,
+    navigationMode: 'month',
     allowClear: true,
     value: '2025-03',
     highlightedMonths: [

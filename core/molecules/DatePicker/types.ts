@@ -33,9 +33,7 @@ export interface DatePickerProps
   pickerMode?: PickerMode;
   variant?: DatePickerVariant;
   size?: DatePickerSize;
-  /** @deprecated navigationMode を使用 */
-  showNavigation?: boolean;
-  /** ナビゲーションモード（showNavigation より優先） */
+  /** ナビゲーションモード */
   navigationMode?: NavigationMode;
   minDate?: string;
   maxDate?: string;

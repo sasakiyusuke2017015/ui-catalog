@@ -22,7 +22,6 @@ const DatePicker: FC<DatePickerProps> = ({
   pickerMode = 'date',
   variant = 'default',
   size = 'medium',
-  showNavigation = false,
   navigationMode: navigationModeProp,
   borderRadius = '0.375rem',
   menuAlign = 'left',
@@ -62,9 +61,7 @@ const DatePicker: FC<DatePickerProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isPopupOpen]);
 
-  // navigationMode を解決（navigationModeProp > showNavigation > 'none'）
-  const navMode: NavigationMode = navigationModeProp
-    ?? (showNavigation ? (pickerMode === 'month' ? 'month' : 'day') : 'none');
+  const navMode: NavigationMode = navigationModeProp ?? 'none';
   const hasNav = navMode !== 'none';
   const hasDoubleNav = navMode === 'week';
 
