@@ -8,6 +8,15 @@ export type PickerMode = 'date' | 'month';
 export type DatePickerVariant = 'default' | 'dark' | 'outlined' | 'minimal';
 export type DatePickerSize = 'small' | 'medium' | 'large';
 
+/**
+ * ナビゲーションモード
+ * - 'none': ナビゲーションなし（デフォルト）
+ * - 'day':  ◀ ▶ 1日ずつ
+ * - 'month': ◀ ▶ 1ヶ月ずつ
+ * - 'week': ◀◀ ◀ ▶ ▶▶ （1日 + 1週間）
+ */
+export type NavigationMode = 'none' | 'day' | 'month' | 'week';
+
 // Calendar から再 export
 export type { HighlightedMonth };
 
@@ -24,7 +33,10 @@ export interface DatePickerProps
   pickerMode?: PickerMode;
   variant?: DatePickerVariant;
   size?: DatePickerSize;
+  /** @deprecated navigationMode を使用 */
   showNavigation?: boolean;
+  /** ナビゲーションモード（showNavigation より優先） */
+  navigationMode?: NavigationMode;
   minDate?: string;
   maxDate?: string;
   recentMonths?: number;

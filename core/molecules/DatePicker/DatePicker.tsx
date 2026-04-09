@@ -14,7 +14,7 @@ import {
   SIZE_STYLES, VARIANT_STYLES, ICON_SIZES,
   POPUP_WIDTH,
 } from './constants';
-import type { DatePickerProps } from './types';
+import type { DatePickerProps, NavigationMode } from './types';
 
 const DatePicker: FC<DatePickerProps> = ({
   id,
@@ -23,6 +23,7 @@ const DatePicker: FC<DatePickerProps> = ({
   variant = 'default',
   size = 'medium',
   showNavigation = false,
+  navigationMode: navigationModeProp,
   borderRadius = '0.375rem',
   menuAlign = 'left',
   primaryBgColor = '#3b82f6',
@@ -61,35 +62,40 @@ const DatePicker: FC<DatePickerProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isPopupOpen]);
 
-  // ナビゲーション（空欄時は disabled）
-  const canNavigate = useCallback((_direction: 'prev' | 'next'): boolean => {
-    if (!selectedDate) return false;
-    if (pickerMode === 'month') {
-      const [year, month] = selectedDate.split('-').map(Number);
-      let newYear = year, newMonth = _direction === 'prev' ? month - 1 : month + 1;
-      if (newMonth < 1) { newMonth = 12; newYear -= 1; }
-      else if (newMonth > 12) { newMonth = 1; newYear += 1; }
-      return isInRange(`${newYear}-${String(newMonth).padStart(2, '0')}`);
-    }
-    // date モード: 常に移動可能
-    return true;
-  }, [pickerMode, selectedDate, isInRange]);
+  // navigationMode を解決（navigationModeProp > showNavigation > 'none'）
+  const navMode: NavigationMode = navigationModeProp
+    ?? (showNavigation ? (pickerMode === 'month' ? 'month' : 'day') : 'none');
+  const hasNav = navMode !== 'none';
+  const hasDoubleNav = navMode === 'week';
 
-  const navigateDate = useCallback((direction: 'prev' | 'next') => {
-    if (!canNavigate(direction) || !selectedDate) return;
-    if (pickerMode === 'month') {
+  // ナビゲーション
+  const canNavigate = useCallback((): boolean => {
+    return !!selectedDate;
+  }, [selectedDate]);
+
+  /** 小ステップ移動（day/week モード: 1日、month モード: 1ヶ月） */
+  const navigateSmall = useCallback((direction: 'prev' | 'next') => {
+    if (!selectedDate) return;
+    if (navMode === 'month') {
       const [year, month] = selectedDate.split('-').map(Number);
-      let newYear = year, newMonth = direction === 'prev' ? month - 1 : month + 1;
-      if (newMonth < 1) { newMonth = 12; newYear -= 1; }
-      else if (newMonth > 12) { newMonth = 1; newYear += 1; }
-      updateDate(`${newYear}-${String(newMonth).padStart(2, '0')}`);
+      let ny = year, nm = direction === 'prev' ? month - 1 : month + 1;
+      if (nm < 1) { nm = 12; ny -= 1; }
+      else if (nm > 12) { nm = 1; ny += 1; }
+      updateDate(`${ny}-${String(nm).padStart(2, '0')}`);
     } else {
-      // date モード: 1日ずつ移動
       const d = new Date(selectedDate);
       d.setDate(d.getDate() + (direction === 'prev' ? -1 : 1));
       updateDate(formatDateValue(d, pickerMode));
     }
-  }, [canNavigate, selectedDate, pickerMode, updateDate]);
+  }, [selectedDate, navMode, pickerMode, updateDate]);
+
+  /** 大ステップ移動（week モード: 7日） */
+  const navigateLarge = useCallback((direction: 'prev' | 'next') => {
+    if (!selectedDate) return;
+    const d = new Date(selectedDate);
+    d.setDate(d.getDate() + (direction === 'prev' ? -7 : 7));
+    updateDate(formatDateValue(d, pickerMode));
+  }, [selectedDate, pickerMode, updateDate]);
 
   const handlePopupSelect = useCallback((date: Date) => {
     const newValue = formatDateValue(date, pickerMode);
@@ -122,8 +128,11 @@ const DatePicker: FC<DatePickerProps> = ({
         data-picker-mode={pickerMode}
         {...props}
       >
-        {showNavigation && (
-          <NavigationButton direction="prev" size={size} borderRadius={borderRadius} disabled={!canNavigate('prev')} onClick={() => navigateDate('prev')} />
+        {hasDoubleNav && (
+          <NavigationButton direction="prev" double size={size} variant={variant} borderRadius={borderRadius} disabled={!canNavigate()} title="1週間前" onClick={() => navigateLarge('prev')} />
+        )}
+        {hasNav && (
+          <NavigationButton direction="prev" size={size} variant={variant} borderRadius={borderRadius} disabled={!canNavigate()} onClick={() => navigateSmall('prev')} />
         )}
 
         <div className="relative">
@@ -191,8 +200,11 @@ const DatePicker: FC<DatePickerProps> = ({
           )}
         </div>
 
-        {showNavigation && (
-          <NavigationButton direction="next" size={size} borderRadius={borderRadius} disabled={!canNavigate('next')} onClick={() => navigateDate('next')} />
+        {hasNav && (
+          <NavigationButton direction="next" size={size} variant={variant} borderRadius={borderRadius} disabled={!canNavigate()} onClick={() => navigateSmall('next')} />
+        )}
+        {hasDoubleNav && (
+          <NavigationButton direction="next" double size={size} variant={variant} borderRadius={borderRadius} disabled={!canNavigate()} title="1週間後" onClick={() => navigateLarge('next')} />
         )}
       </div>
   );
