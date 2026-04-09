@@ -12,9 +12,9 @@ function ensureJellyXKeyframes() {
   style.textContent = `
     @keyframes uic-jelly-x {
       0%   { transform: scaleX(1); }
-      20%  { transform: scaleX(1.008) skewX(-0.2deg); }
-      40%  { transform: scaleX(0.996) skewX(0.1deg); }
-      60%  { transform: scaleX(1.002); }
+      25%  { transform: scaleX(1.004) skewX(-0.1deg); }
+      50%  { transform: scaleX(0.998) skewX(0.05deg); }
+      75%  { transform: scaleX(1.001); }
       100% { transform: scaleX(1); }
     }
   `

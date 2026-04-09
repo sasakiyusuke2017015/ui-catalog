@@ -138,7 +138,7 @@ export function WeekView({ events, showAllDayBar = true, persistEvent, removeEve
                             event,
                             rect: { top: rect.top, left: rect.left, right: rect.right, bottom: rect.bottom, width: rect.width },
                           })
-                        }, 300)
+                        }, 600)
                       }}
                       onMouseLeave={() => {
                         if (hoverTimerRef.current) {

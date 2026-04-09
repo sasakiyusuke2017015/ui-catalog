@@ -72,7 +72,7 @@ export function EventCardContainer({
         event,
         rect: { top: rect.top, left: rect.left, right: rect.right, bottom: rect.bottom, width: rect.width },
       })
-    }, 300)
+    }, 600)
   }, [event, drag, anyDrag, setHovered])
 
   const handleMouseLeave = useCallback(() => {
@@ -133,7 +133,7 @@ export function EventCardContainer({
       onPointerDown={handleMoveStart}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      isDragging={isDragging && !isResizing}
+      isDragging={isDragging}
       isHovered={isHovered}
     >
       {/* Resize handle: top */}

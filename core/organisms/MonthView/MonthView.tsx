@@ -317,7 +317,7 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
           event,
           rect: { top: rect.top, left: rect.left, right: rect.right, bottom: rect.bottom, width: rect.width },
         })
-      }, 300)
+      }, 600)
     },
     [dragEventId, anyDrag, setHovered]
   )
