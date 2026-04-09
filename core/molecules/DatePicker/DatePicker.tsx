@@ -120,7 +120,7 @@ const DatePicker: FC<DatePickerProps> = ({
       <div
         id={id}
         ref={containerRef}
-        className={`relative inline-flex items-center gap-2 ${className || ''}`}
+        className={`relative inline-flex items-stretch gap-1 ${className || ''}`}
         data-component="date-picker"
         data-picker-mode={pickerMode}
         {...props}

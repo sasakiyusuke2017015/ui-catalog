@@ -7,11 +7,11 @@ import Icon from '../../atoms/Icon';
 import { NAV_ICON_SIZES } from './constants';
 import type { DatePickerSize, DatePickerVariant } from './types';
 
-/** DatePicker 本体の padding に合わせたボタンサイズ */
-const NAV_PADDING: Record<DatePickerSize, string> = {
-  small: 'p-1.5',
-  medium: 'p-2',
-  large: 'p-2.5',
+/** サイズ別の横 padding（高さは self-stretch で DatePicker に合わせる） */
+const NAV_PX: Record<DatePickerSize, string> = {
+  small: 'px-1.5',
+  medium: 'px-2',
+  large: 'px-2.5',
 };
 
 const VARIANT_BUTTON_STYLES: Record<DatePickerVariant, { normal: string; disabled: string }> = {
@@ -60,7 +60,7 @@ export const NavigationButton: FC<Props> = memo(({
       onClick={onClick}
       disabled={disabled}
       className={`
-        ${NAV_PADDING[size]} transition-all duration-200
+        self-stretch flex items-center ${NAV_PX[size]} transition-all duration-200
         focus:outline-none focus:ring-2 focus:ring-blue-500/20
         ${disabled ? styles.disabled : styles.normal}
       `}
