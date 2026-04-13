@@ -16,7 +16,7 @@ describe('FormField', () => {
 
   it('required マークが表示される', () => {
     render(<FormField label="メールアドレス" required />);
-    expect(screen.getByText('*')).toBeInTheDocument();
+    expect(screen.getByText('必須')).toBeInTheDocument();
   });
 
   it('エラーメッセージが表示される', () => {

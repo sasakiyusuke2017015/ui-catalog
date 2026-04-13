@@ -69,8 +69,8 @@ export const Info = {
     isOpen: true,
     type: 'info',
     title: '確認',
-    message: 'この操作を実行してもよろしいですか？',
-    confirmText: '実行',
+    message: 'この操作を続行してもよろしいですか？',
+    confirmText: '続行する',
     cancelText: 'キャンセル',
   },
   parameters: {
@@ -290,8 +290,8 @@ const ConfirmDialogDemo = () => {
                 ? 'エラー'
                 : '削除の確認'
         }
-        message={`${dialogType}タイプの確認ダイアログです。実行しますか？`}
-        confirmText={dialogType === 'danger' ? '削除する' : '実行'}
+        message={`${dialogType}タイプの確認ダイアログです。続行しますか？`}
+        confirmText={dialogType === 'danger' ? '削除する' : '続行する'}
       />
     </div>
   );

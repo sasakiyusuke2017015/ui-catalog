@@ -141,7 +141,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             }}
             role={onIconClick ? 'button' : undefined}
             tabIndex={onIconClick ? 0 : undefined}
-            aria-label="Icon button"
+            aria-label={onIconClick ? 'アイコン操作' : undefined}
           >
             <Icon
               name={icon}

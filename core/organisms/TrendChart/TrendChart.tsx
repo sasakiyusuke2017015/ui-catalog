@@ -328,7 +328,7 @@ const TrendChart: FC<TrendChartProps> = ({
                 }}
                 role="button"
                 tabIndex={0}
-                aria-label={`Toggle ${dataset.label} visibility`}
+                aria-label={`${dataset.label}の表示を切り替え`}
               >
                 <span
                   className={styles.legendLine}

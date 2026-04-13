@@ -137,7 +137,7 @@ const Dialog: FC<DialogProps> = (props) => {
   if (!isOpen) return null;
 
   const config = typeConfig[type];
-  const confirmText = props.confirmText || (isConfirm ? '確定' : 'OK');
+  const confirmText = props.confirmText || (isConfirm ? '確定' : '閉じる');
   const cancelText = isConfirm ? ((props as ConfirmDialogProps).cancelText || 'キャンセル') : undefined;
 
   // 背景クリックで閉じる
@@ -159,7 +159,7 @@ const Dialog: FC<DialogProps> = (props) => {
       }}
       role="button"
       tabIndex={-1}
-      aria-label="Close dialog"
+      aria-label="ダイアログを閉じる"
       data-component="dialog"
       data-variant={variant}
       data-type={type}

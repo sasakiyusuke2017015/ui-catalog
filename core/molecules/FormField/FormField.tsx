@@ -108,7 +108,7 @@ const FormField: FC<FormFieldProps> = ({
       {label && (
         <label className="mb-2 block text-fluid-sm font-medium text-gray-700">
           {label}
-          {required && <span className="ml-1 text-red-500">*</span>}
+          {required && <span className="ml-2 inline rounded px-1.5 py-0.5 text-xs font-semibold text-red-800 bg-red-100">必須</span>}
         </label>
       )}
 

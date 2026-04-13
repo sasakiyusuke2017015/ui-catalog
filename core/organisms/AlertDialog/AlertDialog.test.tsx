@@ -55,9 +55,9 @@ describe('AlertDialog', () => {
     const handleClose = vi.fn();
     const user = userEvent.setup();
 
-    render(<AlertDialog isOpen={true} message="メッセージ" confirmText="OK" onClose={handleClose} />);
+    render(<AlertDialog isOpen={true} message="メッセージ" confirmText="閉じる" onClose={handleClose} />);
 
-    const confirmButton = screen.getByText('OK');
+    const confirmButton = screen.getByText('閉じる');
     await user.click(confirmButton);
 
     expect(handleClose).toHaveBeenCalledTimes(1);
@@ -65,10 +65,10 @@ describe('AlertDialog', () => {
 
   it('Dialogコンポーネントにvariant="alert"が渡される', () => {
     const handleClose = vi.fn();
-    render(<AlertDialog isOpen={true} message="テストメッセージ" confirmText="OK" onClose={handleClose} />);
+    render(<AlertDialog isOpen={true} message="テストメッセージ" confirmText="閉じる" onClose={handleClose} />);
     // AlertDialogはDialogのラッパーであり、variant="alert"が内部で設定される
     // ダイアログが表示されていることで間接的に確認（メッセージとボタンの存在）
     expect(screen.getByText('テストメッセージ')).toBeInTheDocument();
-    expect(screen.getByText('OK')).toBeInTheDocument();
+    expect(screen.getByText('閉じる')).toBeInTheDocument();
   });
 });
