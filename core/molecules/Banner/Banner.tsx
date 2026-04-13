@@ -36,7 +36,7 @@ const defaultIcons: Record<BannerVariant, IconName> = {
  *
  * @example
  * // シンプルなエラーバナー
- * <Banner variant="error" message="エラーが発生しました" />
+ * <Banner variant="error" message="保存に失敗しました。時間をおいて再度お試しください。" />
  *
  * // タイトル付き
  * <Banner variant="warning" title="注意" message="この操作は取り消せません" />

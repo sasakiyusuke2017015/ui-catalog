@@ -20,7 +20,7 @@ export const Success: Story = {
 }
 
 export const Error: Story = {
-  args: { message: 'エラーが発生しました', variant: 'error' },
+  args: { message: '保存に失敗しました。時間をおいて再度お試しください。', variant: 'error' },
 }
 
 export const Info: Story = {

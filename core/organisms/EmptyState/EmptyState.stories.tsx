@@ -34,7 +34,7 @@ export const WithAction: Story = {
     description: '最初の項目を作成しましょう。',
     action: (
       <button className="mt-2 rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
-        新規作成
+        作成
       </button>
     ),
   },

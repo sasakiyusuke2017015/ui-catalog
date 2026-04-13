@@ -87,7 +87,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
         {label && (
           <label htmlFor={id} className={styles.label}>
             {label}
-            {required && <span className={styles.required}>*</span>}
+            {required && <span className={styles.required}>必須</span>}
           </label>
         )}
         <textarea

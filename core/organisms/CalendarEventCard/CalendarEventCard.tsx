@@ -49,7 +49,7 @@ function DeleteButton({ onDelete }: { readonly onDelete: () => void }) {
         onDelete()
       }}
       className={styles.deleteButton}
-      aria-label="Delete event"
+      aria-label="イベントを削除"
     >
       &times;
     </button>

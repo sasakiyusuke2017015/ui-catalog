@@ -29,10 +29,12 @@ const Toast: FC<ToastProps> = ({
   onClose,
   message,
   type = 'info',
-  duration = 3000,
+  duration: durationProp,
   position = 'top-right',
   borderRadius = '0.5rem', // デフォルト値
 }) => {
+  // error/warning は自動消去しない（ユーザーが見逃すため）
+  const duration = durationProp ?? (type === 'error' || type === 'warning' ? 0 : 3000);
   const [isVisible, setIsVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
   const log = useOperationLog('Toast');

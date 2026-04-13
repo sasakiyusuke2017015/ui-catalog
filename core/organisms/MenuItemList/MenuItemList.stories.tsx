@@ -83,7 +83,7 @@ export const WithoutIcons: Story = {
     menuHeader: (
       <div className="text-fluid-sm font-semibold text-gray-700">操作メニュー</div>
     ),
-    menuItems: [{ label: '新規作成' }, { label: '編集' }, { label: '削除' }],
+    menuItems: [{ label: '作成' }, { label: '編集' }, { label: '削除' }],
   },
 };
 
