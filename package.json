@@ -38,6 +38,7 @@
     "storybook:down": "docker compose -f infra/docker/docker-compose.yml down",
     "storybook:build": "storybook build -o storybook-static",
     "storybook:deploy": "pnpm clean && pnpm storybook:build && rm -rf node_modules/.cache/gh-pages && gh-pages -d storybook-static",
+    "storybook:chromatic": "chromatic --build-script-name=storybook:build",
     "test:storybook": "vitest --project storybook",
     "export-versions": "npx tsx infra/version/export-versions-cli.ts"
   },
@@ -83,6 +84,7 @@
     "@types/node": "^25.3.3",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "chromatic": "^16.1.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "framer-motion": "^12.34.4",
