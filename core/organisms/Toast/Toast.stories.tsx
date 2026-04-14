@@ -354,7 +354,7 @@ const MultipleToastsExample = () => {
             成功を追加
           </button>
           <button
-            onClick={() => addToast('エラーが発生しました', 'error')}
+            onClick={() => addToast('保存に失敗しました。時間をおいて再度お試しください。', 'error')}
             className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
           >
             エラーを追加

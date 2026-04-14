@@ -19,7 +19,7 @@ export default {
         component: `
 Dialogコンポーネント。以下の機能をサポート:
 
-- **2つのバリアント**: alert (OKのみ), confirm (OK+キャンセル)
+- **2つのバリアント**: alert (閉じるのみ), confirm (確定+キャンセル)
 - **5つのタイプ**: info, warning, error, success, danger
 - **キーボード対応**: Escキーで閉じる、Enterキー(alert)で確定
 - **背景クリック**: 背景クリックで閉じる
@@ -49,7 +49,7 @@ window.alert/confirmの代替として使用します。
       options: ['info', 'warning', 'error', 'success', 'danger'],
     },
     variant: {
-      description: 'alert: OKのみ, confirm: OK+キャンセル',
+      description: 'alert: 閉じるのみ, confirm: 確定+キャンセル',
       control: 'select',
       options: ['alert', 'confirm'],
     },

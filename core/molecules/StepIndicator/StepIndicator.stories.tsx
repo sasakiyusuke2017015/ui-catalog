@@ -190,7 +190,7 @@ export const UseCases: Story = {
 
       {/* フォームウィザード */}
       <StepIndicator
-        title="📝 会員登録"
+        title="📝 アカウント作成"
         steps={[
           { label: '基本情報', status: 'completed' },
           { label: '詳細情報', status: 'in_progress', loadingIcon: 'spinner' },

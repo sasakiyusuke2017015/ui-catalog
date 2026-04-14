@@ -148,13 +148,13 @@ describe('ConfirmDialog', () => {
       <ConfirmDialog
         isOpen={true}
         message="削除しますか？"
-        confirmText="はい"
+        confirmText="削除する"
         onConfirm={handleConfirm}
         onCancel={handleCancel}
       />
     );
 
-    const confirmButton = screen.getByText('はい');
+    const confirmButton = screen.getByText('削除する');
     await user.click(confirmButton);
 
     expect(handleConfirm).toHaveBeenCalledTimes(1);
@@ -170,13 +170,13 @@ describe('ConfirmDialog', () => {
       <ConfirmDialog
         isOpen={true}
         message="削除しますか？"
-        cancelText="いいえ"
+        cancelText="キャンセル"
         onConfirm={handleConfirm}
         onCancel={handleCancel}
       />
     );
 
-    const cancelButton = screen.getByText('いいえ');
+    const cancelButton = screen.getByText('キャンセル');
     await user.click(cancelButton);
 
     expect(handleCancel).toHaveBeenCalledTimes(1);

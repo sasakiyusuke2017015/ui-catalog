@@ -23,7 +23,7 @@ export interface AlertState extends AlertOptions {
  * showAlert('保存しました');
  *
  * // オプション付き
- * showAlert('エラーが発生しました', {
+ * showAlert('保存に失敗しました。時間をおいて再度お試しください。', {
  *   title: 'エラー',
  *   type: 'error'
  * });
@@ -37,7 +37,7 @@ export const useAlert = () => {
     message: '',
     title: undefined,
     type: 'info',
-    confirmText: 'OK',
+    confirmText: '閉じる',
   });
 
   /**
@@ -49,7 +49,7 @@ export const useAlert = () => {
       message,
       title: options?.title,
       type: options?.type || 'info',
-      confirmText: options?.confirmText || 'OK',
+      confirmText: options?.confirmText || '閉じる',
     });
   }, []);
 

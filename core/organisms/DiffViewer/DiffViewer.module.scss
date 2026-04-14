@@ -144,7 +144,8 @@ $diff-changed-text: #92400e;
 .entryPath {
   font-family: var(--font-family-mono);
   color: var(--color-text);
-  word-break: break-all;
+  overflow-wrap: anywhere;
+  word-break: normal;
   flex: 1;
 }
 
@@ -163,7 +164,8 @@ $diff-changed-text: #92400e;
   font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
   white-space: pre-wrap;
-  word-break: break-all;
+  overflow-wrap: anywhere;
+  word-break: normal;
   background-color: $diff-added-bg;
   border-left: 3px solid $diff-added-border;
   color: $diff-added-text;
@@ -175,7 +177,8 @@ $diff-changed-text: #92400e;
   font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
   white-space: pre-wrap;
-  word-break: break-all;
+  overflow-wrap: anywhere;
+  word-break: normal;
   background-color: $diff-removed-bg;
   border-left: 3px solid $diff-removed-border;
   color: $diff-removed-text;
@@ -236,7 +239,8 @@ $diff-changed-text: #92400e;
   margin: 0;
   padding: 0 var(--spacing-2);
   white-space: pre-wrap;
-  word-break: break-all;
+  overflow-wrap: anywhere;
+  word-break: normal;
   flex: 1;
 }
 

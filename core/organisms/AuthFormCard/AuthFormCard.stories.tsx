@@ -17,8 +17,14 @@ export const Default: Story = {
     children: (
       <div className="space-y-4">
         <h2 className="text-lg font-bold text-center">ログイン</h2>
-        <input type="email" placeholder="メールアドレス" className="w-full border rounded px-3 py-2" />
-        <input type="password" placeholder="パスワード" className="w-full border rounded px-3 py-2" />
+        <div>
+          <label className="block text-sm font-medium mb-1">メールアドレス</label>
+          <input type="email" placeholder="example@mail.com" className="w-full border rounded px-3 py-2" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">パスワード</label>
+          <input type="password" placeholder="8文字以上" className="w-full border rounded px-3 py-2" />
+        </div>
         <button className="w-full bg-blue-500 text-white rounded py-2">ログイン</button>
       </div>
     ),
@@ -40,7 +46,10 @@ export const PasswordReset: Story = {
         <p className="text-sm text-gray-500 text-center">
           登録済みのメールアドレスを入力してください
         </p>
-        <input type="email" placeholder="メールアドレス" className="w-full border rounded px-3 py-2" />
+        <div>
+          <label className="block text-sm font-medium mb-1">メールアドレス</label>
+          <input type="email" placeholder="example@mail.com" className="w-full border rounded px-3 py-2" />
+        </div>
         <button className="w-full bg-blue-500 text-white rounded py-2">リセットリンクを送信</button>
         <p className="text-xs text-center text-blue-500 cursor-pointer">ログインに戻る</p>
       </div>
@@ -53,11 +62,23 @@ export const SignUp: Story = {
     copyrightText: '© 2026 SMS DataTech',
     children: (
       <div className="space-y-4">
-        <h2 className="text-lg font-bold text-center">新規登録</h2>
-        <input type="text" placeholder="ユーザー名" className="w-full border rounded px-3 py-2" />
-        <input type="email" placeholder="メールアドレス" className="w-full border rounded px-3 py-2" />
-        <input type="password" placeholder="パスワード" className="w-full border rounded px-3 py-2" />
-        <input type="password" placeholder="パスワード（確認）" className="w-full border rounded px-3 py-2" />
+        <h2 className="text-lg font-bold text-center">アカウント作成</h2>
+        <div>
+          <label className="block text-sm font-medium mb-1">ユーザー名</label>
+          <input type="text" placeholder="taro_yamada" className="w-full border rounded px-3 py-2" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">メールアドレス</label>
+          <input type="email" placeholder="example@mail.com" className="w-full border rounded px-3 py-2" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">パスワード</label>
+          <input type="password" placeholder="8文字以上" className="w-full border rounded px-3 py-2" />
+        </div>
+        <div>
+          <label className="block text-sm font-medium mb-1">パスワード（確認）</label>
+          <input type="password" placeholder="もう一度入力" className="w-full border rounded px-3 py-2" />
+        </div>
         <button className="w-full bg-green-600 text-white rounded py-2">アカウントを作成</button>
       </div>
     ),

@@ -68,6 +68,9 @@ importers:
       '@types/react-dom':
         specifier: ^19.2.3
         version: 19.2.3(@types/react@19.2.14)
+      chromatic:
+        specifier: ^16.1.0
+        version: 16.1.0
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -1186,6 +1189,18 @@ packages:
   chokidar@4.0.3:
     resolution: {integrity: sha512-Qgzu8kfBvo+cA4962jnP1KkS6Dop5NS6g7R5LFYJr4b8Ub94PPQXUksCw9PvXoeXPRRddRNC5C1JQUR2SMGtnA==}
     engines: {node: '>= 14.16.0'}
+
+  chromatic@16.1.0:
+    resolution: {integrity: sha512-7xyOUXe8jfY6c+g9S/U/cbvzVXMjdhh9cVZYvDp8dDGonjiKSbWO1dzWApdYHIiF2xj29pvWQB7N5LT6967IDw==}
+    hasBin: true
+    peerDependencies:
+      '@chromatic-com/cypress': ^0.*.* || ^1.0.0
+      '@chromatic-com/playwright': ^0.*.* || ^1.0.0
+    peerDependenciesMeta:
+      '@chromatic-com/cypress':
+        optional: true
+      '@chromatic-com/playwright':
+        optional: true
 
   clsx@2.1.1:
     resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
@@ -3290,6 +3305,8 @@ snapshots:
     dependencies:
       readdirp: 4.1.2
     optional: true
+
+  chromatic@16.1.0: {}
 
   clsx@2.1.1: {}
 

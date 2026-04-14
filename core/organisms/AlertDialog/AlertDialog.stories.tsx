@@ -60,7 +60,7 @@ export const Info = {
     type: 'info',
     title: '情報',
     message: 'これは情報メッセージです。',
-    confirmText: 'OK',
+    confirmText: '閉じる',
   },
   parameters: {
     docs: {
@@ -114,7 +114,7 @@ export const Success = {
     type: 'success',
     title: '成功',
     message: '操作が正常に完了しました。',
-    confirmText: 'OK',
+    confirmText: '閉じる',
   },
   parameters: {
     docs: {
