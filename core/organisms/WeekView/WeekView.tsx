@@ -20,9 +20,15 @@ interface CalendarStorageProps {
   readonly showAllDayBar?: boolean
   readonly persistEvent: (event: CalendarEvent) => Promise<void>
   readonly removeEvent: (id: string) => Promise<void>
+  /**
+   * イベントクリック時のコールバック。
+   * `true` または truthy を返すとデフォルトの挙動（編集モーダルを開く）を抑制する。
+   * 未指定の場合は従来通り編集モーダルを表示する。
+   */
+  readonly onEventClick?: (event: CalendarEvent, clickedDate: Date) => boolean | void
 }
 
-export function WeekView({ events, showAllDayBar = true, persistEvent, removeEvent }: CalendarStorageProps) {
+export function WeekView({ events, showAllDayBar = true, persistEvent, removeEvent, onEventClick }: CalendarStorageProps) {
   const [selectedDate] = useAtom(selectedDateAtom)
   const setModal = useSetAtom(eventModalAtom)
   const hovered = useAtomValue(hoveredEventAtom)
@@ -122,6 +128,7 @@ export function WeekView({ events, showAllDayBar = true, persistEvent, removeEve
                       isHovered={hovered?.event.id === event.id}
                       onClick={(e) => {
                         e.stopPropagation()
+                        if (onEventClick && onEventClick(event, date)) return
                         setModal({
                           isOpen: true,
                           date,
@@ -184,6 +191,7 @@ export function WeekView({ events, showAllDayBar = true, persistEvent, removeEve
               columnWidth={colWidth}
               onDeleteEvent={handleDelete}
               onUpdateEvent={handleUpdate}
+              onEventClick={onEventClick}
             />
           </div>
           )

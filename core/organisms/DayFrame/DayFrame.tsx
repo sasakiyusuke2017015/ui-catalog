@@ -16,6 +16,11 @@ interface DayFrameProps {
   readonly headerVariant?: HeaderVariant
   readonly onDeleteEvent: (id: string) => void
   readonly onUpdateEvent: (event: CalendarEvent) => void
+  /**
+   * イベントクリック時のコールバック。
+   * `true` または truthy を返すとデフォルトの挙動（編集モーダルを開く）を抑制する。
+   */
+  readonly onEventClick?: (event: CalendarEvent, clickedDate: Date) => boolean | void
 }
 
 const HEADER_VARIANT_CLASS: Record<HeaderVariant, string> = {
@@ -23,7 +28,7 @@ const HEADER_VARIANT_CLASS: Record<HeaderVariant, string> = {
   subtle: styles.subtle,
 }
 
-export function DayFrame({ date, events, headerVariant = 'blur', onDeleteEvent, onUpdateEvent }: DayFrameProps) {
+export function DayFrame({ date, events, headerVariant = 'blur', onDeleteEvent, onUpdateEvent, onEventClick }: DayFrameProps) {
   const today = isToday(date)
   const dayEvents = getEventsForDay(events, date)
   const dow = date.getDay()
@@ -78,6 +83,7 @@ export function DayFrame({ date, events, headerVariant = 'blur', onDeleteEvent, 
           labelWidth={LABEL_WIDTH}
           onDeleteEvent={onDeleteEvent}
           onUpdateEvent={onUpdateEvent}
+          onEventClick={onEventClick}
         />
       </div>
     </div>

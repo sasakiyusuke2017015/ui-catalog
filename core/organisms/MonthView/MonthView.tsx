@@ -54,9 +54,15 @@ interface CalendarStorageProps {
   readonly events: readonly CalendarEvent[]
   readonly persistEvent: (event: CalendarEvent) => Promise<void>
   readonly removeEvent: (id: string) => Promise<void>
+  /**
+   * イベントクリック時のコールバック。
+   * `true` または truthy を返すとデフォルトの挙動（編集モーダルを開く）を抑制する。
+   * 未指定の場合は従来通り編集モーダルを表示する。
+   */
+  readonly onEventClick?: (event: CalendarEvent, clickedDate: Date) => boolean | void
 }
 
-export function MonthView({ events, persistEvent, removeEvent }: CalendarStorageProps) {
+export function MonthView({ events, persistEvent, removeEvent, onEventClick }: CalendarStorageProps) {
   const [selectedDate, setSelectedDate] = useAtom(selectedDateAtom)
   const [hovered, setHovered] = useAtom(hoveredEventAtom)
   const setAnyDrag = useSetAtom(anyDragActiveAtom)
@@ -224,6 +230,7 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
       e.stopPropagation()
       // 繰り返しイベントは仮想インスタンスではなく元イベントで編集
       const original = resolveOriginalEvent(event, events)
+      if (onEventClick && onEventClick(original, clickedDate)) return
       setModal({
         isOpen: true,
         date: clickedDate,
@@ -231,7 +238,7 @@ export function MonthView({ events, persistEvent, removeEvent }: CalendarStorage
         editingEvent: original,
       })
     },
-    [setModal]
+    [setModal, events, onEventClick]
   )
 
   // ドラッグ直後のクリック誤発火を防止

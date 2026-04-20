@@ -21,6 +21,11 @@ export interface AgendaViewProps {
   readonly events: readonly CalendarEvent[]
   readonly persistEvent: (event: CalendarEvent) => Promise<void>
   readonly removeEvent: (id: string) => Promise<void>
+  /**
+   * イベントクリック時のコールバック。
+   * `true` または truthy を返すとデフォルトの挙動（編集モーダルを開く）を抑制する。
+   */
+  readonly onEventClick?: (event: CalendarEvent, clickedDate: Date) => boolean | void
 }
 
 interface DayGroup {
@@ -38,7 +43,7 @@ interface DayGroup {
  * - 今日以降の予定を強調
  * - 空の日は非表示
  */
-export function AgendaView({ events }: AgendaViewProps) {
+export function AgendaView({ events, onEventClick }: AgendaViewProps) {
   const currentDate = useAtomValue(selectedDateAtom)
   const setEditingEvent = useSetAtom(editingEventAtom)
 
@@ -61,7 +66,8 @@ export function AgendaView({ events }: AgendaViewProps) {
       .filter((group) => group.events.length > 0) // 予定がある日のみ
   }, [currentDate, events])
 
-  const handleEventClick = (event: CalendarEvent) => {
+  const handleEventClick = (event: CalendarEvent, clickedDate: Date) => {
+    if (onEventClick && onEventClick(event, clickedDate)) return
     setEditingEvent(event)
   }
 
@@ -106,7 +112,7 @@ export function AgendaView({ events }: AgendaViewProps) {
                   key={event.id}
                   type="button"
                   className={styles.agendaView__eventCard}
-                  onClick={() => handleEventClick(event)}
+                  onClick={() => handleEventClick(event, group.date)}
                   style={{ '--event-color': event.color } as React.CSSProperties}
                 >
                   <div className={styles.agendaView__eventTime}>

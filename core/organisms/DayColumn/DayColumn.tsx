@@ -17,6 +17,11 @@ interface DayColumnProps {
   readonly columnWidth?: number
   readonly onDeleteEvent: (id: string) => void
   readonly onUpdateEvent: (event: CalendarEvent) => void
+  /**
+   * イベントクリック時のコールバック。
+   * `true` または truthy を返すとデフォルトの挙動（編集モーダルを開く）を抑制する。
+   */
+  readonly onEventClick?: (event: CalendarEvent, clickedDate: Date) => boolean | void
 }
 
 export function DayColumn({
@@ -27,6 +32,7 @@ export function DayColumn({
   columnWidth,
   onDeleteEvent,
   onUpdateEvent,
+  onEventClick,
 }: DayColumnProps) {
   const activeSlot = useAtomValue(activeSlotAtom)
   const setActiveSlot = useSetAtom(activeSlotAtom)
@@ -347,6 +353,7 @@ export function DayColumn({
               columnWidth={columnWidth}
               onDelete={onDeleteEvent}
               onUpdate={onUpdateEvent}
+              onEventClick={onEventClick}
             />
           ))}
         </div>

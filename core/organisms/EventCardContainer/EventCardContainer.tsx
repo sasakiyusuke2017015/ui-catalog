@@ -17,6 +17,11 @@ interface EventCardProps {
   readonly columnWidth?: number
   readonly onDelete: (id: string) => void
   readonly onUpdate: (event: CalendarEvent) => void
+  /**
+   * イベントクリック時のコールバック。
+   * `true` または truthy を返すとデフォルトの挙動（編集モーダルを開く）を抑制する。
+   */
+  readonly onEventClick?: (event: CalendarEvent, clickedDate: Date) => boolean | void
 }
 
 export function EventCardContainer({
@@ -29,6 +34,7 @@ export function EventCardContainer({
   columnWidth,
   onDelete,
   onUpdate,
+  onEventClick,
 }: EventCardProps) {
   const drag = useAtomValue(dragAtom)
   const hovered = useAtomValue(hoveredEventAtom)
@@ -43,13 +49,14 @@ export function EventCardContainer({
   const handleClick = useCallback(() => {
     setHovered(null)
     const original = resolveOriginalEvent(event, allEvents)
+    if (onEventClick && onEventClick(original, dayStart)) return
     setModal({
       isOpen: true,
       date: dayStart,
       hour: original.startTime.getHours(),
       editingEvent: original,
     })
-  }, [event, allEvents, dayStart, setHovered, setModal])
+  }, [event, allEvents, dayStart, setHovered, setModal, onEventClick])
 
   const { handleMoveStart, handleResizeTopStart, handleResizeBottomStart } =
     useDragEvent({

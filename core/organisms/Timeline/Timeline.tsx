@@ -14,9 +14,14 @@ interface CalendarStorageProps {
   readonly headerVariant?: 'blur' | 'subtle'
   readonly persistEvent: (event: CalendarEvent) => Promise<void>
   readonly removeEvent: (id: string) => Promise<void>
+  /**
+   * イベントクリック時のコールバック。
+   * `true` または truthy を返すとデフォルトの挙動（編集モーダルを開く）を抑制する。
+   */
+  readonly onEventClick?: (event: CalendarEvent, clickedDate: Date) => boolean | void
 }
 
-export function Timeline({ events, headerVariant, persistEvent, removeEvent }: CalendarStorageProps) {
+export function Timeline({ events, headerVariant, persistEvent, removeEvent, onEventClick }: CalendarStorageProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const { dates } = useInfiniteTimeline(scrollRef)
 
@@ -110,6 +115,7 @@ export function Timeline({ events, headerVariant, persistEvent, removeEvent }: C
                 headerVariant={headerVariant}
                 onDeleteEvent={handleDelete}
                 onUpdateEvent={handleUpdate}
+                onEventClick={onEventClick}
               />
             </div>
           )
