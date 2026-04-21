@@ -51,7 +51,7 @@
 }
 
 /* スクロール同期のアクティブ状態（呼び出し側で toc-active クラス付与） */
-:global(.toc-active) {
+.list a:global(.toc-active) {
   background: var(--accent-soft, #dbeafe);
   color: var(--accent, #2563eb);
   border-left-color: var(--accent, #2563eb);
