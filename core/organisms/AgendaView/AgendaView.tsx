@@ -1,3 +1,5 @@
+'use client'
+
 import { useMemo } from 'react'
 import { Badge } from '../../atoms/Badge'
 import { useAtomValue, useSetAtom } from 'jotai'

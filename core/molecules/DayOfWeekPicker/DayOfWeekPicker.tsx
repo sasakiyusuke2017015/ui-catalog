@@ -1,3 +1,5 @@
+'use client'
+
 import { colors } from '@ui-catalog/core/tokens'
 import type { DayOfWeek } from '../../types/calendar'
 import styles from './DayOfWeekPicker.module.scss'

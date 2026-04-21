@@ -1,3 +1,5 @@
+'use client'
+
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { selectedDateAtom, activeSlotAtom, eventModalAtom, hoveredEventAtom, anyDragActiveAtom } from '../../hooks/calendar/calendar'
 import {

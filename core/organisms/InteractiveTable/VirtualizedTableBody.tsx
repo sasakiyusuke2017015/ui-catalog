@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * VirtualizedTableBody - TanStack Virtualによる仮想化テーブルボディ
  *

@@ -1,3 +1,5 @@
+'use client'
+
 // src/components/common/atoms/Banner.tsx
 import { type ReactNode, useEffect } from 'react';
 import Icon from '../../atoms/Icon';

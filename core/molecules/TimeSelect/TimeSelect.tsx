@@ -1,3 +1,5 @@
+'use client'
+
 import styles from './TimeSelect.module.scss'
 
 // 97個: 00:00 ~ 24:00 (24:00 = 翌日0時、終了時刻用)

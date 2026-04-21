@@ -1,3 +1,5 @@
+'use client'
+
 // src/components/common/molecules/Toast.tsx
 import { FC, useEffect, useState } from 'react';
 

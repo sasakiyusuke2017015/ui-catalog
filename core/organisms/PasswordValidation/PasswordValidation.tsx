@@ -1,3 +1,5 @@
+'use client'
+
 import { FC, useMemo } from 'react';
 
 import styles from './PasswordValidation.module.scss';

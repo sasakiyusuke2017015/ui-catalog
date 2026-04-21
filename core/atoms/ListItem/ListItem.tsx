@@ -1,3 +1,5 @@
+'use client'
+
 import { FC, ReactNode, CSSProperties } from 'react'
 
 import { colors } from '../../tokens'

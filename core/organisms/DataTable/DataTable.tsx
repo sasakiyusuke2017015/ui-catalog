@@ -1,3 +1,5 @@
+'use client'
+
 import { type FC, useState, useMemo, useRef, useEffect } from 'react'
 import { cn } from '../../utils/cn'
 import { Input } from '../../molecules/Input'

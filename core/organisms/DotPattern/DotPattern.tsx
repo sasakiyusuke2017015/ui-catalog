@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * MagicUI - Dot Pattern Background
  * ドットパターン背景コンポーネント

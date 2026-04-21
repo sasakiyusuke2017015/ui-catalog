@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * MagicUI - Number Ticker
  * 数値カウントアップアニメーションコンポーネント

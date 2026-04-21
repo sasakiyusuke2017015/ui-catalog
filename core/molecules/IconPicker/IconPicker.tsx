@@ -1,3 +1,5 @@
+'use client'
+
 import Icon from '../../atoms/Icon'
 import type { IconName } from '../../constants'
 import styles from './IconPicker.module.scss'

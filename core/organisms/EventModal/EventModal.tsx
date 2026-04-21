@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react'
 import { useAtom, useSetAtom, useAtomValue } from 'jotai'
 import { eventModalAtom, activeSlotAtom, eventsAtom } from '../../hooks/calendar/calendar'

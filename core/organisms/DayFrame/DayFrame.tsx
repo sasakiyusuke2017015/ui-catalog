@@ -1,3 +1,5 @@
+'use client'
+
 import { useAtomValue } from 'jotai'
 import { formatDayHeader, isToday, getEventsForDay } from '../../utils/calendar/dates'
 import { DayColumn } from '../DayColumn/DayColumn'

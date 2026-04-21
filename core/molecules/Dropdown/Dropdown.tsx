@@ -1,3 +1,5 @@
+'use client'
+
 import { FC, ReactNode, useRef, useEffect, useState } from 'react'
 
 import { colors } from '../../tokens'

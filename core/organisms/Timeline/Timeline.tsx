@@ -1,3 +1,5 @@
+'use client'
+
 import { useRef, useCallback, useState, useEffect, useMemo } from 'react'
 import { useInfiniteTimeline } from '../../hooks/calendar/useInfiniteTimeline'
 import { DayFrame } from '../DayFrame/DayFrame'

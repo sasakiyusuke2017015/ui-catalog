@@ -1,3 +1,5 @@
+'use client'
+
 // src/components/common/atoms/Slider.tsx
 import { FC, ChangeEvent } from 'react';
 

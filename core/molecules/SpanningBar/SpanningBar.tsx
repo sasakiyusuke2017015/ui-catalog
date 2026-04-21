@@ -1,3 +1,5 @@
+'use client'
+
 import { startOfDay } from 'date-fns'
 import { IconLabel } from '../IconLabel/IconLabel'
 import type { CalendarEvent } from '../../types/calendar'

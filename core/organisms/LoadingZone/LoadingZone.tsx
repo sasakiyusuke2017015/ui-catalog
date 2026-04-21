@@ -1,3 +1,5 @@
+'use client'
+
 // src/components/organisms/LoadingZone.tsx
 // 汎用ローディングゾーンコンポーネント
 import { FC, useState, useEffect, useRef } from 'react';

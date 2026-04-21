@@ -1,3 +1,5 @@
+'use client'
+
 // src/components/common/molecules/Dialog.tsx
 import { FC, useEffect } from 'react';
 

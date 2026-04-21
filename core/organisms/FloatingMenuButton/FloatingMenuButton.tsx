@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * FloatingMenuButton コンポーネント
  * スマホ/デスクトップ共通のフローティングメニューボタン

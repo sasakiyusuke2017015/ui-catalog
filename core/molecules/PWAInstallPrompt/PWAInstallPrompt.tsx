@@ -1,3 +1,5 @@
+'use client'
+
 import { FC, useEffect, useState } from 'react';
 import { Button } from '../../molecules/Button';
 import { IconButton } from '../../molecules/IconButton';

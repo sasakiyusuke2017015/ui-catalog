@@ -1,3 +1,5 @@
+'use client'
+
 import { colors } from '@ui-catalog/core/tokens'
 import styles from './PillSelect.module.scss'
 

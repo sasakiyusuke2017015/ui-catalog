@@ -1,3 +1,5 @@
+'use client'
+
 // components/molecules/KeyButton.tsx
 import { Button } from '../../molecules/Button';
 

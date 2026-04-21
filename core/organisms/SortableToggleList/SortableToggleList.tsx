@@ -1,3 +1,5 @@
+'use client'
+
 // src/components/common/organisms/SortableToggleList.tsx
 import { useCallback } from 'react';
 

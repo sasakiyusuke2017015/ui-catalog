@@ -1,3 +1,5 @@
+'use client'
+
 import { useCallback } from 'react'
 import { format, addDays, subDays } from 'date-fns'
 import { useAtom } from 'jotai'

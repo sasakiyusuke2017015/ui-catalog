@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * MagicUI - Grid Pattern Background
  * グリッドパターン背景コンポーネント

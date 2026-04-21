@@ -1,3 +1,5 @@
+'use client'
+
 import type { FC } from 'react'
 import { cn } from '../../utils/cn'
 import styles from './FileLink.module.scss'

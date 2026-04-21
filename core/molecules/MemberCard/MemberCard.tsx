@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * MemberCard - 汎用メンバーカードコンポーネント
  *

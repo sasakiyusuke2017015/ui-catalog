@@ -1,3 +1,5 @@
+'use client'
+
 // SurveyCard - アンケートカードコンポーネント
 import { FC } from 'react';
 

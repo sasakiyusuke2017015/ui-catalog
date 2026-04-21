@@ -1,3 +1,5 @@
+'use client'
+
 import { ReactNode, KeyboardEvent } from 'react'
 
 import styles from './Card.module.scss'

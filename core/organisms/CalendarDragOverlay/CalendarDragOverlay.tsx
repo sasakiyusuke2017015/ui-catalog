@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * DragOverlay - ghost card that follows the cursor during drag operations.
  * Uses useDragGhost hook for ref-based DOM manipulation + rAF.

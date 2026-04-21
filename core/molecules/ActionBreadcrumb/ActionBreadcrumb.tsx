@@ -1,3 +1,5 @@
+'use client'
+
 import { useOperationLog } from '../../../infra/devtools'
 import styles from './ActionBreadcrumb.module.scss'
 

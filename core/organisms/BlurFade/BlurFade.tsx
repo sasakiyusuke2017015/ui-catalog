@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * MagicUI - Blur Fade
  * ブラーフェードインアニメーションコンポーネント

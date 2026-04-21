@@ -1,3 +1,5 @@
+'use client'
+
 import styles from './ChatFab.module.scss'
 
 export interface ChatFabProps {

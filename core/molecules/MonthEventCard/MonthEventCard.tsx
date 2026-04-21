@@ -1,3 +1,5 @@
+'use client'
+
 import { format } from 'date-fns'
 import Icon from '../../atoms/Icon'
 import type { IconName } from '../../constants'

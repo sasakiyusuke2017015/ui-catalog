@@ -1,3 +1,5 @@
+'use client'
+
 import { FC, ReactNode, Children, cloneElement, isValidElement, ReactElement } from 'react';
 
 import { IconName } from '../../constants';

@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * renderCellContent - セルコンテンツ描画関数
  *

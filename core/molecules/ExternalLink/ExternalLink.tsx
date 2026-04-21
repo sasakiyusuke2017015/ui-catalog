@@ -1,3 +1,5 @@
+'use client'
+
 import { FC, ReactNode, AnchorHTMLAttributes } from 'react';
 
 import { useOperationLog } from '../../../infra/devtools';

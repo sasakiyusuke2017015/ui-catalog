@@ -1,3 +1,5 @@
+'use client'
+
 import type { ReactNode, DragEvent, MouseEvent, KeyboardEvent } from 'react'
 import { cn } from '../../utils/cn'
 import styles from './TreeView.module.scss'

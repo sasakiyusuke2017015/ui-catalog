@@ -1,3 +1,5 @@
+'use client'
+
 import { InputHTMLAttributes, forwardRef, useState, ChangeEvent } from 'react'
 
 import { useOperationLog } from '../../../infra/devtools'

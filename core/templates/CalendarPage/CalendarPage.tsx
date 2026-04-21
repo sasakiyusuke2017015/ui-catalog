@@ -1,3 +1,5 @@
+'use client'
+
 import { lazy, Suspense } from 'react'
 import { useAtomValue } from 'jotai'
 import { viewModeAtom, hoveredEventAtom, anyDragActiveAtom } from '../../hooks/calendar/calendar'

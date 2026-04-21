@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, type ReactNode } from 'react'
 import { useOperationLog } from '../../../infra/devtools'
 import styles from './Tabs.module.scss'

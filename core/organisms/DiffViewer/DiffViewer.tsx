@@ -1,3 +1,5 @@
+'use client'
+
 import { cn } from '../../utils/cn'
 import { IconButton } from '../../molecules/IconButton'
 import styles from './DiffViewer.module.scss'

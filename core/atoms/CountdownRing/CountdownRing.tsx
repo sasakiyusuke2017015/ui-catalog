@@ -1,3 +1,5 @@
+'use client'
+
 /**
  * CountdownRing
  * SVG circular countdown with CSS animation.

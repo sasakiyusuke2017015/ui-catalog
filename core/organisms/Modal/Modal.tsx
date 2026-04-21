@@ -1,3 +1,5 @@
+'use client'
+
 import { FC, ReactNode, useEffect } from 'react';
 
 import { IconButton } from '../../molecules/IconButton';

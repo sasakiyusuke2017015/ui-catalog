@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useRef, useState, ReactNode, FC, CSSProperties } from 'react';
 
 import { useOperationLog } from '../../../infra/devtools';

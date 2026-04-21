@@ -1,3 +1,5 @@
+'use client'
+
 import { useRef, useState, useEffect, useCallback } from 'react'
 import Icon from '../../atoms/Icon'
 import type { IconName } from '../../constants'

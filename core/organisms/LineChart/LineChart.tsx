@@ -1,3 +1,5 @@
+'use client'
+
 import { FC, useRef, useState, useEffect } from 'react';
 
 interface ChartDataset {
