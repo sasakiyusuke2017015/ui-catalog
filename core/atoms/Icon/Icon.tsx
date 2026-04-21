@@ -874,6 +874,268 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
       opacity="0.5"
     />
   ),
+  ['loading-clock']: () => (
+    <g>
+      <circle className={styles.stroke} cx="12" cy="12" r="10" strokeWidth="2" opacity="0.2" />
+      <line className={styles.stroke} x1="12" y1="12" x2="12" y2="5" strokeWidth="2" strokeLinecap="round">
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite" />
+      </line>
+      <circle className={styles.fill} cx="12" cy="12" r="1" />
+    </g>
+  ),
+  ['loading-orbit']: () => (
+    <g>
+      <circle className={styles.stroke} cx="12" cy="12" r="10" strokeWidth="1" opacity="0.1" />
+      <circle className={styles.fill} cx="12" cy="2" r="2">
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="2s" repeatCount="indefinite" />
+      </circle>
+      <circle className={styles.fill} cx="12" cy="22" r="1.5" opacity="0.6">
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="-360 12 12" dur="1.5s" repeatCount="indefinite" />
+      </circle>
+    </g>
+  ),
+  ['loading-morph']: () => (
+    <rect className={styles.fill} x="6" y="6" width="12" height="12" rx="0">
+      <animate attributeName="rx" values="0;6;0" dur="2s" repeatCount="indefinite" />
+      <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="2s" repeatCount="indefinite" />
+    </rect>
+  ),
+  ['loading-triangle']: () => (
+    <g>
+      <polygon className={styles.stroke} points="12,2 22,20 2,20" strokeWidth="2">
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite" />
+      </polygon>
+      <circle className={styles.fill} cx="12" cy="12" r="2" />
+    </g>
+  ),
+  ['loading-dna']: () => (
+    <g>
+      <ellipse className={styles.fill} cx="8" cy="4" rx="2" ry="1.5">
+        <animate attributeName="cy" values="4;12;20;12;4" dur="2s" repeatCount="indefinite" />
+        <animate attributeName="rx" values="2;4;2;4;2" dur="2s" repeatCount="indefinite" />
+      </ellipse>
+      <ellipse className={styles.fill} cx="16" cy="20" rx="2" ry="1.5">
+        <animate attributeName="cy" values="20;12;4;12;20" dur="2s" repeatCount="indefinite" />
+        <animate attributeName="rx" values="2;4;2;4;2" dur="2s" repeatCount="indefinite" />
+      </ellipse>
+      <line className={styles.stroke} x1="8" y1="8" x2="16" y2="8" strokeWidth="1.5" opacity="0.5">
+        <animate attributeName="y1" values="8;12;16;12;8" dur="2s" repeatCount="indefinite" />
+        <animate attributeName="y2" values="8;12;16;12;8" dur="2s" repeatCount="indefinite" />
+      </line>
+      <line className={styles.stroke} x1="8" y1="12" x2="16" y2="12" strokeWidth="1.5" opacity="0.7" />
+      <line className={styles.stroke} x1="8" y1="16" x2="16" y2="16" strokeWidth="1.5" opacity="0.5">
+        <animate attributeName="y1" values="16;12;8;12;16" dur="2s" repeatCount="indefinite" />
+        <animate attributeName="y2" values="16;12;8;12;16" dur="2s" repeatCount="indefinite" />
+      </line>
+    </g>
+  ),
+  ['loading-atom']: () => (
+    <g>
+      <circle className={styles.fill} cx="12" cy="12" r="3">
+        <animate attributeName="r" values="3;3.5;3" dur="1s" repeatCount="indefinite" />
+      </circle>
+      <ellipse className={styles.stroke} cx="12" cy="12" rx="10" ry="4" strokeWidth="1" opacity="0.3">
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="3s" repeatCount="indefinite" />
+      </ellipse>
+      <circle className={styles.fill} cx="22" cy="12" r="1.5">
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1.5s" repeatCount="indefinite" />
+      </circle>
+      <ellipse className={styles.stroke} cx="12" cy="12" rx="10" ry="4" strokeWidth="1" opacity="0.3" transform="rotate(60 12 12)">
+        <animateTransform attributeName="transform" type="rotate" from="60 12 12" to="420 12 12" dur="3s" repeatCount="indefinite" />
+      </ellipse>
+      <circle className={styles.fill} cx="22" cy="12" r="1.5" transform="rotate(60 12 12)">
+        <animateTransform attributeName="transform" type="rotate" from="60 12 12" to="420 12 12" dur="2s" repeatCount="indefinite" />
+      </circle>
+      <ellipse className={styles.stroke} cx="12" cy="12" rx="10" ry="4" strokeWidth="1" opacity="0.3" transform="rotate(-60 12 12)">
+        <animateTransform attributeName="transform" type="rotate" from="-60 12 12" to="300 12 12" dur="3s" repeatCount="indefinite" />
+      </ellipse>
+      <circle className={styles.fill} cx="22" cy="12" r="1.5" transform="rotate(-60 12 12)">
+        <animateTransform attributeName="transform" type="rotate" from="-60 12 12" to="300 12 12" dur="2.5s" repeatCount="indefinite" />
+      </circle>
+    </g>
+  ),
+  ['loading-heartbeat']: () => (
+    <g className={styles.stroke} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="2" y1="12" x2="22" y2="12" opacity="0.2" />
+      <polyline points="2,12 6,12 8,12 9,6 10,18 11,8 12,14 13,12 17,12 22,12">
+        <animate attributeName="stroke-dasharray" values="0 100;50 100;100 100" dur="1.5s" repeatCount="indefinite" />
+        <animate attributeName="stroke-dashoffset" values="0;-25;-50" dur="1.5s" repeatCount="indefinite" />
+      </polyline>
+    </g>
+  ),
+  ['loading-hourglass']: () => (
+    <g className={styles.stroke} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 3h14M5 21h14" />
+      <path d="M6 3v3a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3" />
+      <path d="M6 21v-3a6 6 0 0 1 6-6 6 6 0 0 1 6 6v3" />
+      <path d="M12 12v3" strokeWidth="3">
+        <animate attributeName="d" values="M12 12v0;M12 12v3;M12 12v0" dur="2s" repeatCount="indefinite" />
+      </path>
+      <animateTransform attributeName="transform" type="rotate" values="0 12 12;0 12 12;180 12 12;180 12 12;360 12 12" dur="4s" repeatCount="indefinite" keyTimes="0;0.4;0.5;0.9;1" />
+    </g>
+  ),
+  ['loading-gears']: () => (
+    <g>
+      <g className={styles.stroke} strokeWidth="1">
+        <circle cx="9" cy="12" r="5" strokeWidth="1.5" />
+        <circle className={styles.fill} cx="9" cy="12" r="2" />
+        {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
+          <rect key={angle} className={styles.fill} x="8" y="5" width="2" height="3" rx="0.5" transform={`rotate(${angle} 9 12)`} />
+        ))}
+        <animateTransform attributeName="transform" type="rotate" from="0 9 12" to="360 9 12" dur="3s" repeatCount="indefinite" />
+      </g>
+      <g className={styles.stroke} strokeWidth="1">
+        <circle cx="17" cy="10" r="3.5" strokeWidth="1.5" />
+        <circle className={styles.fill} cx="17" cy="10" r="1.5" />
+        {[0, 60, 120, 180, 240, 300].map((angle) => (
+          <rect key={angle} className={styles.fill} x="16.25" y="5" width="1.5" height="2" rx="0.5" transform={`rotate(${angle} 17 10)`} />
+        ))}
+        <animateTransform attributeName="transform" type="rotate" from="0 17 10" to="-360 17 10" dur="2s" repeatCount="indefinite" />
+      </g>
+    </g>
+  ),
+  ['loading-wave']: () => (
+    <g className={styles.stroke} strokeWidth="2" strokeLinecap="round">
+      <path d="M2 12 Q 6 6, 12 12 T 22 12" opacity="0.3" />
+      <path d="M2 12 Q 6 6, 12 12 T 22 12">
+        <animate
+          attributeName="d"
+          values="M2 12 Q 6 6, 12 12 T 22 12;M2 12 Q 6 18, 12 12 T 22 12;M2 12 Q 6 6, 12 12 T 22 12"
+          dur="1s"
+          repeatCount="indefinite"
+        />
+      </path>
+      <circle className={styles.fill} cx="2" cy="12" r="2">
+        <animate attributeName="cx" values="2;22;2" dur="2s" repeatCount="indefinite" />
+        <animate attributeName="cy" values="12;12;12" dur="2s" repeatCount="indefinite" />
+      </circle>
+    </g>
+  ),
+  ['loading-radar']: () => (
+    <g>
+      <circle className={styles.stroke} cx="12" cy="12" r="10" strokeWidth="1" opacity="0.2" />
+      <circle className={styles.stroke} cx="12" cy="12" r="7" strokeWidth="1" opacity="0.2" />
+      <circle className={styles.stroke} cx="12" cy="12" r="4" strokeWidth="1" opacity="0.2" />
+      <circle className={styles.fill} cx="12" cy="12" r="1" />
+      <line className={styles.stroke} x1="12" y1="12" x2="12" y2="2" strokeWidth="2" strokeLinecap="round">
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="2s" repeatCount="indefinite" />
+      </line>
+      <path className={styles.fill} d="M12 12 L12 2 A10 10 0 0 1 20 8 Z" opacity="0.15">
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="2s" repeatCount="indefinite" />
+      </path>
+    </g>
+  ),
+  ['loading-cube3d']: () => (
+    <g className={styles.stroke} strokeWidth="1.5" strokeLinejoin="round">
+      <polygon points="12,2 20,7 20,17 12,22 4,17 4,7" opacity="0.3" />
+      <line x1="12" y1="2" x2="12" y2="12" />
+      <line x1="12" y1="12" x2="4" y2="17" />
+      <line x1="12" y1="12" x2="20" y2="17" />
+      <polygon className={styles.fill} points="12,2 20,7 12,12 4,7" opacity="0.2">
+        <animate attributeName="opacity" values="0.2;0.5;0.2" dur="1.5s" repeatCount="indefinite" />
+      </polygon>
+      <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="4s" repeatCount="indefinite" />
+    </g>
+  ),
+  ['loading-cube3d-glow']: () => (
+    <g className={styles.stroke} strokeWidth="1.5">
+      <g opacity="0">
+        <animate attributeName="opacity" values="1;1;0;0;0;0;1" dur="6s" repeatCount="indefinite" />
+        <polygon points="12,2 20,7 20,17 12,22 4,17 4,7" strokeLinejoin="round" />
+        <line x1="12" y1="2" x2="12" y2="12" />
+        <line x1="12" y1="12" x2="4" y2="17" />
+        <line x1="12" y1="12" x2="20" y2="17" />
+        <polygon className={styles.fill} points="12,2 20,7 12,12 4,7" opacity="0.3" strokeLinejoin="round" />
+      </g>
+      <g opacity="0">
+        <animate attributeName="opacity" values="0;0;1;1;0;0;0" dur="6s" repeatCount="indefinite" />
+        <ellipse cx="12" cy="12" rx="9" ry="4" />
+        <ellipse cx="12" cy="12" rx="9" ry="4" transform="rotate(60 12 12)" />
+        <ellipse cx="12" cy="12" rx="9" ry="4" transform="rotate(120 12 12)" />
+        <circle className={styles.fill} cx="12" cy="12" r="2.5" />
+      </g>
+      <g opacity="0">
+        <animate attributeName="opacity" values="0;0;0;0;1;1;0" dur="6s" repeatCount="indefinite" />
+        <circle cx="12" cy="12" r="3" />
+        <circle cx="12" cy="12" r="6" opacity="0.7" />
+        <circle cx="12" cy="12" r="9" opacity="0.4" />
+        <circle className={styles.fill} cx="12" cy="12" r="2" />
+      </g>
+    </g>
+  ),
+  ['loading-rings']: () => (
+    <g className={styles.stroke} strokeWidth="2">
+      <circle cx="12" cy="12" r="10" opacity="0.2" />
+      <circle cx="12" cy="12" r="10" strokeDasharray="15 48">
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1.5s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="12" cy="12" r="6" opacity="0.2" />
+      <circle cx="12" cy="12" r="6" strokeDasharray="10 28">
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="-360 12 12" dur="1s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="12" cy="12" r="2" strokeWidth="3">
+        <animate attributeName="r" values="2;3;2" dur="0.75s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="1;0.5;1" dur="0.75s" repeatCount="indefinite" />
+      </circle>
+    </g>
+  ),
+  ['loading-eclipse']: () => (
+    <g>
+      <circle className={styles.fill} cx="12" cy="12" r="6" opacity="0.3" />
+      <circle className={styles.fill} cx="12" cy="12" r="6">
+        <animate attributeName="cx" values="7;12;17;12;7" dur="3s" repeatCount="indefinite" />
+      </circle>
+      <circle className={styles.stroke} cx="12" cy="12" r="8" strokeWidth="1" opacity="0.5">
+        <animate attributeName="r" values="8;9;8" dur="1.5s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.5;0.2;0.5" dur="1.5s" repeatCount="indefinite" />
+      </circle>
+    </g>
+  ),
+  ['loading-interview']: () => (
+    <g>
+      <g>
+        <path className={styles.fill} d="M1 19a4 4 0 018 0" opacity="0.9" />
+        <circle className={styles.fill} cx="5" cy="11" r="2.5" opacity="0.9">
+          <animate
+            attributeName="cy"
+            values="11;9.8;11.3;10.2;11"
+            dur="1.618s"
+            repeatCount="indefinite"
+            calcMode="spline"
+            keySplines="0.34 0.96 0.64 1; 0.4 0 0.6 1; 0.34 0.96 0.64 1; 0.4 0 0.6 1"
+          />
+        </circle>
+      </g>
+      <g>
+        <path className={styles.fill} d="M15 19a4 4 0 018 0" opacity="0.9" />
+        <circle className={styles.fill} cx="19" cy="11" r="2.5" opacity="0.9">
+          <animate
+            attributeName="cy"
+            values="11;10.2;11.3;9.8;11"
+            dur="1.618s"
+            repeatCount="indefinite"
+            begin="0.618s"
+            calcMode="spline"
+            keySplines="0.34 0.96 0.64 1; 0.4 0 0.6 1; 0.34 0.96 0.64 1; 0.4 0 0.6 1"
+          />
+        </circle>
+      </g>
+      <g>
+        <circle className={styles.fill} cx="10" cy="3" r="0.8" opacity="0.9">
+          <animate attributeName="cy" values="3;2.5;3.2;2.7;3" dur="2.618s" repeatCount="indefinite" />
+          <animate attributeName="r" values="0.8;0.9;0.75;0.85;0.8" dur="1.618s" repeatCount="indefinite" />
+        </circle>
+        <circle className={styles.fill} cx="12" cy="2.5" r="1" opacity="0.95">
+          <animate attributeName="cy" values="2.5;2;2.8;2.3;2.5" dur="2.618s" repeatCount="indefinite" begin="0.382s" />
+          <animate attributeName="r" values="1;1.1;0.9;1.05;1" dur="1.618s" repeatCount="indefinite" />
+        </circle>
+        <circle className={styles.fill} cx="14" cy="3" r="0.8" opacity="0.9">
+          <animate attributeName="cy" values="3;2.7;3.1;2.5;3" dur="2.618s" repeatCount="indefinite" begin="0.764s" />
+          <animate attributeName="r" values="0.8;0.85;0.75;0.9;0.8" dur="1.618s" repeatCount="indefinite" />
+        </circle>
+      </g>
+    </g>
+  ),
 };
 
 // ========================================
@@ -883,22 +1145,22 @@ const PRESET_MAP: Record<LoadingPreset, { name: IconName }> = {
   spinner: { name: 'spinner' },
   dots: { name: 'loading-dots' },
   pulse: { name: 'loading-pulse' },
-  cube: { name: 'spinner' },
-  'cube-glow': { name: 'spinner' },
-  interview: { name: 'spinner' },
-  dna: { name: 'spinner' },
-  atom: { name: 'spinner' },
-  rings: { name: 'spinner' },
-  gears: { name: 'spinner' },
-  hourglass: { name: 'spinner' },
-  wave: { name: 'spinner' },
-  radar: { name: 'spinner' },
-  eclipse: { name: 'spinner' },
-  clock: { name: 'spinner' },
-  morph: { name: 'spinner' },
-  orbit: { name: 'spinner' },
-  triangle: { name: 'spinner' },
-  heartbeat: { name: 'spinner' },
+  cube: { name: 'loading-cube3d' },
+  'cube-glow': { name: 'loading-cube3d-glow' },
+  interview: { name: 'loading-interview' },
+  dna: { name: 'loading-dna' },
+  atom: { name: 'loading-atom' },
+  rings: { name: 'loading-rings' },
+  gears: { name: 'loading-gears' },
+  hourglass: { name: 'loading-hourglass' },
+  wave: { name: 'loading-wave' },
+  radar: { name: 'loading-radar' },
+  eclipse: { name: 'loading-eclipse' },
+  clock: { name: 'loading-clock' },
+  morph: { name: 'loading-morph' },
+  orbit: { name: 'loading-orbit' },
+  triangle: { name: 'loading-triangle' },
+  heartbeat: { name: 'loading-heartbeat' },
 };
 
 // ========================================
