@@ -1137,6 +1137,119 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
       </g>
     </g>
   ),
+  ['loading-bars']: () => (
+    <g>
+      <rect className={styles.fill} x="11" y="1" width="2" height="6" rx="1">
+        <animateTransform attributeName="transform" type="rotate" values="0 12 12;360 12 12" dur="0.8s" repeatCount="indefinite" />
+      </rect>
+      <rect className={styles.fill} x="11" y="17" width="2" height="6" rx="1" opacity="0.5">
+        <animateTransform attributeName="transform" type="rotate" values="0 12 12;360 12 12" dur="0.8s" repeatCount="indefinite" />
+      </rect>
+      <rect className={styles.fill} x="17" y="11" width="6" height="2" rx="1" opacity="0.75">
+        <animateTransform attributeName="transform" type="rotate" values="0 12 12;360 12 12" dur="0.8s" repeatCount="indefinite" />
+      </rect>
+      <rect className={styles.fill} x="1" y="11" width="6" height="2" rx="1" opacity="0.25">
+        <animateTransform attributeName="transform" type="rotate" values="0 12 12;360 12 12" dur="0.8s" repeatCount="indefinite" />
+      </rect>
+    </g>
+  ),
+  ['loading-wifi']: () => (
+    <g>
+      <path className={styles.stroke} d="M5 12.55a11.8 11.8 0 0 1 14 0" strokeWidth="2" strokeLinecap="round">
+        <animate attributeName="opacity" values="0.2;1;0.2" dur="1.2s" repeatCount="indefinite" />
+      </path>
+      <path className={styles.stroke} d="M8.5 16a6.5 6.5 0 0 1 7 0" strokeWidth="2" strokeLinecap="round">
+        <animate attributeName="opacity" values="0.2;1;0.2" dur="1.2s" repeatCount="indefinite" begin="0.1s" />
+      </path>
+      <circle className={styles.fill} cx="12" cy="19" r="1">
+        <animate attributeName="opacity" values="0.2;1;0.2" dur="1.2s" repeatCount="indefinite" begin="0.2s" />
+      </circle>
+    </g>
+  ),
+  ['loading-progress']: () => (
+    <g>
+      <rect className={styles.fill} x="0" y="10" width="24" height="4" rx="2" opacity="0.1" />
+      <rect className={styles.fill} x="0" y="10" width="6" height="4" rx="2">
+        <animate attributeName="x" values="0;18;0" dur="1.5s" repeatCount="indefinite" />
+      </rect>
+    </g>
+  ),
+  ['loading-star']: () => (
+    <g>
+      <polygon
+        className={styles.stroke}
+        points="12,2 14.5,8.5 21.5,9 16.5,13.5 18,20.5 12,17 6,20.5 7.5,13.5 2.5,9 9.5,8.5"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+        opacity="0.4"
+      >
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="3s" repeatCount="indefinite" />
+      </polygon>
+      <polygon
+        className={styles.stroke}
+        points="12,5 13.5,9.5 18,10 15,12.5 16,17 12,14.5 8,17 9,12.5 6,10 10.5,9.5"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+        opacity="0.7"
+      >
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="-360 12 12" dur="2s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.7;1;0.7" dur="1s" repeatCount="indefinite" />
+      </polygon>
+      <circle className={styles.fill} cx="12" cy="12" r="1.5">
+        <animate attributeName="r" values="1.5;2.5;1.5" dur="1s" repeatCount="indefinite" />
+      </circle>
+    </g>
+  ),
+  ['loading-ripple']: () => (
+    <g className={styles.stroke} strokeWidth="2">
+      <circle cx="12" cy="12" r="1">
+        <animate attributeName="r" values="1;10" dur="1.5s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="1;0" dur="1.5s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="12" cy="12" r="1">
+        <animate attributeName="r" values="1;10" dur="1.5s" repeatCount="indefinite" begin="0.5s" />
+        <animate attributeName="opacity" values="1;0" dur="1.5s" repeatCount="indefinite" begin="0.5s" />
+      </circle>
+      <circle cx="12" cy="12" r="1">
+        <animate attributeName="r" values="1;10" dur="1.5s" repeatCount="indefinite" begin="1s" />
+        <animate attributeName="opacity" values="1;0" dur="1.5s" repeatCount="indefinite" begin="1s" />
+      </circle>
+    </g>
+  ),
+  ['loading-infinity']: () => (
+    <g className={styles.stroke} strokeWidth="2" strokeLinecap="round">
+      <path d="M12 12c-2-2-4-4-6-4s-4 2-4 4 2 4 4 4c2 0 4-2 6-4s4-4 6-4 4 2 4 4-2 4-4 4c-2 0-4-2-6-4" opacity="0.2" />
+      <circle className={styles.fill} cx="12" cy="12" r="2">
+        <animateMotion dur="2s" repeatCount="indefinite" path="M0 0c-2-2-4-4-6-4s-4 2-4 4 2 4 4 4c2 0 4-2 6-4s4-4 6-4 4 2 4 4-2 4-4 4c-2 0-4-2-6-4" />
+      </circle>
+    </g>
+  ),
+  ['loading-prism']: () => (
+    <g>
+      <polygon className={styles.stroke} points="12,3 21,20 3,20" strokeWidth="1.5" strokeLinejoin="round" opacity="0.7" />
+      <line x1="2" y1="11.5" x2="8" y2="11.5" stroke="#ffffff" strokeWidth="1.2" strokeLinecap="round" opacity="0.8">
+        <animate attributeName="opacity" values="0;0.8;0" dur="2s" repeatCount="indefinite" />
+      </line>
+      <line x1="16" y1="8" x2="22" y2="6" stroke="#ef4444" strokeWidth="1.2" strokeLinecap="round">
+        <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="0s" />
+      </line>
+      <line x1="16" y1="10" x2="22" y2="9" stroke="#f59e0b" strokeWidth="1.2" strokeLinecap="round">
+        <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="0.1s" />
+      </line>
+      <line x1="16" y1="12" x2="22" y2="12" stroke="#eab308" strokeWidth="1.2" strokeLinecap="round">
+        <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="0.2s" />
+      </line>
+      <line x1="16" y1="14" x2="22" y2="15" stroke="#22c55e" strokeWidth="1.2" strokeLinecap="round">
+        <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="0.3s" />
+      </line>
+      <line x1="16" y1="16" x2="22" y2="18" stroke="#3b82f6" strokeWidth="1.2" strokeLinecap="round">
+        <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="0.4s" />
+      </line>
+      <line x1="16" y1="18" x2="22" y2="21" stroke="#8b5cf6" strokeWidth="1.2" strokeLinecap="round">
+        <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="0.5s" />
+      </line>
+    </g>
+  ),
 };
 
 // ========================================
@@ -1148,20 +1261,29 @@ const PRESET_MAP: Record<LoadingPreset, PresetConfig> = {
   pulse: { name: 'loading-pulse', color: 'primary', animation: 'pulse-scale' },
   cube: { name: 'loading-cube3d', color: 'info' },
   'cube-glow': { name: 'loading-cube3d-glow', color: 'info', glowStrong: true },
-  interview: { name: 'loading-interview', color: 'primary' },
+  interview: { name: 'loading-interview', color: 'primary', animation: 'float' },
   dna: { name: 'loading-dna', color: 'success' },
-  atom: { name: 'loading-atom', color: 'info', glow: true },
+  atom: { name: 'loading-atom', color: 'info', glow: true, animation: 'pulse' },
   rings: { name: 'loading-rings', color: 'primary' },
   gears: { name: 'loading-gears', color: 'muted' },
   hourglass: { name: 'loading-hourglass', color: 'warning' },
   wave: { name: 'loading-wave', color: 'info' },
-  radar: { name: 'loading-radar', color: 'success', glow: true },
-  eclipse: { name: 'loading-eclipse', color: 'warning', glow: true },
+  radar: { name: 'loading-radar', color: 'success', glow: true, animation: 'ping' },
+  eclipse: { name: 'loading-eclipse', color: 'warning', glowStrong: true, animation: 'glow-pulse' },
   clock: { name: 'loading-clock', color: 'current' },
-  morph: { name: 'loading-morph', color: 'info', animation: 'float' },
+  morph: { name: 'loading-morph', color: 'info', animation: 'liquid' },
   orbit: { name: 'loading-orbit', color: 'primary' },
   triangle: { name: 'loading-triangle', color: 'warning' },
-  heartbeat: { name: 'loading-heartbeat', color: 'danger' },
+  heartbeat: { name: 'loading-heartbeat', color: 'danger', animation: 'heartbeat' },
+  // 復元シリーズ
+  bars: { name: 'loading-bars', color: 'primary' },
+  wifi: { name: 'loading-wifi', color: 'info', glow: true },
+  progress: { name: 'loading-progress', color: 'primary' },
+  infinity: { name: 'loading-infinity', color: 'info', glow: true },
+  ripple: { name: 'loading-ripple', color: 'info' },
+  star: { name: 'loading-star', color: 'warning', glowStrong: true },
+  // サプライズ: プリズム分光（7色の虹）
+  prism: { name: 'loading-prism', glowStrong: true, hover: 'glow' },
 };
 
 // ========================================

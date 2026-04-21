@@ -48,7 +48,16 @@ export type LoadingPreset =
   | 'morph'
   | 'orbit'
   | 'triangle'
-  | 'heartbeat';
+  | 'heartbeat'
+  // 復元シリーズ
+  | 'bars'
+  | 'wifi'
+  | 'progress'
+  | 'infinity'
+  | 'ripple'
+  | 'star'
+  // サプライズ
+  | 'prism';
 
 /**
  * SCSS ベースのアニメーションプリセット

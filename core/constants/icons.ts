@@ -122,6 +122,7 @@ export const ALL_ICON_TYPES = [
   'loading-rings',
   'loading-eclipse',
   'loading-interview',
+  'loading-prism',
 ] as const;
 
 // ローディングアイコン名のリスト
@@ -163,6 +164,7 @@ export const LOADING_ICON_TYPES = [
   'loading-rings',
   'loading-eclipse',
   'loading-interview',
+  'loading-prism',
 ] as const;
 
 // 型定義

@@ -2220,6 +2220,20 @@ export const Presets: Story = {
       { preset: 'wave', desc: '音波' },
       { preset: 'radar', desc: 'レーダー' },
       { preset: 'eclipse', desc: '日食' },
+      { preset: 'clock', desc: '時計' },
+      { preset: 'morph', desc: '変形' },
+      { preset: 'orbit', desc: '軌道' },
+      { preset: 'triangle', desc: '三角回転' },
+      { preset: 'heartbeat', desc: '心拍' },
+      // 復元シリーズ
+      { preset: 'bars', desc: '4方向バー' },
+      { preset: 'wifi', desc: '電波（接続中）' },
+      { preset: 'progress', desc: 'プログレスバー' },
+      { preset: 'infinity', desc: '無限ループ' },
+      { preset: 'ripple', desc: '水紋' },
+      { preset: 'star', desc: '輝く星' },
+      // サプライズ
+      { preset: 'prism', desc: 'プリズム分光（虹）' },
     ] as const;
 
     return (
