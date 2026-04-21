@@ -1417,8 +1417,9 @@ const Icon: React.FC<IconProps> = ({
   // サイズを解決
   const resolvedSize = typeof size === 'string' ? SIZE_VALUES[size] : size;
 
-  // ローディングアイコン判定
-  const isLoadingIcon = name.startsWith('loading-') || name.startsWith('spinner');
+  // スピナー判定 - 素の円弧なので CSS で回転させる必要がある。
+  // 他の loading-* は SVG 内に固有の SMIL アニメを持つので自動回転しない。
+  const isSpinnerIcon = name.startsWith('spinner');
 
   // ホバーアニメーションを解決（'auto' の場合はデフォルトを使用）
   const resolvedHover =
@@ -1429,8 +1430,8 @@ const Icon: React.FC<IconProps> = ({
     styles.icon,
     // アニメーション
     animate && animation && ANIMATION_CLASSES[animation],
-    // ローディングアイコンは自動でスピン
-    isLoadingIcon && !animation && styles.spin,
+    // スピナー系のみ自動で CSS スピン（他の loading-* は SVG 内 SMIL 任せ）
+    isSpinnerIcon && !animation && styles.spin,
     // ホバー（'auto' は解決済みなので除外）
     resolvedHover && resolvedHover !== 'auto' && HOVER_CLASSES[resolvedHover],
     // カラー
