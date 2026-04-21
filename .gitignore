@@ -28,5 +28,26 @@ Thumbs.db
 *.swo
 *~
 
+# Env
+.env
+.env.local
+.env.*.local
+
+# Media (画像・動画・音声は呼び出し側で保持する方針。誤コミット防止)
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+*.avif
+*.svg
+*.ico
+*.mp4
+*.mov
+*.webm
+*.mp3
+*.wav
+*.pdf
+
 # Claude Code
 .claude/
