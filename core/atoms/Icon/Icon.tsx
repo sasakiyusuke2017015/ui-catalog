@@ -17,6 +17,7 @@ import type {
   AnimationPreset,
   HoverPreset,
   LoadingPreset,
+  PresetConfig,
   SizePreset,
   ColorVariant,
 } from './types';
@@ -1141,26 +1142,26 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
 // ========================================
 // ローディングプリセット
 // ========================================
-const PRESET_MAP: Record<LoadingPreset, { name: IconName }> = {
-  spinner: { name: 'spinner' },
-  dots: { name: 'loading-dots' },
-  pulse: { name: 'loading-pulse' },
-  cube: { name: 'loading-cube3d' },
-  'cube-glow': { name: 'loading-cube3d-glow' },
-  interview: { name: 'loading-interview' },
-  dna: { name: 'loading-dna' },
-  atom: { name: 'loading-atom' },
-  rings: { name: 'loading-rings' },
-  gears: { name: 'loading-gears' },
-  hourglass: { name: 'loading-hourglass' },
-  wave: { name: 'loading-wave' },
-  radar: { name: 'loading-radar' },
-  eclipse: { name: 'loading-eclipse' },
-  clock: { name: 'loading-clock' },
-  morph: { name: 'loading-morph' },
-  orbit: { name: 'loading-orbit' },
-  triangle: { name: 'loading-triangle' },
-  heartbeat: { name: 'loading-heartbeat' },
+const PRESET_MAP: Record<LoadingPreset, PresetConfig> = {
+  spinner: { name: 'spinner', color: 'current' },
+  dots: { name: 'loading-dots', color: 'primary' },
+  pulse: { name: 'loading-pulse', color: 'primary', animation: 'pulse-scale' },
+  cube: { name: 'loading-cube3d', color: 'info' },
+  'cube-glow': { name: 'loading-cube3d-glow', color: 'info', glowStrong: true },
+  interview: { name: 'loading-interview', color: 'primary' },
+  dna: { name: 'loading-dna', color: 'success' },
+  atom: { name: 'loading-atom', color: 'info', glow: true },
+  rings: { name: 'loading-rings', color: 'primary' },
+  gears: { name: 'loading-gears', color: 'muted' },
+  hourglass: { name: 'loading-hourglass', color: 'warning' },
+  wave: { name: 'loading-wave', color: 'info' },
+  radar: { name: 'loading-radar', color: 'success', glow: true },
+  eclipse: { name: 'loading-eclipse', color: 'warning', glow: true },
+  clock: { name: 'loading-clock', color: 'current' },
+  morph: { name: 'loading-morph', color: 'info', animation: 'float' },
+  orbit: { name: 'loading-orbit', color: 'primary' },
+  triangle: { name: 'loading-triangle', color: 'warning' },
+  heartbeat: { name: 'loading-heartbeat', color: 'danger' },
 };
 
 // ========================================
@@ -1399,20 +1400,25 @@ const Icon: React.FC<IconProps> = ({
   dotPing = false,
   disabled = false,
   active = false,
-  animation,
-  hover,
+  animation: animationProp,
+  hover: hoverProp,
   animate = true,
-  glow = false,
-  glowStrong = false,
+  glow: glowProp,
+  glowStrong: glowStrongProp,
   clickable = false,
   onClick,
-  color = 'current',
+  color: colorProp,
   'aria-label': ariaLabel,
   'aria-hidden': ariaHidden,
 }) => {
-  // preset から name を解決
-  const presetConfig = preset ? PRESET_MAP[preset] : undefined;
+  // preset から設定を解決。個別 prop が明示されていればそちらが勝つ。
+  const presetConfig: PresetConfig | undefined = preset ? PRESET_MAP[preset] : undefined;
   const name = (nameProp ?? presetConfig?.name ?? '') as IconName;
+  const color = colorProp ?? presetConfig?.color ?? 'current';
+  const glow = glowProp ?? presetConfig?.glow ?? false;
+  const glowStrong = glowStrongProp ?? presetConfig?.glowStrong ?? false;
+  const animation = animationProp ?? presetConfig?.animation;
+  const hover = hoverProp ?? presetConfig?.hover;
 
   // サイズを解決
   const resolvedSize = typeof size === 'string' ? SIZE_VALUES[size] : size;

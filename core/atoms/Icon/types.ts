@@ -10,8 +10,24 @@ import type React from 'react';
 import type { IconName } from '../../constants';
 
 /**
+ * Preset 設定
+ *
+ * preset は「見た目のレシピ」を 1 語で呼び出すためのパッケージ。
+ * size は含めない（利用側のレイアウト都合が優先）。
+ * 個別 prop が渡された場合、そちらが preset を上書きする。
+ */
+export interface PresetConfig {
+  name: IconName;
+  color?: ColorVariant;
+  glow?: boolean;
+  glowStrong?: boolean;
+  animation?: AnimationPreset;
+  hover?: HoverPreset;
+}
+
+/**
  * ローディングプリセット
- * preset を指定すると name が自動設定される
+ * preset を指定すると見た目レシピ（name/color/glow/animation/hover）が適用される
  */
 export type LoadingPreset =
   | 'spinner'
