@@ -147,7 +147,12 @@ sync（配布）    : 各 project/* に配布
 
 ## プロジェクトへの導入
 
-Git Submodule として導入する。
+Git Submodule + **`link:` 参照** で導入する。
+
+`link:` を採用する理由:
+- consumer 側の `pnpm install` が ui-catalog の devDependencies（Storybook 等）を巻き込まない
+- ui-catalog の `node_modules` は consumer の `node_modules` と完全に独立する
+- consumer で Storybook は不要、ui-catalog 単独のリポジトリでのみ起動する運用
 
 ### 事前準備
 
@@ -163,17 +168,19 @@ ui-catalog リポジトリで `project/<name>` ブランチを作成しておく
     "ui:update": "git submodule update --remote packages/ui-catalog"
   },
   "dependencies": {
-    "@ui-catalog/core": "workspace:*"
+    "@ui-catalog/core": "link:../../packages/ui-catalog"
   }
 }
 ```
+
+> `link:` のパスは、`package.json` から見た相対パス。モノレポでは `apps/web` 等からの相対にする。
 
 **pnpm-workspace.yaml**:
 
 ```yaml
 packages:
   - 'apps/*'
-  - 'packages/ui-catalog'
+# packages/ui-catalog は workspace に含めない（link: 参照のため）
 ```
 
 **.vscode/settings.json** に追加: `{ "git.scanRepositories": ["packages"] }`
@@ -192,10 +199,51 @@ git clone --recurse-submodules <your-repo>
 pnpm install
 ```
 
+これで consumer 側は動く。ui-catalog 自身の `node_modules` は**作られない**。
+
 ### ui-catalog を更新
 
 ```bash
 pnpm ui:update
+```
+
+### ui-catalog 単独で開発する（Storybook 起動など）
+
+ui-catalog をいじりたいとき（新コンポーネント追加、Storybook で見た目確認）は、submodule ディレクトリで個別に install:
+
+```bash
+cd packages/ui-catalog
+pnpm install                 # ここで初めて ui-catalog の node_modules が作られる
+pnpm storybook:localhost     # http://localhost:6006
+```
+
+ui-catalog の `node_modules` は consumer の `node_modules` と独立しているので、consumer 側に影響しない。Storybook が不要なら `pnpm install` も不要。
+
+### Next.js での利用
+
+ui-catalog の .ts を Next.js に transpile させるため `next.config.ts` に追記:
+
+```typescript
+const nextConfig: NextConfig = {
+  transpilePackages: ['@ui-catalog/core'],
+};
+```
+
+### Docker を使う場合
+
+Dockerfile 内で `packages/ui-catalog` は `package.json` だけでなくソース全体を COPY する必要がある（`link:` 参照のため）:
+
+```dockerfile
+COPY packages/ui-catalog ./packages/ui-catalog
+RUN pnpm install --frozen-lockfile
+```
+
+また `docker-compose.yml` の volumes では `/app/packages/ui-catalog/node_modules` を匿名 volume で覆い、host 側の install 痕と衝突させないこと:
+
+```yaml
+volumes:
+  - ./packages/ui-catalog:/app/packages/ui-catalog
+  - /app/packages/ui-catalog/node_modules
 ```
 
 ### Claude Code コマンド登録
