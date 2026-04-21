@@ -8,6 +8,8 @@ export interface ArticleCardBadge {
   /** カスタム background / color を CSS variables で指定 */
   readonly bg?: string
   readonly fg?: string
+  /** バッジの先頭に表示するアイコン要素（ui-catalog Icon 等） */
+  readonly icon?: React.ReactNode
 }
 
 export interface ArticleCardTag {
@@ -32,6 +34,8 @@ export interface ArticleCardProps {
   readonly onClick?: () => void
   /** 追加フッター（トグルなど） */
   readonly footer?: React.ReactNode
+  /** 左端のアクセント縦バー色（type ごとの視覚差別化用） */
+  readonly accentColor?: string
   readonly className?: string
 }
 
@@ -50,6 +54,7 @@ export function ArticleCard({
   tags,
   onClick,
   footer,
+  accentColor,
   className,
 }: ArticleCardProps) {
   const handleBodyKey = (e: React.KeyboardEvent) => {
@@ -60,8 +65,13 @@ export function ArticleCard({
     }
   }
 
+  const cardStyle = accentColor
+    ? ({ ['--card-accent' as string]: accentColor } as React.CSSProperties)
+    : undefined
+  const cardClass = `${styles.card}${accentColor ? ` ${styles.withAccent}` : ''}${className ? ` ${className}` : ''}`
+
   return (
-    <li className={`${styles.card}${className ? ` ${className}` : ''}`}>
+    <li className={cardClass} style={cardStyle}>
       <div
         className={styles.body}
         role={onClick ? 'link' : undefined}
@@ -74,6 +84,7 @@ export function ArticleCard({
           <time dateTime={date}>{date}</time>
           {typeBadge && (
             <span className={styles.typeBadge} data-tone={typeBadge.tone ?? 'neutral'}>
+              {typeBadge.icon && <span className={styles.typeBadgeIcon}>{typeBadge.icon}</span>}
               {typeBadge.label}
             </span>
           )}

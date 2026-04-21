@@ -5,6 +5,19 @@
   padding: 1.5rem 1.75rem;
   transition: all 0.18s ease;
   box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.04);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 左端の縦バー（accentColor 指定時のみ） */
+.card.withAccent::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--card-accent, transparent);
 }
 
 .card:hover {
@@ -64,13 +77,26 @@
 }
 
 .typeBadge {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
   padding: 0.1em 0.55em;
   border-radius: 4px;
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.02em;
   margin-right: 0.3em;
+  line-height: 1.4;
+}
+
+.typeBadgeIcon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.typeBadgeIcon svg {
+  width: 0.95em;
+  height: 0.95em;
 }
 
 .typeBadge[data-tone='neutral'] {
