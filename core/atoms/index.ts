@@ -55,3 +55,7 @@ export * from './MathView'
 // Calend
 export * from './TimeSlotRow'
 export * from './NumberTicker'
+
+// Simple controls (pure UI)
+export * from './Switch'
+export * from './CheckBadge'
