@@ -1146,31 +1146,40 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
           />
         </circle>
       </g>
-      {/* 雲（吹き出し）本体: ふわっと上下しながら左右の膨らみがモーフ */}
+      {/* 雲（吹き出し）本体: 上下 + 横流れ + 濃淡の揺らぎ */}
       <g>
+        {/* 雲全体を左右にゆっくり流す */}
+        <animateTransform attributeName="transform" type="translate" values="-1 0; 1 0; -1 0" dur="5.2s" repeatCount="indefinite" />
         {/* 中央の大玉 */}
         <circle className={styles.fill} cx="12" cy="4" r="2.2" opacity="0.95">
           <animate attributeName="cy" values="4;3;4" dur="2.4s" repeatCount="indefinite" />
           <animate attributeName="r"  values="2.2;2.5;2.2" dur="2.4s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.95;0.7;0.95" dur="3.2s" repeatCount="indefinite" />
         </circle>
         {/* 左の膨らみ */}
-        <circle className={styles.fill} cx="9" cy="5" r="1.6" opacity="0.9">
+        <circle className={styles.fill} cx="9" cy="5" r="1.6" opacity="0.85">
           <animate attributeName="cy" values="5;4;5"   dur="2.4s" repeatCount="indefinite" begin="0.3s" />
-          <animate attributeName="cx" values="9;8.4;9" dur="3s"   repeatCount="indefinite" />
+          <animate attributeName="cx" values="9;7.8;9" dur="3s"   repeatCount="indefinite" />
           <animate attributeName="r"  values="1.6;1.9;1.6" dur="2.4s" repeatCount="indefinite" begin="0.3s" />
+          <animate attributeName="opacity" values="0.85;0.55;0.85" dur="2.8s" repeatCount="indefinite" begin="0.4s" />
         </circle>
         {/* 右の膨らみ */}
-        <circle className={styles.fill} cx="15" cy="5" r="1.6" opacity="0.9">
+        <circle className={styles.fill} cx="15" cy="5" r="1.6" opacity="0.85">
           <animate attributeName="cy" values="5;4;5"      dur="2.4s" repeatCount="indefinite" begin="0.6s" />
-          <animate attributeName="cx" values="15;15.6;15" dur="3s"   repeatCount="indefinite" />
+          <animate attributeName="cx" values="15;16.2;15" dur="3s"   repeatCount="indefinite" />
           <animate attributeName="r"  values="1.6;1.85;1.6" dur="2.4s" repeatCount="indefinite" begin="0.6s" />
+          <animate attributeName="opacity" values="0.85;1;0.6;0.85" dur="3.6s" repeatCount="indefinite" begin="0.2s" />
         </circle>
         {/* 雲底の 2 つの小玉（雲っぽさ） */}
-        <circle className={styles.fill} cx="10.5" cy="6.5" r="1.1" opacity="0.85">
+        <circle className={styles.fill} cx="10.5" cy="6.5" r="1.1" opacity="0.75">
           <animate attributeName="cy" values="6.5;5.8;6.5" dur="2.4s" repeatCount="indefinite" begin="0.9s" />
+          <animate attributeName="cx" values="10.5;9.8;10.5" dur="4s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.75;0.45;0.75" dur="2.2s" repeatCount="indefinite" begin="0.5s" />
         </circle>
-        <circle className={styles.fill} cx="13.5" cy="6.5" r="1.1" opacity="0.85">
+        <circle className={styles.fill} cx="13.5" cy="6.5" r="1.1" opacity="0.75">
           <animate attributeName="cy" values="6.5;5.8;6.5" dur="2.4s" repeatCount="indefinite" begin="1.1s" />
+          <animate attributeName="cx" values="13.5;14.2;13.5" dur="4s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.75;0.4;0.75" dur="2.6s" repeatCount="indefinite" begin="0.7s" />
         </circle>
       </g>
     </g>
@@ -1207,13 +1216,15 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
   ),
   ['loading-progress']: () => (
     <g>
-      <rect className={styles.fill} x="0" y="10" width="24" height="4" rx="2" opacity="0.12" />
-      <rect className={styles.fill} x="0" y="10" width="6" height="4" rx="2">
-        <animate attributeName="x" values="0;18;0" dur="1.5s" repeatCount="indefinite" />
+      {/* トラック（24x24 の内側に納まるよう左右 2px マージン） */}
+      <rect className={styles.fill} x="2" y="10" width="20" height="4" rx="2" opacity="0.15" />
+      {/* 進行バー: 2 → 16 (ゴール位置 = 2 + 20 - バー幅6 = 16) を往復 */}
+      <rect className={styles.fill} x="2" y="10" width="6" height="4" rx="2">
+        <animate attributeName="x" values="2;16;2" dur="1.5s" repeatCount="indefinite" />
       </rect>
-      {/* 進捗の先端を光らせる */}
-      <circle className={styles.accent} cx="6" cy="12" r="2.4">
-        <animate attributeName="cx" values="6;24;6" dur="1.5s" repeatCount="indefinite" />
+      {/* 先端のハイライト: バーの右端を追従 (x + width = 2+6=8 → 16+6=22) */}
+      <circle className={styles.accent} cx="8" cy="12" r="2">
+        <animate attributeName="cx" values="8;22;8" dur="1.5s" repeatCount="indefinite" />
         <animate attributeName="opacity" values="1;0.6;1" dur="0.75s" repeatCount="indefinite" />
       </circle>
     </g>
@@ -1406,28 +1417,62 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
   ),
   ['loading-prism']: () => (
     <g>
-      <polygon className={styles.stroke} points="12,3 21,20 3,20" strokeWidth="1.5" strokeLinejoin="round" opacity="0.7" />
-      <line x1="2" y1="11.5" x2="8" y2="11.5" stroke="#ffffff" strokeWidth="1.2" strokeLinecap="round" opacity="0.8">
-        <animate attributeName="opacity" values="0;0.8;0" dur="2s" repeatCount="indefinite" />
-      </line>
-      <line x1="16" y1="8" x2="22" y2="6" stroke="#ef4444" strokeWidth="1.2" strokeLinecap="round">
-        <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="0s" />
-      </line>
-      <line x1="16" y1="10" x2="22" y2="9" stroke="#f59e0b" strokeWidth="1.2" strokeLinecap="round">
-        <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="0.1s" />
-      </line>
-      <line x1="16" y1="12" x2="22" y2="12" stroke="#eab308" strokeWidth="1.2" strokeLinecap="round">
-        <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="0.2s" />
-      </line>
-      <line x1="16" y1="14" x2="22" y2="15" stroke="#22c55e" strokeWidth="1.2" strokeLinecap="round">
-        <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="0.3s" />
-      </line>
-      <line x1="16" y1="16" x2="22" y2="18" stroke="#3b82f6" strokeWidth="1.2" strokeLinecap="round">
-        <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="0.4s" />
-      </line>
-      <line x1="16" y1="18" x2="22" y2="21" stroke="#8b5cf6" strokeWidth="1.2" strokeLinecap="round">
-        <animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite" begin="0.5s" />
-      </line>
+      <defs>
+        {/* 入射光: 左端で透明、プリズム接触点で白く光る */}
+        <linearGradient id="prism-incoming" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="currentColor" stopOpacity="0" />
+          <stop offset="100%" stopColor="currentColor" stopOpacity="0.9" />
+        </linearGradient>
+        {/* 出射光: 出口で濃く、先端はフェード */}
+        <linearGradient id="prism-red"    x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#f87171" stopOpacity="0.95" /><stop offset="100%" stopColor="#f87171" stopOpacity="0" /></linearGradient>
+        <linearGradient id="prism-orange" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#fb923c" stopOpacity="0.95" /><stop offset="100%" stopColor="#fb923c" stopOpacity="0" /></linearGradient>
+        <linearGradient id="prism-yellow" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#fbbf24" stopOpacity="0.95" /><stop offset="100%" stopColor="#fbbf24" stopOpacity="0" /></linearGradient>
+        <linearGradient id="prism-green"  x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#4ade80" stopOpacity="0.95" /><stop offset="100%" stopColor="#4ade80" stopOpacity="0" /></linearGradient>
+        <linearGradient id="prism-blue"   x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#60a5fa" stopOpacity="0.95" /><stop offset="100%" stopColor="#60a5fa" stopOpacity="0" /></linearGradient>
+        <linearGradient id="prism-indigo" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#818cf8" stopOpacity="0.95" /><stop offset="100%" stopColor="#818cf8" stopOpacity="0" /></linearGradient>
+        <linearGradient id="prism-violet" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#c084fc" stopOpacity="0.95" /><stop offset="100%" stopColor="#c084fc" stopOpacity="0" /></linearGradient>
+      </defs>
+
+      {/* 入射白光 */}
+      <path
+        d="M1 12 L10 12"
+        stroke="url(#prism-incoming)"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        fill="none"
+      >
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" repeatCount="indefinite" />
+      </path>
+
+      {/* プリズム本体（角丸で少し傾けて立体感） */}
+      <path
+        className={styles.stroke}
+        d="M11.2 3.4 L19.8 19.2 Q20.2 20 19.3 20 L4.7 20 Q3.8 20 4.2 19.2 L10.8 3.4 Q11 3 11.2 3.4 Z"
+        strokeWidth="1.4"
+        strokeLinejoin="round"
+        fill="none"
+        opacity="0.85"
+      />
+      {/* プリズム内側のうっすらグロス */}
+      <path
+        d="M11 5 L17.5 18 Q17.8 18.5 17.3 18.5 L9.5 18.5"
+        stroke="currentColor"
+        strokeWidth="0.6"
+        strokeLinecap="round"
+        fill="none"
+        opacity="0.25"
+      />
+
+      {/* 出射光: 7 本のグラデ光線を扇状に配置 */}
+      <g strokeWidth="1.5" strokeLinecap="round" fill="none">
+        <path d="M15 9   L23 4.5"  stroke="url(#prism-red)"   ><animate attributeName="opacity" values="0;1;0"   dur="2.4s" repeatCount="indefinite" begin="0.00s" /></path>
+        <path d="M15.3 10 L23 7"    stroke="url(#prism-orange)"><animate attributeName="opacity" values="0;1;0"   dur="2.4s" repeatCount="indefinite" begin="0.08s" /></path>
+        <path d="M15.6 11 L23 10"   stroke="url(#prism-yellow)"><animate attributeName="opacity" values="0;1;0"   dur="2.4s" repeatCount="indefinite" begin="0.16s" /></path>
+        <path d="M16 12   L23 12.5" stroke="url(#prism-green)" ><animate attributeName="opacity" values="0;1;0"   dur="2.4s" repeatCount="indefinite" begin="0.24s" /></path>
+        <path d="M16.4 13 L23 15"   stroke="url(#prism-blue)"  ><animate attributeName="opacity" values="0;1;0"   dur="2.4s" repeatCount="indefinite" begin="0.32s" /></path>
+        <path d="M16.7 14 L23 17.5" stroke="url(#prism-indigo)"><animate attributeName="opacity" values="0;1;0"   dur="2.4s" repeatCount="indefinite" begin="0.40s" /></path>
+        <path d="M17 15   L23 20"   stroke="url(#prism-violet)"><animate attributeName="opacity" values="0;1;0"   dur="2.4s" repeatCount="indefinite" begin="0.48s" /></path>
+      </g>
     </g>
   ),
 };
