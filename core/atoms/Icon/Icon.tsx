@@ -941,27 +941,32 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
   ),
   ['loading-atom']: () => (
     <g>
+      {/* 核（中心、脈動） */}
       <circle className={styles.accent} cx="12" cy="12" r="3">
         <animate attributeName="r" values="3;3.5;3" dur="1s" repeatCount="indefinite" />
       </circle>
-      <ellipse className={styles.stroke} cx="12" cy="12" rx="10" ry="4" strokeWidth="1" opacity="0.3">
-        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="3s" repeatCount="indefinite" />
-      </ellipse>
-      <circle className={styles.accent} cx="22" cy="12" r="1.5">
-        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1.5s" repeatCount="indefinite" />
+      {/* 軌道 1 (水平) と電子: 楕円パスを animateMotion でなぞる */}
+      <ellipse className={styles.stroke} cx="12" cy="12" rx="10" ry="4" strokeWidth="1" opacity="0.3" />
+      <circle className={styles.accent} r="1.5">
+        <animateMotion dur="2.6s" repeatCount="indefinite" rotate="auto"
+          path="M 22 12 A 10 4 0 1 1 2 12 A 10 4 0 1 1 22 12" />
       </circle>
-      <ellipse className={styles.stroke} cx="12" cy="12" rx="10" ry="4" strokeWidth="1" opacity="0.3" transform="rotate(60 12 12)">
-        <animateTransform attributeName="transform" type="rotate" from="60 12 12" to="420 12 12" dur="3s" repeatCount="indefinite" />
-      </ellipse>
-      <circle className={styles.accent} cx="22" cy="12" r="1.5" transform="rotate(60 12 12)">
-        <animateTransform attributeName="transform" type="rotate" from="60 12 12" to="420 12 12" dur="2s" repeatCount="indefinite" />
-      </circle>
-      <ellipse className={styles.stroke} cx="12" cy="12" rx="10" ry="4" strokeWidth="1" opacity="0.3" transform="rotate(-60 12 12)">
-        <animateTransform attributeName="transform" type="rotate" from="-60 12 12" to="300 12 12" dur="3s" repeatCount="indefinite" />
-      </ellipse>
-      <circle className={styles.accent} cx="22" cy="12" r="1.5" transform="rotate(-60 12 12)">
-        <animateTransform attributeName="transform" type="rotate" from="-60 12 12" to="300 12 12" dur="2.5s" repeatCount="indefinite" />
-      </circle>
+      {/* 軌道 2 (60deg) と電子 */}
+      <g transform="rotate(60 12 12)">
+        <ellipse className={styles.stroke} cx="12" cy="12" rx="10" ry="4" strokeWidth="1" opacity="0.3" />
+        <circle className={styles.accent} r="1.5">
+          <animateMotion dur="3s" repeatCount="indefinite" rotate="auto"
+            path="M 22 12 A 10 4 0 1 1 2 12 A 10 4 0 1 1 22 12" />
+        </circle>
+      </g>
+      {/* 軌道 3 (-60deg) と電子 */}
+      <g transform="rotate(-60 12 12)">
+        <ellipse className={styles.stroke} cx="12" cy="12" rx="10" ry="4" strokeWidth="1" opacity="0.3" />
+        <circle className={styles.accent} r="1.5">
+          <animateMotion dur="2.2s" repeatCount="indefinite" rotate="auto"
+            path="M 22 12 A 10 4 0 1 1 2 12 A 10 4 0 1 1 22 12" />
+        </circle>
+      </g>
     </g>
   ),
   ['loading-heartbeat']: () => (
