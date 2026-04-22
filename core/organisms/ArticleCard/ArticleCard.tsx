@@ -20,7 +20,14 @@ export interface ArticleCardTag {
 
 export interface ArticleCardProps {
   readonly title: string
+  /** 表示用の日付文字列（例: "2026-04-22"、"明日 14:00"、"あと 3 日"）*/
   readonly date: string
+  /**
+   * `<time dateTime="...">` に入れる HTML セマンティック値。
+   * ISO 8601（YYYY-MM-DD 等）を渡す。未指定なら date をそのまま使う。
+   * date が「明日 14:00」等の人間可読文字列のときは dateTime に ISO を別途渡す。
+   */
+  readonly dateTime?: string
   /** 例: 記事種別バッジ（habit, task 等） */
   readonly typeBadge?: ArticleCardBadge
   /** 例: ジャンル（クリック可能にできる） */
@@ -46,6 +53,7 @@ export interface ArticleCardProps {
 export function ArticleCard({
   title,
   date,
+  dateTime,
   typeBadge,
   genre,
   onGenreClick,
@@ -81,7 +89,7 @@ export function ArticleCard({
         style={onClick ? { cursor: 'pointer' } : undefined}
       >
         <div className={styles.metaTop}>
-          <time dateTime={date}>{date}</time>
+          <time dateTime={dateTime ?? date}>{date}</time>
           {typeBadge && (
             <span className={styles.typeBadge} data-tone={typeBadge.tone ?? 'neutral'}>
               {typeBadge.icon && <span className={styles.typeBadgeIcon}>{typeBadge.icon}</span>}
