@@ -19,6 +19,12 @@ import type { IconName } from '../../constants';
 export interface PresetConfig {
   name: IconName;
   color?: ColorVariant;
+  /**
+   * アクセント色（2 色目）。
+   * SVG 内で .accent / .accentStroke クラスを付けた要素だけ別色になる。
+   * animation: 'color-shift' と組み合わせると color ↔ accent を往復する。
+   */
+  accent?: ColorVariant;
   glow?: boolean;
   glowStrong?: boolean;
   animation?: AnimationPreset;

@@ -896,10 +896,16 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
     </g>
   ),
   ['loading-morph']: () => (
-    <rect className={styles.fill} x="6" y="6" width="12" height="12" rx="0">
-      <animate attributeName="rx" values="0;6;0" dur="2s" repeatCount="indefinite" />
-      <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="2s" repeatCount="indefinite" />
-    </rect>
+    <g>
+      <rect className={styles.stroke} x="4" y="4" width="16" height="16" rx="0" strokeWidth="1.5" opacity="0.5">
+        <animate attributeName="rx" values="0;8;0" dur="2s" repeatCount="indefinite" />
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="-360 12 12" dur="4s" repeatCount="indefinite" />
+      </rect>
+      <rect className={styles.accent} x="6" y="6" width="12" height="12" rx="0">
+        <animate attributeName="rx" values="0;6;0" dur="2s" repeatCount="indefinite" />
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="2s" repeatCount="indefinite" />
+      </rect>
+    </g>
   ),
   ['loading-triangle']: () => (
     <g>
@@ -1401,7 +1407,7 @@ const PRESET_MAP: Record<LoadingPreset, PresetConfig> = {
   radar: { name: 'loading-radar', color: 'success', glow: true, animation: 'ping' },
   eclipse: { name: 'loading-eclipse', color: 'warning', glowStrong: true, animation: 'glow-pulse' },
   clock: { name: 'loading-clock', color: 'current' },
-  morph: { name: 'loading-morph', color: 'info', animation: 'liquid' },
+  morph: { name: 'loading-morph', color: 'primary', accent: 'success' },
   orbit: { name: 'loading-orbit', color: 'primary' },
   triangle: { name: 'loading-triangle', color: 'warning' },
   heartbeat: { name: 'loading-heartbeat', color: 'danger', animation: 'heartbeat' },
@@ -1524,6 +1530,18 @@ const COLOR_CLASSES: Record<ColorVariant, string> = {
   danger: styles.colorError,
   info: styles.colorInfo,
   muted: styles.colorMuted,
+};
+
+// アクセント（2 色目）を --icon-accent に流すクラス。
+// SVG 内で .accent / .accentStroke を付けた要素だけ別色になる。
+const ACCENT_CLASSES: Record<ColorVariant, string> = {
+  current: '',
+  primary: styles.accentPrimary,
+  success: styles.accentSuccess,
+  warning: styles.accentWarning,
+  danger: styles.accentError,
+  info: styles.accentInfo,
+  muted: styles.accentMuted,
 };
 
 // ========================================
@@ -1671,6 +1689,7 @@ const Icon: React.FC<IconProps> = ({
   const glowStrong = glowStrongProp ?? presetConfig?.glowStrong ?? false;
   const animation = animationProp ?? presetConfig?.animation;
   const hover = hoverProp ?? presetConfig?.hover;
+  const accent = presetConfig?.accent;
 
   // サイズを解決
   const resolvedSize = typeof size === 'string' ? SIZE_VALUES[size] : size;
@@ -1692,8 +1711,12 @@ const Icon: React.FC<IconProps> = ({
     isSpinnerIcon && !animation && styles.spin,
     // ホバー（'auto' は解決済みなので除外）
     resolvedHover && resolvedHover !== 'auto' && HOVER_CLASSES[resolvedHover],
-    // カラー
+    // カラー（外枠/本体）
     color !== 'current' && COLOR_CLASSES[color],
+    // アクセント色（2 色目）を --icon-accent に流す
+    accent && accent !== 'current' && ACCENT_CLASSES[accent],
+    // accent が指定されていれば color ↔ accent を往復するアニメを有効化
+    animate && accent && styles.colorShiftAccent,
     // グロー
     glow && styles.glow,
     glowStrong && styles.glowStrong,

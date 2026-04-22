@@ -1387,6 +1387,30 @@
 }
 
 // -----------------------------------------------------------------------------
+// Accent Variants (--icon-accent を設定し、.accent クラスの要素で参照される)
+// -----------------------------------------------------------------------------
+.accentPrimary  { --icon-accent: var(--color-primary-500); }
+.accentSuccess  { --icon-accent: var(--color-success-500); }
+.accentWarning  { --icon-accent: var(--color-warning-500); }
+.accentError    { --icon-accent: var(--color-danger-500); }
+.accentInfo     { --icon-accent: var(--color-info-500); }
+.accentMuted    { --icon-accent: var(--color-gray-400); }
+
+// -----------------------------------------------------------------------------
+// 2 色遷移アニメーション
+// 0% / 100% では color を指定しないため、.colorXxx で設定された既定色が使われる。
+// 50% だけ --icon-accent に切り替え、color プロパティを補間する。
+// .stroke / .fill / .accent のどれを使う SVG でも currentColor 経由で効く。
+// -----------------------------------------------------------------------------
+.colorShiftAccent {
+  animation: icon-color-shift 2.4s ease-in-out infinite;
+}
+
+@keyframes icon-color-shift {
+  50% { color: var(--icon-accent); }
+}
+
+// -----------------------------------------------------------------------------
 // Special Effects (for ViewModeToggle, etc.)
 // -----------------------------------------------------------------------------
 .toggleIcon {
@@ -1435,6 +1459,19 @@
 .fill {
   fill: currentColor;
   stroke: none;
+}
+
+// アクセント色 - 外枠とは別の 2 色目。
+// preset で accent を指定すると --icon-accent がセットされ、
+// ここを参照する要素だけ別色になる。未指定時は currentColor にフォールバック。
+.accent {
+  fill: var(--icon-accent, currentColor);
+  stroke: none;
+}
+
+.accentStroke {
+  stroke: var(--icon-accent, currentColor);
+  fill: none;
 }
 
 // 本体グループ - hover 時のアニメーション対象
