@@ -22,9 +22,14 @@ export interface PresetConfig {
   /**
    * アクセント色（2 色目）。
    * SVG 内で .accent / .accentStroke クラスを付けた要素だけ別色になる。
-   * animation: 'color-shift' と組み合わせると color ↔ accent を往復する。
    */
   accent?: ColorVariant;
+  /**
+   * color ↔ accent を周期的に往復させる color-shift アニメを明示制御する。
+   * 未指定時は「accent あり かつ animation 未指定」なら自動 ON。
+   * 「accent はあるが色を動かしたくない」preset は false で抑止する。
+   */
+  colorShift?: boolean;
   glow?: boolean;
   glowStrong?: boolean;
   animation?: AnimationPreset;

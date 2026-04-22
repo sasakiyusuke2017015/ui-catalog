@@ -945,25 +945,27 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
       <circle className={styles.accent} cx="12" cy="12" r="3">
         <animate attributeName="r" values="3;3.5;3" dur="1s" repeatCount="indefinite" />
       </circle>
-      {/* 軌道 1 (水平) と電子: 楕円パスを animateMotion でなぞる */}
+      {/* 軌道 1 (水平) と電子 - 速い */}
       <ellipse className={styles.stroke} cx="12" cy="12" rx="10" ry="4" strokeWidth="1" opacity="0.3" />
-      <circle className={styles.accent} r="1.5">
-        <animateMotion dur="2.6s" repeatCount="indefinite" rotate="auto"
+      <circle className={styles.accent} r="1.6">
+        <animateMotion dur="1.6s" repeatCount="indefinite" rotate="auto"
           path="M 22 12 A 10 4 0 1 1 2 12 A 10 4 0 1 1 22 12" />
       </circle>
-      {/* 軌道 2 (60deg) と電子 */}
+      {/* 軌道 2 (60deg) と電子 - ゆっくり */}
       <g transform="rotate(60 12 12)">
         <ellipse className={styles.stroke} cx="12" cy="12" rx="10" ry="4" strokeWidth="1" opacity="0.3" />
         <circle className={styles.accent} r="1.5">
-          <animateMotion dur="3s" repeatCount="indefinite" rotate="auto"
+          <animateMotion dur="3.6s" repeatCount="indefinite" rotate="auto"
+            begin="-0.6s"
             path="M 22 12 A 10 4 0 1 1 2 12 A 10 4 0 1 1 22 12" />
         </circle>
       </g>
-      {/* 軌道 3 (-60deg) と電子 */}
+      {/* 軌道 3 (-60deg) と電子 - 中速 */}
       <g transform="rotate(-60 12 12)">
         <ellipse className={styles.stroke} cx="12" cy="12" rx="10" ry="4" strokeWidth="1" opacity="0.3" />
-        <circle className={styles.accent} r="1.5">
-          <animateMotion dur="2.2s" repeatCount="indefinite" rotate="auto"
+        <circle className={styles.accent} r="1.4">
+          <animateMotion dur="2.4s" repeatCount="indefinite" rotate="auto"
+            begin="-1.2s"
             path="M 22 12 A 10 4 0 1 1 2 12 A 10 4 0 1 1 22 12" />
         </circle>
       </g>
@@ -1440,7 +1442,7 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
         <linearGradient id="prism-violet" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stopColor="#c084fc" stopOpacity="0.95" /><stop offset="100%" stopColor="#c084fc" stopOpacity="0" /></linearGradient>
       </defs>
 
-      {/* 入射白光 */}
+      {/* 入射白光（ビーム本体は常時、強さは脈動） */}
       <path
         d="M1 12 L10 12"
         stroke="url(#prism-incoming)"
@@ -1448,37 +1450,70 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
         strokeLinecap="round"
         fill="none"
       >
-        <animate attributeName="opacity" values="0.3;1;0.3" dur="2.4s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="1.6s" repeatCount="indefinite" />
       </path>
+      {/* 入射ビームを走る光の粒子（左→右にプリズム接触点まで） */}
+      <circle r="1.1" fill="currentColor" opacity="0.9">
+        <animateMotion dur="1.2s" repeatCount="indefinite" path="M 1 12 L 10 12" />
+        <animate attributeName="opacity" values="0;1;1;0" dur="1.2s" repeatCount="indefinite" keyTimes="0;0.2;0.8;1" />
+      </circle>
+      <circle r="0.7" fill="currentColor" opacity="0.6">
+        <animateMotion dur="1.2s" repeatCount="indefinite" begin="-0.4s" path="M 1 12 L 10 12" />
+        <animate attributeName="opacity" values="0;0.8;0.8;0" dur="1.2s" repeatCount="indefinite" begin="-0.4s" keyTimes="0;0.2;0.8;1" />
+      </circle>
 
-      {/* プリズム本体（角丸で少し傾けて立体感） */}
-      <path
-        className={styles.stroke}
-        d="M11.2 3.4 L19.8 19.2 Q20.2 20 19.3 20 L4.7 20 Q3.8 20 4.2 19.2 L10.8 3.4 Q11 3 11.2 3.4 Z"
-        strokeWidth="1.4"
-        strokeLinejoin="round"
-        fill="none"
-        opacity="0.85"
-      />
-      {/* プリズム内側のうっすらグロス */}
-      <path
-        d="M11 5 L17.5 18 Q17.8 18.5 17.3 18.5 L9.5 18.5"
-        stroke="currentColor"
-        strokeWidth="0.6"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.25"
-      />
+      {/* プリズム本体（角丸 + 微小に揺れる） */}
+      <g>
+        <animateTransform attributeName="transform" type="rotate" values="-2 12 12; 2 12 12; -2 12 12" dur="3.2s" repeatCount="indefinite" />
+        <path
+          className={styles.stroke}
+          d="M11.2 3.4 L19.8 19.2 Q20.2 20 19.3 20 L4.7 20 Q3.8 20 4.2 19.2 L10.8 3.4 Q11 3 11.2 3.4 Z"
+          strokeWidth="1.4"
+          strokeLinejoin="round"
+          fill="none"
+          opacity="0.85"
+        />
+        {/* プリズム内側のうっすらグロス */}
+        <path
+          d="M11 5 L17.5 18 Q17.8 18.5 17.3 18.5 L9.5 18.5"
+          stroke="currentColor"
+          strokeWidth="0.6"
+          strokeLinecap="round"
+          fill="none"
+          opacity="0.25"
+        />
+      </g>
 
-      {/* 出射光: 7 本のグラデ光線を扇状に配置 */}
-      <g strokeWidth="1.5" strokeLinecap="round" fill="none">
-        <path d="M15 9   L23 4.5"  stroke="url(#prism-red)"   ><animate attributeName="opacity" values="0;1;0"   dur="2.4s" repeatCount="indefinite" begin="0.00s" /></path>
-        <path d="M15.3 10 L23 7"    stroke="url(#prism-orange)"><animate attributeName="opacity" values="0;1;0"   dur="2.4s" repeatCount="indefinite" begin="0.08s" /></path>
-        <path d="M15.6 11 L23 10"   stroke="url(#prism-yellow)"><animate attributeName="opacity" values="0;1;0"   dur="2.4s" repeatCount="indefinite" begin="0.16s" /></path>
-        <path d="M16 12   L23 12.5" stroke="url(#prism-green)" ><animate attributeName="opacity" values="0;1;0"   dur="2.4s" repeatCount="indefinite" begin="0.24s" /></path>
-        <path d="M16.4 13 L23 15"   stroke="url(#prism-blue)"  ><animate attributeName="opacity" values="0;1;0"   dur="2.4s" repeatCount="indefinite" begin="0.32s" /></path>
-        <path d="M16.7 14 L23 17.5" stroke="url(#prism-indigo)"><animate attributeName="opacity" values="0;1;0"   dur="2.4s" repeatCount="indefinite" begin="0.40s" /></path>
-        <path d="M17 15   L23 20"   stroke="url(#prism-violet)"><animate attributeName="opacity" values="0;1;0"   dur="2.4s" repeatCount="indefinite" begin="0.48s" /></path>
+      {/* 出射光: 7 本のグラデ光線。長さも揺らいで「光が脈打つ」感を出す */}
+      <g strokeWidth="1.5" strokeLinecap="round" fill="none" strokeDasharray="12 12">
+        <path d="M15 9   L23 4.5"  stroke="url(#prism-red)">
+          <animate attributeName="opacity" values="0.2;1;0.2" dur="2.4s" repeatCount="indefinite" begin="0.00s" />
+          <animate attributeName="stroke-dashoffset" values="12;0;12" dur="1.6s" repeatCount="indefinite" begin="0.00s" />
+        </path>
+        <path d="M15.3 10 L23 7" stroke="url(#prism-orange)">
+          <animate attributeName="opacity" values="0.2;1;0.2" dur="2.4s" repeatCount="indefinite" begin="0.10s" />
+          <animate attributeName="stroke-dashoffset" values="12;0;12" dur="1.6s" repeatCount="indefinite" begin="0.10s" />
+        </path>
+        <path d="M15.6 11 L23 10" stroke="url(#prism-yellow)">
+          <animate attributeName="opacity" values="0.2;1;0.2" dur="2.4s" repeatCount="indefinite" begin="0.20s" />
+          <animate attributeName="stroke-dashoffset" values="12;0;12" dur="1.6s" repeatCount="indefinite" begin="0.20s" />
+        </path>
+        <path d="M16 12   L23 12.5" stroke="url(#prism-green)">
+          <animate attributeName="opacity" values="0.2;1;0.2" dur="2.4s" repeatCount="indefinite" begin="0.30s" />
+          <animate attributeName="stroke-dashoffset" values="12;0;12" dur="1.6s" repeatCount="indefinite" begin="0.30s" />
+        </path>
+        <path d="M16.4 13 L23 15" stroke="url(#prism-blue)">
+          <animate attributeName="opacity" values="0.2;1;0.2" dur="2.4s" repeatCount="indefinite" begin="0.40s" />
+          <animate attributeName="stroke-dashoffset" values="12;0;12" dur="1.6s" repeatCount="indefinite" begin="0.40s" />
+        </path>
+        <path d="M16.7 14 L23 17.5" stroke="url(#prism-indigo)">
+          <animate attributeName="opacity" values="0.2;1;0.2" dur="2.4s" repeatCount="indefinite" begin="0.50s" />
+          <animate attributeName="stroke-dashoffset" values="12;0;12" dur="1.6s" repeatCount="indefinite" begin="0.50s" />
+        </path>
+        <path d="M17 15   L23 20" stroke="url(#prism-violet)">
+          <animate attributeName="opacity" values="0.2;1;0.2" dur="2.4s" repeatCount="indefinite" begin="0.60s" />
+          <animate attributeName="stroke-dashoffset" values="12;0;12" dur="1.6s" repeatCount="indefinite" begin="0.60s" />
+        </path>
       </g>
     </g>
   ),
@@ -1493,7 +1528,7 @@ const PRESET_MAP: Record<LoadingPreset, PresetConfig> = {
   pulse: { name: 'loading-pulse', color: 'primary', accent: 'info', glow: true, animation: 'pulse-scale' },
   cube: { name: 'loading-cube3d', color: 'info' },
   'cube-glow': { name: 'loading-cube3d-glow', color: 'info', glowStrong: true },
-  interview: { name: 'loading-interview', color: 'primary', accent: 'info' },
+  interview: { name: 'loading-interview', color: 'primary', accent: 'info', colorShift: false },
   dna: { name: 'loading-dna', color: 'success', accent: 'info' },
   atom: { name: 'loading-atom', color: 'info', accent: 'warning', glow: true, animation: 'pulse' },
   rings: { name: 'loading-rings', color: 'primary', accent: 'info' },
@@ -1807,6 +1842,10 @@ const Icon: React.FC<IconProps> = ({
   const animation = animationProp ?? presetConfig?.animation;
   const hover = hoverProp ?? presetConfig?.hover;
   const accent = presetConfig?.accent;
+  // colorShift は preset 側で明示されていればそれが最優先。
+  // 未指定なら「accent あり かつ animation 未指定」のときだけ自動で ON。
+  const colorShift =
+    presetConfig?.colorShift ?? (!!accent && !animation);
 
   // サイズを解決
   const resolvedSize = typeof size === 'string' ? SIZE_VALUES[size] : size;
@@ -1832,9 +1871,8 @@ const Icon: React.FC<IconProps> = ({
     color !== 'current' && COLOR_CLASSES[color],
     // アクセント色（2 色目）を --icon-accent に流す
     accent && accent !== 'current' && ACCENT_CLASSES[accent],
-    // accent 指定時のみ、他のアニメが無い場合に限り color ↔ accent 往復を有効化。
-    // animation が明示されていれば accent は「静的な 2 色目」として扱う。
-    animate && accent && !animation && styles.colorShiftAccent,
+    // color ↔ accent 往復は preset.colorShift で明示制御（既定は accent あり & animation なし）
+    animate && colorShift && styles.colorShiftAccent,
     // グロー
     glow && styles.glow,
     glowStrong && styles.glowStrong,
