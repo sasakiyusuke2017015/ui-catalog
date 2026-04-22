@@ -1224,6 +1224,136 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
       </circle>
     </g>
   ),
+  ['loading-dots-fade']: () => (
+    <g>
+      <circle className={styles.fill} cx="4" cy="12" r="2">
+        <animate attributeName="opacity" values="0;1;0" dur="1.4s" repeatCount="indefinite" />
+        <animateTransform attributeName="transform" type="scale" values="0.5;1;0.5" dur="1.4s" repeatCount="indefinite" />
+      </circle>
+      <circle className={styles.fill} cx="12" cy="12" r="2">
+        <animate attributeName="opacity" values="0;1;0" dur="1.4s" repeatCount="indefinite" begin="0.2s" />
+        <animateTransform attributeName="transform" type="scale" values="0.5;1;0.5" dur="1.4s" repeatCount="indefinite" begin="0.2s" />
+      </circle>
+      <circle className={styles.fill} cx="20" cy="12" r="2">
+        <animate attributeName="opacity" values="0;1;0" dur="1.4s" repeatCount="indefinite" begin="0.4s" />
+        <animateTransform attributeName="transform" type="scale" values="0.5;1;0.5" dur="1.4s" repeatCount="indefinite" begin="0.4s" />
+      </circle>
+    </g>
+  ),
+  ['loading-pulse-ring']: () => (
+    <g>
+      <circle className={styles.stroke} cx="12" cy="12" r="10" strokeWidth="2">
+        <animate attributeName="r" values="8;10;8" dur="1s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="1;0.5;1" dur="1s" repeatCount="indefinite" />
+      </circle>
+      <circle className={styles.fill} cx="12" cy="12" r="6">
+        <animate attributeName="r" values="6;4;6" dur="1s" repeatCount="indefinite" />
+      </circle>
+    </g>
+  ),
+  ['loading-bounce']: () => (
+    <g>
+      <circle className={styles.fill} cx="6" cy="12" r="2">
+        <animateTransform attributeName="transform" type="translate" values="0 0; 0 -8; 0 0" dur="0.6s" repeatCount="indefinite" />
+      </circle>
+      <circle className={styles.fill} cx="12" cy="12" r="2">
+        <animateTransform attributeName="transform" type="translate" values="0 0; 0 -8; 0 0" dur="0.6s" repeatCount="indefinite" begin="0.2s" />
+      </circle>
+      <circle className={styles.fill} cx="18" cy="12" r="2">
+        <animateTransform attributeName="transform" type="translate" values="0 0; 0 -8; 0 0" dur="0.6s" repeatCount="indefinite" begin="0.4s" />
+      </circle>
+    </g>
+  ),
+  ['loading-half']: () => (
+    <g>
+      <circle className={styles.stroke} cx="12" cy="12" r="10" strokeWidth="2" opacity="0.15" />
+      <path className={styles.fill} d="M2 12a10 10 0 0 1 20 0h-2a8 8 0 0 0-16 0h-2z">
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="0.8s" repeatCount="indefinite" />
+      </path>
+    </g>
+  ),
+  ['loading-dash']: () => (
+    <circle
+      className={styles.stroke}
+      cx="12"
+      cy="12"
+      r="10"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeDasharray="1 150"
+    >
+      <animate attributeName="stroke-dasharray" values="1 150;90 150;90 150" dur="1.5s" repeatCount="indefinite" />
+      <animate attributeName="stroke-dashoffset" values="0;-35;-124" dur="1.5s" repeatCount="indefinite" />
+    </circle>
+  ),
+  ['loading-scale-pulse']: () => (
+    <g>
+      <circle className={styles.fill} cx="12" cy="12" r="3">
+        <animate attributeName="r" values="3;4;3" dur="1s" repeatCount="indefinite" />
+      </circle>
+      <circle className={styles.stroke} cx="12" cy="12" r="8" strokeWidth="2" opacity="0.3">
+        <animate attributeName="r" values="8;10;8" dur="1s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.3;0.1;0.3" dur="1s" repeatCount="indefinite" />
+      </circle>
+      <circle className={styles.stroke} cx="12" cy="12" r="11" strokeWidth="1" opacity="0.1">
+        <animate attributeName="r" values="11;13;11" dur="1s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.1;0.05;0.1" dur="1s" repeatCount="indefinite" />
+      </circle>
+    </g>
+  ),
+  ['loading-flip']: () => (
+    <rect className={styles.fill} x="8" y="8" width="8" height="8">
+      <animateTransform attributeName="transform" type="scale" values="1,1;0.1,1;1,1" dur="2s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite" />
+    </rect>
+  ),
+  ['loading-square']: () => (
+    <rect className={styles.stroke} x="4" y="4" width="16" height="16" strokeWidth="2">
+      <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="2s" repeatCount="indefinite" />
+      <animate attributeName="rx" values="0;4;0" dur="2s" repeatCount="indefinite" />
+    </rect>
+  ),
+  ['loading-cross']: () => (
+    <g className={styles.stroke} strokeWidth="4" strokeLinecap="round">
+      <line x1="12" y1="2" x2="12" y2="22">
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite" />
+      </line>
+      <line x1="2" y1="12" x2="22" y2="12">
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite" />
+      </line>
+    </g>
+  ),
+  ['loading-hexagon']: () => (
+    <g>
+      <polygon
+        className={styles.stroke}
+        points="12,1 21,6 21,18 12,23 3,18 3,6"
+        strokeWidth="1"
+        strokeLinejoin="round"
+        opacity="0.2"
+      >
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="4s" repeatCount="indefinite" />
+      </polygon>
+      <polygon
+        className={styles.stroke}
+        points="12,4 18,8 18,16 12,20 6,16 6,8"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+        opacity="0.5"
+      >
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="-360 12 12" dur="2s" repeatCount="indefinite" />
+      </polygon>
+      <polygon
+        className={styles.fill}
+        points="12,7 15,9 15,15 12,17 9,15 9,9"
+        strokeLinejoin="round"
+        opacity="0.8"
+      >
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1.5s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.8;1;0.8" dur="0.75s" repeatCount="indefinite" />
+      </polygon>
+    </g>
+  ),
   ['loading-prism']: () => (
     <g>
       <polygon className={styles.stroke} points="12,3 21,20 3,20" strokeWidth="1.5" strokeLinejoin="round" opacity="0.7" />
