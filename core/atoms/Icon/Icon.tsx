@@ -1119,6 +1119,7 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
   ),
   ['loading-interview']: () => (
     <g>
+      {/* 左の人（体は固定、頭は上下動のみ） */}
       <g>
         <path className={styles.fill} d="M1 19a4 4 0 018 0" opacity="0.9" />
         <circle className={styles.fill} cx="5" cy="11" r="2.5" opacity="0.9">
@@ -1132,6 +1133,7 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
           />
         </circle>
       </g>
+      {/* 右の人（体は固定、頭は上下動のみ、タイミングずらし） */}
       <g>
         <path className={styles.accent} d="M15 19a4 4 0 018 0" opacity="0.9" />
         <circle className={styles.accent} cx="19" cy="11" r="2.5" opacity="0.9">
