@@ -793,12 +793,15 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
     <g className={styles.body}>
       <circle className={cn(styles.fill, styles.dot)} cx="4" cy="12" r="1.5">
         <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite" begin="0s" />
+        <animate attributeName="r" values="1.5;2.2;1.5" dur="1.5s" repeatCount="indefinite" begin="0s" />
       </circle>
-      <circle className={cn(styles.fill, styles.dot)} cx="12" cy="12" r="1.5">
+      <circle className={cn(styles.accent, styles.dot)} cx="12" cy="12" r="1.8">
         <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite" begin="0.5s" />
+        <animate attributeName="r" values="1.8;2.6;1.8" dur="1.5s" repeatCount="indefinite" begin="0.5s" />
       </circle>
       <circle className={cn(styles.fill, styles.dot)} cx="20" cy="12" r="1.5">
         <animate attributeName="opacity" values="0.3;1;0.3" dur="1.5s" repeatCount="indefinite" begin="1s" />
+        <animate attributeName="r" values="1.5;2.2;1.5" dur="1.5s" repeatCount="indefinite" begin="1s" />
       </circle>
     </g>
   ),
@@ -1045,29 +1048,45 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
     </g>
   ),
   ['loading-cube3d-glow']: () => (
-    <g className={styles.stroke} strokeWidth="1.5">
-      <g opacity="0">
-        <animate attributeName="opacity" values="1;1;0;0;0;0;1" dur="6s" repeatCount="indefinite" />
+    <g strokeWidth="1.5">
+      {/* Phase 1: 立方体が構築される（0-33%） */}
+      <g className={styles.stroke}>
+        <animate attributeName="opacity" values="1;1;0.15;0.15;1" dur="3.6s" repeatCount="indefinite" keyTimes="0;0.28;0.5;0.72;1" />
         <polygon points="12,2 20,7 20,17 12,22 4,17 4,7" strokeLinejoin="round" />
         <line x1="12" y1="2" x2="12" y2="12" />
         <line x1="12" y1="12" x2="4" y2="17" />
         <line x1="12" y1="12" x2="20" y2="17" />
         <polygon className={styles.fill} points="12,2 20,7 12,12 4,7" opacity="0.3" strokeLinejoin="round" />
       </g>
-      <g opacity="0">
-        <animate attributeName="opacity" values="0;0;1;1;0;0;0" dur="6s" repeatCount="indefinite" />
-        <ellipse cx="12" cy="12" rx="9" ry="4" />
-        <ellipse cx="12" cy="12" rx="9" ry="4" transform="rotate(60 12 12)" />
-        <ellipse cx="12" cy="12" rx="9" ry="4" transform="rotate(120 12 12)" />
-        <circle className={styles.fill} cx="12" cy="12" r="2.5" />
+      {/* Phase 2: 立方体の頂点が外へ爆発的に拡散する粒子 */}
+      <g className={styles.accent}>
+        <animate attributeName="opacity" values="0.15;0.15;1;1;0.15" dur="3.6s" repeatCount="indefinite" keyTimes="0;0.28;0.5;0.72;1" />
+        <circle cx="12" cy="2" r="1.3">
+          <animate attributeName="cy" values="2;2;-2;-2;2" dur="3.6s" repeatCount="indefinite" keyTimes="0;0.28;0.5;0.72;1" />
+        </circle>
+        <circle cx="20" cy="7" r="1.3">
+          <animate attributeName="cx" values="20;20;24;24;20" dur="3.6s" repeatCount="indefinite" keyTimes="0;0.28;0.5;0.72;1" />
+        </circle>
+        <circle cx="20" cy="17" r="1.3">
+          <animate attributeName="cx" values="20;20;24;24;20" dur="3.6s" repeatCount="indefinite" keyTimes="0;0.28;0.5;0.72;1" />
+          <animate attributeName="cy" values="17;17;21;21;17" dur="3.6s" repeatCount="indefinite" keyTimes="0;0.28;0.5;0.72;1" />
+        </circle>
+        <circle cx="12" cy="22" r="1.3">
+          <animate attributeName="cy" values="22;22;26;26;22" dur="3.6s" repeatCount="indefinite" keyTimes="0;0.28;0.5;0.72;1" />
+        </circle>
+        <circle cx="4" cy="17" r="1.3">
+          <animate attributeName="cx" values="4;4;0;0;4" dur="3.6s" repeatCount="indefinite" keyTimes="0;0.28;0.5;0.72;1" />
+          <animate attributeName="cy" values="17;17;21;21;17" dur="3.6s" repeatCount="indefinite" keyTimes="0;0.28;0.5;0.72;1" />
+        </circle>
+        <circle cx="4" cy="7" r="1.3">
+          <animate attributeName="cx" values="4;4;0;0;4" dur="3.6s" repeatCount="indefinite" keyTimes="0;0.28;0.5;0.72;1" />
+        </circle>
       </g>
-      <g opacity="0">
-        <animate attributeName="opacity" values="0;0;0;0;1;1;0" dur="6s" repeatCount="indefinite" />
-        <circle cx="12" cy="12" r="3" />
-        <circle cx="12" cy="12" r="6" opacity="0.7" />
-        <circle cx="12" cy="12" r="9" opacity="0.4" />
-        <circle className={styles.fill} cx="12" cy="12" r="2" />
-      </g>
+      {/* Phase 3: 中心の核（常に存在、Phase 2 以降で強く発光） */}
+      <circle className={styles.accent} cx="12" cy="12" r="1.5">
+        <animate attributeName="r" values="1.5;2;3.5;2;1.5" dur="3.6s" repeatCount="indefinite" keyTimes="0;0.28;0.5;0.72;1" />
+        <animate attributeName="opacity" values="0.6;0.8;1;0.8;0.6" dur="3.6s" repeatCount="indefinite" keyTimes="0;0.28;0.5;0.72;1" />
+      </circle>
     </g>
   ),
   ['loading-rings']: () => (
@@ -1127,18 +1146,31 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
           />
         </circle>
       </g>
+      {/* 雲（吹き出し）本体: ふわっと上下しながら左右の膨らみがモーフ */}
       <g>
-        <circle className={styles.fill} cx="10" cy="3" r="0.8" opacity="0.9">
-          <animate attributeName="cy" values="3;2.5;3.2;2.7;3" dur="2.618s" repeatCount="indefinite" />
-          <animate attributeName="r" values="0.8;0.9;0.75;0.85;0.8" dur="1.618s" repeatCount="indefinite" />
+        {/* 中央の大玉 */}
+        <circle className={styles.fill} cx="12" cy="4" r="2.2" opacity="0.95">
+          <animate attributeName="cy" values="4;3;4" dur="2.4s" repeatCount="indefinite" />
+          <animate attributeName="r"  values="2.2;2.5;2.2" dur="2.4s" repeatCount="indefinite" />
         </circle>
-        <circle className={styles.fill} cx="12" cy="2.5" r="1" opacity="0.95">
-          <animate attributeName="cy" values="2.5;2;2.8;2.3;2.5" dur="2.618s" repeatCount="indefinite" begin="0.382s" />
-          <animate attributeName="r" values="1;1.1;0.9;1.05;1" dur="1.618s" repeatCount="indefinite" />
+        {/* 左の膨らみ */}
+        <circle className={styles.fill} cx="9" cy="5" r="1.6" opacity="0.9">
+          <animate attributeName="cy" values="5;4;5"   dur="2.4s" repeatCount="indefinite" begin="0.3s" />
+          <animate attributeName="cx" values="9;8.4;9" dur="3s"   repeatCount="indefinite" />
+          <animate attributeName="r"  values="1.6;1.9;1.6" dur="2.4s" repeatCount="indefinite" begin="0.3s" />
         </circle>
-        <circle className={styles.fill} cx="14" cy="3" r="0.8" opacity="0.9">
-          <animate attributeName="cy" values="3;2.7;3.1;2.5;3" dur="2.618s" repeatCount="indefinite" begin="0.764s" />
-          <animate attributeName="r" values="0.8;0.85;0.75;0.9;0.8" dur="1.618s" repeatCount="indefinite" />
+        {/* 右の膨らみ */}
+        <circle className={styles.fill} cx="15" cy="5" r="1.6" opacity="0.9">
+          <animate attributeName="cy" values="5;4;5"      dur="2.4s" repeatCount="indefinite" begin="0.6s" />
+          <animate attributeName="cx" values="15;15.6;15" dur="3s"   repeatCount="indefinite" />
+          <animate attributeName="r"  values="1.6;1.85;1.6" dur="2.4s" repeatCount="indefinite" begin="0.6s" />
+        </circle>
+        {/* 雲底の 2 つの小玉（雲っぽさ） */}
+        <circle className={styles.fill} cx="10.5" cy="6.5" r="1.1" opacity="0.85">
+          <animate attributeName="cy" values="6.5;5.8;6.5" dur="2.4s" repeatCount="indefinite" begin="0.9s" />
+        </circle>
+        <circle className={styles.fill} cx="13.5" cy="6.5" r="1.1" opacity="0.85">
+          <animate attributeName="cy" values="6.5;5.8;6.5" dur="2.4s" repeatCount="indefinite" begin="1.1s" />
         </circle>
       </g>
     </g>
@@ -1148,13 +1180,13 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
       <rect className={styles.fill} x="11" y="1" width="2" height="6" rx="1">
         <animateTransform attributeName="transform" type="rotate" values="0 12 12;360 12 12" dur="0.8s" repeatCount="indefinite" />
       </rect>
-      <rect className={styles.fill} x="11" y="17" width="2" height="6" rx="1" opacity="0.5">
+      <rect className={styles.accent} x="11" y="17" width="2" height="6" rx="1" opacity="0.75">
         <animateTransform attributeName="transform" type="rotate" values="0 12 12;360 12 12" dur="0.8s" repeatCount="indefinite" />
       </rect>
       <rect className={styles.fill} x="17" y="11" width="6" height="2" rx="1" opacity="0.75">
         <animateTransform attributeName="transform" type="rotate" values="0 12 12;360 12 12" dur="0.8s" repeatCount="indefinite" />
       </rect>
-      <rect className={styles.fill} x="1" y="11" width="6" height="2" rx="1" opacity="0.25">
+      <rect className={styles.accent} x="1" y="11" width="6" height="2" rx="1" opacity="0.5">
         <animateTransform attributeName="transform" type="rotate" values="0 12 12;360 12 12" dur="0.8s" repeatCount="indefinite" />
       </rect>
     </g>
@@ -1167,17 +1199,23 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
       <path className={styles.stroke} d="M8.5 16a6.5 6.5 0 0 1 7 0" strokeWidth="2" strokeLinecap="round">
         <animate attributeName="opacity" values="0.2;1;0.2" dur="1.2s" repeatCount="indefinite" begin="0.1s" />
       </path>
-      <circle className={styles.fill} cx="12" cy="19" r="1">
-        <animate attributeName="opacity" values="0.2;1;0.2" dur="1.2s" repeatCount="indefinite" begin="0.2s" />
+      <circle className={styles.accent} cx="12" cy="19" r="1.4">
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="1.2s" repeatCount="indefinite" begin="0.2s" />
+        <animate attributeName="r" values="1.4;1.8;1.4" dur="1.2s" repeatCount="indefinite" begin="0.2s" />
       </circle>
     </g>
   ),
   ['loading-progress']: () => (
     <g>
-      <rect className={styles.fill} x="0" y="10" width="24" height="4" rx="2" opacity="0.1" />
+      <rect className={styles.fill} x="0" y="10" width="24" height="4" rx="2" opacity="0.12" />
       <rect className={styles.fill} x="0" y="10" width="6" height="4" rx="2">
         <animate attributeName="x" values="0;18;0" dur="1.5s" repeatCount="indefinite" />
       </rect>
+      {/* 進捗の先端を光らせる */}
+      <circle className={styles.accent} cx="6" cy="12" r="2.4">
+        <animate attributeName="cx" values="6;24;6" dur="1.5s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="1;0.6;1" dur="0.75s" repeatCount="indefinite" />
+      </circle>
     </g>
   ),
   ['loading-star']: () => (
@@ -1207,26 +1245,32 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
     </g>
   ),
   ['loading-ripple']: () => (
-    <g className={styles.stroke} strokeWidth="2">
-      <circle cx="12" cy="12" r="1">
+    <g strokeWidth="2">
+      <circle className={styles.stroke} cx="12" cy="12" r="1">
         <animate attributeName="r" values="1;10" dur="1.5s" repeatCount="indefinite" />
         <animate attributeName="opacity" values="1;0" dur="1.5s" repeatCount="indefinite" />
       </circle>
-      <circle cx="12" cy="12" r="1">
+      <circle className={styles.accentStroke} cx="12" cy="12" r="1">
         <animate attributeName="r" values="1;10" dur="1.5s" repeatCount="indefinite" begin="0.5s" />
         <animate attributeName="opacity" values="1;0" dur="1.5s" repeatCount="indefinite" begin="0.5s" />
       </circle>
-      <circle cx="12" cy="12" r="1">
+      <circle className={styles.stroke} cx="12" cy="12" r="1">
         <animate attributeName="r" values="1;10" dur="1.5s" repeatCount="indefinite" begin="1s" />
         <animate attributeName="opacity" values="1;0" dur="1.5s" repeatCount="indefinite" begin="1s" />
       </circle>
+      {/* 中央の芯（消えない） */}
+      <circle className={styles.accent} cx="12" cy="12" r="1.5" />
     </g>
   ),
   ['loading-infinity']: () => (
-    <g className={styles.stroke} strokeWidth="2" strokeLinecap="round">
-      <path d="M12 12c-2-2-4-4-6-4s-4 2-4 4 2 4 4 4c2 0 4-2 6-4s4-4 6-4 4 2 4 4-2 4-4 4c-2 0-4-2-6-4" opacity="0.2" />
-      <circle className={styles.fill} cx="12" cy="12" r="2">
+    <g strokeWidth="2" strokeLinecap="round">
+      <path className={styles.stroke} d="M12 12c-2-2-4-4-6-4s-4 2-4 4 2 4 4 4c2 0 4-2 6-4s4-4 6-4 4 2 4 4-2 4-4 4c-2 0-4-2-6-4" opacity="0.25" fill="none" />
+      {/* トレイル: 先頭の accent ドットと、少し遅れて追いかける fill ドット */}
+      <circle className={styles.accent} cx="12" cy="12" r="2.2">
         <animateMotion dur="2s" repeatCount="indefinite" path="M0 0c-2-2-4-4-6-4s-4 2-4 4 2 4 4 4c2 0 4-2 6-4s4-4 6-4 4 2 4 4-2 4-4 4c-2 0-4-2-6-4" />
+      </circle>
+      <circle className={styles.fill} cx="12" cy="12" r="1.4" opacity="0.6">
+        <animateMotion dur="2s" repeatCount="indefinite" begin="-0.2s" path="M0 0c-2-2-4-4-6-4s-4 2-4 4 2 4 4 4c2 0 4-2 6-4s4-4 6-4 4 2 4 4-2 4-4 4c-2 0-4-2-6-4" />
       </circle>
     </g>
   ),
@@ -1392,19 +1436,19 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
 // ローディングプリセット
 // ========================================
 const PRESET_MAP: Record<LoadingPreset, PresetConfig> = {
-  spinner: { name: 'spinner', color: 'current' },
-  dots: { name: 'loading-dots', color: 'primary' },
-  pulse: { name: 'loading-pulse', color: 'primary', animation: 'pulse-scale' },
+  spinner: { name: 'spinner', color: 'primary', glow: true },
+  dots: { name: 'loading-dots', color: 'primary', accent: 'info' },
+  pulse: { name: 'loading-pulse', color: 'primary', accent: 'info', glow: true, animation: 'pulse-scale' },
   cube: { name: 'loading-cube3d', color: 'info' },
   'cube-glow': { name: 'loading-cube3d-glow', color: 'info', glowStrong: true },
-  interview: { name: 'loading-interview', color: 'primary', accent: 'info', animation: 'float' },
+  interview: { name: 'loading-interview', color: 'primary', accent: 'info' },
   dna: { name: 'loading-dna', color: 'success', accent: 'info' },
   atom: { name: 'loading-atom', color: 'info', accent: 'warning', glow: true, animation: 'pulse' },
   rings: { name: 'loading-rings', color: 'primary', accent: 'info' },
   gears: { name: 'loading-gears', color: 'muted' },
   hourglass: { name: 'loading-hourglass', color: 'warning', accent: 'danger' },
   wave: { name: 'loading-wave', color: 'info' },
-  radar: { name: 'loading-radar', color: 'success', accent: 'warning', glow: true, animation: 'ping' },
+  radar: { name: 'loading-radar', color: 'success', accent: 'warning', glow: true },
   eclipse: { name: 'loading-eclipse', color: 'warning', accent: 'muted', glowStrong: true, animation: 'glow-pulse' },
   clock: { name: 'loading-clock', color: 'current' },
   morph: { name: 'loading-morph', color: 'primary', accent: 'success' },
@@ -1412,11 +1456,11 @@ const PRESET_MAP: Record<LoadingPreset, PresetConfig> = {
   triangle: { name: 'loading-triangle', color: 'warning' },
   heartbeat: { name: 'loading-heartbeat', color: 'muted', accent: 'danger', animation: 'heartbeat' },
   // 復元シリーズ
-  bars: { name: 'loading-bars', color: 'primary' },
-  wifi: { name: 'loading-wifi', color: 'info', glow: true },
-  progress: { name: 'loading-progress', color: 'primary' },
-  infinity: { name: 'loading-infinity', color: 'info', glow: true },
-  ripple: { name: 'loading-ripple', color: 'info' },
+  bars: { name: 'loading-bars', color: 'primary', accent: 'info' },
+  wifi: { name: 'loading-wifi', color: 'info', accent: 'success', glow: true },
+  progress: { name: 'loading-progress', color: 'primary', accent: 'success', glow: true },
+  infinity: { name: 'loading-infinity', color: 'info', accent: 'primary', glowStrong: true },
+  ripple: { name: 'loading-ripple', color: 'info', accent: 'primary', glow: true },
   star: { name: 'loading-star', color: 'warning', glowStrong: true },
   cross: { name: 'loading-cross', color: 'info', accent: 'danger' },
   // サプライズ: プリズム分光（7色の虹）
