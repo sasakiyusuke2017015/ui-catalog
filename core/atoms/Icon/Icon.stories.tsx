@@ -2233,6 +2233,12 @@ export const Presets: Story = {
       { preset: 'ripple', desc: '水紋' },
       { preset: 'star', desc: '輝く星' },
       { preset: 'cross', desc: '2色クロス回転' },
+      // 表現拡張
+      { preset: 'particles', desc: '12粒子の漂流' },
+      { preset: 'comet', desc: '彗星と尾' },
+      { preset: 'magnet', desc: 'U字磁石と鉄粉' },
+      { preset: 'braid', desc: '3線ブレイド' },
+      { preset: 'vortex', desc: '渦への吸い込み' },
       // サプライズ
       { preset: 'prism', desc: 'プリズム分光（虹）' },
     ] as const;

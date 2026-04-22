@@ -1155,40 +1155,62 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
           />
         </circle>
       </g>
-      {/* 雲（吹き出し）本体: 上下 + 横流れ + 濃淡の揺らぎ。人とは別色 (neutral) */}
+      {/* 雲: 独立した粒子の集まり。粒子ごとに色・濃淡・速度・位相が違う */}
       <g>
-        {/* 雲全体を左右にゆっくり流す */}
-        <animateTransform attributeName="transform" type="translate" values="-1 0; 1 0; -1 0" dur="5.2s" repeatCount="indefinite" />
-        {/* 中央の大玉 */}
-        <circle className={styles.neutral} cx="12" cy="4" r="2.2" opacity="0.95">
-          <animate attributeName="cy" values="4;3;4" dur="2.4s" repeatCount="indefinite" />
-          <animate attributeName="r"  values="2.2;2.5;2.2" dur="2.4s" repeatCount="indefinite" />
-          <animate attributeName="opacity" values="0.95;0.7;0.95" dur="3.2s" repeatCount="indefinite" />
+        {/* 中央上 - 大きめ、neutral、ゆっくり */}
+        <circle className={styles.neutral} cx="12" cy="3.5" r="2">
+          <animate attributeName="cy" values="3.5;2.5;3.5" dur="3.2s" repeatCount="indefinite" />
+          <animate attributeName="r"  values="2;2.4;2" dur="3.2s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.95;0.55;0.95" dur="2.8s" repeatCount="indefinite" />
         </circle>
-        {/* 左の膨らみ */}
-        <circle className={styles.neutral} cx="9" cy="5" r="1.6" opacity="0.85">
-          <animate attributeName="cy" values="5;4;5"   dur="2.4s" repeatCount="indefinite" begin="0.3s" />
-          <animate attributeName="cx" values="9;7.8;9" dur="3s"   repeatCount="indefinite" />
-          <animate attributeName="r"  values="1.6;1.9;1.6" dur="2.4s" repeatCount="indefinite" begin="0.3s" />
-          <animate attributeName="opacity" values="0.85;0.55;0.85" dur="2.8s" repeatCount="indefinite" begin="0.4s" />
+        {/* 左肩 - 中、accent (info)、中速 */}
+        <circle className={styles.accent} cx="9" cy="4.5" r="1.4">
+          <animate attributeName="cx" values="9;7.6;9" dur="2.4s" repeatCount="indefinite" />
+          <animate attributeName="cy" values="4.5;3.5;4.5" dur="1.9s" repeatCount="indefinite" begin="-0.4s" />
+          <animate attributeName="opacity" values="0.85;0.4;0.85" dur="2.1s" repeatCount="indefinite" begin="-0.2s" />
         </circle>
-        {/* 右の膨らみ */}
-        <circle className={styles.neutral} cx="15" cy="5" r="1.6" opacity="0.85">
-          <animate attributeName="cy" values="5;4;5"      dur="2.4s" repeatCount="indefinite" begin="0.6s" />
-          <animate attributeName="cx" values="15;16.2;15" dur="3s"   repeatCount="indefinite" />
-          <animate attributeName="r"  values="1.6;1.85;1.6" dur="2.4s" repeatCount="indefinite" begin="0.6s" />
-          <animate attributeName="opacity" values="0.85;1;0.6;0.85" dur="3.6s" repeatCount="indefinite" begin="0.2s" />
+        {/* 右肩 - 中、fill (primary)、速い */}
+        <circle className={styles.fill} cx="15.4" cy="4.6" r="1.5">
+          <animate attributeName="cx" values="15.4;16.6;15.4" dur="1.7s" repeatCount="indefinite" />
+          <animate attributeName="cy" values="4.6;3.6;4.6" dur="2.6s" repeatCount="indefinite" begin="-0.6s" />
+          <animate attributeName="opacity" values="0.9;0.45;0.9" dur="1.8s" repeatCount="indefinite" />
         </circle>
-        {/* 雲底の 2 つの小玉（雲っぽさ） */}
-        <circle className={styles.neutral} cx="10.5" cy="6.5" r="1.1" opacity="0.75">
-          <animate attributeName="cy" values="6.5;5.8;6.5" dur="2.4s" repeatCount="indefinite" begin="0.9s" />
-          <animate attributeName="cx" values="10.5;9.8;10.5" dur="4s" repeatCount="indefinite" />
-          <animate attributeName="opacity" values="0.75;0.45;0.75" dur="2.2s" repeatCount="indefinite" begin="0.5s" />
+        {/* 左下 - 小、neutral、独自スピード */}
+        <circle className={styles.neutral} cx="10" cy="6.4" r="1">
+          <animate attributeName="cy" values="6.4;5.4;6.4" dur="2.5s" repeatCount="indefinite" begin="-0.9s" />
+          <animate attributeName="cx" values="10;9.2;10" dur="3.4s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.75;0.3;0.75" dur="2.3s" repeatCount="indefinite" begin="-0.3s" />
         </circle>
-        <circle className={styles.neutral} cx="13.5" cy="6.5" r="1.1" opacity="0.75">
-          <animate attributeName="cy" values="6.5;5.8;6.5" dur="2.4s" repeatCount="indefinite" begin="1.1s" />
-          <animate attributeName="cx" values="13.5;14.2;13.5" dur="4s" repeatCount="indefinite" />
-          <animate attributeName="opacity" values="0.75;0.4;0.75" dur="2.6s" repeatCount="indefinite" begin="0.7s" />
+        {/* 右下 - 小、accent、独自スピード */}
+        <circle className={styles.accent} cx="14.2" cy="6.5" r="0.95">
+          <animate attributeName="cy" values="6.5;5.6;6.5" dur="3.1s" repeatCount="indefinite" begin="-1.4s" />
+          <animate attributeName="cx" values="14.2;15.0;14.2" dur="2.7s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.7;0.35;0.7" dur="2.6s" repeatCount="indefinite" begin="-0.7s" />
+        </circle>
+        {/* 上方の極小粒子 - fill、速くチラつく */}
+        <circle className={styles.fill} cx="11" cy="2" r="0.55">
+          <animate attributeName="cy" values="2;1.2;2" dur="1.4s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.6;0.15;0.9;0.6" dur="1.6s" repeatCount="indefinite" />
+        </circle>
+        {/* 上方右の極小粒子 - neutral */}
+        <circle className={styles.neutral} cx="13.6" cy="2.2" r="0.5">
+          <animate attributeName="cy" values="2.2;1.4;2.2" dur="1.9s" repeatCount="indefinite" begin="-0.3s" />
+          <animate attributeName="opacity" values="0.5;0.2;0.7;0.5" dur="2.2s" repeatCount="indefinite" begin="-0.6s" />
+        </circle>
+        {/* 左外側の流れ粒子 - accent、横に大きく動く */}
+        <circle className={styles.accent} cx="7.2" cy="5.8" r="0.7">
+          <animate attributeName="cx" values="7.2;5.8;7.2" dur="3.8s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.4;0.8;0.2;0.4" dur="2.4s" repeatCount="indefinite" begin="-1.1s" />
+        </circle>
+        {/* 右外側の流れ粒子 - fill */}
+        <circle className={styles.fill} cx="17" cy="5.7" r="0.75">
+          <animate attributeName="cx" values="17;18.4;17" dur="3.3s" repeatCount="indefinite" begin="-0.5s" />
+          <animate attributeName="opacity" values="0.4;0.85;0.25;0.4" dur="2.7s" repeatCount="indefinite" begin="-1.5s" />
+        </circle>
+        {/* 中央底の小粒 - neutral、ふわふわ */}
+        <circle className={styles.neutral} cx="12" cy="7" r="0.65">
+          <animate attributeName="cy" values="7;6.2;7" dur="2.1s" repeatCount="indefinite" begin="-0.8s" />
+          <animate attributeName="opacity" values="0.65;0.25;0.65" dur="1.7s" repeatCount="indefinite" />
         </circle>
       </g>
     </g>
@@ -1424,6 +1446,169 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
       </polygon>
     </g>
   ),
+  ['loading-particles']: () => (
+    <g>
+      {/* 12 個の小粒子がそれぞれ違う軌道・色・速度で漂う */}
+      <circle className={styles.fill} cx="6" cy="8" r="1.2">
+        <animate attributeName="cx" values="6;9;6" dur="3.1s" repeatCount="indefinite" />
+        <animate attributeName="cy" values="8;6;8" dur="2.4s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="2.6s" repeatCount="indefinite" />
+      </circle>
+      <circle className={styles.accent} cx="18" cy="10" r="1.4">
+        <animate attributeName="cx" values="18;15;18" dur="2.8s" repeatCount="indefinite" begin="-0.4s" />
+        <animate attributeName="cy" values="10;13;10" dur="3.5s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="2.1s" repeatCount="indefinite" begin="-0.3s" />
+      </circle>
+      <circle className={styles.neutral} cx="12" cy="4" r="0.9">
+        <animate attributeName="cx" values="12;14;12" dur="3.7s" repeatCount="indefinite" begin="-0.6s" />
+        <animate attributeName="opacity" values="0.6;0.2;0.6" dur="1.9s" repeatCount="indefinite" />
+      </circle>
+      <circle className={styles.fill} cx="4" cy="14" r="1">
+        <animate attributeName="cy" values="14;17;14" dur="2.2s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="1.7s" repeatCount="indefinite" begin="-0.8s" />
+      </circle>
+      <circle className={styles.accent} cx="20" cy="18" r="1.1">
+        <animate attributeName="cx" values="20;17;20" dur="3.3s" repeatCount="indefinite" />
+        <animate attributeName="cy" values="18;20;18" dur="2.6s" repeatCount="indefinite" begin="-1.1s" />
+        <animate attributeName="opacity" values="0.6;0.3;0.6" dur="2.4s" repeatCount="indefinite" />
+      </circle>
+      <circle className={styles.neutral} cx="10" cy="20" r="0.8">
+        <animate attributeName="cx" values="10;13;10" dur="2.9s" repeatCount="indefinite" begin="-0.5s" />
+        <animate attributeName="opacity" values="0.5;0.9;0.5" dur="1.8s" repeatCount="indefinite" />
+      </circle>
+      <circle className={styles.fill} cx="14" cy="14" r="1.3">
+        <animate attributeName="r" values="1.3;1.8;1.3" dur="2.1s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.7;0.3;0.7" dur="2.3s" repeatCount="indefinite" begin="-0.4s" />
+      </circle>
+      <circle className={styles.accent} cx="8" cy="11" r="0.7">
+        <animate attributeName="cy" values="11;9;11" dur="2.7s" repeatCount="indefinite" begin="-0.2s" />
+        <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" />
+      </circle>
+      <circle className={styles.neutral} cx="16" cy="6" r="1">
+        <animate attributeName="cx" values="16;19;16" dur="3.4s" repeatCount="indefinite" begin="-0.9s" />
+        <animate attributeName="opacity" values="0.5;0.2;0.5" dur="2.5s" repeatCount="indefinite" />
+      </circle>
+      <circle className={styles.fill} cx="3" cy="11" r="0.8">
+        <animate attributeName="cy" values="11;14;11" dur="2.5s" repeatCount="indefinite" begin="-0.7s" />
+        <animate attributeName="opacity" values="0.6;0.25;0.6" dur="1.6s" repeatCount="indefinite" />
+      </circle>
+      <circle className={styles.accent} cx="21" cy="14" r="0.9">
+        <animate attributeName="cy" values="14;11;14" dur="2.8s" repeatCount="indefinite" begin="-1.3s" />
+        <animate attributeName="opacity" values="0.5;0.95;0.5" dur="1.9s" repeatCount="indefinite" />
+      </circle>
+      <circle className={styles.neutral} cx="7" cy="17" r="0.6">
+        <animate attributeName="cx" values="7;9;7" dur="3s" repeatCount="indefinite" begin="-0.6s" />
+        <animate attributeName="opacity" values="0.6;0.2;0.6" dur="2.2s" repeatCount="indefinite" />
+      </circle>
+    </g>
+  ),
+  ['loading-comet']: () => (
+    <g>
+      {/* 円軌道 */}
+      <circle className={styles.stroke} cx="12" cy="12" r="9" strokeWidth="0.6" opacity="0.15" />
+      {/* 彗星の尾（5 段の点が頭を追いかける形でフェード） */}
+      <circle className={styles.accent} r="1.6">
+        <animateMotion dur="2.4s" repeatCount="indefinite" path="M 21 12 A 9 9 0 1 1 3 12 A 9 9 0 1 1 21 12" />
+      </circle>
+      <circle className={styles.accent} r="1.3" opacity="0.7">
+        <animateMotion dur="2.4s" repeatCount="indefinite" begin="-0.08s" path="M 21 12 A 9 9 0 1 1 3 12 A 9 9 0 1 1 21 12" />
+      </circle>
+      <circle className={styles.accent} r="1" opacity="0.5">
+        <animateMotion dur="2.4s" repeatCount="indefinite" begin="-0.16s" path="M 21 12 A 9 9 0 1 1 3 12 A 9 9 0 1 1 21 12" />
+      </circle>
+      <circle className={styles.fill} r="0.7" opacity="0.35">
+        <animateMotion dur="2.4s" repeatCount="indefinite" begin="-0.24s" path="M 21 12 A 9 9 0 1 1 3 12 A 9 9 0 1 1 21 12" />
+      </circle>
+      <circle className={styles.fill} r="0.45" opacity="0.2">
+        <animateMotion dur="2.4s" repeatCount="indefinite" begin="-0.32s" path="M 21 12 A 9 9 0 1 1 3 12 A 9 9 0 1 1 21 12" />
+      </circle>
+    </g>
+  ),
+  ['loading-magnet']: () => (
+    <g>
+      {/* U字磁石 */}
+      <path className={styles.fill} d="M5 4 L5 12 A 7 7 0 0 0 19 12 L19 4 L15 4 L15 12 A 3 3 0 0 1 9 12 L9 4 Z" opacity="0.85" />
+      {/* N極（左）と S極（右）のキャップ */}
+      <rect className={styles.accentStroke} x="5" y="4" width="4" height="2" opacity="0" />
+      <rect x="5" y="4" width="4" height="1.6" fill="#3b82f6" opacity="0.95" />
+      <rect x="15" y="4" width="4" height="1.6" fill="#ef4444" opacity="0.95" />
+      {/* 鉄粉が両極に引き寄せられる（左右から） */}
+      <circle className={styles.fill} cx="0" cy="5" r="0.6">
+        <animate attributeName="cx" values="0;5;0" dur="1.4s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0;1;0" dur="1.4s" repeatCount="indefinite" />
+      </circle>
+      <circle className={styles.fill} cx="0" cy="5" r="0.6">
+        <animate attributeName="cx" values="0;5;0" dur="1.4s" repeatCount="indefinite" begin="-0.45s" />
+        <animate attributeName="opacity" values="0;1;0" dur="1.4s" repeatCount="indefinite" begin="-0.45s" />
+      </circle>
+      <circle className={styles.fill} cx="0" cy="5" r="0.6">
+        <animate attributeName="cx" values="0;5;0" dur="1.4s" repeatCount="indefinite" begin="-0.9s" />
+        <animate attributeName="opacity" values="0;1;0" dur="1.4s" repeatCount="indefinite" begin="-0.9s" />
+      </circle>
+      <circle className={styles.fill} cx="24" cy="5" r="0.6">
+        <animate attributeName="cx" values="24;19;24" dur="1.4s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0;1;0" dur="1.4s" repeatCount="indefinite" />
+      </circle>
+      <circle className={styles.fill} cx="24" cy="5" r="0.6">
+        <animate attributeName="cx" values="24;19;24" dur="1.4s" repeatCount="indefinite" begin="-0.45s" />
+        <animate attributeName="opacity" values="0;1;0" dur="1.4s" repeatCount="indefinite" begin="-0.45s" />
+      </circle>
+      <circle className={styles.fill} cx="24" cy="5" r="0.6">
+        <animate attributeName="cx" values="24;19;24" dur="1.4s" repeatCount="indefinite" begin="-0.9s" />
+        <animate attributeName="opacity" values="0;1;0" dur="1.4s" repeatCount="indefinite" begin="-0.9s" />
+      </circle>
+    </g>
+  ),
+  ['loading-braid']: () => (
+    <g strokeWidth="2" strokeLinecap="round" fill="none">
+      {/* 3 本のラインが編み込まれる: 各ラインの y を別位相の sin 風で揺らす */}
+      <path className={styles.stroke}
+        d="M2 12 Q 7 6 12 12 T 22 12">
+        <animate attributeName="d"
+          values="M2 12 Q 7 6 12 12 T 22 12;
+                  M2 12 Q 7 18 12 12 T 22 12;
+                  M2 12 Q 7 6 12 12 T 22 12"
+          dur="2s" repeatCount="indefinite" />
+      </path>
+      <path className={styles.accentStroke}
+        d="M2 12 Q 7 18 12 12 T 22 12">
+        <animate attributeName="d"
+          values="M2 12 Q 7 18 12 12 T 22 12;
+                  M2 12 Q 7 6 12 12 T 22 12;
+                  M2 12 Q 7 18 12 12 T 22 12"
+          dur="2s" repeatCount="indefinite" />
+      </path>
+      <path stroke="var(--icon-neutral, var(--color-gray-400))"
+        d="M2 12 Q 7 12 12 12 T 22 12" opacity="0.6">
+        <animate attributeName="d"
+          values="M2 12 Q 7 9 12 12 T 22 12;
+                  M2 12 Q 7 15 12 12 T 22 12;
+                  M2 12 Q 7 9 12 12 T 22 12"
+          dur="2s" repeatCount="indefinite" begin="-0.5s" />
+      </path>
+    </g>
+  ),
+  ['loading-vortex']: () => (
+    <g>
+      {/* 渦の輪郭ガイド */}
+      <path className={styles.stroke} d="M12 12 m-9 0 a9 9 0 1 0 18 0 a9 9 0 1 0 -18 0" strokeWidth="0.6" opacity="0.12" />
+      <path className={styles.stroke} d="M12 12 m-5 0 a5 5 0 1 0 10 0 a5 5 0 1 0 -10 0" strokeWidth="0.6" opacity="0.18" />
+      {/* 6 粒子が螺旋で中心へ吸い込まれていく（cx/cy/r/opacity を同時に変化） */}
+      {[0, 0.2, 0.4, 0.6, 0.8, 1.0].map((delay, i) => (
+        <circle key={i} className={i % 2 === 0 ? styles.accent : styles.fill} r="1.4" cx="21" cy="12">
+          <animate attributeName="cx" values="21;12" dur="1.6s" repeatCount="indefinite" begin={`${-delay}s`} />
+          <animate attributeName="cy" values="12;12" dur="1.6s" repeatCount="indefinite" begin={`${-delay}s`} />
+          <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="540 12 12" dur="1.6s" repeatCount="indefinite" begin={`${-delay}s`} />
+          <animate attributeName="r" values="1.4;0.2" dur="1.6s" repeatCount="indefinite" begin={`${-delay}s`} />
+          <animate attributeName="opacity" values="1;0.1" dur="1.6s" repeatCount="indefinite" begin={`${-delay}s`} />
+        </circle>
+      ))}
+      {/* 中心の核 */}
+      <circle className={styles.accent} cx="12" cy="12" r="1.5">
+        <animate attributeName="r" values="1.5;2.2;1.5" dur="0.8s" repeatCount="indefinite" />
+      </circle>
+    </g>
+  ),
   ['loading-prism']: () => (
     <g>
       <defs>
@@ -1550,6 +1735,12 @@ const PRESET_MAP: Record<LoadingPreset, PresetConfig> = {
   ripple: { name: 'loading-ripple', color: 'info', accent: 'primary', glow: true },
   star: { name: 'loading-star', color: 'warning', glowStrong: true },
   cross: { name: 'loading-cross', color: 'info', accent: 'danger' },
+  // 表現拡張
+  particles: { name: 'loading-particles', color: 'primary', accent: 'info', colorShift: false },
+  comet: { name: 'loading-comet', color: 'info', accent: 'warning', glow: true, colorShift: false },
+  magnet: { name: 'loading-magnet', color: 'muted' },
+  braid: { name: 'loading-braid', color: 'primary', accent: 'success', colorShift: false },
+  vortex: { name: 'loading-vortex', color: 'primary', accent: 'info', glow: true, colorShift: false },
   // サプライズ: プリズム分光（7色の虹）
   prism: { name: 'loading-prism', glowStrong: true, hover: 'glow' },
 };

@@ -68,6 +68,12 @@ export type LoadingPreset =
   | 'ripple'
   | 'star'
   | 'cross'
+  // 表現拡張
+  | 'particles'
+  | 'comet'
+  | 'magnet'
+  | 'braid'
+  | 'vortex'
   // サプライズ
   | 'prism';
 

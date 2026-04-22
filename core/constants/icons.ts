@@ -123,6 +123,11 @@ export const ALL_ICON_TYPES = [
   'loading-eclipse',
   'loading-interview',
   'loading-prism',
+  'loading-particles',
+  'loading-comet',
+  'loading-magnet',
+  'loading-braid',
+  'loading-vortex',
 ] as const;
 
 // ローディングアイコン名のリスト
@@ -165,6 +170,11 @@ export const LOADING_ICON_TYPES = [
   'loading-eclipse',
   'loading-interview',
   'loading-prism',
+  'loading-particles',
+  'loading-comet',
+  'loading-magnet',
+  'loading-braid',
+  'loading-vortex',
 ] as const;
 
 // 型定義
