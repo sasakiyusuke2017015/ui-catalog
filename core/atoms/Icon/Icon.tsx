@@ -1406,11 +1406,19 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
     </rect>
   ),
   ['loading-cross']: () => (
-    <g strokeWidth="4" strokeLinecap="round">
-      <line className={styles.stroke} x1="12" y1="2" x2="12" y2="22">
+    <g strokeWidth="4" strokeLinecap="round" fill="none">
+      {/* 縦バー: info → danger → info を周期的に切り替え */}
+      <line x1="12" y1="2" x2="12" y2="22" stroke="var(--color-info-500)">
+        <animate attributeName="stroke"
+          values="var(--color-info-500);var(--color-danger-500);var(--color-info-500)"
+          dur="2.4s" repeatCount="indefinite" />
         <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite" />
       </line>
-      <line className={styles.accentStroke} x1="2" y1="12" x2="22" y2="12">
+      {/* 横バー: danger → info → danger（縦と逆位相） */}
+      <line x1="2" y1="12" x2="22" y2="12" stroke="var(--color-danger-500)">
+        <animate attributeName="stroke"
+          values="var(--color-danger-500);var(--color-info-500);var(--color-danger-500)"
+          dur="2.4s" repeatCount="indefinite" />
         <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite" />
       </line>
     </g>
@@ -1448,57 +1456,64 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
   ),
   ['loading-particles']: () => (
     <g>
-      {/* 12 個の小粒子がそれぞれ違う軌道・色・速度で漂う */}
-      <circle className={styles.fill} cx="6" cy="8" r="1.2">
-        <animate attributeName="cx" values="6;9;6" dur="3.1s" repeatCount="indefinite" />
-        <animate attributeName="cy" values="8;6;8" dur="2.4s" repeatCount="indefinite" />
-        <animate attributeName="opacity" values="0.4;1;0.4" dur="2.6s" repeatCount="indefinite" />
+      {/* 中心の優しい光 */}
+      <circle className={styles.accent} cx="12" cy="12" r="1.6" opacity="0.6">
+        <animate attributeName="r" values="1.6;2.1;1.6" dur="3s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.6;0.85;0.6" dur="3s" repeatCount="indefinite" />
       </circle>
-      <circle className={styles.accent} cx="18" cy="10" r="1.4">
-        <animate attributeName="cx" values="18;15;18" dur="2.8s" repeatCount="indefinite" begin="-0.4s" />
-        <animate attributeName="cy" values="10;13;10" dur="3.5s" repeatCount="indefinite" />
-        <animate attributeName="opacity" values="0.5;1;0.5" dur="2.1s" repeatCount="indefinite" begin="-0.3s" />
+
+      {/* 内側の軌道 (半径 4) - 速め、3 粒子が等間隔で時計回り */}
+      <circle className={styles.fill} r="1.2">
+        <animateMotion dur="4s" repeatCount="indefinite" path="M 16 12 A 4 4 0 1 1 8 12 A 4 4 0 1 1 16 12" />
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="4s" repeatCount="indefinite" />
       </circle>
-      <circle className={styles.neutral} cx="12" cy="4" r="0.9">
-        <animate attributeName="cx" values="12;14;12" dur="3.7s" repeatCount="indefinite" begin="-0.6s" />
-        <animate attributeName="opacity" values="0.6;0.2;0.6" dur="1.9s" repeatCount="indefinite" />
+      <circle className={styles.fill} r="1.2">
+        <animateMotion dur="4s" repeatCount="indefinite" begin="-1.33s" path="M 16 12 A 4 4 0 1 1 8 12 A 4 4 0 1 1 16 12" />
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="4s" repeatCount="indefinite" begin="-1.33s" />
       </circle>
-      <circle className={styles.fill} cx="4" cy="14" r="1">
-        <animate attributeName="cy" values="14;17;14" dur="2.2s" repeatCount="indefinite" />
-        <animate attributeName="opacity" values="0.5;1;0.5" dur="1.7s" repeatCount="indefinite" begin="-0.8s" />
+      <circle className={styles.fill} r="1.2">
+        <animateMotion dur="4s" repeatCount="indefinite" begin="-2.66s" path="M 16 12 A 4 4 0 1 1 8 12 A 4 4 0 1 1 16 12" />
+        <animate attributeName="opacity" values="0.5;1;0.5" dur="4s" repeatCount="indefinite" begin="-2.66s" />
       </circle>
-      <circle className={styles.accent} cx="20" cy="18" r="1.1">
-        <animate attributeName="cx" values="20;17;20" dur="3.3s" repeatCount="indefinite" />
-        <animate attributeName="cy" values="18;20;18" dur="2.6s" repeatCount="indefinite" begin="-1.1s" />
-        <animate attributeName="opacity" values="0.6;0.3;0.6" dur="2.4s" repeatCount="indefinite" />
+
+      {/* 中間の軌道 (半径 7) - 中速、4 粒子が反時計回り */}
+      <circle className={styles.accent} r="1">
+        <animateMotion dur="6s" repeatCount="indefinite" path="M 5 12 A 7 7 0 1 0 19 12 A 7 7 0 1 0 5 12" />
+        <animate attributeName="opacity" values="0.4;0.95;0.4" dur="3s" repeatCount="indefinite" />
       </circle>
-      <circle className={styles.neutral} cx="10" cy="20" r="0.8">
-        <animate attributeName="cx" values="10;13;10" dur="2.9s" repeatCount="indefinite" begin="-0.5s" />
-        <animate attributeName="opacity" values="0.5;0.9;0.5" dur="1.8s" repeatCount="indefinite" />
+      <circle className={styles.accent} r="1">
+        <animateMotion dur="6s" repeatCount="indefinite" begin="-1.5s" path="M 5 12 A 7 7 0 1 0 19 12 A 7 7 0 1 0 5 12" />
+        <animate attributeName="opacity" values="0.4;0.95;0.4" dur="3s" repeatCount="indefinite" begin="-0.5s" />
       </circle>
-      <circle className={styles.fill} cx="14" cy="14" r="1.3">
-        <animate attributeName="r" values="1.3;1.8;1.3" dur="2.1s" repeatCount="indefinite" />
-        <animate attributeName="opacity" values="0.7;0.3;0.7" dur="2.3s" repeatCount="indefinite" begin="-0.4s" />
+      <circle className={styles.accent} r="1">
+        <animateMotion dur="6s" repeatCount="indefinite" begin="-3s" path="M 5 12 A 7 7 0 1 0 19 12 A 7 7 0 1 0 5 12" />
+        <animate attributeName="opacity" values="0.4;0.95;0.4" dur="3s" repeatCount="indefinite" begin="-1s" />
       </circle>
-      <circle className={styles.accent} cx="8" cy="11" r="0.7">
-        <animate attributeName="cy" values="11;9;11" dur="2.7s" repeatCount="indefinite" begin="-0.2s" />
-        <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" />
+      <circle className={styles.accent} r="1">
+        <animateMotion dur="6s" repeatCount="indefinite" begin="-4.5s" path="M 5 12 A 7 7 0 1 0 19 12 A 7 7 0 1 0 5 12" />
+        <animate attributeName="opacity" values="0.4;0.95;0.4" dur="3s" repeatCount="indefinite" begin="-1.5s" />
       </circle>
-      <circle className={styles.neutral} cx="16" cy="6" r="1">
-        <animate attributeName="cx" values="16;19;16" dur="3.4s" repeatCount="indefinite" begin="-0.9s" />
-        <animate attributeName="opacity" values="0.5;0.2;0.5" dur="2.5s" repeatCount="indefinite" />
+
+      {/* 外側の軌道 (半径 10) - ゆっくり、5 粒子が時計回り */}
+      <circle className={styles.neutral} r="0.7">
+        <animateMotion dur="9s" repeatCount="indefinite" path="M 22 12 A 10 10 0 1 1 2 12 A 10 10 0 1 1 22 12" />
+        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="4.5s" repeatCount="indefinite" />
       </circle>
-      <circle className={styles.fill} cx="3" cy="11" r="0.8">
-        <animate attributeName="cy" values="11;14;11" dur="2.5s" repeatCount="indefinite" begin="-0.7s" />
-        <animate attributeName="opacity" values="0.6;0.25;0.6" dur="1.6s" repeatCount="indefinite" />
+      <circle className={styles.neutral} r="0.7">
+        <animateMotion dur="9s" repeatCount="indefinite" begin="-1.8s" path="M 22 12 A 10 10 0 1 1 2 12 A 10 10 0 1 1 22 12" />
+        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="4.5s" repeatCount="indefinite" begin="-0.9s" />
       </circle>
-      <circle className={styles.accent} cx="21" cy="14" r="0.9">
-        <animate attributeName="cy" values="14;11;14" dur="2.8s" repeatCount="indefinite" begin="-1.3s" />
-        <animate attributeName="opacity" values="0.5;0.95;0.5" dur="1.9s" repeatCount="indefinite" />
+      <circle className={styles.neutral} r="0.7">
+        <animateMotion dur="9s" repeatCount="indefinite" begin="-3.6s" path="M 22 12 A 10 10 0 1 1 2 12 A 10 10 0 1 1 22 12" />
+        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="4.5s" repeatCount="indefinite" begin="-1.8s" />
       </circle>
-      <circle className={styles.neutral} cx="7" cy="17" r="0.6">
-        <animate attributeName="cx" values="7;9;7" dur="3s" repeatCount="indefinite" begin="-0.6s" />
-        <animate attributeName="opacity" values="0.6;0.2;0.6" dur="2.2s" repeatCount="indefinite" />
+      <circle className={styles.neutral} r="0.7">
+        <animateMotion dur="9s" repeatCount="indefinite" begin="-5.4s" path="M 22 12 A 10 10 0 1 1 2 12 A 10 10 0 1 1 22 12" />
+        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="4.5s" repeatCount="indefinite" begin="-2.7s" />
+      </circle>
+      <circle className={styles.neutral} r="0.7">
+        <animateMotion dur="9s" repeatCount="indefinite" begin="-7.2s" path="M 22 12 A 10 10 0 1 1 2 12 A 10 10 0 1 1 22 12" />
+        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="4.5s" repeatCount="indefinite" begin="-3.6s" />
       </circle>
     </g>
   ),
@@ -1506,21 +1521,21 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
     <g>
       {/* 円軌道 */}
       <circle className={styles.stroke} cx="12" cy="12" r="9" strokeWidth="0.6" opacity="0.15" />
-      {/* 彗星の尾（5 段の点が頭を追いかける形でフェード） */}
+      {/* 反時計回り (sweep-flag=0)。尾は頭より遅れて出発 → 頭を追いかける */}
       <circle className={styles.accent} r="1.6">
-        <animateMotion dur="2.4s" repeatCount="indefinite" path="M 21 12 A 9 9 0 1 1 3 12 A 9 9 0 1 1 21 12" />
+        <animateMotion dur="2.4s" repeatCount="indefinite" path="M 21 12 A 9 9 0 1 0 3 12 A 9 9 0 1 0 21 12" />
       </circle>
       <circle className={styles.accent} r="1.3" opacity="0.7">
-        <animateMotion dur="2.4s" repeatCount="indefinite" begin="-0.08s" path="M 21 12 A 9 9 0 1 1 3 12 A 9 9 0 1 1 21 12" />
+        <animateMotion dur="2.4s" repeatCount="indefinite" begin="0.08s" path="M 21 12 A 9 9 0 1 0 3 12 A 9 9 0 1 0 21 12" />
       </circle>
       <circle className={styles.accent} r="1" opacity="0.5">
-        <animateMotion dur="2.4s" repeatCount="indefinite" begin="-0.16s" path="M 21 12 A 9 9 0 1 1 3 12 A 9 9 0 1 1 21 12" />
+        <animateMotion dur="2.4s" repeatCount="indefinite" begin="0.16s" path="M 21 12 A 9 9 0 1 0 3 12 A 9 9 0 1 0 21 12" />
       </circle>
       <circle className={styles.fill} r="0.7" opacity="0.35">
-        <animateMotion dur="2.4s" repeatCount="indefinite" begin="-0.24s" path="M 21 12 A 9 9 0 1 1 3 12 A 9 9 0 1 1 21 12" />
+        <animateMotion dur="2.4s" repeatCount="indefinite" begin="0.24s" path="M 21 12 A 9 9 0 1 0 3 12 A 9 9 0 1 0 21 12" />
       </circle>
       <circle className={styles.fill} r="0.45" opacity="0.2">
-        <animateMotion dur="2.4s" repeatCount="indefinite" begin="-0.32s" path="M 21 12 A 9 9 0 1 1 3 12 A 9 9 0 1 1 21 12" />
+        <animateMotion dur="2.4s" repeatCount="indefinite" begin="0.32s" path="M 21 12 A 9 9 0 1 0 3 12 A 9 9 0 1 0 21 12" />
       </circle>
     </g>
   ),
@@ -1528,57 +1543,84 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
     <g>
       {/* U字磁石 */}
       <path className={styles.fill} d="M5 4 L5 12 A 7 7 0 0 0 19 12 L19 4 L15 4 L15 12 A 3 3 0 0 1 9 12 L9 4 Z" opacity="0.85" />
-      {/* N極（左）と S極（右）のキャップ */}
-      <rect className={styles.accentStroke} x="5" y="4" width="4" height="2" opacity="0" />
+      {/* N極（左、青）と S極（右、赤）のキャップ */}
       <rect x="5" y="4" width="4" height="1.6" fill="#3b82f6" opacity="0.95" />
       <rect x="15" y="4" width="4" height="1.6" fill="#ef4444" opacity="0.95" />
-      {/* 鉄粉が両極に引き寄せられる（左右から） */}
+
+      {/* 磁力線: N→S を結ぶ 3 本のアーチ状の破線。点線オフセットで流れる */}
+      <path d="M 7 4 Q 12 -1 17 4" fill="none" stroke="#3b82f6" strokeWidth="0.6" strokeDasharray="2 2" opacity="0.5">
+        <animate attributeName="stroke-dashoffset" values="0;-8" dur="1.6s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="0.2;0.6;0.2" dur="1.6s" repeatCount="indefinite" />
+      </path>
+      <path d="M 6 6 Q 12 -3 18 6" fill="none" stroke="#a855f7" strokeWidth="0.6" strokeDasharray="2 2" opacity="0.4">
+        <animate attributeName="stroke-dashoffset" values="0;-8" dur="2s" repeatCount="indefinite" begin="-0.5s" />
+        <animate attributeName="opacity" values="0.15;0.5;0.15" dur="2s" repeatCount="indefinite" />
+      </path>
+      <path d="M 5 8 Q 12 -5 19 8" fill="none" stroke="#ef4444" strokeWidth="0.6" strokeDasharray="2 2" opacity="0.4">
+        <animate attributeName="stroke-dashoffset" values="0;-8" dur="2.4s" repeatCount="indefinite" begin="-1s" />
+        <animate attributeName="opacity" values="0.15;0.5;0.15" dur="2.4s" repeatCount="indefinite" />
+      </path>
+
+      {/* 左から N極へ吸い寄せられる鉄粉。極に到達するとサイズが弾けて消える */}
       <circle className={styles.fill} cx="0" cy="5" r="0.6">
-        <animate attributeName="cx" values="0;5;0" dur="1.4s" repeatCount="indefinite" />
-        <animate attributeName="opacity" values="0;1;0" dur="1.4s" repeatCount="indefinite" />
+        <animate attributeName="cx" values="0;7" dur="1.4s" repeatCount="indefinite" />
+        <animate attributeName="r" values="0.6;0.6;1.4" dur="1.4s" repeatCount="indefinite" keyTimes="0;0.85;1" />
+        <animate attributeName="opacity" values="0;1;1;0" dur="1.4s" repeatCount="indefinite" keyTimes="0;0.15;0.85;1" />
       </circle>
       <circle className={styles.fill} cx="0" cy="5" r="0.6">
-        <animate attributeName="cx" values="0;5;0" dur="1.4s" repeatCount="indefinite" begin="-0.45s" />
-        <animate attributeName="opacity" values="0;1;0" dur="1.4s" repeatCount="indefinite" begin="-0.45s" />
+        <animate attributeName="cx" values="0;7" dur="1.4s" repeatCount="indefinite" begin="-0.45s" />
+        <animate attributeName="r" values="0.6;0.6;1.4" dur="1.4s" repeatCount="indefinite" begin="-0.45s" keyTimes="0;0.85;1" />
+        <animate attributeName="opacity" values="0;1;1;0" dur="1.4s" repeatCount="indefinite" begin="-0.45s" keyTimes="0;0.15;0.85;1" />
       </circle>
       <circle className={styles.fill} cx="0" cy="5" r="0.6">
-        <animate attributeName="cx" values="0;5;0" dur="1.4s" repeatCount="indefinite" begin="-0.9s" />
-        <animate attributeName="opacity" values="0;1;0" dur="1.4s" repeatCount="indefinite" begin="-0.9s" />
+        <animate attributeName="cx" values="0;7" dur="1.4s" repeatCount="indefinite" begin="-0.9s" />
+        <animate attributeName="r" values="0.6;0.6;1.4" dur="1.4s" repeatCount="indefinite" begin="-0.9s" keyTimes="0;0.85;1" />
+        <animate attributeName="opacity" values="0;1;1;0" dur="1.4s" repeatCount="indefinite" begin="-0.9s" keyTimes="0;0.15;0.85;1" />
+      </circle>
+
+      {/* 右から S極へ */}
+      <circle className={styles.fill} cx="24" cy="5" r="0.6">
+        <animate attributeName="cx" values="24;17" dur="1.4s" repeatCount="indefinite" />
+        <animate attributeName="r" values="0.6;0.6;1.4" dur="1.4s" repeatCount="indefinite" keyTimes="0;0.85;1" />
+        <animate attributeName="opacity" values="0;1;1;0" dur="1.4s" repeatCount="indefinite" keyTimes="0;0.15;0.85;1" />
       </circle>
       <circle className={styles.fill} cx="24" cy="5" r="0.6">
-        <animate attributeName="cx" values="24;19;24" dur="1.4s" repeatCount="indefinite" />
-        <animate attributeName="opacity" values="0;1;0" dur="1.4s" repeatCount="indefinite" />
+        <animate attributeName="cx" values="24;17" dur="1.4s" repeatCount="indefinite" begin="-0.45s" />
+        <animate attributeName="r" values="0.6;0.6;1.4" dur="1.4s" repeatCount="indefinite" begin="-0.45s" keyTimes="0;0.85;1" />
+        <animate attributeName="opacity" values="0;1;1;0" dur="1.4s" repeatCount="indefinite" begin="-0.45s" keyTimes="0;0.15;0.85;1" />
       </circle>
       <circle className={styles.fill} cx="24" cy="5" r="0.6">
-        <animate attributeName="cx" values="24;19;24" dur="1.4s" repeatCount="indefinite" begin="-0.45s" />
-        <animate attributeName="opacity" values="0;1;0" dur="1.4s" repeatCount="indefinite" begin="-0.45s" />
-      </circle>
-      <circle className={styles.fill} cx="24" cy="5" r="0.6">
-        <animate attributeName="cx" values="24;19;24" dur="1.4s" repeatCount="indefinite" begin="-0.9s" />
-        <animate attributeName="opacity" values="0;1;0" dur="1.4s" repeatCount="indefinite" begin="-0.9s" />
+        <animate attributeName="cx" values="24;17" dur="1.4s" repeatCount="indefinite" begin="-0.9s" />
+        <animate attributeName="r" values="0.6;0.6;1.4" dur="1.4s" repeatCount="indefinite" begin="-0.9s" keyTimes="0;0.85;1" />
+        <animate attributeName="opacity" values="0;1;1;0" dur="1.4s" repeatCount="indefinite" begin="-0.9s" keyTimes="0;0.15;0.85;1" />
       </circle>
     </g>
   ),
   ['loading-braid']: () => (
-    <g strokeWidth="2" strokeLinecap="round" fill="none">
-      {/* 3 本のラインが編み込まれる: 各ラインの y を別位相の sin 風で揺らす */}
+    <g strokeLinecap="round" fill="none">
+      {/* 3 本のラインが編み込まれる。線の太さも脈動させてリボン感 */}
       <path className={styles.stroke}
+        strokeWidth="2"
         d="M2 12 Q 7 6 12 12 T 22 12">
         <animate attributeName="d"
           values="M2 12 Q 7 6 12 12 T 22 12;
                   M2 12 Q 7 18 12 12 T 22 12;
                   M2 12 Q 7 6 12 12 T 22 12"
           dur="2s" repeatCount="indefinite" />
+        <animate attributeName="stroke-width" values="1.6;2.4;1.6" dur="2s" repeatCount="indefinite" />
       </path>
       <path className={styles.accentStroke}
+        strokeWidth="2"
         d="M2 12 Q 7 18 12 12 T 22 12">
         <animate attributeName="d"
           values="M2 12 Q 7 18 12 12 T 22 12;
                   M2 12 Q 7 6 12 12 T 22 12;
                   M2 12 Q 7 18 12 12 T 22 12"
           dur="2s" repeatCount="indefinite" />
+        <animate attributeName="stroke-width" values="2.4;1.6;2.4" dur="2s" repeatCount="indefinite" />
       </path>
       <path stroke="var(--icon-neutral, var(--color-gray-400))"
+        strokeWidth="1.6"
         d="M2 12 Q 7 12 12 12 T 22 12" opacity="0.6">
         <animate attributeName="d"
           values="M2 12 Q 7 9 12 12 T 22 12;
@@ -1586,6 +1628,20 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
                   M2 12 Q 7 9 12 12 T 22 12"
           dur="2s" repeatCount="indefinite" begin="-0.5s" />
       </path>
+
+      {/* 波線を辿って左→右に流れる光の粒（3 本それぞれに 1 個ずつ） */}
+      <circle className={styles.fill} r="1">
+        <animateMotion dur="2s" repeatCount="indefinite" path="M2 12 Q 7 6 12 12 T 22 12" />
+        <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite" keyTimes="0;0.15;0.85;1" />
+      </circle>
+      <circle className={styles.accent} r="1">
+        <animateMotion dur="2s" repeatCount="indefinite" begin="-0.66s" path="M2 12 Q 7 18 12 12 T 22 12" />
+        <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite" begin="-0.66s" keyTimes="0;0.15;0.85;1" />
+      </circle>
+      <circle r="0.7" fill="var(--icon-neutral, var(--color-gray-400))">
+        <animateMotion dur="2s" repeatCount="indefinite" begin="-1.33s" path="M2 12 Q 7 12 12 12 T 22 12" />
+        <animate attributeName="opacity" values="0;0.8;0.8;0" dur="2s" repeatCount="indefinite" begin="-1.33s" keyTimes="0;0.15;0.85;1" />
+      </circle>
     </g>
   ),
   ['loading-vortex']: () => (
@@ -1726,7 +1782,7 @@ const PRESET_MAP: Record<LoadingPreset, PresetConfig> = {
   morph: { name: 'loading-morph', color: 'primary', accent: 'success' },
   orbit: { name: 'loading-orbit', color: 'primary' },
   triangle: { name: 'loading-triangle', color: 'warning' },
-  heartbeat: { name: 'loading-heartbeat', color: 'muted', accent: 'danger', animation: 'heartbeat' },
+  heartbeat: { name: 'loading-heartbeat', color: 'muted', accent: 'danger', colorShift: false },
   // 復元シリーズ
   bars: { name: 'loading-bars', color: 'primary', accent: 'info' },
   wifi: { name: 'loading-wifi', color: 'info', accent: 'success', glow: true },
@@ -1734,7 +1790,7 @@ const PRESET_MAP: Record<LoadingPreset, PresetConfig> = {
   infinity: { name: 'loading-infinity', color: 'info', accent: 'primary', glowStrong: true },
   ripple: { name: 'loading-ripple', color: 'info', accent: 'primary', glow: true },
   star: { name: 'loading-star', color: 'warning', glowStrong: true },
-  cross: { name: 'loading-cross', color: 'info', accent: 'danger' },
+  cross: { name: 'loading-cross' },
   // 表現拡張
   particles: { name: 'loading-particles', color: 'primary', accent: 'info', colorShift: false },
   comet: { name: 'loading-comet', color: 'info', accent: 'warning', glow: true, colorShift: false },

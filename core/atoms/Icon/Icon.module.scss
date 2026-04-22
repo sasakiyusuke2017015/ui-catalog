@@ -1406,6 +1406,11 @@
   animation: icon-color-shift 2.4s ease-in-out infinite;
 }
 
+// 0%/100% は元の color (.colorXxx) を維持、50% は --icon-accent に切り替え。
+// CSS Animation は currentColor を補間できるので .stroke / .fill の色が往復する。
+// （--icon-accent 側は keyframes 内では値の差し替えしかできず補間されないため、
+//  .accent 要素は静的色のままだが、SVG 側で 2 色目も動かしたい場合は
+//  SVG 内で SMIL の <animate fill="..."> を使う方針を取る）
 @keyframes icon-color-shift {
   50% { color: var(--icon-accent); }
 }
