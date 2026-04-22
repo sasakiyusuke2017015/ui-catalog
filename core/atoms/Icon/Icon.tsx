@@ -921,7 +921,7 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
         <animate attributeName="cy" values="4;12;20;12;4" dur="2s" repeatCount="indefinite" />
         <animate attributeName="rx" values="2;4;2;4;2" dur="2s" repeatCount="indefinite" />
       </ellipse>
-      <ellipse className={styles.fill} cx="16" cy="20" rx="2" ry="1.5">
+      <ellipse className={styles.accent} cx="16" cy="20" rx="2" ry="1.5">
         <animate attributeName="cy" values="20;12;4;12;20" dur="2s" repeatCount="indefinite" />
         <animate attributeName="rx" values="2;4;2;4;2" dur="2s" repeatCount="indefinite" />
       </ellipse>
@@ -938,25 +938,25 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
   ),
   ['loading-atom']: () => (
     <g>
-      <circle className={styles.fill} cx="12" cy="12" r="3">
+      <circle className={styles.accent} cx="12" cy="12" r="3">
         <animate attributeName="r" values="3;3.5;3" dur="1s" repeatCount="indefinite" />
       </circle>
       <ellipse className={styles.stroke} cx="12" cy="12" rx="10" ry="4" strokeWidth="1" opacity="0.3">
         <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="3s" repeatCount="indefinite" />
       </ellipse>
-      <circle className={styles.fill} cx="22" cy="12" r="1.5">
+      <circle className={styles.accent} cx="22" cy="12" r="1.5">
         <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1.5s" repeatCount="indefinite" />
       </circle>
       <ellipse className={styles.stroke} cx="12" cy="12" rx="10" ry="4" strokeWidth="1" opacity="0.3" transform="rotate(60 12 12)">
         <animateTransform attributeName="transform" type="rotate" from="60 12 12" to="420 12 12" dur="3s" repeatCount="indefinite" />
       </ellipse>
-      <circle className={styles.fill} cx="22" cy="12" r="1.5" transform="rotate(60 12 12)">
+      <circle className={styles.accent} cx="22" cy="12" r="1.5" transform="rotate(60 12 12)">
         <animateTransform attributeName="transform" type="rotate" from="60 12 12" to="420 12 12" dur="2s" repeatCount="indefinite" />
       </circle>
       <ellipse className={styles.stroke} cx="12" cy="12" rx="10" ry="4" strokeWidth="1" opacity="0.3" transform="rotate(-60 12 12)">
         <animateTransform attributeName="transform" type="rotate" from="-60 12 12" to="300 12 12" dur="3s" repeatCount="indefinite" />
       </ellipse>
-      <circle className={styles.fill} cx="22" cy="12" r="1.5" transform="rotate(-60 12 12)">
+      <circle className={styles.accent} cx="22" cy="12" r="1.5" transform="rotate(-60 12 12)">
         <animateTransform attributeName="transform" type="rotate" from="-60 12 12" to="300 12 12" dur="2.5s" repeatCount="indefinite" />
       </circle>
     </g>
@@ -964,7 +964,7 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
   ['loading-heartbeat']: () => (
     <g className={styles.stroke} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <line x1="2" y1="12" x2="22" y2="12" opacity="0.2" />
-      <polyline points="2,12 6,12 8,12 9,6 10,18 11,8 12,14 13,12 17,12 22,12">
+      <polyline className={styles.accentStroke} points="2,12 6,12 8,12 9,6 10,18 11,8 12,14 13,12 17,12 22,12">
         <animate attributeName="stroke-dasharray" values="0 100;50 100;100 100" dur="1.5s" repeatCount="indefinite" />
         <animate attributeName="stroke-dashoffset" values="0;-25;-50" dur="1.5s" repeatCount="indefinite" />
       </polyline>
@@ -975,7 +975,7 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
       <path d="M5 3h14M5 21h14" />
       <path d="M6 3v3a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3" />
       <path d="M6 21v-3a6 6 0 0 1 6-6 6 6 0 0 1 6 6v3" />
-      <path d="M12 12v3" strokeWidth="3">
+      <path className={styles.accentStroke} d="M12 12v3" strokeWidth="3">
         <animate attributeName="d" values="M12 12v0;M12 12v3;M12 12v0" dur="2s" repeatCount="indefinite" />
       </path>
       <animateTransform attributeName="transform" type="rotate" values="0 12 12;0 12 12;180 12 12;180 12 12;360 12 12" dur="4s" repeatCount="indefinite" keyTimes="0;0.4;0.5;0.9;1" />
@@ -1024,10 +1024,10 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
       <circle className={styles.stroke} cx="12" cy="12" r="7" strokeWidth="1" opacity="0.2" />
       <circle className={styles.stroke} cx="12" cy="12" r="4" strokeWidth="1" opacity="0.2" />
       <circle className={styles.fill} cx="12" cy="12" r="1" />
-      <line className={styles.stroke} x1="12" y1="12" x2="12" y2="2" strokeWidth="2" strokeLinecap="round">
+      <line className={styles.accentStroke} x1="12" y1="12" x2="12" y2="2" strokeWidth="2" strokeLinecap="round">
         <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="2s" repeatCount="indefinite" />
       </line>
-      <path className={styles.fill} d="M12 12 L12 2 A10 10 0 0 1 20 8 Z" opacity="0.15">
+      <path className={styles.accent} d="M12 12 L12 2 A10 10 0 0 1 20 8 Z" opacity="0.15">
         <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="2s" repeatCount="indefinite" />
       </path>
     </g>
@@ -1077,7 +1077,7 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
         <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1.5s" repeatCount="indefinite" />
       </circle>
       <circle cx="12" cy="12" r="6" opacity="0.2" />
-      <circle cx="12" cy="12" r="6" strokeDasharray="10 28">
+      <circle className={styles.accentStroke} cx="12" cy="12" r="6" strokeDasharray="10 28">
         <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="-360 12 12" dur="1s" repeatCount="indefinite" />
       </circle>
       <circle cx="12" cy="12" r="2" strokeWidth="3">
@@ -1089,7 +1089,7 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
   ['loading-eclipse']: () => (
     <g>
       <circle className={styles.fill} cx="12" cy="12" r="6" opacity="0.3" />
-      <circle className={styles.fill} cx="12" cy="12" r="6">
+      <circle className={styles.accent} cx="12" cy="12" r="6">
         <animate attributeName="cx" values="7;12;17;12;7" dur="3s" repeatCount="indefinite" />
       </circle>
       <circle className={styles.stroke} cx="12" cy="12" r="8" strokeWidth="1" opacity="0.5">
@@ -1114,8 +1114,8 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
         </circle>
       </g>
       <g>
-        <path className={styles.fill} d="M15 19a4 4 0 018 0" opacity="0.9" />
-        <circle className={styles.fill} cx="19" cy="11" r="2.5" opacity="0.9">
+        <path className={styles.accent} d="M15 19a4 4 0 018 0" opacity="0.9" />
+        <circle className={styles.accent} cx="19" cy="11" r="2.5" opacity="0.9">
           <animate
             attributeName="cy"
             values="11;10.2;11.3;9.8;11"
@@ -1320,11 +1320,11 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
     </rect>
   ),
   ['loading-cross']: () => (
-    <g className={styles.stroke} strokeWidth="4" strokeLinecap="round">
-      <line x1="12" y1="2" x2="12" y2="22">
+    <g strokeWidth="4" strokeLinecap="round">
+      <line className={styles.stroke} x1="12" y1="2" x2="12" y2="22">
         <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite" />
       </line>
-      <line x1="2" y1="12" x2="22" y2="12">
+      <line className={styles.accentStroke} x1="2" y1="12" x2="22" y2="12">
         <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite" />
       </line>
     </g>
@@ -1397,20 +1397,20 @@ const PRESET_MAP: Record<LoadingPreset, PresetConfig> = {
   pulse: { name: 'loading-pulse', color: 'primary', animation: 'pulse-scale' },
   cube: { name: 'loading-cube3d', color: 'info' },
   'cube-glow': { name: 'loading-cube3d-glow', color: 'info', glowStrong: true },
-  interview: { name: 'loading-interview', color: 'primary', animation: 'float' },
-  dna: { name: 'loading-dna', color: 'success' },
-  atom: { name: 'loading-atom', color: 'info', glow: true, animation: 'pulse' },
-  rings: { name: 'loading-rings', color: 'primary' },
+  interview: { name: 'loading-interview', color: 'primary', accent: 'info', animation: 'float' },
+  dna: { name: 'loading-dna', color: 'success', accent: 'info' },
+  atom: { name: 'loading-atom', color: 'info', accent: 'warning', glow: true, animation: 'pulse' },
+  rings: { name: 'loading-rings', color: 'primary', accent: 'info' },
   gears: { name: 'loading-gears', color: 'muted' },
-  hourglass: { name: 'loading-hourglass', color: 'warning' },
+  hourglass: { name: 'loading-hourglass', color: 'warning', accent: 'danger' },
   wave: { name: 'loading-wave', color: 'info' },
-  radar: { name: 'loading-radar', color: 'success', glow: true, animation: 'ping' },
-  eclipse: { name: 'loading-eclipse', color: 'warning', glowStrong: true, animation: 'glow-pulse' },
+  radar: { name: 'loading-radar', color: 'success', accent: 'warning', glow: true, animation: 'ping' },
+  eclipse: { name: 'loading-eclipse', color: 'warning', accent: 'muted', glowStrong: true, animation: 'glow-pulse' },
   clock: { name: 'loading-clock', color: 'current' },
   morph: { name: 'loading-morph', color: 'primary', accent: 'success' },
   orbit: { name: 'loading-orbit', color: 'primary' },
   triangle: { name: 'loading-triangle', color: 'warning' },
-  heartbeat: { name: 'loading-heartbeat', color: 'danger', animation: 'heartbeat' },
+  heartbeat: { name: 'loading-heartbeat', color: 'muted', accent: 'danger', animation: 'heartbeat' },
   // 復元シリーズ
   bars: { name: 'loading-bars', color: 'primary' },
   wifi: { name: 'loading-wifi', color: 'info', glow: true },
@@ -1418,6 +1418,7 @@ const PRESET_MAP: Record<LoadingPreset, PresetConfig> = {
   infinity: { name: 'loading-infinity', color: 'info', glow: true },
   ripple: { name: 'loading-ripple', color: 'info' },
   star: { name: 'loading-star', color: 'warning', glowStrong: true },
+  cross: { name: 'loading-cross', color: 'info', accent: 'danger' },
   // サプライズ: プリズム分光（7色の虹）
   prism: { name: 'loading-prism', glowStrong: true, hover: 'glow' },
 };
@@ -1735,8 +1736,9 @@ const Icon: React.FC<IconProps> = ({
     color !== 'current' && COLOR_CLASSES[color],
     // アクセント色（2 色目）を --icon-accent に流す
     accent && accent !== 'current' && ACCENT_CLASSES[accent],
-    // accent が指定されていれば color ↔ accent を往復するアニメを有効化
-    animate && accent && styles.colorShiftAccent,
+    // accent 指定時のみ、他のアニメが無い場合に限り color ↔ accent 往復を有効化。
+    // animation が明示されていれば accent は「静的な 2 色目」として扱う。
+    animate && accent && !animation && styles.colorShiftAccent,
     // グロー
     glow && styles.glow,
     glowStrong && styles.glowStrong,

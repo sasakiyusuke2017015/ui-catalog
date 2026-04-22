@@ -62,6 +62,7 @@ export type LoadingPreset =
   | 'infinity'
   | 'ripple'
   | 'star'
+  | 'cross'
   // サプライズ
   | 'prism';
 

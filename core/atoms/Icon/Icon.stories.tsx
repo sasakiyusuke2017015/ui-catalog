@@ -2232,6 +2232,7 @@ export const Presets: Story = {
       { preset: 'infinity', desc: '無限ループ' },
       { preset: 'ripple', desc: '水紋' },
       { preset: 'star', desc: '輝く星' },
+      { preset: 'cross', desc: '2色クロス回転' },
       // サプライズ
       { preset: 'prism', desc: 'プリズム分光（虹）' },
     ] as const;
