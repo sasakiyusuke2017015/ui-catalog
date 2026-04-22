@@ -1532,6 +1532,26 @@ const COLOR_CLASSES: Record<ColorVariant, string> = {
   muted: styles.colorMuted,
 };
 
+// fill / stroke prop に渡されるキーワードを CSS の色値に正規化する。
+// - セマンティック名（primary/success/warning/danger/info/muted/dark）は CSS 変数へ
+// - 'current' は currentColor へ
+// - それ以外（#hex や CSS named color、rgb() など）はそのまま通す
+const COLOR_KEYWORD_MAP: Record<string, string> = {
+  primary: 'var(--color-primary-500)',
+  success: 'var(--color-success-500)',
+  warning: 'var(--color-warning-500)',
+  danger: 'var(--color-danger-500)',
+  info: 'var(--color-info-500)',
+  muted: 'var(--color-gray-400)',
+  dark: 'var(--color-gray-800)',
+  current: 'currentColor',
+};
+
+const resolveColor = (value?: string): string | undefined => {
+  if (!value) return undefined;
+  return COLOR_KEYWORD_MAP[value] ?? value;
+};
+
 // アクセント（2 色目）を --icon-accent に流すクラス。
 // SVG 内で .accent / .accentStroke を付けた要素だけ別色になる。
 const ACCENT_CLASSES: Record<ColorVariant, string> = {
@@ -1731,14 +1751,22 @@ const Icon: React.FC<IconProps> = ({
     className,
   );
 
+  // fill / stroke のキーワード解決
+  const resolvedStroke = resolveColor(stroke);
+  const resolvedFill = resolveColor(fill);
+
   // SVG props
   const svgProps = {
     className: iconClasses,
     style: {
       ...style,
-      // stroke/fill のカスタマイズがある場合のみ上書き
-      ...(stroke && { '--icon-stroke': stroke }),
-      ...(fill && { '--icon-fill': fill }),
+      // fill はアイコン全体の色として解釈する（currentColor を上書き）。
+      // ただし fill="none" は .fill 要素だけ塗らない意味で伝統的に使われているため除外。
+      ...(resolvedFill && resolvedFill !== 'none' && { color: resolvedFill }),
+      // .fill 要素だけ個別に別色にしたいケース用の変数（none もそのまま流す）
+      ...(resolvedFill && { '--icon-fill': resolvedFill }),
+      // stroke は .stroke 要素の stroke 属性だけを上書き
+      ...(resolvedStroke && { '--icon-stroke': resolvedStroke }),
     } as React.CSSProperties,
     width: resolvedSize,
     height: resolvedSize,
