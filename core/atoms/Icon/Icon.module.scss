@@ -1474,6 +1474,13 @@
   fill: none;
 }
 
+// 第3色（ニュートラル）。雲やベースラインなど、主役ではない部分に使う。
+// 必要なら --icon-neutral で上書きできる。
+.neutral {
+  fill: var(--icon-neutral, var(--color-gray-400));
+  stroke: none;
+}
+
 // 本体グループ - hover 時のアニメーション対象
 .body {
   transition: transform var(--transition-duration-200) var(--transition-ease-in-out);

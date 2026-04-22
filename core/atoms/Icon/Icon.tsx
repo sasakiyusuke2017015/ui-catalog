@@ -1148,37 +1148,37 @@ const ICON_PATHS: Record<string, (props: PathRenderProps) => React.ReactElement>
           />
         </circle>
       </g>
-      {/* 雲（吹き出し）本体: 上下 + 横流れ + 濃淡の揺らぎ */}
+      {/* 雲（吹き出し）本体: 上下 + 横流れ + 濃淡の揺らぎ。人とは別色 (neutral) */}
       <g>
         {/* 雲全体を左右にゆっくり流す */}
         <animateTransform attributeName="transform" type="translate" values="-1 0; 1 0; -1 0" dur="5.2s" repeatCount="indefinite" />
         {/* 中央の大玉 */}
-        <circle className={styles.fill} cx="12" cy="4" r="2.2" opacity="0.95">
+        <circle className={styles.neutral} cx="12" cy="4" r="2.2" opacity="0.95">
           <animate attributeName="cy" values="4;3;4" dur="2.4s" repeatCount="indefinite" />
           <animate attributeName="r"  values="2.2;2.5;2.2" dur="2.4s" repeatCount="indefinite" />
           <animate attributeName="opacity" values="0.95;0.7;0.95" dur="3.2s" repeatCount="indefinite" />
         </circle>
         {/* 左の膨らみ */}
-        <circle className={styles.fill} cx="9" cy="5" r="1.6" opacity="0.85">
+        <circle className={styles.neutral} cx="9" cy="5" r="1.6" opacity="0.85">
           <animate attributeName="cy" values="5;4;5"   dur="2.4s" repeatCount="indefinite" begin="0.3s" />
           <animate attributeName="cx" values="9;7.8;9" dur="3s"   repeatCount="indefinite" />
           <animate attributeName="r"  values="1.6;1.9;1.6" dur="2.4s" repeatCount="indefinite" begin="0.3s" />
           <animate attributeName="opacity" values="0.85;0.55;0.85" dur="2.8s" repeatCount="indefinite" begin="0.4s" />
         </circle>
         {/* 右の膨らみ */}
-        <circle className={styles.fill} cx="15" cy="5" r="1.6" opacity="0.85">
+        <circle className={styles.neutral} cx="15" cy="5" r="1.6" opacity="0.85">
           <animate attributeName="cy" values="5;4;5"      dur="2.4s" repeatCount="indefinite" begin="0.6s" />
           <animate attributeName="cx" values="15;16.2;15" dur="3s"   repeatCount="indefinite" />
           <animate attributeName="r"  values="1.6;1.85;1.6" dur="2.4s" repeatCount="indefinite" begin="0.6s" />
           <animate attributeName="opacity" values="0.85;1;0.6;0.85" dur="3.6s" repeatCount="indefinite" begin="0.2s" />
         </circle>
         {/* 雲底の 2 つの小玉（雲っぽさ） */}
-        <circle className={styles.fill} cx="10.5" cy="6.5" r="1.1" opacity="0.75">
+        <circle className={styles.neutral} cx="10.5" cy="6.5" r="1.1" opacity="0.75">
           <animate attributeName="cy" values="6.5;5.8;6.5" dur="2.4s" repeatCount="indefinite" begin="0.9s" />
           <animate attributeName="cx" values="10.5;9.8;10.5" dur="4s" repeatCount="indefinite" />
           <animate attributeName="opacity" values="0.75;0.45;0.75" dur="2.2s" repeatCount="indefinite" begin="0.5s" />
         </circle>
-        <circle className={styles.fill} cx="13.5" cy="6.5" r="1.1" opacity="0.75">
+        <circle className={styles.neutral} cx="13.5" cy="6.5" r="1.1" opacity="0.75">
           <animate attributeName="cy" values="6.5;5.8;6.5" dur="2.4s" repeatCount="indefinite" begin="1.1s" />
           <animate attributeName="cx" values="13.5;14.2;13.5" dur="4s" repeatCount="indefinite" />
           <animate attributeName="opacity" values="0.75;0.4;0.75" dur="2.6s" repeatCount="indefinite" begin="0.7s" />
