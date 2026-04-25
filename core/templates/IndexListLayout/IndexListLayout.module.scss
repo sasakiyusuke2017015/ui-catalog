@@ -1,12 +1,27 @@
 .root {
   display: grid;
-  grid-template-columns: minmax(0, 720px) 260px;
   gap: 2.5rem;
   max-width: 1280px;
   margin: 0 auto;
   padding: 3rem 2rem 6rem;
   align-items: start;
   justify-content: center;
+}
+
+/* デフォルト: サイドバー右 */
+.sidebarRight {
+  grid-template-columns: minmax(0, 720px) 260px;
+}
+/* サイドバー左 */
+.sidebarLeft {
+  grid-template-columns: 260px minmax(0, 720px);
+}
+.sidebarLeft .main {
+  grid-column: 2;
+}
+.sidebarLeft .sidebar {
+  grid-column: 1;
+  grid-row: 1;
 }
 
 .main {
@@ -25,10 +40,19 @@
 }
 
 @media (max-width: 900px) {
-  .root {
+  .root,
+  .sidebarLeft,
+  .sidebarRight {
     grid-template-columns: 1fr;
     gap: 0;
     padding: 2rem 1.25rem 4rem;
+  }
+  .sidebarLeft .main,
+  .sidebarRight .main,
+  .sidebarLeft .sidebar,
+  .sidebarRight .sidebar {
+    grid-column: auto;
+    grid-row: auto;
   }
   .sidebar {
     position: static;
