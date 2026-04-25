@@ -2,49 +2,17 @@
 
 ## 概要
 
-このパッケージは **VibeCoding で育てる** ことを前提に設計されています。
-各プロジェクトにコピーして独自に育てることを想定しています。
+ui-catalog は **Atomic Design ベースの汎用 UI コンポーネントライブラリ**。
+親アプリには **Git Submodule + ソース配布** で取り込む。
 
 導入手順・運用方針については [README.md](../README.md) を参照してください。
 
----
+### 配布モデルの要点
 
-## 段階的成熟モデル
-
-ui-catalog は単なる Design System ではなく、**「育てる仕組み」を内包したUIカタログ**です。
-コンポーネントは **absorb → clean** の流れで core/ に取り込まれます。
-extensions/ は project/* ブランチにのみ存在し、プロジェクト固有のコンポーネントを置きます。
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  【外部アプリ】                                                  │
-│  ┌──────────────────────────────────────┐                       │
-│  │ apps/<project>/src/components/       │                       │
-│  │ - Tailwind / CSS-in-JS              │                       │
-│  │ - ビジネスロジック混在                 │                       │
-│  └──────────────────────────────────────┘                       │
-│                     ↓ absorb（UI抽出 + SCSS変換）                │
-│                                                                 │
-│  【core/】プロダクト品質                                          │
-│  ┌──────────────────────────────────────┐                       │
-│  │ core/atoms/molecules/organisms/      │                       │
-│  │ - SCSS Module で実装                  │                       │
-│  │ - ビジネスロジックゼロ                │                       │
-│  │ - デザイントークンで一貫性             │                       │
-│  │ - 他プロジェクトへ移植可能             │                       │
-│  └──────────────────────────────────────┘                       │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-### スタイリング
-
-core/ のコンポーネントは全て **SCSS Module** で実装する。
-
-### SCSS化は「洗練化」の象徴
-
-- 単なる技術的選択ではなく、コンポーネントの成熟度を示す
-- デザインの細部へのこだわりを表現できる
-- デザイントークンとの統合で一貫性を確保
+- ブランチは `main` 一本（プロジェクト別ブランチは持たない）
+- 親 → ui-catalog の自動同期コマンドは提供しない
+- ui-catalog の更新は ui-catalog 側で直接コミット → 親側で `git submodule update --remote`
+- `core/` のコンポーネントは **SCSS Module** で実装する（Tailwind 非依存）
 
 ---
 
@@ -67,7 +35,7 @@ packages/ui-catalog/
 │
 │
 ├── infra/                   # 育成・観測の仕組み
-│   ├── commands/            #   育成コマンド
+│   ├── commands/            #   状態診断コマンド
 │   ├── devtools/            #   操作ログ、デバッグツール
 │   ├── version/             #   バージョン管理（VERSION_REGISTRY）
 │   ├── theme/               #   テーマ機能
@@ -183,7 +151,6 @@ export const Button: FC<ButtonProps> = ({ variant = 'primary', children }) => (
 | `@ui-catalog/core/utils` | ユーティリティ |
 | `@ui-catalog/core/styles` | グローバルCSS |
 | `@ui-catalog/core/infra` | infra/ 全体 |
-| `@ui-catalog/core/extensions/<project>` | プロジェクト固有（project/* ブランチのみ） |
 
 ---
 

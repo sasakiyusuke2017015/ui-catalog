@@ -1,38 +1,29 @@
 # @ui-catalog/core
 
-pnpm workspace 向け UI コンポーネントライブラリ。
-**Design System + 育成メカニズム** を内包したUIカタログ。
+Atomic Design ベースの汎用 UI コンポーネントライブラリ。
+**Git Submodule + ソース配布** で各プロジェクトに取り込む。
 
 ---
 
-## 思想
+## 配布モデル
 
-ui-catalog は単なる Design System ではなく、**「育てる仕組み」を内包したUIカタログ**。
+ui-catalog は **submodule 専用**。`npm publish` はしない。
 
 ```
-┌─────────────────────────────────────────────────────┐
-│  ui-catalog = Design System + 育成メカニズム        │
-├─────────────────────────────────────────────────────┤
-│                                                     │
-│  【静的資産】          【動的プロセス】              │
-│  core/                 absorb（外部から吸収）        │
-│    atoms/              clean（洗練・整理）            │
-│    molecules/          optimize（依存最適化）         │
-│    organisms/          merge（安定版へ統合）          │
-│    templates/          sync（各プロジェクトへ配布）    │
-│                                                     │
-│  【観測機構】                                        │
-│  infra/                                             │
-│    devtools/（操作ログ）                             │
-│    version/（VERSION_REGISTRY）                     │
-│                                                     │
-│  【拡張領域】                                        │
-│  extensions/                                        │
-│    <project>/（プロジェクト固有）                    │
-│    shared/（昇格候補）                              │
-│                                                     │
-└─────────────────────────────────────────────────────┘
+親アプリ/
+└── packages/
+    └── ui-catalog/        ← この repo を submodule で取り込む（ソースのまま）
 ```
+
+| 観点 | この repo の方針 |
+|------|-----------------|
+| 配布形態 | **Git Submodule + ソース直 export**（ビルド済み `dist` なし） |
+| 依存解決 | **親アプリの `node_modules` 経由**（peerDependencies で宣言） |
+| 親側の install | **submodule ディレクトリ内では走らせない**（ui-catalog の devDependencies は親に持ち込まない） |
+| ui-catalog 側での編集 | OK。**親 → ui-catalog 方向の同期はサポートしない**。ui-catalog 側で直接コミット |
+| ブランチ運用 | **`main` 一本**。プロジェクト別ブランチは持たない |
+
+> 親アプリで Storybook は不要。Storybook を立てたいときだけ ui-catalog 単独 repo として clone し、そこで `pnpm install` する。
 
 ---
 
@@ -44,123 +35,33 @@ ui-catalog/
 │   ├── atoms/               #   最小単位（Button, Input, Icon, Badge 等）
 │   ├── molecules/           #   atoms の組み合わせ（FormField, DatePicker 等）
 │   ├── organisms/           #   独立したセクション（Dialog, Modal, Select 等）
-│   ├── templates/           #   ページレイアウト（Header, Footer, AppShell 等）
-│   ├── hooks/               #   カスタムフック（useDevice, useDisclosure 等）
-│   │   └── router/          #     ルーター抽象化（RouterContext）
-│   ├── tokens/              #   デザイントークン（SCSS変数）
-│   ├── constants/           #   定数定義
-│   ├── types/               #   共通型定義
-│   ├── utils/               #   ユーティリティ（cn, isNullish 等）
-│   └── styles/              #   グローバルCSS
+│   ├── templates/           #   ページレイアウト（Header, AppShell 等）
+│   ├── hooks/               #   カスタムフック
+│   ├── tokens/              #   デザイントークン
+│   ├── constants/ types/ utils/ styles/
 │
-├── extensions/              # プロジェクト拡張用（project/* ブランチのみ）
-│   └── <project>/           #   プロジェクト固有コンポーネント
-│
-├── infra/                   # 育成・観測の仕組み
-│   ├── devtools/            #   操作ログ、デバッグツール
-│   ├── version/             #   バージョン管理
-│   ├── theme/               #   テーマ機能
+├── infra/                   # 観測・バージョン管理
+│   ├── devtools/            #   操作ログ
+│   ├── version/             #   VERSION_REGISTRY
+│   ├── theme/               #   テーマ
 │   ├── storybook/           #   Storybook 設定
-│   ├── scripts/             #   セットアップスクリプト
-│   └── commands/            #   育成コマンド
 │
-└── docs/                    # ドキュメント
+└── docs/                    # 詳細ドキュメント
 ```
 
 ---
 
-## 使い方
+## 親アプリへの導入
 
-### コンポーネントのインポート
+### 1. submodule 追加
 
-```typescript
-// 推奨: Atomic Design レイヤー指定でのインポート
-import { Button, Icon, Input } from '@ui-catalog/core/atoms'
-import { FormField, DatePicker } from '@ui-catalog/core/molecules'
-import { Modal, Dialog, Select } from '@ui-catalog/core/organisms'
-import { Header, AppShell } from '@ui-catalog/core/templates'
-
-// フック
-import { useDevice, useDisclosure } from '@ui-catalog/core/hooks'
-import { cn } from '@ui-catalog/core/utils'
-
-// 拡張コンポーネント（project/* ブランチのみ）
-import { SurveyCard, ScoreBadge } from '@ui-catalog/core/extensions/1on1'
-import { VideoThumb } from '@ui-catalog/core/extensions/ticker'
+```bash
+git submodule add https://github.com/sasakiyusuke2017015/ui-catalog.git packages/ui-catalog
 ```
 
----
+> ブランチ指定は不要（main 固定）。
 
-## 運用方針
-
-### ブランチ戦略
-
-```
-ui-catalog リポジトリ
-├── main                 ← 安定版
-├── project/1on1         ← 1on1 プロジェクト専用
-├── project/calend       ← calend プロジェクト専用
-└── project/<name>       ← 各プロジェクト専用
-```
-
-### 運用フロー
-
-```
-【開発】project/* ブランチで作業・コミット
-    ↓
-【統合】/ui-catalog merge で main に merge（main で実行）
-    ↓
-【配布】/ui-catalog sync で main の最新を取り込む（各 project/* で実行）
-```
-
-**全ての反映は `git merge` のみ。rebase, force push, reset --hard は禁止。**
-
-### コマンド
-
-| コマンド | 使用ブランチ | やること |
-|----------|-------------|---------|
-| `/ui-catalog` | どこでも | 状態表示（読み取り専用） |
-| `/ui-catalog sync` | どこでも | main の最新を project/* に merge で配布 |
-| `/ui-catalog merge` | main のみ | project/* の変更を merge で取り込む |
-| `/ui-catalog clean` | project/* のみ | 整合性チェック・修正 |
-| `/ui-catalog optimize` | main のみ | 依存最適化 |
-| `/ui-catalog absorb` | project/* のみ | アプリ → ui-catalog 昇格 |
-| `/ui-catalog apply` | project/* のみ | ui-catalog → アプリ 適用 |
-
-間違ったブランチで実行すると即エラーで止まる。詳細は `infra/commands/ui-catalog.md` を参照。
-
-### 育成フロー
-
-```
-absorb（吸収）  : アプリから core/ に取り込み
-    ↓
-clean（洗練）   : 整合性確認・不要コード削除
-    ↓
-optimize（最適化）: 依存関係の整理
-    ↓
-merge（統合）   : main に merge
-    ↓
-sync（配布）    : 各 project/* に配布
-```
-
----
-
-## プロジェクトへの導入
-
-Git Submodule + **`link:` 参照** で導入する。
-
-`link:` を採用する理由:
-- consumer 側の `pnpm install` が ui-catalog の devDependencies（Storybook 等）を巻き込まない
-- ui-catalog の `node_modules` は consumer の `node_modules` と完全に独立する
-- consumer で Storybook は不要、ui-catalog 単独のリポジトリでのみ起動する運用
-
-### 事前準備
-
-ui-catalog リポジトリで `project/<name>` ブランチを作成しておく。
-
-### アプリ側の設定
-
-**package.json** に追加:
+### 2. 親の `package.json`
 
 ```jsonc
 {
@@ -168,77 +69,116 @@ ui-catalog リポジトリで `project/<name>` ブランチを作成しておく
     "ui:update": "git submodule update --remote packages/ui-catalog"
   },
   "dependencies": {
-    "@ui-catalog/core": "link:../../packages/ui-catalog"
+    "@ui-catalog/core": "link:./packages/ui-catalog"
   }
 }
 ```
 
-> `link:` のパスは、`package.json` から見た相対パス。モノレポでは `apps/web` 等からの相対にする。
+> `link:` のパスは `package.json` から見た相対。モノレポで `apps/web` 等から参照するなら `link:../../packages/ui-catalog`。
 
-**pnpm-workspace.yaml**:
+### 3. `pnpm-workspace.yaml`
 
 ```yaml
 packages:
   - 'apps/*'
-# packages/ui-catalog は workspace に含めない（link: 参照のため）
+# packages/ui-catalog は workspace に含めない（link: 参照、submodule 内では install しない）
 ```
 
-**.vscode/settings.json** に追加: `{ "git.scanRepositories": ["packages"] }`
+### 4. tsconfig / Next.js
 
-### 新規プロジェクトに導入
-
-```bash
-git submodule add -b project/<name> https://github.com/sasakiyusuke2017015/ui-catalog.git packages/ui-catalog
-pnpm install
-```
-
-### 既存プロジェクトをクローン
-
-```bash
-git clone --recurse-submodules <your-repo>
-pnpm install
-```
-
-これで consumer 側は動く。ui-catalog 自身の `node_modules` は**作られない**。
-
-### ui-catalog を更新
-
-```bash
-pnpm ui:update
-```
-
-### ui-catalog 単独で開発する（Storybook 起動など）
-
-ui-catalog をいじりたいとき（新コンポーネント追加、Storybook で見た目確認）は、submodule ディレクトリで個別に install:
-
-```bash
-cd packages/ui-catalog
-pnpm install                 # ここで初めて ui-catalog の node_modules が作られる
-pnpm storybook:localhost     # http://localhost:6006
-```
-
-ui-catalog の `node_modules` は consumer の `node_modules` と独立しているので、consumer 側に影響しない。Storybook が不要なら `pnpm install` も不要。
-
-### Next.js での利用
-
-ui-catalog の .ts を Next.js に transpile させるため `next.config.ts` に追記:
+`.ts` をそのまま transpile させる：
 
 ```typescript
+// next.config.ts
 const nextConfig: NextConfig = {
   transpilePackages: ['@ui-catalog/core'],
 };
 ```
 
-### Docker を使う場合
+### 5. クローン手順（既存リポを取得する人向け）
 
-Dockerfile 内で `packages/ui-catalog` は `package.json` だけでなくソース全体を COPY する必要がある（`link:` 参照のため）:
+```bash
+git clone --recurse-submodules <your-repo>
+pnpm install   # 親の node_modules だけ作られる。ui-catalog 内には作られない
+```
+
+### 6. ui-catalog を最新に
+
+```bash
+pnpm ui:update   # = git submodule update --remote packages/ui-catalog
+git add packages/ui-catalog
+git commit -m "chore: bump ui-catalog"
+```
+
+---
+
+## 親アプリでのインポート
+
+```typescript
+import { Button, Icon, Input } from '@ui-catalog/core/atoms'
+import { FormField, DatePicker } from '@ui-catalog/core/molecules'
+import { Modal, Dialog, Select } from '@ui-catalog/core/organisms'
+import { Header, AppShell } from '@ui-catalog/core/templates'
+
+import { useDevice, useDisclosure } from '@ui-catalog/core/hooks'
+import { cn } from '@ui-catalog/core/utils'
+```
+
+詳細な export 一覧は [package.json](./package.json) の `exports` を参照。
+
+---
+
+## ui-catalog 側での開発
+
+ui-catalog 単独で clone して作業する：
+
+```bash
+git clone https://github.com/sasakiyusuke2017015/ui-catalog.git
+cd ui-catalog
+pnpm install
+pnpm storybook:localhost   # http://localhost:6006
+```
+
+変更したらそのまま `main` にコミット → push。
+親アプリ側は `pnpm ui:update` で取り込む。
+
+### Claude Code コマンド
+
+| コマンド | 場所 | やること |
+|---------|------|---------|
+| `/ui-catalog` | ui-catalog | 状態診断 |
+| `/ui-catalog clean` | ui-catalog | 整合性チェック・修正 |
+| `/ui-catalog optimize` | ui-catalog | プリミティブ HTML → atoms 置換、variant 統合 |
+| `/ui-catalog absorb [path]` | **親アプリ** | 親アプリ → ui-catalog 取り込み |
+| `/ui-catalog apply [path]` | **親アプリ** | ui-catalog → 親アプリ 置換 |
+
+ui-catalog 側のコマンドは [.claude/commands/ui-catalog.md](./.claude/commands/ui-catalog.md) に同梱されている（submodule で取り込んだ親では参照されない点に注意）。
+
+**親アプリで absorb / apply を使うには：**
+
+```bash
+mkdir -p .claude/commands
+cp packages/ui-catalog/infra/commands/parent/ui-catalog.md .claude/commands/ui-catalog.md
+```
+
+> `pnpm ui:update` で submodule を更新したら、親側にコピーした定義も陳腐化する可能性がある。気になったら再 cp する。
+
+absorb / apply の詳細は [infra/commands/parent/ui-catalog.md](./infra/commands/parent/ui-catalog.md) を参照。
+
+> **安全ルール**：absorb は ui-catalog 側のファイル書き換えのみ、apply は親アプリ側のファイル書き換えのみ。**自動 commit / push はしない**。
+
+---
+
+## Docker を使う場合
+
+`link:` 参照のため、`packages/ui-catalog` のソース全体を COPY する必要がある：
 
 ```dockerfile
 COPY packages/ui-catalog ./packages/ui-catalog
 RUN pnpm install --frozen-lockfile
 ```
 
-また `docker-compose.yml` の volumes では `/app/packages/ui-catalog/node_modules` を匿名 volume で覆い、host 側の install 痕と衝突させないこと:
+`docker-compose.yml` の volumes で `/app/packages/ui-catalog/node_modules` を匿名 volume で覆い、host 側と衝突させない：
 
 ```yaml
 volumes:
@@ -246,14 +186,14 @@ volumes:
   - /app/packages/ui-catalog/node_modules
 ```
 
-### Claude Code コマンド登録
+---
 
-```bash
-mkdir -p .claude/commands
-cp packages/ui-catalog/infra/commands/ui-catalog.md .claude/commands/
-```
+## peerDependencies の方針
 
-`/ui-catalog sync` で自動更新される。
+`react`, `framer-motion`, `jotai` などは **peerDependencies** で宣言。
+親アプリの `node_modules` のものを使う。これが submodule + ソース配布で React 二重ロードを避ける唯一の方法。
+
+`devDependencies`（Storybook、テストツール等）は **submodule ディレクトリ内で `pnpm install` を走らせない限り親に入らない**。よって安全。
 
 ---
 
@@ -262,11 +202,8 @@ cp packages/ui-catalog/infra/commands/ui-catalog.md .claude/commands/
 公開: https://sasakiyusuke2017015.github.io/ui-catalog/
 
 ```bash
-# ローカルでホットリロード（http://localhost:6006）
-pnpm storybook:localhost
-
-# GitHub Pages にデプロイ
-pnpm storybook:deploy
+pnpm storybook:localhost      # ローカル（http://localhost:6006）
+pnpm storybook:deploy         # GitHub Pages にデプロイ
 ```
 
 ---
@@ -281,12 +218,33 @@ pnpm storybook:deploy
 | core/templates | ページレイアウト | 禁止 |
 | core/hooks | カスタムフック | 禁止 |
 | core/tokens | デザイントークン | 禁止 |
-| extensions/ | プロジェクト固有UI（project/* のみ） | 最小限 |
-| infra/ | 育成・観測の仕組み | N/A |
+| infra/ | 観測・バージョン管理 | N/A |
+
+依存方向：
+
+```
+atoms ← molecules ← organisms ← templates
+```
+
+逆方向の依存は禁止。
+
+---
+
+## バージョン更新ルール
+
+コンポーネント変更時は同じコミットで [VERSION_REGISTRY](./infra/version/) と
+[ui-catalog.versions.json](./ui-catalog.versions.json) を更新。
+
+| 変更の種類 | バージョン |
+|-----------|-----------|
+| UI に変更なし（内部リファクタ等） | **patch** |
+| UI に変更あり（props 追加、見た目変更等） | **minor** |
+| 破壊的変更（props 削除/改名、API 変更） | **major** |
 
 ---
 
 ## 詳細ドキュメント
 
-- [ARCHITECTURE.md](./docs/ARCHITECTURE.md) - 詳細なアーキテクチャ説明
-- [DEVELOPMENT.md](./docs/DEVELOPMENT.md) - 開発ガイド
+- [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) - アーキテクチャ詳細
+- [docs/DEVELOPMENT.md](./docs/DEVELOPMENT.md) - 開発ガイド
+- [docs/DESIGN.md](./docs/DESIGN.md) - デザイン方針
