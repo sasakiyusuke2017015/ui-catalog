@@ -1,4 +1,4 @@
-export { default } from './Icon';
+export { default, default as Icon } from './Icon';
 export type {
   IconProps,
   LoadingPreset,
