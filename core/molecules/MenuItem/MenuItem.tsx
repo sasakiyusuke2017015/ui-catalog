@@ -3,7 +3,7 @@
 import { ReactNode } from 'react';
 
 import { useOperationLog } from '../../../infra/devtools';
-import Icon from '../../atoms/Icon';
+import { Icon } from '../../atoms/Icon';
 import { IconName } from '../../constants';
 
 export interface MenuItemProps {
@@ -16,7 +16,7 @@ export interface MenuItemProps {
 /**
  * メニューアイテムコンポーネント
  */
-export default function MenuItem({
+export function MenuItem({
   icon,
   label,
   onClick,

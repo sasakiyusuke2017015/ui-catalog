@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import DataCountDisplay from './DataCountDisplay';
+import { DataCountDisplay } from './DataCountDisplay';
 
 describe('DataCountDisplay', () => {
   it('data-component属性が設定される', () => {

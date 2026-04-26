@@ -1,1 +1,1 @@
-export { default as MenuItem } from './MenuItem'
+export { MenuItem } from './MenuItem'

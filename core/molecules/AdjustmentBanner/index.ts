@@ -1,1 +1,1 @@
-export { default as AdjustmentBanner } from './AdjustmentBanner'
+export { AdjustmentBanner } from './AdjustmentBanner'

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import Slider from './Slider';
+import { Slider } from './Slider';
 
 describe('Slider', () => {
   it('現在の値が正しく表示される', () => {

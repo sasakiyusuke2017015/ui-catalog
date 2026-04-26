@@ -6,8 +6,8 @@ import { FC, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 import { Button } from '../../molecules/Button';
-import Icon from '../../atoms/Icon';
-import Text from '../../atoms/Text';
+import { Icon } from '../../atoms/Icon';
+import { Text } from '../../atoms/Text';
 import { useOperationLog } from '../../../infra/devtools';
 
 

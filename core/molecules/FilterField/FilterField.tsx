@@ -204,7 +204,7 @@ const DateRangeFilter: FC<DateRangeFilterProps> = ({
  * フィルタフィールドコンポーネント
  * typeに応じて適切なフィルタUIを表示
  */
-const FilterField: FC<FilterFieldProps> = (props) => {
+export const FilterField: FC<FilterFieldProps> = (props) => {
   switch (props.type) {
     case 'text':
       return <TextFilter {...props} />;
@@ -220,5 +220,3 @@ const FilterField: FC<FilterFieldProps> = (props) => {
       return null;
   }
 };
-
-export default FilterField;

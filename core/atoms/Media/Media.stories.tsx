@@ -1,4 +1,4 @@
-import Media, { MediaProps } from './Media';
+import { Media, MediaProps } from './Media';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

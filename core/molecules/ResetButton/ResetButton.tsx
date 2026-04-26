@@ -16,7 +16,7 @@ interface ResetButtonProps {
  * リセットボタンコンポーネント
  * 統一されたデザインのリセットボタン
  */
-const ResetButton: FC<ResetButtonProps> = ({
+export const ResetButton: FC<ResetButtonProps> = ({
   onClick,
   label = 'リセット',
   disabled = false,
@@ -36,5 +36,3 @@ const ResetButton: FC<ResetButtonProps> = ({
     </span>
   );
 };
-
-export default ResetButton;

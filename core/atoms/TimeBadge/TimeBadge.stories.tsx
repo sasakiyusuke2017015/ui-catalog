@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import TimeBadge from './TimeBadge';
+import { TimeBadge } from './TimeBadge';
 
 type Story = StoryObj<typeof TimeBadge>;
 

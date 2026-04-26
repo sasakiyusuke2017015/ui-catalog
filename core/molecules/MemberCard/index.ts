@@ -1,4 +1,4 @@
-export { default as MemberCard } from './MemberCard'
+export { MemberCard } from './MemberCard'
 export type {
   MemberCardProps,
   MemberCardData,

@@ -50,7 +50,7 @@ const accentClassMap: Record<string, string> = {
   purple: 'accentPurple',
 }
 
-export default function NavItem({
+export function NavItem({
   label,
   iconName,
   selected = false,

@@ -2,8 +2,8 @@
 
 // src/components/common/atoms/Banner.tsx
 import { type ReactNode, useEffect } from 'react';
-import Icon from '../../atoms/Icon';
-import Text from '../../atoms/Text';
+import { Icon } from '../../atoms/Icon';
+import { Text } from '../../atoms/Text';
 import type { IconName } from '../../constants';
 import { debugRender } from '../../utils/debug';
 import styles from './Banner.module.scss';
@@ -46,7 +46,7 @@ const defaultIcons: Record<BannerVariant, IconName> = {
  * // アイコンなし
  * <Banner variant="info" message="お知らせ" showIcon={false} />
  */
-export default function Banner({
+export function Banner({
   variant,
   title,
   message,

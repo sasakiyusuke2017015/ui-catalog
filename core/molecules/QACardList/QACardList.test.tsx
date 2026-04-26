@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import QACardList from './QACardList';
+import { QACardList } from './QACardList';
 
 const items = [
   { question: '質問1', answer: '回答1' },

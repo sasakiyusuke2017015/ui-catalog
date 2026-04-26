@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import BackButton from './BackButton';
+import { BackButton } from './BackButton';
 
 describe('BackButton', () => {
   it('デフォルトラベル「戻る」が表示される', () => {

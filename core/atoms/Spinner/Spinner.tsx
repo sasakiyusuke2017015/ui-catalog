@@ -32,7 +32,7 @@ export interface SpinnerProps {
  * <Spinner />
  * <Spinner size="lg" variant="info" />
  */
-const Spinner: FC<SpinnerProps> = ({
+export const Spinner: FC<SpinnerProps> = ({
   size = 'md',
   variant = 'info',
   className = '',
@@ -58,5 +58,3 @@ const Spinner: FC<SpinnerProps> = ({
     />
   )
 }
-
-export default Spinner

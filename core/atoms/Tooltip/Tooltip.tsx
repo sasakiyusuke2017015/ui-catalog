@@ -14,7 +14,7 @@ export interface TooltipProps {
  * CSS のみの即時ツールチップ
  * ホバーで遅延なく表示される
  */
-export default function Tooltip({
+export function Tooltip({
   content,
   position = 'bottom',
   children,

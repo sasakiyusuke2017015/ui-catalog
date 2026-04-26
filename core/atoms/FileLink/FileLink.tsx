@@ -15,7 +15,7 @@ interface FileLinkProps {
   className?: string
 }
 
-const FileLink: FC<FileLinkProps> = ({
+export const FileLink: FC<FileLinkProps> = ({
   path,
   label,
   onOpen,
@@ -35,5 +35,3 @@ const FileLink: FC<FileLinkProps> = ({
     </button>
   )
 }
-
-export default FileLink

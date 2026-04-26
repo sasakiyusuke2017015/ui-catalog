@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import DetailHeader from "./DetailHeader";
-import Icon from "../../atoms/Icon/Icon";
-import Tooltip from "../../atoms/Tooltip/Tooltip";
+import { Icon } from "../../atoms/Icon/Icon";
+import { Tooltip } from "../../atoms/Tooltip/Tooltip";
 
 const meta: Meta<typeof DetailHeader> = {
   title: "レイアウト/DetailHeader",

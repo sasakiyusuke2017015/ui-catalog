@@ -1,4 +1,4 @@
-import PWAInstallPrompt from './PWAInstallPrompt';
+import { PWAInstallPrompt } from './PWAInstallPrompt';
 
 /**
  * PWA インストールプロンプト

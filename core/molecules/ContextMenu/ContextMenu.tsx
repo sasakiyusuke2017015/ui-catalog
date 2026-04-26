@@ -26,7 +26,7 @@ export interface ContextMenuProps {
   onClose: () => void
 }
 
-export default function ContextMenu({ position, items, onClose }: ContextMenuProps) {
+export function ContextMenu({ position, items, onClose }: ContextMenuProps) {
   useEffect(() => {
     const handleClick = () => onClose()
     const handleEscape = (e: KeyboardEvent) => {

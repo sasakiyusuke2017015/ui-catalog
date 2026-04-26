@@ -1,6 +1,6 @@
 import React from 'react';
 
-import StatisticItem from './StatisticItem';
+import { StatisticItem } from './StatisticItem';
 
 /**
  * StatisticItem コンポーネントの Storybook 設定

@@ -10,7 +10,7 @@ export interface ChatFabProps {
   ariaLabel?: string
 }
 
-export default function ChatFab({
+export function ChatFab({
   onClick,
   hasMessages = false,
   icon = '💬',

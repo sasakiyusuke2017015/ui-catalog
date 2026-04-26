@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Icon from './Icon';
+import { Icon } from './Icon';
 
 
 describe('Icon', () => {

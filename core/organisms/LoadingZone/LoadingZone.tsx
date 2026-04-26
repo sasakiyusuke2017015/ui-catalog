@@ -4,7 +4,7 @@
 // 汎用ローディングゾーンコンポーネント
 import { FC, useState, useEffect, useRef } from 'react';
 
-import Icon from '../../atoms/Icon';
+import { Icon } from '../../atoms/Icon';
 import type { LoadingPreset } from '../../atoms/Icon/types';
 import { type ColorTheme } from '../../constants';
 import { cn } from '../../utils/cn';

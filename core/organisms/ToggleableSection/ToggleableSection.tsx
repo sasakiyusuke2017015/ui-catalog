@@ -3,7 +3,7 @@
 import { useState, ReactNode } from 'react';
 
 import { Animated } from '../../atoms/Animated';
-import Icon from '../../atoms/Icon';
+import { Icon } from '../../atoms/Icon';
 import { useOperationLog } from '../../../infra/devtools';
 
 import styles from './ToggleableSection.module.scss';

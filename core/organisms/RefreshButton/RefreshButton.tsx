@@ -4,7 +4,7 @@ import { FC } from 'react';
 
 import { useOperationLog } from '../../../infra/devtools';
 import { Button } from '../../molecules/Button';
-import Icon from '../../atoms/Icon';
+import { Icon } from '../../atoms/Icon';
 
 
 interface RefreshButtonProps {

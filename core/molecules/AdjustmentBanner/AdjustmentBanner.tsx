@@ -1,4 +1,4 @@
-import Banner from '../Banner/Banner';
+import { Banner } from '../Banner/Banner';
 
 interface AdjustmentBannerProps {
   /** 説明文 */
@@ -10,7 +10,7 @@ interface AdjustmentBannerProps {
 /**
  * 調整中機能を示すバナーコンポーネント
  */
-export default function AdjustmentBanner({ message, className }: AdjustmentBannerProps) {
+export function AdjustmentBanner({ message, className }: AdjustmentBannerProps) {
   return (
     <div data-component="adjustment-banner">
       <Banner

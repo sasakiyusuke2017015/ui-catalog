@@ -5,15 +5,15 @@
  */
 import type { Config } from '@measured/puck'
 
-import Text from '../../atoms/Text/Text'
-import Badge from '../../atoms/Badge/Badge'
-import Stack from '../../atoms/Stack/Stack'
-import Spinner from '../../atoms/Spinner/Spinner'
-import Toggle from '../../atoms/Toggle/Toggle'
-import Button from '../../molecules/Button/Button'
+import { Text } from '../../atoms/Text/Text'
+import { Badge } from '../../atoms/Badge/Badge'
+import { Stack } from '../../atoms/Stack/Stack'
+import { Spinner } from '../../atoms/Spinner/Spinner'
+import { Toggle } from '../../atoms/Toggle/Toggle'
+import { Button } from '../../molecules/Button/Button'
 import Card, { CardHeader, CardContent } from '../../molecules/Card/Card'
-import Input from '../../molecules/Input/Input'
-import Banner from '../../molecules/Banner/Banner'
+import { Input } from '../../molecules/Input/Input'
+import { Banner } from '../../molecules/Banner/Banner'
 
 type PuckProps = {
   HeadingBlock: { text: string; level: 'h1' | 'h2' | 'h3' | 'h4'; align: 'left' | 'center' | 'right' }

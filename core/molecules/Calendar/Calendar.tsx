@@ -7,14 +7,14 @@
  * 上下ナビゲーション＋ページめくりアニメーションで統一。
  */
 import { FC, useState, useCallback, useMemo } from 'react';
-import Icon from '../../atoms/Icon';
+import { Icon } from '../../atoms/Icon';
 
 import { CalendarGrid } from './CalendarGrid';
 import { MonthGrid } from './MonthGrid';
 import { DEFAULTS, ANIMATION_DURATION } from './constants';
 import type { CalendarProps } from './types';
 
-const Calendar: FC<CalendarProps> = ({
+export const Calendar: FC<CalendarProps> = ({
   mode = 'date',
   viewDate: initialViewDate,
   selectedDate = null,
@@ -237,5 +237,3 @@ const Calendar: FC<CalendarProps> = ({
     </div>
   );
 };
-
-export default Calendar;

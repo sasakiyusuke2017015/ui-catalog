@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
 import { Animated } from './Animated'
-import ReplayButton from '../../molecules/ReplayButton/ReplayButton'
+import { ReplayButton } from '../../molecules/ReplayButton/ReplayButton'
 import { useRemountKey } from '../../hooks/useRemountKey'
 
 const meta: Meta<typeof Animated> = {

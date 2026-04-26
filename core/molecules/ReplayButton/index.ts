@@ -1,1 +1,1 @@
-export { default as ReplayButton } from './ReplayButton'
+export { ReplayButton } from './ReplayButton'

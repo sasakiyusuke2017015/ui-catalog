@@ -1,1 +1,1 @@
-export { default as ResponsiveContainer } from './ResponsiveContainer'
+export { ResponsiveContainer } from './ResponsiveContainer'

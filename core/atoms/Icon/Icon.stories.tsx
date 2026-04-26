@@ -5,7 +5,7 @@ import {
 } from '../../constants/icons';
 import { SEMANTIC_COLORS } from '../../constants/design';
 
-import Icon from './Icon';
+import { Icon } from './Icon';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

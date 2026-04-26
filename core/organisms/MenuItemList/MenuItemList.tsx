@@ -3,7 +3,7 @@
 import { FC, ReactNode, Children, cloneElement, isValidElement, ReactElement } from 'react';
 
 import { IconName } from '../../constants';
-import MenuItem from '../../molecules/MenuItem/MenuItem';
+import { MenuItem } from '../../molecules/MenuItem/MenuItem';
 
 import styles from './MenuItemList.module.scss';
 

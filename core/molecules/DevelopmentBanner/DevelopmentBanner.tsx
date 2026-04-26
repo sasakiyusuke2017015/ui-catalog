@@ -1,4 +1,4 @@
-import Banner from '../Banner/Banner';
+import { Banner } from '../Banner/Banner';
 
 interface DevelopmentBannerProps {
   /** 説明文 */
@@ -10,7 +10,7 @@ interface DevelopmentBannerProps {
 /**
  * 開発中機能を示すバナーコンポーネント
  */
-export default function DevelopmentBanner({ message, className }: DevelopmentBannerProps) {
+export function DevelopmentBanner({ message, className }: DevelopmentBannerProps) {
   return (
     <div data-component="development-banner">
       <Banner

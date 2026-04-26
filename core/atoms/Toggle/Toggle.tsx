@@ -18,7 +18,7 @@ interface ToggleProps
   toggleRadius?: string
 }
 
-const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
+export const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
   (
     {
       label,
@@ -136,5 +136,3 @@ const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
 )
 
 Toggle.displayName = 'Toggle'
-
-export default Toggle

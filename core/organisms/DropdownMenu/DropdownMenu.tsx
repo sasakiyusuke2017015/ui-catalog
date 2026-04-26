@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, ReactNode, FC, CSSProperties } from 'react
 
 import { useOperationLog } from '../../../infra/devtools';
 import { Button } from '../../molecules/Button';
-import Icon from '../../atoms/Icon';
+import { Icon } from '../../atoms/Icon';
 import { type ColorTheme, IconName } from '../../constants';
 import { cn } from '../../utils/cn';
 

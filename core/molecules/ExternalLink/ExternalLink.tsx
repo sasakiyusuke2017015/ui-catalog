@@ -3,7 +3,7 @@
 import { FC, ReactNode, AnchorHTMLAttributes } from 'react';
 
 import { useOperationLog } from '../../../infra/devtools';
-import Icon from '../../atoms/Icon';
+import { Icon } from '../../atoms/Icon';
 
 type ExternalLinkVariant = 'default' | 'primary' | 'secondary';
 
@@ -20,7 +20,7 @@ interface ExternalLinkProps
   borderRadius?: string;
 }
 
-const ExternalLink: FC<ExternalLinkProps> = ({
+export const ExternalLink: FC<ExternalLinkProps> = ({
   href,
   children,
   className = '',
@@ -68,5 +68,3 @@ const ExternalLink: FC<ExternalLinkProps> = ({
     </a>
   );
 };
-
-export default ExternalLink;

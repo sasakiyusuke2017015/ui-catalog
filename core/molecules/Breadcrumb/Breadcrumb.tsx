@@ -1,7 +1,7 @@
 // src/components/common/molecules/Breadcrumb.tsx
 import { FC, CSSProperties } from 'react';
 
-import InternalLink from '../../molecules/InternalLink/InternalLink';
+import { InternalLink } from '../../molecules/InternalLink/InternalLink';
 import { type ColorTheme } from '../../constants';
 import styles from './Breadcrumb.module.scss';
 
@@ -26,7 +26,7 @@ interface BreadcrumbProps {
  * パンくずリストコンポーネント
  * ページの階層構造をナビゲーション可能なリンクとして表示
  */
-const Breadcrumb: FC<BreadcrumbProps> = ({
+export const Breadcrumb: FC<BreadcrumbProps> = ({
   items,
   separator = '>',
   className = '',
@@ -111,5 +111,3 @@ const Breadcrumb: FC<BreadcrumbProps> = ({
     </nav>
   );
 };
-
-export default Breadcrumb;

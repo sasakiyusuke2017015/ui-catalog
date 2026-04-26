@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import PWAInstallPrompt from './PWAInstallPrompt';
+import { PWAInstallPrompt } from './PWAInstallPrompt';
 
 describe('PWAInstallPrompt', () => {
   beforeEach(() => {

@@ -1,7 +1,7 @@
 // src/components/common/molecules/StepIndicator.tsx
 import { FC } from 'react';
 
-import Icon from '../../atoms/Icon';
+import { Icon } from '../../atoms/Icon';
 import { type IconName, type LoadingIconName } from '../../constants';
 import styles from './StepIndicator.module.scss';
 

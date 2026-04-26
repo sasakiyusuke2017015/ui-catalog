@@ -1,4 +1,4 @@
-import Banner from './Banner';
+import { Banner } from './Banner';
 
 /**
  * 汎用バナーコンポーネント

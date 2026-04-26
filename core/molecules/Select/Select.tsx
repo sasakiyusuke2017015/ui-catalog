@@ -7,7 +7,7 @@ import { useOperationLog } from '../../../infra/devtools';
 import { cn } from '../../utils/cn';
 
 import { Checkbox } from '../../atoms/Checkbox';
-import Icon from '../../atoms/Icon';
+import { Icon } from '../../atoms/Icon';
 
 interface SelectOption<T = string | number> {
   value: T;

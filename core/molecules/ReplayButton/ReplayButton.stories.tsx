@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import ReplayButton from './ReplayButton';
+import { ReplayButton } from './ReplayButton';
 
 const meta: Meta<typeof ReplayButton> = {
   title: 'アクション/ReplayButton',

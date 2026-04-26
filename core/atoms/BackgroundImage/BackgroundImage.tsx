@@ -53,7 +53,7 @@ const defaultFloatingElements: FloatingElement[] = [
   },
 ];
 
-const BackgroundImage = ({
+export const BackgroundImage = ({
   src,
   opacity = 60,
   position = 'center',
@@ -91,5 +91,3 @@ const BackgroundImage = ({
     </div>
   );
 };
-
-export default BackgroundImage;

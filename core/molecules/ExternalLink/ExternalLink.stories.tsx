@@ -1,4 +1,4 @@
-import ExternalLink from './ExternalLink';
+import { ExternalLink } from './ExternalLink';
 
 export default {
   title: 'ナビゲーション/リンク/ExternalLink',

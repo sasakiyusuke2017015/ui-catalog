@@ -43,7 +43,7 @@ const justifyClasses: Record<StackJustify, string> = {
  * Stack - Flexboxレイアウトプリミティブ
  * 方向、gap、配置を簡潔に指定可能
  */
-const Stack: FC<StackProps> = ({
+export const Stack: FC<StackProps> = ({
   children,
   className,
   style,
@@ -79,5 +79,3 @@ const Stack: FC<StackProps> = ({
     </div>
   )
 }
-
-export default Stack

@@ -4,7 +4,7 @@
  * カレンダーヘッダー（年月表示 + ナビゲーション）
  */
 import { FC, memo } from 'react';
-import Icon from '../../atoms/Icon';
+import { Icon } from '../../atoms/Icon';
 
 interface Props {
   viewDate: Date;

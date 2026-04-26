@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import ProjectItem from './ProjectItem';
+import { ProjectItem } from './ProjectItem';
 
 const meta: Meta<typeof ProjectItem> = {
   title: 'ナビゲーション/メニュー/ProjectItem',

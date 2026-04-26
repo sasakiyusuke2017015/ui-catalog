@@ -6,7 +6,7 @@
  */
 import React from 'react';
 
-import Icon from '../../atoms/Icon';
+import { Icon } from '../../atoms/Icon';
 import { useOperationLog } from '../../../infra/devtools';
 import { cn } from '../../utils/cn';
 import { LAYOUT_SIZES, type IconName } from '../../constants';

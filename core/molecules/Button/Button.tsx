@@ -4,8 +4,8 @@ import { FC, ReactNode, ButtonHTMLAttributes, useState } from 'react'
 
 import { type IconName } from '../../constants'
 import { useOperationLog } from '../../../infra/devtools'
-import Icon from '../../atoms/Icon'
-import Spinner from '../../atoms/Spinner'
+import { Icon } from '../../atoms/Icon'
+import { Spinner } from '../../atoms/Spinner'
 
 import styles from './Button.module.scss'
 
@@ -46,7 +46,7 @@ interface ButtonProps
   accentColor?: 'blue' | 'yellow' | 'orange' | 'green' | 'gray' | 'purple'
 }
 
-const Button: FC<ButtonProps> = ({
+export const Button: FC<ButtonProps> = ({
   variant = 'default',
   size = 'medium',
   disabled = false,
@@ -191,5 +191,3 @@ const Button: FC<ButtonProps> = ({
 
   return buttonElement
 }
-
-export default Button

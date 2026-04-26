@@ -1,1 +1,1 @@
-export { default as ResetButton } from './ResetButton'
+export { ResetButton } from './ResetButton'

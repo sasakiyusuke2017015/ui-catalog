@@ -14,7 +14,7 @@ interface ResponsiveContainerProps {
   children: React.ReactNode;
 }
 
-const ResponsiveContainer = forwardRef<
+export const ResponsiveContainer = forwardRef<
   HTMLDivElement,
   ResponsiveContainerProps
 >(
@@ -76,5 +76,3 @@ const ResponsiveContainer = forwardRef<
 );
 
 ResponsiveContainer.displayName = 'ResponsiveContainer';
-
-export default ResponsiveContainer;

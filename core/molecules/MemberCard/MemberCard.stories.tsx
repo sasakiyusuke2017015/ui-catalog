@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import MemberCard from './MemberCard';
+import { MemberCard } from './MemberCard';
 import type { MemberCardData } from './types';
 
 const meta: Meta<typeof MemberCard> = {

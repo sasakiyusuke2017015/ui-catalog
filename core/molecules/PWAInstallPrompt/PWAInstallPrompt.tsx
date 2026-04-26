@@ -3,7 +3,7 @@
 import { FC, useEffect, useState } from 'react';
 import { Button } from '../../molecules/Button';
 import { IconButton } from '../../molecules/IconButton';
-import Text from '../../atoms/Text';
+import { Text } from '../../atoms/Text';
 
 import styles from './PWAInstallPrompt.module.scss';
 
@@ -16,7 +16,7 @@ interface BeforeInstallPromptEvent extends Event {
  * PWA インストールプロンプト
  * beforeinstallprompt イベントをハンドリングしてインストールボタンを表示
  */
-const PWAInstallPrompt: FC = () => {
+export const PWAInstallPrompt: FC = () => {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showPrompt, setShowPrompt] = useState(false);
 
@@ -105,5 +105,3 @@ const PWAInstallPrompt: FC = () => {
     </div>
   );
 };
-
-export default PWAInstallPrompt;

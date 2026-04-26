@@ -1,7 +1,7 @@
 // src/components/common/molecules/Breadcrumb.stories.tsx
 import type { StoryFn } from '@storybook/react';
 
-import Breadcrumb from './Breadcrumb';
+import { Breadcrumb } from './Breadcrumb';
 
 export default {
   title: 'ナビゲーション/パンくず/Breadcrumb',

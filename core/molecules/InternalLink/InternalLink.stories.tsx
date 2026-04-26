@@ -1,4 +1,4 @@
-import InternalLink from './InternalLink';
+import { InternalLink } from './InternalLink';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

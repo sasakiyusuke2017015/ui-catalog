@@ -24,7 +24,7 @@ export interface MediaProps {
   loading?: 'lazy' | 'eager';
 }
 
-const Media: React.FC<MediaProps> = ({
+export const Media: React.FC<MediaProps> = ({
   src,
   alt,
   size,
@@ -144,5 +144,3 @@ const Media: React.FC<MediaProps> = ({
     </div>
   );
 };
-
-export default Media;

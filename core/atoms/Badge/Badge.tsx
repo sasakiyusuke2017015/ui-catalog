@@ -43,7 +43,7 @@ interface BadgeProps {
   borderRadius?: string
 }
 
-const Badge: FC<BadgeProps> = ({
+export const Badge: FC<BadgeProps> = ({
   value,
   children,
   appearance = 'default',
@@ -101,5 +101,3 @@ const Badge: FC<BadgeProps> = ({
     </Tag>
   )
 }
-
-export default Badge

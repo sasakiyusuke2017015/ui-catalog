@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import Tooltip from './Tooltip'
+import { Tooltip } from './Tooltip'
 
 describe('Tooltip', () => {
   it('子要素を表示する', () => {

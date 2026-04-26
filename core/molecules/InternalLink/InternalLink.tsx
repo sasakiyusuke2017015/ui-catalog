@@ -4,7 +4,7 @@ import React from 'react';
 
 import { useLink } from '../../hooks/router/RouterContext';
 import { useOperationLog } from '../../../infra/devtools';
-import Icon from '../../atoms/Icon';
+import { Icon } from '../../atoms/Icon';
 
 interface InternalLinkProps {
   /** リンク先のパス */
@@ -23,7 +23,7 @@ interface InternalLinkProps {
   borderRadius?: string;
 }
 
-const InternalLink: React.FC<InternalLinkProps> = ({
+export const InternalLink: React.FC<InternalLinkProps> = ({
   href,
   children,
   className = '',
@@ -164,5 +164,3 @@ const InternalLink: React.FC<InternalLinkProps> = ({
     </Link>
   );
 };
-
-export default InternalLink;

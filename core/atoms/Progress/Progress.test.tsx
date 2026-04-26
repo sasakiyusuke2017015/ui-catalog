@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
-import Progress from './Progress';
+import { Progress } from './Progress';
 
 describe('Progress', () => {
   it('data-component属性が設定される', () => {

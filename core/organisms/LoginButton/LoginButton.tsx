@@ -3,7 +3,7 @@
 import { ReactNode, useEffect, useRef } from 'react';
 
 import { ShimmerButton } from '../ShimmerButton';
-import Icon from '../../atoms/Icon';
+import { Icon } from '../../atoms/Icon';
 import { debugRender, debugAction, debugStateChange } from '../../utils/debug';
 
 

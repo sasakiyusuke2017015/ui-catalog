@@ -4,7 +4,7 @@
  * DatePicker メインコンポーネント
  */
 import { FC, useRef, useState, useEffect, useCallback } from 'react';
-import Icon from '../../atoms/Icon';
+import { Icon } from '../../atoms/Icon';
 
 import { useOperationLog } from '../../../infra/devtools';
 
@@ -18,7 +18,7 @@ import {
 } from './constants';
 import type { DatePickerProps } from './types';
 
-const DatePicker: FC<DatePickerProps> = ({
+export const DatePicker: FC<DatePickerProps> = ({
   id,
   name: _name,
   pickerMode = 'date',
@@ -191,5 +191,3 @@ const DatePicker: FC<DatePickerProps> = ({
       </div>
   );
 };
-
-export default DatePicker;

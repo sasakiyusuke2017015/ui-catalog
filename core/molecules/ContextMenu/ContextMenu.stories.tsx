@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import ContextMenu from './ContextMenu';
+import { ContextMenu } from './ContextMenu';
 
 const meta: Meta<typeof ContextMenu> = {
   title: 'ナビゲーション/メニュー/ContextMenu',

@@ -1,1 +1,1 @@
-export { default as InternalLink } from './InternalLink'
+export { InternalLink } from './InternalLink'

@@ -1,1 +1,1 @@
-export { default as DataCountDisplay } from './DataCountDisplay'
+export { DataCountDisplay } from './DataCountDisplay'

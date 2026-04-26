@@ -16,7 +16,7 @@ import { ja } from 'date-fns/locale'
 import { selectedDateAtom, editingEventAtom } from '../../hooks/calendar/calendar'
 import { getEventsForDay } from '../../utils/calendar/dates'
 import type { CalendarEvent } from '../../types/calendar'
-import Icon from '../../atoms/Icon/Icon'
+import { Icon } from '../../atoms/Icon/Icon'
 import styles from './AgendaView.module.scss'
 
 export interface AgendaViewProps {

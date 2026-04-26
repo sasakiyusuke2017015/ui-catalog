@@ -1,4 +1,4 @@
-import DatePicker from './DatePicker';
+import { DatePicker } from './DatePicker';
 
 /**
  * 日付入力コンポーネント

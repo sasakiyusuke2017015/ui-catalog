@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
-import Icon from '../../atoms/Icon';
-import Text from '../../atoms/Text';
+import { Icon } from '../../atoms/Icon';
+import { Text } from '../../atoms/Text';
 import styles from './QACardList.module.scss';
 
 export interface QACardItem {
@@ -26,7 +26,7 @@ export interface QACardListProps {
  * Q&Aカードリストコンポーネント
  * アンケートの質問と回答をスタイリッシュなカード形式で表示
  */
-const QACardList: FC<QACardListProps> = ({
+export const QACardList: FC<QACardListProps> = ({
   items,
   variant = 'green',
   infoMessage,
@@ -98,5 +98,3 @@ const QACardList: FC<QACardListProps> = ({
     </div>
   );
 };
-
-export default QACardList;

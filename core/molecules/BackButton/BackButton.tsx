@@ -23,7 +23,7 @@ interface BackButtonProps {
  * 戻るボタンコンポーネント
  * 統一されたデザインの戻るボタン
  */
-const BackButton: FC<BackButtonProps> = ({
+export const BackButton: FC<BackButtonProps> = ({
   onClick,
   label = '戻る',
   disabled = false,
@@ -47,5 +47,3 @@ const BackButton: FC<BackButtonProps> = ({
     </span>
   );
 };
-
-export default BackButton;

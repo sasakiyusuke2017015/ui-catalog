@@ -3,9 +3,9 @@
 import { useState, useEffect, useRef } from 'react';
 
 import { type ColorTheme } from '../../constants';
-import Icon from '../../atoms/Icon';
-import Spinner from '../../atoms/Spinner';
-import Text from '../../atoms/Text';
+import { Icon } from '../../atoms/Icon';
+import { Spinner } from '../../atoms/Spinner';
+import { Text } from '../../atoms/Text';
 import type { LoadingPreset } from '../../atoms/Icon/types';
 
 import styles from './LoadingOverlay.module.scss';

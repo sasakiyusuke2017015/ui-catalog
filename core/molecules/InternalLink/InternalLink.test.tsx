@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { RouterProvider } from '../../hooks/router/RouterContext';
 import type { RouterAdapter, LinkProps } from '../../hooks/router/types';
-import InternalLink from './InternalLink';
+import { InternalLink } from './InternalLink';
 
 // テスト用モックアダプタ
 const createMockAdapter = (): RouterAdapter => ({

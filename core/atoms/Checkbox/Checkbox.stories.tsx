@@ -1,6 +1,6 @@
 import { useState, type ComponentProps } from 'react';
 
-import Checkbox from './Checkbox';
+import { Checkbox } from './Checkbox';
 
 type CheckboxProps = ComponentProps<typeof Checkbox>;
 

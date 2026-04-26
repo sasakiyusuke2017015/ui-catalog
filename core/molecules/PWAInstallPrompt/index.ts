@@ -1,1 +1,1 @@
-export { default as PWAInstallPrompt } from './PWAInstallPrompt'
+export { PWAInstallPrompt } from './PWAInstallPrompt'

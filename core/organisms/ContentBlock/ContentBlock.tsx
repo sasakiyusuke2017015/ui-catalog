@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Icon from '../../atoms/Icon';
-import Media from '../../atoms/Media/Media';
-import Text from '../../atoms/Text';
+import { Icon } from '../../atoms/Icon';
+import { Media } from '../../atoms/Media/Media';
+import { Text } from '../../atoms/Text';
 import LoadingZone from '../LoadingZone/LoadingZone';
 import { type IconName } from '../../constants';
 import type { LoadingPreset } from '../../atoms/Icon';

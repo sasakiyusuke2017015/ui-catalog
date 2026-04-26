@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { RouterProvider } from '../../hooks/router/RouterContext';
 import type { RouterAdapter, LinkProps } from '../../hooks/router/types';
-import Breadcrumb, { BreadcrumbItem } from './Breadcrumb';
+import { Breadcrumb, BreadcrumbItem } from './Breadcrumb';
 
 // テスト用モックアダプタ
 const createMockAdapter = (): RouterAdapter => ({

@@ -1,4 +1,4 @@
-import AdjustmentBanner from './AdjustmentBanner';
+import { AdjustmentBanner } from './AdjustmentBanner';
 
 /**
  * 調整中バナーコンポーネント

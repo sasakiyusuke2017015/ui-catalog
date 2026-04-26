@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import DevelopmentBanner from './DevelopmentBanner';
+import { DevelopmentBanner } from './DevelopmentBanner';
 
 describe('DevelopmentBanner', () => {
   it('メッセージを表示する', () => {

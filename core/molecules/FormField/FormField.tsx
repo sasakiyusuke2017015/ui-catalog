@@ -3,7 +3,7 @@
 import { FC, ReactNode } from 'react';
 
 import { Input } from '../../molecules/Input';
-import Text from '../../atoms/Text';
+import { Text } from '../../atoms/Text';
 
 interface FormFieldProps {
   id?: string;
@@ -30,7 +30,7 @@ interface FormFieldProps {
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
 }
 
-const FormField: FC<FormFieldProps> = ({
+export const FormField: FC<FormFieldProps> = ({
   id,
   label,
   description,
@@ -120,5 +120,3 @@ const FormField: FC<FormFieldProps> = ({
     </div>
   );
 };
-
-export default FormField;

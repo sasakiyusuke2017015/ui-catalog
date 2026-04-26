@@ -1,1 +1,8 @@
-export { default as Badge, type BadgeColor, type BadgeSize, type BadgeAppearance, type BadgeStyleVariant, type BadgeSemanticVariant } from './Badge'
+export { Badge } from './Badge'
+export type {
+  BadgeColor,
+  BadgeSize,
+  BadgeAppearance,
+  BadgeStyleVariant,
+  BadgeSemanticVariant,
+} from './Badge'

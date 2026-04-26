@@ -1,4 +1,4 @@
-import BackgroundImage from './BackgroundImage';
+import { BackgroundImage } from './BackgroundImage';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

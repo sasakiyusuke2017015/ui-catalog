@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import Box from './Box'
+import { Box } from './Box'
 
 const meta: Meta<typeof Box> = {
   title: 'レイアウト/Box',

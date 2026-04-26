@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
-import BackgroundImage from './BackgroundImage';
+import { BackgroundImage } from './BackgroundImage';
 
 describe('BackgroundImage', () => {
   it('背景画像がレンダリングされる', () => {

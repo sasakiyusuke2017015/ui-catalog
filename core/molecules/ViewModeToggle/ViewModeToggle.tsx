@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState, useEffect, useCallback } from 'react'
-import Icon from '../../atoms/Icon'
+import { Icon } from '../../atoms/Icon'
 import type { IconName } from '../../constants'
 import styles from './ViewModeToggle.module.scss'
 import { cn } from '../../utils'

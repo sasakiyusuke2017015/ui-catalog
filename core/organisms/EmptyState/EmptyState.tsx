@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import Text from '../../atoms/Text'
+import { Text } from '../../atoms/Text'
 import styles from './EmptyState.module.scss'
 
 export interface EmptyStateProps {

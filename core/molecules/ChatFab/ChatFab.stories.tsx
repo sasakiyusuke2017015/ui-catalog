@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import ChatFab from './ChatFab';
+import { ChatFab } from './ChatFab';
 
 const meta: Meta<typeof ChatFab> = {
   title: 'アクション/ChatFab',

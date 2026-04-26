@@ -29,7 +29,7 @@ interface SliderProps {
 /**
  * スライダーコンポーネント
  */
-const Slider: FC<SliderProps> = ({
+export const Slider: FC<SliderProps> = ({
   value,
   onChange,
   min = 0,
@@ -72,5 +72,3 @@ const Slider: FC<SliderProps> = ({
     </div>
   );
 };
-
-export default Slider;

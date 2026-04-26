@@ -55,7 +55,7 @@ export interface ProjectItemProps {
   isLastChild?: boolean
 }
 
-export default function ProjectItem({
+export function ProjectItem({
   project,
   selected = false,
   onClick,

@@ -34,7 +34,7 @@ interface TextAreaProps
   borderRadius?: string
 }
 
-const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
+export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   (
     {
       label,
@@ -127,5 +127,3 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
 )
 
 TextArea.displayName = 'TextArea'
-
-export default TextArea

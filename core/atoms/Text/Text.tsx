@@ -83,7 +83,7 @@ const alignClasses: Record<TextAlign, string> = {
  * - <Text variant="error">エラーメッセージ</Text>
  * - <Text color="#ff0000">カスタム色</Text>
  */
-const Text: FC<TextProps> = ({
+export const Text: FC<TextProps> = ({
   children,
   className,
   style,
@@ -138,5 +138,3 @@ const Text: FC<TextProps> = ({
     </Tag>
   )
 }
-
-export default Text

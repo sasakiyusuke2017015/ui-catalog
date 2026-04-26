@@ -1,4 +1,4 @@
-import MenuItem from '../../molecules/MenuItem/MenuItem';
+import { MenuItem } from '../../molecules/MenuItem/MenuItem';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

@@ -22,7 +22,7 @@ export interface ProgressProps {
   animate?: boolean
 }
 
-const Progress: FC<ProgressProps> = ({
+export const Progress: FC<ProgressProps> = ({
   value,
   max = 100,
   size = 'medium',
@@ -79,5 +79,3 @@ const Progress: FC<ProgressProps> = ({
     </div>
   )
 }
-
-export default Progress

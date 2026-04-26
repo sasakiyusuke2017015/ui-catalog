@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, KeyboardEvent, ChangeEvent, FC } from 'react'
-import Icon from '../../atoms/Icon'
+import { Icon } from '../../atoms/Icon'
 import styles from './SearchBar.module.scss'
 
 export interface SearchBarProps {

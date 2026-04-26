@@ -19,7 +19,7 @@ export interface StatisticItemProps {
  * 統計情報の個別項目を表示するコンポーネント
  * 丸印 + ラベル + 値 + 単位 の形式で表示
  */
-const StatisticItem: React.FC<StatisticItemProps> = ({
+export const StatisticItem: React.FC<StatisticItemProps> = ({
   dotColor,
   label,
   labelColor,
@@ -37,5 +37,3 @@ const StatisticItem: React.FC<StatisticItemProps> = ({
     </span>
   );
 };
-
-export default StatisticItem;

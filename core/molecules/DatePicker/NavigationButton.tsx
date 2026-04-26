@@ -4,7 +4,7 @@
  * ナビゲーションボタン
  */
 import { FC, memo } from 'react';
-import Icon from '../../atoms/Icon';
+import { Icon } from '../../atoms/Icon';
 
 import { NAV_ICON_SIZES } from './constants';
 import type { DatePickerSize } from './types';

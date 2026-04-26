@@ -5,8 +5,8 @@ import { FC } from 'react';
 
 import { Badge } from '../../atoms/Badge';
 import { Button } from '../../molecules/Button';
-import Icon from '../../atoms/Icon';
-import Text from '../../atoms/Text';
+import { Icon } from '../../atoms/Icon';
+import { Text } from '../../atoms/Text';
 import { type IconName } from '../../constants';
 
 import styles from './SurveyCard.module.scss';

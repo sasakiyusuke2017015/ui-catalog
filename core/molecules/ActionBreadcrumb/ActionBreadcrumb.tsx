@@ -14,7 +14,7 @@ export interface ActionBreadcrumbProps {
   className?: string
 }
 
-export default function ActionBreadcrumb({
+export function ActionBreadcrumb({
   items,
   separator = '/',
   className,

@@ -2056,7 +2056,7 @@ const DEFAULT_HOVER_MAP: Partial<Record<string, HoverPreset>> = {
 // ========================================
 // Icon コンポーネント
 // ========================================
-const Icon: React.FC<IconProps> = ({
+export const Icon: React.FC<IconProps> = ({
   name: nameProp,
   preset,
   size = 24,
@@ -2178,5 +2178,3 @@ const Icon: React.FC<IconProps> = ({
 
   return <svg {...svgProps}>{renderPath()}</svg>;
 };
-
-export default Icon;

@@ -30,7 +30,7 @@ export interface ListItemProps {
  *   <div>コンテンツ</div>
  * </ListItem>
  */
-const ListItem: FC<ListItemProps> = ({
+export const ListItem: FC<ListItemProps> = ({
   children,
   isSelected = false,
   isActive = false,
@@ -80,4 +80,3 @@ const ListItem: FC<ListItemProps> = ({
   )
 }
 
-export default ListItem

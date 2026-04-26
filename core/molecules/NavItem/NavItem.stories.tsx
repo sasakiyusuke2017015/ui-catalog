@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import NavItem from './NavItem';
+import { NavItem } from './NavItem';
 
 const meta: Meta<typeof NavItem> = {
   title: 'ナビゲーション/リンク/NavItem',

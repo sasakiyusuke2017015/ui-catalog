@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import CountdownRing from './CountdownRing';
+import { CountdownRing } from './CountdownRing';
 
 type Story = StoryObj<typeof CountdownRing>;
 

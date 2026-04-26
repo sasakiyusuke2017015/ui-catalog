@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import ExternalLink from './ExternalLink';
+import { ExternalLink } from './ExternalLink';
 
 describe('ExternalLink', () => {
   it('外部リンクがレンダリングされる', () => {

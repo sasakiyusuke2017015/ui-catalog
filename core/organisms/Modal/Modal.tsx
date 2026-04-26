@@ -3,7 +3,7 @@
 import { FC, ReactNode, useEffect } from 'react';
 
 import { IconButton } from '../../molecules/IconButton';
-import Text from '../../atoms/Text';
+import { Text } from '../../atoms/Text';
 import { useOperationLog } from '../../../infra/devtools';
 import styles from './Modal.module.scss';
 

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import QACardList from './QACardList';
+import { QACardList } from './QACardList';
 
 const meta: Meta<typeof QACardList> = {
   title: '表示/カード/QACardList',

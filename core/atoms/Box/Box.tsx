@@ -28,7 +28,7 @@ export interface BoxProps extends HTMLAttributes<HTMLDivElement> {
  * Box - 最小のレイアウトプリミティブ
  * padding, margin, display を簡潔に指定可能
  */
-const Box: FC<BoxProps> = ({
+export const Box: FC<BoxProps> = ({
   children,
   className,
   style,
@@ -64,5 +64,3 @@ const Box: FC<BoxProps> = ({
     </Tag>
   )
 }
-
-export default Box

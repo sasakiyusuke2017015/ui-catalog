@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 
 import { useOperationLog } from '../../../infra/devtools';
-import Icon from '../../atoms/Icon';
+import { Icon } from '../../atoms/Icon';
 import { IconName } from '../../constants';
 
 export interface SegmentOption<T extends string> {

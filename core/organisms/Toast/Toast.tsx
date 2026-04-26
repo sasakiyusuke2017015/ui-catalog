@@ -7,7 +7,7 @@ import { createPortal } from 'react-dom';
 
 import { useOperationLog } from '../../../infra/devtools';
 import { Button } from '../../molecules/Button';
-import Icon from '../../atoms/Icon';
+import { Icon } from '../../atoms/Icon';
 
 
 export interface ToastProps {

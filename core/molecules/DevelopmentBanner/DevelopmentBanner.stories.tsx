@@ -1,4 +1,4 @@
-import DevelopmentBanner from './DevelopmentBanner';
+import { DevelopmentBanner } from './DevelopmentBanner';
 
 /**
  * 開発中バナーコンポーネント

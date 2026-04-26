@@ -1,6 +1,6 @@
 import { useState, type ComponentProps } from 'react';
 
-import Slider from './Slider';
+import { Slider } from './Slider';
 
 type SliderProps = ComponentProps<typeof Slider>;
 

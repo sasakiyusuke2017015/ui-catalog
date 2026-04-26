@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 
 
 
-import MenuItem from '../../molecules/MenuItem/MenuItem';
+import { MenuItem } from '../../molecules/MenuItem/MenuItem';
 
 describe('MenuItem', () => {
   it('基本的なレンダリングができる', () => {

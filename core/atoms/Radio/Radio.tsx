@@ -14,7 +14,7 @@ interface RadioProps
   labelClassName?: string
 }
 
-const Radio = forwardRef<HTMLInputElement, RadioProps>(
+export const Radio = forwardRef<HTMLInputElement, RadioProps>(
   (
     {
       label,
@@ -103,5 +103,3 @@ const Radio = forwardRef<HTMLInputElement, RadioProps>(
 )
 
 Radio.displayName = 'Radio'
-
-export default Radio

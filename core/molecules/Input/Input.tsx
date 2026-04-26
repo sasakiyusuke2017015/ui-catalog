@@ -11,7 +11,7 @@ import {
 
 import { type IconName } from '../../constants'
 import { useOperationLog } from '../../../infra/devtools'
-import Icon from '../../atoms/Icon'
+import { Icon } from '../../atoms/Icon'
 
 import styles from './Input.module.scss'
 
@@ -38,7 +38,7 @@ interface InputProps
   borderRadius?: string
 }
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
+export const Input = forwardRef<HTMLInputElement, InputProps>(
   (
     {
       type = 'text',
@@ -191,5 +191,3 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 )
 
 Input.displayName = 'Input'
-
-export default Input

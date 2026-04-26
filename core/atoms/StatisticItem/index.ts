@@ -1,1 +1,2 @@
-export { default as StatisticItem, type StatisticItemProps } from './StatisticItem'
+export { StatisticItem } from './StatisticItem'
+export type { StatisticItemProps } from './StatisticItem'

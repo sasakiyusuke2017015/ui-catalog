@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ListItem from './ListItem';
+import { ListItem } from './ListItem';
 
 type Story = StoryObj<typeof ListItem>;
 

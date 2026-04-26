@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import ReplayButton from './ReplayButton';
+import { ReplayButton } from './ReplayButton';
 
 describe('ReplayButton', () => {
   it('デフォルトラベル「再生」が表示される', () => {

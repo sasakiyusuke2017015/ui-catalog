@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import ActionBreadcrumb from './ActionBreadcrumb';
+import { ActionBreadcrumb } from './ActionBreadcrumb';
 
 const meta: Meta<typeof ActionBreadcrumb> = {
   title: 'ナビゲーション/パンくず/ActionBreadcrumb',

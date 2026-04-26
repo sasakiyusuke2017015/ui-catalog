@@ -1,1 +1,1 @@
-export { default as DevelopmentBanner } from './DevelopmentBanner'
+export { DevelopmentBanner } from './DevelopmentBanner'

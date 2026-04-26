@@ -83,7 +83,7 @@ const SelectionIndicator: FC = () => (
 /**
  * 汎用メンバーカードコンポーネント
  */
-const MemberCard: FC<MemberCardProps> = memo(({
+export const MemberCard: FC<MemberCardProps> = memo(({
   data,
   selected = false,
   onSelectionChange,
@@ -190,5 +190,3 @@ const MemberCard: FC<MemberCardProps> = memo(({
 })
 
 MemberCard.displayName = 'MemberCard'
-
-export default MemberCard

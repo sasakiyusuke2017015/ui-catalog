@@ -5,7 +5,7 @@ import { cn } from '../../utils/cn'
 import Modal from '../Modal/Modal'
 import { Button } from '../../molecules/Button'
 import { Checkbox } from '../../atoms/Checkbox'
-import Text from '../../atoms/Text'
+import { Text } from '../../atoms/Text'
 
 export interface CheckboxItem {
   id: string

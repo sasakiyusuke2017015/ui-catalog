@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import FileLink from './FileLink'
+import { FileLink } from './FileLink'
 
 const meta: Meta<typeof FileLink> = {
   title: 'ナビゲーション/リンク/FileLink',

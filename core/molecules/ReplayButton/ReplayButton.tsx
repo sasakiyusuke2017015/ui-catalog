@@ -16,7 +16,7 @@ interface ReplayButtonProps {
  * 再生ボタン
  * アニメーション再生やコンポーネント再マウントのトリガーとして使用
  */
-const ReplayButton: FC<ReplayButtonProps> = ({
+export const ReplayButton: FC<ReplayButtonProps> = ({
   onClick,
   label = '再生',
   size = 'small',
@@ -33,5 +33,3 @@ const ReplayButton: FC<ReplayButtonProps> = ({
     </Button>
   </span>
 );
-
-export default ReplayButton;

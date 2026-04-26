@@ -1,6 +1,6 @@
 import { type ButtonHTMLAttributes, type ReactNode, isValidElement } from 'react'
 import { type IconName } from '../../constants'
-import Icon from '../../atoms/Icon'
+import { Icon } from '../../atoms/Icon'
 
 interface IconButtonBaseProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   /** アイコンサイズ（px） */
@@ -25,9 +25,9 @@ interface IconButtonWithChildren extends IconButtonBaseProps {
   children: ReactNode
 }
 
-type IconButtonProps = IconButtonWithName | IconButtonWithChildren
+export type IconButtonProps = IconButtonWithName | IconButtonWithChildren
 
-export default function IconButton({
+export function IconButton({
   icon,
   size = 14,
   label,

@@ -1,4 +1,4 @@
-export { default as FilterField } from './FilterField';
+export { FilterField } from './FilterField';
 export type {
   FilterFieldType,
   FilterOption,

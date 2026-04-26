@@ -18,7 +18,7 @@ interface DataCountDisplayProps {
  * データ件数・選択件数の共通表示コンポーネント
  * 件数変更時にNumberTickerアニメーション付きで表示
  */
-const DataCountDisplay: FC<DataCountDisplayProps> = ({
+export const DataCountDisplay: FC<DataCountDisplayProps> = ({
   totalCount,
   selectedCount = 0,
   loading = false,
@@ -41,5 +41,3 @@ const DataCountDisplay: FC<DataCountDisplayProps> = ({
     )}
   </span>
 );
-
-export default DataCountDisplay;

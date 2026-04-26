@@ -9,7 +9,7 @@
 import type React from 'react';
 import type { ReactNode } from 'react';
 
-import Icon from '../../atoms/Icon';
+import { Icon } from '../../atoms/Icon';
 import { InternalLink } from '../../molecules/InternalLink';
 
 import { isNullish } from '../../utils';

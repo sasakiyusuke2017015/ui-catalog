@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
-import DatePicker from './DatePicker';
+import { DatePicker } from './DatePicker';
 
 /** data-component="date-picker" セレクタ */
 const PICKER_SELECTOR = '[data-component="date-picker"]';

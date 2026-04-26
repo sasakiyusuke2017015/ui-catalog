@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 
-import StatisticItem from './StatisticItem';
+import { StatisticItem } from './StatisticItem';
 
 describe('StatisticItem', () => {
   it('基本的なレンダリングができる', () => {

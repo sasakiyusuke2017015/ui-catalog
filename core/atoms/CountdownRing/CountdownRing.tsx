@@ -30,7 +30,7 @@ interface CountdownRingProps {
   className?: string
 }
 
-const CountdownRing: FC<CountdownRingProps> = ({
+export const CountdownRing: FC<CountdownRingProps> = ({
   durationMs,
   startKey,
   radius = 18,
@@ -117,5 +117,4 @@ function CountdownNumber({
   return <span className={className}>{sec}</span>
 }
 
-export default CountdownRing
 export type { CountdownRingProps }

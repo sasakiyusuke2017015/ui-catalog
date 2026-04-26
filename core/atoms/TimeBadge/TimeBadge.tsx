@@ -28,7 +28,7 @@ export interface TimeBadgeProps {
  * <TimeBadge variant="teal">0:00 ~ 5:30</TimeBadge>
  * <TimeBadge variant="purple" size="md">10:00 ~ 15:00</TimeBadge>
  */
-const TimeBadge: FC<TimeBadgeProps> = ({
+export const TimeBadge: FC<TimeBadgeProps> = ({
   children,
   variant = 'teal',
   size = 'sm',
@@ -51,5 +51,3 @@ const TimeBadge: FC<TimeBadgeProps> = ({
     </span>
   )
 }
-
-export default TimeBadge

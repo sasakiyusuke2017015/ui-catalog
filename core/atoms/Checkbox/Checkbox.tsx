@@ -15,7 +15,7 @@ interface CheckboxProps
   forceHovered?: boolean
 }
 
-const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
+export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   (
     {
       label,
@@ -107,5 +107,3 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
 )
 
 Checkbox.displayName = 'Checkbox'
-
-export default Checkbox

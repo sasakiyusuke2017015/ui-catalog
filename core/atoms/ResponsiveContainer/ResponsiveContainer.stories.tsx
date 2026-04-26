@@ -1,4 +1,4 @@
-import ResponsiveContainer from './ResponsiveContainer';
+import { ResponsiveContainer } from './ResponsiveContainer';
 
 /**
  * ResponsiveContainer コンポーネントの Storybook 設定
@@ -61,7 +61,7 @@ export default {
 
           // インポートパスも含めて返却
           return `
-import ResponsiveContainer from './ResponsiveContainer';
+import { ResponsiveContainer } from './ResponsiveContainer';
 
 <ResponsiveContainer${propsString}>
   {/* コンテンツをここに配置 */}
