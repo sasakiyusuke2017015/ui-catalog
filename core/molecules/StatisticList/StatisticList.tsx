@@ -18,7 +18,7 @@ export interface StatisticListProps {
  * 統計情報のリストを表示するコンポーネント
  * StatisticItem を複数並べ、オプションで合計も表示
  */
-const StatisticList: React.FC<StatisticListProps> = ({
+export const StatisticList: React.FC<StatisticListProps> = ({
   items,
   totalLabel,
   totalValue,
@@ -54,5 +54,3 @@ const StatisticList: React.FC<StatisticListProps> = ({
     </div>
   );
 };
-
-export default StatisticList;

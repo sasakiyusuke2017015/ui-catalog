@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
-import ScoreBadge from './ScoreBadge';
+import { ScoreBadge } from './ScoreBadge';
 
 describe('ScoreBadge', () => {
   it('data-component属性が設定される', () => {

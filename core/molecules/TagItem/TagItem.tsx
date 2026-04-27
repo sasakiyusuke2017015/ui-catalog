@@ -60,7 +60,7 @@ export interface TagItemProps {
   checkColor?: 'blue' | 'purple'
 }
 
-export default function TagItem({
+export function TagItem({
   tag,
   selected = false,
   onClick,

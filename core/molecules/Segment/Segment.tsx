@@ -50,7 +50,7 @@ export interface SegmentProps<T extends string> {
  * />
  * ```
  */
-function Segment<T extends string>({
+export function Segment<T extends string>({
   value,
   onChange,
   options,
@@ -156,5 +156,3 @@ function Segment<T extends string>({
     </div>
   );
 }
-
-export default Segment;

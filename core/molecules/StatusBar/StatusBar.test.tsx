@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import StatusBar from './StatusBar'
+import { StatusBar } from './StatusBar'
 
 describe('StatusBar', () => {
   it('メッセージを表示する', () => {

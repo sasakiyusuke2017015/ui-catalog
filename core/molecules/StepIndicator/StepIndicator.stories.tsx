@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 
 
-import StepIndicator, { type Step, type StepStatus } from './StepIndicator';
+import { StepIndicator, type Step, type StepStatus } from './StepIndicator';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import ScoreBadge from './ScoreBadge';
+import { ScoreBadge } from './ScoreBadge';
 
 const meta: Meta<typeof ScoreBadge> = {
   title: 'データ表示/統計/ScoreBadge',

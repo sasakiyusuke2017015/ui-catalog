@@ -15,7 +15,7 @@ const roundToHalf = (value: number): number => {
   return Math.round(value * 2) / 2;
 };
 
-const StarRating: FC<StarRatingProps> = ({
+export const StarRating: FC<StarRatingProps> = ({
   rating,
   maxStars = 5,
   size = 20,
@@ -82,5 +82,4 @@ const StarRating: FC<StarRatingProps> = ({
   );
 };
 
-export default StarRating;
 export { roundToHalf };

@@ -21,7 +21,7 @@ export interface SearchBarProps {
   autoFocus?: boolean
 }
 
-const SearchBar: FC<SearchBarProps> = ({
+export const SearchBar: FC<SearchBarProps> = ({
   placeholder = '検索',
   value: controlledValue,
   defaultValue = '',
@@ -93,5 +93,3 @@ const SearchBar: FC<SearchBarProps> = ({
     </div>
   )
 }
-
-export default SearchBar

@@ -1,1 +1,1 @@
-export { default as ScoreBadge } from './ScoreBadge'
+export { ScoreBadge } from './ScoreBadge'

@@ -1,4 +1,4 @@
-import Select from './Select';
+import { Select } from './Select';
 
 export default {
   title: '入力/選択/Select',

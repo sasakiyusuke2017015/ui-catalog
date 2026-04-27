@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { describe, it, expect, vi } from 'vitest'
-import SearchBar from './SearchBar'
+import { SearchBar } from './SearchBar'
 
 describe('SearchBar', () => {
   it('renders with default placeholder', () => {

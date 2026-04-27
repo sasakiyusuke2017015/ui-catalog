@@ -31,7 +31,7 @@ export interface SurveyCardProps {
  * アンケートカードコンポーネント
  * アンケート一覧で使用する再利用可能なカード
  */
-const SurveyCard: FC<SurveyCardProps> = ({
+export const SurveyCard: FC<SurveyCardProps> = ({
   id: _id,
   title,
   description,
@@ -100,5 +100,3 @@ const SurveyCard: FC<SurveyCardProps> = ({
     </div>
   );
 };
-
-export default SurveyCard;

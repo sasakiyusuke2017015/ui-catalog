@@ -400,7 +400,7 @@ function TreeRow<T>({
   )
 }
 
-export default function TreeView<T = unknown>({
+export function TreeView<T = unknown>({
   nodes,
   expandedIds,
   selectedId,

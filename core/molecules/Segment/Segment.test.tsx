@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Segment from './Segment';
+import { Segment } from './Segment';
 
 const options = [
   { value: 'a', label: 'オプションA' },

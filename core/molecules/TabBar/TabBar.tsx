@@ -37,7 +37,7 @@ interface TabBarProps {
 /**
  * 汎用タブバーコンポーネント
  */
-const TabBar: FC<TabBarProps> = ({
+export const TabBar: FC<TabBarProps> = ({
   tabs,
   activeTabId,
   onSelectTab,
@@ -121,5 +121,3 @@ const TabBar: FC<TabBarProps> = ({
     </div>
   );
 };
-
-export default TabBar;

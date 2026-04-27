@@ -20,7 +20,7 @@ export interface TabsProps {
   panelClassName?: string
 }
 
-export default function Tabs({
+export function Tabs({
   tabs,
   defaultTab,
   activeTab: controlledActive,

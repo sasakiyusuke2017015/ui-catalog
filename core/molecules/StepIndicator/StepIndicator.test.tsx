@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 
 
 
-import StepIndicator, { type Step } from './StepIndicator';
+import { StepIndicator, type Step } from './StepIndicator';
 
 describe('StepIndicator', () => {
   const mockSteps: Step[] = [

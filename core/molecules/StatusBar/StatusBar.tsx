@@ -6,7 +6,7 @@ export interface StatusBarProps {
   className?: string
 }
 
-export default function StatusBar({
+export function StatusBar({
   message,
   variant = 'success',
   className,

@@ -1,4 +1,4 @@
-import StatisticList from './StatisticList';
+import { StatisticList } from './StatisticList';
 
 /**
  * StatisticList コンポーネントの Storybook 設定

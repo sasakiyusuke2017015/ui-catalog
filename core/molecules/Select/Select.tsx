@@ -98,7 +98,7 @@ const MultiSelectOption = ({
   );
 };
 
-const Select = <T extends string | number = string>(props: SelectProps<T>) => {
+export const Select = <T extends string | number = string>(props: SelectProps<T>) => {
   const {
     options,
     placeholder = '-',
@@ -489,5 +489,3 @@ const Select = <T extends string | number = string>(props: SelectProps<T>) => {
 
   return selectElement;
 };
-
-export default Select;

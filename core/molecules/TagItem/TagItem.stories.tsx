@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import TagItem from './TagItem';
+import { TagItem } from './TagItem';
 
 type Story = StoryObj<typeof TagItem>;
 

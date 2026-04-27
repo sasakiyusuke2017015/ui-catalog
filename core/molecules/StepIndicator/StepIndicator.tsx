@@ -42,7 +42,7 @@ export interface StepIndicatorProps {
  * - 注文/配送状況
  * - タスク進捗
  */
-const StepIndicator: FC<StepIndicatorProps> = ({
+export const StepIndicator: FC<StepIndicatorProps> = ({
   steps,
   title,
   completedColor = 'green',
@@ -150,5 +150,3 @@ const StepIndicator: FC<StepIndicatorProps> = ({
     </div>
   );
 };
-
-export default StepIndicator;

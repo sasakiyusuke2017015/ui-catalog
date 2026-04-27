@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import ResetButton from './ResetButton';
+import { ResetButton } from './ResetButton';
 
 /**
  * リセットボタンコンポーネント

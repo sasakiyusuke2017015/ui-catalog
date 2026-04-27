@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import SurveyCard from './SurveyCard';
+import { SurveyCard } from './SurveyCard';
 
 const meta: Meta<typeof SurveyCard> = {
   title: '表示/カード/SurveyCard',

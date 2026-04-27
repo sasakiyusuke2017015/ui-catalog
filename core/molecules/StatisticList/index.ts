@@ -1,2 +1,2 @@
-export { default as StatisticList } from './StatisticList'
+export { StatisticList } from './StatisticList'
 export type { StatisticListProps } from './StatisticList'

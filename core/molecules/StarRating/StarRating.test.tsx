@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 
-import StarRating, { roundToHalf } from './StarRating';
+import { StarRating, roundToHalf } from './StarRating';
 
 describe('StarRating', () => {
   it('基本的なレンダリングができる', () => {

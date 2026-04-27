@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import TabBar, { TabItem } from './TabBar';
+import { TabBar, type TabItem } from './TabBar';
 
 /**
  * 汎用タブバーコンポーネント

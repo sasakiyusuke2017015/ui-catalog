@@ -16,7 +16,7 @@ interface ScoreBadgeProps {
   className?: string;
 }
 
-const ScoreBadge: FC<ScoreBadgeProps> = ({
+export const ScoreBadge: FC<ScoreBadgeProps> = ({
   score,
   size = 'small',
   showValue = true,
@@ -50,5 +50,3 @@ const ScoreBadge: FC<ScoreBadgeProps> = ({
     </span>
   );
 };
-
-export default ScoreBadge;
