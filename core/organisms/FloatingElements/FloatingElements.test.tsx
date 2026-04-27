@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
-import FloatingElements from './FloatingElements';
+import { FloatingElements } from './FloatingElements';
 
 describe('FloatingElements', () => {
   it('デフォルトの浮遊要素がレンダリングされる', () => {

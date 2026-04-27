@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import FloatingElements from './FloatingElements'
+import { FloatingElements } from './FloatingElements'
 
 const meta: Meta<typeof FloatingElements> = {
   title: '背景効果/FloatingElements',

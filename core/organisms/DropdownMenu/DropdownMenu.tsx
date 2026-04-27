@@ -29,7 +29,7 @@ interface DropdownMenuProps {
   primaryOverlayHover?: string;
 }
 
-const DropdownMenu: FC<DropdownMenuProps> = ({
+export const DropdownMenu: FC<DropdownMenuProps> = ({
   variant = 'default',
   label,
   icon,
@@ -172,4 +172,3 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
   );
 };
 
-export default DropdownMenu;

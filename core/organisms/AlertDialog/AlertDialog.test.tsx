@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import AlertDialog from './AlertDialog';
+import { AlertDialog } from './AlertDialog';
 
 describe('AlertDialog', () => {
   it('isOpen=trueの場合、ダイアログが表示される', () => {

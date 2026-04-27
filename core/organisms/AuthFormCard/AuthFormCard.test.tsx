@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import AuthFormCard from './AuthFormCard';
+import { AuthFormCard } from './AuthFormCard';
 
 describe('AuthFormCard', () => {
   it('子要素が表示される', () => {

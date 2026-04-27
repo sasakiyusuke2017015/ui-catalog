@@ -1,1 +1,1 @@
-export { default as ToggleableSection } from './ToggleableSection'
+export { ToggleableSection } from './ToggleableSection'

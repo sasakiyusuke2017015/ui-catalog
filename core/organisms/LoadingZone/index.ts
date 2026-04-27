@@ -1,1 +1,1 @@
-export { default as LoadingZone } from './LoadingZone'
+export { LoadingZone } from './LoadingZone'

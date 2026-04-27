@@ -1,4 +1,4 @@
-import PieChart from './PieChart';
+import { PieChart } from './PieChart';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

@@ -78,7 +78,7 @@ const typeConfig = {
  * variant='alert': window.alertの代替（OKボタンのみ）
  * variant='confirm': window.confirmの代替（キャンセル+確定ボタン）
  */
-const Dialog: FC<DialogProps> = (props) => {
+export const Dialog: FC<DialogProps> = (props) => {
   const {
     isOpen,
     title,
@@ -205,5 +205,3 @@ const Dialog: FC<DialogProps> = (props) => {
     document.body
   );
 };
-
-export default Dialog;

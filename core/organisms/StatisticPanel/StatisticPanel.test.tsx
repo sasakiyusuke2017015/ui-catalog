@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import StatisticPanel from './StatisticPanel';
+import { StatisticPanel } from './StatisticPanel';
 
 describe('StatisticPanel', () => {
   it('データがない場合、emptyMessageが表示される', () => {

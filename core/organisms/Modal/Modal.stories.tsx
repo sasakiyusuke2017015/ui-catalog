@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Modal from './Modal';
+import { Modal } from './Modal';
 
 /**
  * Modal コンポーネントの Storybook 設定

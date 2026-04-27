@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import ToggleableSection from './ToggleableSection';
+import { ToggleableSection } from './ToggleableSection';
 
 const meta: Meta<typeof ToggleableSection> = {
   title: 'レイアウト/ToggleableSection',

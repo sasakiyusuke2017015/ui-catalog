@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
-import ModalCheckboxList from './ModalCheckboxList'
+import { ModalCheckboxList } from './ModalCheckboxList'
 
 const items = [
   { id: '1', label: '田中 太郎', description: 'エンジニア' },

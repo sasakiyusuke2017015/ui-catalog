@@ -1,6 +1,6 @@
 import { LOADING_ICON_TYPES } from '../../constants/icons';
 
-import LoadingZone from './LoadingZone';
+import { LoadingZone } from './LoadingZone';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

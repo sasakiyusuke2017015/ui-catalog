@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ContentBlock from './ContentBlock';
+import { ContentBlock } from './ContentBlock';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

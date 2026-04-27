@@ -1,1 +1,1 @@
-export { default as ContentBlock } from './ContentBlock'
+export { ContentBlock } from './ContentBlock'

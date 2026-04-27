@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import GradientOverlay from './GradientOverlay'
+import { GradientOverlay } from './GradientOverlay'
 
 const meta: Meta<typeof GradientOverlay> = {
   title: '背景効果/GradientOverlay',

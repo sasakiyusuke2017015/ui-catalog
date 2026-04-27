@@ -30,7 +30,7 @@ const CONFIRM_RULE: ValidationRule = {
  * パスワードバリデーション表示コンポーネント
  * リアルタイムで条件の達成状況を表示
  */
-const PasswordValidation: FC<PasswordValidationProps> = ({
+export const PasswordValidation: FC<PasswordValidationProps> = ({
   password,
   confirmPassword,
   showValidation = false,
@@ -64,4 +64,3 @@ const PasswordValidation: FC<PasswordValidationProps> = ({
   );
 };
 
-export default PasswordValidation;

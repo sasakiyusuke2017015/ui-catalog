@@ -1,1 +1,1 @@
-export { default as RefreshButton } from './RefreshButton'
+export { RefreshButton } from './RefreshButton'

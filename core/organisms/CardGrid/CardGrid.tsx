@@ -3,7 +3,7 @@ import { FC, ReactNode, Children, cloneElement, isValidElement, ReactElement } f
 import { Animated } from '../../atoms/Animated';
 import type { CardAnimationVariant } from '../../constants';
 
-interface CardGridProps {
+export interface CardGridProps {
   children: ReactNode;
   animated?: boolean;
   cols?: 1 | 2 | 3 | 4 | 5 | 6;
@@ -50,7 +50,7 @@ interface CardGridComponent extends FC<CardGridProps> {
   Item: typeof CardGridItem;
 }
 
-const CardGrid: FC<CardGridProps> = ({
+const CardGridBase: FC<CardGridProps> = ({
   children,
   animated = false,
   cols = 4,
@@ -92,7 +92,5 @@ const CardGrid: FC<CardGridProps> = ({
 };
 
 // Compound Component パターン
-const CardGridWithItem = CardGrid as CardGridComponent;
-CardGridWithItem.Item = CardGridItem;
-
-export default CardGridWithItem;
+export const CardGrid = CardGridBase as CardGridComponent;
+CardGrid.Item = CardGridItem;

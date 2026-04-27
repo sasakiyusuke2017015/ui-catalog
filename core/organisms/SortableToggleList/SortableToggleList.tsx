@@ -148,7 +148,7 @@ const SortableToggleItem = ({ id, label, checked, disabled, onToggle, itemRadius
  * - framer-motionによるアニメーション（リセット時も含む）
  * - localStorageの制御は親側で行う（再利用性のため）
  */
-export default function SortableToggleList({
+export function SortableToggleList({
   items,
   order,
   onOrderChange,

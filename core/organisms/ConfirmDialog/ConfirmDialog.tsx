@@ -12,7 +12,7 @@
  */
 import { FC } from 'react';
 
-import Dialog, { DialogType } from '../Dialog/Dialog';
+import { Dialog, type DialogType } from '../Dialog/Dialog';
 
 export interface ConfirmDialogProps {
   isOpen: boolean;
@@ -25,8 +25,6 @@ export interface ConfirmDialogProps {
   type?: Exclude<DialogType, 'success'>; // confirmではsuccessは使用しない
 }
 
-const ConfirmDialog: FC<ConfirmDialogProps> = (props) => {
+export const ConfirmDialog: FC<ConfirmDialogProps> = (props) => {
   return <Dialog variant="confirm" data-component="confirm-dialog" {...props} />;
 };
-
-export default ConfirmDialog;

@@ -1,1 +1,1 @@
-export { default as RadarChart } from './RadarChart'
+export { RadarChart } from './RadarChart'

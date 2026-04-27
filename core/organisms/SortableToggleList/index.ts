@@ -1,1 +1,1 @@
-export { default as SortableToggleList } from './SortableToggleList'
+export { SortableToggleList } from './SortableToggleList'

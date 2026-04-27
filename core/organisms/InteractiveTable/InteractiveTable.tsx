@@ -17,7 +17,7 @@ import { useState, useRef, useCallback, useEffect, useMemo, type FC } from 'reac
 import { motion, LayoutGroup, AnimatePresence } from 'framer-motion';
 
 import { Checkbox } from '../../atoms/Checkbox';
-import LoadingZone from '../../organisms/LoadingZone/LoadingZone';
+import { LoadingZone } from '../../organisms/LoadingZone/LoadingZone';
 import { getConditionalAnimationStyle, ANIMATIONS } from '../../constants';
 
 import type {
@@ -34,7 +34,7 @@ import { useKeyboardNavigation } from './useKeyboardNavigation';
 import { createRenderCellContent } from './renderCellContent';
 import styles from './InteractiveTable.module.scss';
 
-const InteractiveTable: FC<InteractiveTableProps> = ({
+export const InteractiveTable: FC<InteractiveTableProps> = ({
   columns = [],
   data = [],
   onCellClick,
@@ -655,4 +655,3 @@ const InteractiveTable: FC<InteractiveTableProps> = ({
   );
 };
 
-export default InteractiveTable;

@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import type { Meta } from '@storybook/react';
 
-import TransferList from './TransferList';
+import { TransferList } from './TransferList';
 import type { TransferListItem } from './types';
 
 const meta: Meta<typeof TransferList> = {

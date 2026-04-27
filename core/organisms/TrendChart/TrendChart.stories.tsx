@@ -1,4 +1,4 @@
-import TrendChart from './TrendChart';
+import { TrendChart } from './TrendChart';
 
 /**
  * トレンドチャートコンポーネント

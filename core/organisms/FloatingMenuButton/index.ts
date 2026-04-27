@@ -1,1 +1,1 @@
-export { default as FloatingMenuButton } from './FloatingMenuButton'
+export { FloatingMenuButton } from './FloatingMenuButton'

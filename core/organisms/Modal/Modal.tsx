@@ -16,7 +16,7 @@ interface ModalProps {
   borderRadius?: string;
 }
 
-const Modal: FC<ModalProps> = ({
+export const Modal: FC<ModalProps> = ({
   isOpen,
   onClose,
   title,
@@ -81,4 +81,3 @@ const Modal: FC<ModalProps> = ({
   );
 };
 
-export default Modal;

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
-import CardGrid from './CardGrid';
+import { CardGrid } from './CardGrid';
 
 describe('CardGrid', () => {
   it('CardGridがレンダリングされる', () => {

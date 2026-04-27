@@ -56,4 +56,3 @@ export function SideNav({
   );
 }
 
-export default SideNav;

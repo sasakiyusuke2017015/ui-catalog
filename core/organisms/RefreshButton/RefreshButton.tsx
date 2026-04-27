@@ -25,7 +25,7 @@ interface RefreshButtonProps {
  * - refreshing中はアイコンが回転アニメーション
  * - dataUpdatedAt > 0 で時刻表示、0 or undefined は「...」表示
  */
-const RefreshButton: FC<RefreshButtonProps> = ({
+export const RefreshButton: FC<RefreshButtonProps> = ({
   onRefresh,
   dataUpdatedAt,
   loading = false,
@@ -65,4 +65,3 @@ const RefreshButton: FC<RefreshButtonProps> = ({
   );
 };
 
-export default RefreshButton;

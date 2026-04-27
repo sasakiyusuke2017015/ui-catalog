@@ -3,7 +3,7 @@ import React from 'react';
 import { Icon } from '../../atoms/Icon';
 import { Media } from '../../atoms/Media/Media';
 import { Text } from '../../atoms/Text';
-import LoadingZone from '../LoadingZone/LoadingZone';
+import { LoadingZone } from '../LoadingZone/LoadingZone';
 import { type IconName } from '../../constants';
 import type { LoadingPreset } from '../../atoms/Icon';
 
@@ -49,7 +49,7 @@ interface ContentBlockProps {
  * LoadingZone対応の再利用可能なコンテンツブロックコンポーネント
  * ホーム画面のカードと詳細ページのコンテンツブロックの両方で使用可能
  */
-const ContentBlock: React.FC<ContentBlockProps> = ({
+export const ContentBlock: React.FC<ContentBlockProps> = ({
   // タイトル関連
   title,
   titleColor = 'text-gray-800',
@@ -172,5 +172,3 @@ const ContentBlock: React.FC<ContentBlockProps> = ({
     </LoadingZone>
   );
 };
-
-export default ContentBlock;

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import LoginButton from './LoginButton';
+import { LoginButton } from './LoginButton';
 
 describe('LoginButton', () => {
   it('子要素が表示される', () => {

@@ -20,7 +20,7 @@ interface RadarChartProps {
   animated?: boolean;
 }
 
-const RadarChart: FC<RadarChartProps> = ({
+export const RadarChart: FC<RadarChartProps> = ({
   data,
   maxValue = 5,
   size = 250,
@@ -213,4 +213,3 @@ const RadarChart: FC<RadarChartProps> = ({
   );
 };
 
-export default RadarChart;

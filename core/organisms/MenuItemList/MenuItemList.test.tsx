@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 
 
 
-import MenuItemList from './MenuItemList';
+import { MenuItemList } from './MenuItemList';
 
 describe('MenuItemList', () => {
   it('基本的なレンダリングができる', () => {

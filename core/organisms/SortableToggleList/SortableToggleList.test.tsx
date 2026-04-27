@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import SortableToggleList, { type SortableItem } from './SortableToggleList';
+import { SortableToggleList, type SortableItem } from './SortableToggleList';
 
 describe('SortableToggleList', () => {
   const mockItems: SortableItem[] = [

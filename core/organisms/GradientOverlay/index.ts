@@ -1,1 +1,1 @@
-export { default as GradientOverlay } from './GradientOverlay'
+export { GradientOverlay } from './GradientOverlay'

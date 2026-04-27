@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ConfirmDialog from './ConfirmDialog';
+import { ConfirmDialog } from './ConfirmDialog';
 
 /**
  * ConfirmDialog コンポーネントの Storybook 設定

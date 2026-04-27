@@ -20,7 +20,7 @@ interface KeyButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonEleme
   disabled?: boolean;
 }
 
-export default function KeyButton({
+export function KeyButton({
   id,
   action,
   currentState,

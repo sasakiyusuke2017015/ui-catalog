@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import Dialog from '../Dialog/Dialog';
+import { Dialog } from '../Dialog/Dialog';
 
 /**
  * 汎用ダイアログコンポーネント

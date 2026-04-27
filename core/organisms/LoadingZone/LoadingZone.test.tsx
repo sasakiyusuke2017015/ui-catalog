@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import LoadingZone from './LoadingZone';
+import { LoadingZone } from './LoadingZone';
 
 describe('LoadingZone', () => {
   it('variant="table" でレンダリングされる', () => {

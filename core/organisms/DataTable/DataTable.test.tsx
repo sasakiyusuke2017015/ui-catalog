@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
-import DataTable from './DataTable'
+import { DataTable } from './DataTable'
 
 const headers = ['name', 'status', 'score']
 const rows = [

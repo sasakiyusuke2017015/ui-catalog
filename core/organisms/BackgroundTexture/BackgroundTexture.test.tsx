@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
-import BackgroundTexture from './BackgroundTexture';
+import { BackgroundTexture } from './BackgroundTexture';
 
 describe('BackgroundTexture', () => {
   it('data-component属性が設定される', () => {

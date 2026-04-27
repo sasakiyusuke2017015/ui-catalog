@@ -49,4 +49,3 @@ export function SubHeader({
   );
 }
 
-export default SubHeader;

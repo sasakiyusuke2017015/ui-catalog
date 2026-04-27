@@ -1,1 +1,1 @@
-export { default as LoginButton, type LoginButtonState, type LoginButtonStateConfig } from './LoginButton'
+export { LoginButton, type LoginButtonState, type LoginButtonStateConfig } from './LoginButton'

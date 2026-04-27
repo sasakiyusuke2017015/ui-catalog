@@ -67,7 +67,7 @@ interface LoginButtonProps {
   successState?: boolean;
 }
 
-const LoginButton = ({
+export const LoginButton = ({
   children,
   className = '',
   type = 'button',
@@ -339,4 +339,3 @@ const LoginButton = ({
   );
 };
 
-export default LoginButton;

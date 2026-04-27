@@ -26,7 +26,7 @@ export interface ToastProps {
  * オーバーレイなしで画面隅に表示される通知
  * 成功メッセージなど、ユーザー操作をブロックしない通知に使用
  */
-const Toast: FC<ToastProps> = ({
+export const Toast: FC<ToastProps> = ({
   isOpen,
   onClose,
   message,
@@ -150,4 +150,3 @@ const Toast: FC<ToastProps> = ({
   );
 };
 
-export default Toast;

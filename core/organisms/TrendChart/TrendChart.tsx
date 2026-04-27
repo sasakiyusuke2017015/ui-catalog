@@ -19,7 +19,7 @@ type ChartClickHandler = (data: { activeLabel?: string | number } | null) => voi
 import type { TrendChartProps, DatasetState, DataPointClickData } from './types';
 import styles from './TrendChart.module.scss';
 
-const TrendChart: FC<TrendChartProps> = ({
+const TrendChartInner: FC<TrendChartProps> = ({
   data,
   height = 250,
   className = '',
@@ -554,4 +554,4 @@ const TrendChart: FC<TrendChartProps> = ({
   );
 };
 
-export default memo(TrendChart);
+export const TrendChart = memo(TrendChartInner);

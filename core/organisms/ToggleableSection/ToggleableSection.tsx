@@ -33,7 +33,7 @@ interface ToggleableSectionProps {
   contentPaddingClassName?: string;
 }
 
-const ToggleableSection: React.FC<ToggleableSectionProps> = ({
+export const ToggleableSection: React.FC<ToggleableSectionProps> = ({
   title,
   borderColor,
   defaultOpen = true,
@@ -135,4 +135,3 @@ const ToggleableSection: React.FC<ToggleableSectionProps> = ({
   );
 };
 
-export default ToggleableSection;

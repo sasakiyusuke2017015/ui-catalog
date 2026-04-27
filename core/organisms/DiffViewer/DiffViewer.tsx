@@ -103,7 +103,7 @@ function DiffRow({ entry, leftLabel, rightLabel }: { entry: DiffEntry; leftLabel
   )
 }
 
-export default function DiffViewer({
+export function DiffViewer({
   isOpen,
   entries,
   summary,

@@ -28,7 +28,7 @@ interface LoadingOverlayProps {
   accentBgColor?: string;
 }
 
-export default function LoadingOverlay({
+export function LoadingOverlay({
   message = "データを読み込んでいます...",
   preset,
   iconSize = 64,

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import StatisticPanel from './StatisticPanel';
+import { StatisticPanel } from './StatisticPanel';
 import type { StatisticPanelItem, StatusDefinition } from './StatisticPanel';
 
 const meta: Meta<typeof StatisticPanel> = {

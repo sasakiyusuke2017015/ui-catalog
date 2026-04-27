@@ -23,7 +23,7 @@ interface FixedTabBarProps {
  * 固定位置タブバーコンポーネント
  * SubHeaderと同じ位置に固定表示
  */
-const FixedTabBar: FC<FixedTabBarProps> = ({
+export const FixedTabBar: FC<FixedTabBarProps> = ({
   children,
   isLeftPaneOpen,
   className = '',
@@ -69,4 +69,3 @@ const FixedTabBar: FC<FixedTabBarProps> = ({
   );
 };
 
-export default FixedTabBar;

@@ -1,4 +1,4 @@
-import CardGrid from './CardGrid';
+import { CardGrid } from './CardGrid';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

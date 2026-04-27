@@ -1,1 +1,1 @@
-export { default as PasswordValidation } from './PasswordValidation'
+export { PasswordValidation } from './PasswordValidation'

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import SortableToggleList, { SortableItem } from './SortableToggleList';
+import { SortableToggleList, SortableItem } from './SortableToggleList';
 
 /**
  * ドラッグ&ドロップで並び替え可能なトグルリスト

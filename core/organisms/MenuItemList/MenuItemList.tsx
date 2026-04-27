@@ -62,7 +62,7 @@ interface MenuItemListComponent extends FC<MenuItemListProps> {
  * メニューアイテムリストコンポーネント
  * DropdownMenu内で表示されるヘッダーとメニューアイテムのリストを管理
  */
-const MenuItemList: FC<MenuItemListProps> = ({
+const MenuItemListBase: FC<MenuItemListProps> = ({
   menuHeader,
   menuItems,
   children,
@@ -119,7 +119,7 @@ const MenuItemList: FC<MenuItemListProps> = ({
 };
 
 // Compound Component パターン
-const MenuItemListWithItem = MenuItemList as MenuItemListComponent;
+const MenuItemListWithItem = MenuItemListBase as MenuItemListComponent;
 MenuItemListWithItem.Item = MenuItemListItem;
 
-export default MenuItemListWithItem;
+export const MenuItemList = MenuItemListWithItem;

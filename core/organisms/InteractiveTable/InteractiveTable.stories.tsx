@@ -4,7 +4,7 @@ import type { StoryFn } from '@storybook/react';
 
 import { isNullish } from '../../utils/isNullish';
 
-import InteractiveTable from './InteractiveTable';
+import { InteractiveTable } from './InteractiveTable';
 import type { InteractiveTableProps, Column, TableRowData, LinkData, InternalLinkData } from './types';
 
 /**

@@ -1,1 +1,1 @@
-export { default as KeyButton } from './KeyButton'
+export { KeyButton } from './KeyButton'

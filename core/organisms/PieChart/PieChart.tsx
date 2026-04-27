@@ -30,7 +30,7 @@ interface PieChartProps {
   cardRadius?: string;
 }
 
-const PieChart: React.FC<PieChartProps> = ({
+const PieChartInner: React.FC<PieChartProps> = ({
   data,
   size = 60,
   innerRadius = 0,
@@ -188,4 +188,4 @@ const PieChart: React.FC<PieChartProps> = ({
   );
 };
 
-export default memo(PieChart);
+export const PieChart = memo(PieChartInner);

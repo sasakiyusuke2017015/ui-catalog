@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import AuthFormCard from './AuthFormCard';
+import { AuthFormCard } from './AuthFormCard';
 
 const meta: Meta<typeof AuthFormCard> = {
   title: 'レイアウト/AuthFormCard',

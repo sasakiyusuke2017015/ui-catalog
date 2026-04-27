@@ -1,1 +1,2 @@
-export { default as AuthFormCard } from './AuthFormCard'
+export { AuthFormCard } from './AuthFormCard'
+export type { AuthFormCardProps } from './AuthFormCard'

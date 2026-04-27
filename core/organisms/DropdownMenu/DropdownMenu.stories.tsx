@@ -1,7 +1,7 @@
-import MenuItemList from '../MenuItemList/MenuItemList';
+import { MenuItemList } from '../MenuItemList/MenuItemList';
 
 
-import DropdownMenu from './DropdownMenu';
+import { DropdownMenu } from './DropdownMenu';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

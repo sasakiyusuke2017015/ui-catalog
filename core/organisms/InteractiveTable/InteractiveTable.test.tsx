@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import InteractiveTable from './InteractiveTable';
+import { InteractiveTable } from './InteractiveTable';
 
 describe('InteractiveTable', () => {
   const mockColumns = [

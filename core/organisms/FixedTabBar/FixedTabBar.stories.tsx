@@ -1,6 +1,6 @@
 import { useState, type ComponentProps } from 'react';
 
-import FixedTabBar from './FixedTabBar';
+import { FixedTabBar } from './FixedTabBar';
 
 type FixedTabBarProps = ComponentProps<typeof FixedTabBar>;
 

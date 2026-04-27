@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 import styles from './AuthFormCard.module.scss';
 
-interface AuthFormCardProps {
+export interface AuthFormCardProps {
   children: ReactNode;
   /** コピーライトテキスト */
   copyrightText?: string;
@@ -18,7 +18,7 @@ interface AuthFormCardProps {
  * 認証ページ用フォームカード（モバイル版）
  * ログイン・パスワード変更などで使用
  */
-const AuthFormCard: React.FC<AuthFormCardProps> = ({
+export const AuthFormCard: React.FC<AuthFormCardProps> = ({
   children,
   copyrightText = '© 2026 SMS DataTech',
   marginClassName,
@@ -45,5 +45,3 @@ const AuthFormCard: React.FC<AuthFormCardProps> = ({
     </div>
   );
 };
-
-export default AuthFormCard;

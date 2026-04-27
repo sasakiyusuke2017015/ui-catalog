@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { cn } from '../../utils/cn'
-import Modal from '../Modal/Modal'
+import { Modal } from '../Modal/Modal'
 import { Button } from '../../molecules/Button'
 import { Checkbox } from '../../atoms/Checkbox'
 import { Text } from '../../atoms/Text'
@@ -26,7 +26,7 @@ export interface ModalCheckboxListProps {
   className?: string
 }
 
-export default function ModalCheckboxList({
+export function ModalCheckboxList({
   isOpen,
   title,
   description,

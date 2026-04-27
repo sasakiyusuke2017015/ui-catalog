@@ -4,7 +4,7 @@
  */
 import { type BackgroundTheme, getBackgroundStyle } from '../../constants/design'
 
-interface BackgroundTextureProps {
+export interface BackgroundTextureProps {
   /** 背景テーマ */
   theme: BackgroundTheme;
   /** 追加のクラス名 */
@@ -20,7 +20,7 @@ interface BackgroundTextureProps {
  * <BackgroundTexture theme="fabric" />
  * ```
  */
-const BackgroundTexture = ({ theme, className = '' }: BackgroundTextureProps) => {
+export const BackgroundTexture = ({ theme, className = '' }: BackgroundTextureProps) => {
   return (
     <div
       className={`absolute inset-0 pointer-events-none ${className}`}
@@ -35,4 +35,3 @@ const BackgroundTexture = ({ theme, className = '' }: BackgroundTextureProps) =>
 };
 
 export { getBackgroundStyle };
-export default BackgroundTexture;

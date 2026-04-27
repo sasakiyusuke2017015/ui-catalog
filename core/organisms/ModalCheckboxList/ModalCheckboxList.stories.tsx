@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import ModalCheckboxList from './ModalCheckboxList'
+import { ModalCheckboxList } from './ModalCheckboxList'
 
 const meta: Meta<typeof ModalCheckboxList> = {
   title: 'フォーム/フィールド/ModalCheckboxList',

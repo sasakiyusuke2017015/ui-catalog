@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
-import GradientOverlay from './GradientOverlay';
+import { GradientOverlay } from './GradientOverlay';
 
 describe('GradientOverlay', () => {
   it('data-component属性が設定される', () => {

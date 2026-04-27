@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import RefreshButton from './RefreshButton';
+import { RefreshButton } from './RefreshButton';
 
 describe('RefreshButton', () => {
   it('data-component属性が設定される', () => {

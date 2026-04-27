@@ -218,7 +218,7 @@ function MinimalLayout({ icon, title, badge, fields, actions }: DetailHeaderProp
   );
 }
 
-export default function DetailHeader(props: DetailHeaderProps) {
+export function DetailHeader(props: DetailHeaderProps) {
   const { variant = "compact" } = props;
   switch (variant) {
     case "split":

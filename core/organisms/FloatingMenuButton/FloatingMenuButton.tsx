@@ -56,7 +56,7 @@ interface FloatingMenuButtonProps {
  * />
  * ```
  */
-const FloatingMenuButton: React.FC<FloatingMenuButtonProps> = ({
+export const FloatingMenuButton: React.FC<FloatingMenuButtonProps> = ({
   isOpen,
   onToggle,
   position = 'bottom-left',
@@ -144,4 +144,3 @@ const FloatingMenuButton: React.FC<FloatingMenuButtonProps> = ({
   );
 };
 
-export default FloatingMenuButton;

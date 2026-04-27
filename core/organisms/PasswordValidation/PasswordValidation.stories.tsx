@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import type { Meta } from '@storybook/react';
 
-import PasswordValidation from './PasswordValidation';
+import { PasswordValidation } from './PasswordValidation';
 
 const meta: Meta<typeof PasswordValidation> = {
   title: 'フォーム/フィールド/PasswordValidation',

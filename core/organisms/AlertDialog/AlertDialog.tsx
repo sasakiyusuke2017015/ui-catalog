@@ -12,7 +12,7 @@
  */
 import { FC } from 'react';
 
-import Dialog, { DialogType } from '../Dialog/Dialog';
+import { Dialog, type DialogType } from '../Dialog/Dialog';
 
 export interface AlertDialogProps {
   isOpen: boolean;
@@ -23,8 +23,6 @@ export interface AlertDialogProps {
   confirmText?: string;
 }
 
-const AlertDialog: FC<AlertDialogProps> = (props) => {
+export const AlertDialog: FC<AlertDialogProps> = (props) => {
   return <Dialog variant="alert" data-component="alert-dialog" {...props} />;
 };
-
-export default AlertDialog;

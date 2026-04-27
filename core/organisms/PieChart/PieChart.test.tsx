@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
 
-import PieChart from './PieChart';
+import { PieChart } from './PieChart';
 
 const mockData = [
   { name: 'カテゴリA', value: 30, color: '#8884d8' },

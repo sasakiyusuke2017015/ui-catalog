@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import FloatingMenuButton from './FloatingMenuButton';
+import { FloatingMenuButton } from './FloatingMenuButton';
 
 describe('FloatingMenuButton', () => {
   it('閉じた状態でaria-labelが「メニューを開く」になる', () => {

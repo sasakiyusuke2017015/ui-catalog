@@ -1,1 +1,2 @@
-export { default as AlertDialog } from './AlertDialog'
+export { AlertDialog } from './AlertDialog'
+export type { AlertDialogProps } from './AlertDialog'

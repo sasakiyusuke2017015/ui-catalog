@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render } from '@testing-library/react';
 
-import TrendChart from './TrendChart';
+import { TrendChart } from './TrendChart';
 
 // ResizeObserverはsetup.tsでグローバルにモックされている
 

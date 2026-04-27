@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
-import DetailHeader from './DetailHeader'
+import { DetailHeader } from './DetailHeader'
 
 const defaultProps = {
   title: 'テスト詳細',

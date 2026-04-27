@@ -53,7 +53,7 @@ const defaultElements: FloatingElement[] = [
   },
 ];
 
-const FloatingElements = ({
+export const FloatingElements = ({
   elements = defaultElements,
 }: FloatingElementsProps) => {
   return (
@@ -73,4 +73,3 @@ const FloatingElements = ({
   );
 };
 
-export default FloatingElements;

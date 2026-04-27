@@ -1,1 +1,1 @@
-export { default as FixedTabBar } from './FixedTabBar'
+export { FixedTabBar } from './FixedTabBar'

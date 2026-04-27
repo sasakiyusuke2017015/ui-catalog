@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import Toast from './Toast';
+import { Toast } from './Toast';
 
 /**
  * Toastコンポーネント

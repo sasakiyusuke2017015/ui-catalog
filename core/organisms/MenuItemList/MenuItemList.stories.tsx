@@ -1,4 +1,4 @@
-import MenuItemList from './MenuItemList';
+import { MenuItemList } from './MenuItemList';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

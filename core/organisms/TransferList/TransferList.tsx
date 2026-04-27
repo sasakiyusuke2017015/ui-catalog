@@ -17,7 +17,7 @@ import styles from './TransferList.module.scss';
 /**
  * TransferList コンポーネント
  */
-function TransferList<T extends TransferListItem = TransferListItem>({
+export function TransferList<T extends TransferListItem = TransferListItem>({
   leftItems,
   rightItems,
   leftLabel,
@@ -286,5 +286,4 @@ function TransferList<T extends TransferListItem = TransferListItem>({
   );
 }
 
-export default TransferList;
 export type { TransferListProps, TransferListItem } from './types';

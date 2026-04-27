@@ -3,7 +3,7 @@
 import React, { useMemo } from 'react';
 
 import { LoadingZone, PieChart } from '../../organisms';
-import StatisticList from '../../molecules/StatisticList/StatisticList';
+import { StatisticList } from '../../molecules/StatisticList/StatisticList';
 import type { StatisticListProps } from '../../molecules/StatisticList/StatisticList';
 import type { LoadingPreset } from '../../atoms/Icon';
 import styles from './StatisticPanel.module.scss';
@@ -88,7 +88,7 @@ export interface StatisticPanelProps {
  * 統計情報パネルコンポーネント
  * PieChart（オプション）+ StatisticList を表示し、ローディング状態も管理
  */
-const StatisticPanel: React.FC<StatisticPanelProps> = ({
+export const StatisticPanel: React.FC<StatisticPanelProps> = ({
   items,
   pieChartData: pieChartDataProp,
   statisticsItems: statisticsItemsProp,
@@ -165,4 +165,3 @@ const StatisticPanel: React.FC<StatisticPanelProps> = ({
   );
 };
 
-export default StatisticPanel;

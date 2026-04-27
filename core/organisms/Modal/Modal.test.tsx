@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import Modal from './Modal';
+import { Modal } from './Modal';
 
 describe('Modal', () => {
   it('isOpen=false の場合、モーダルが表示されない', () => {

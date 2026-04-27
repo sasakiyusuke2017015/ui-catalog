@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 
 
 
-import LoadingOverlay from './LoadingOverlay';
+import { LoadingOverlay } from './LoadingOverlay';
 
 describe('LoadingOverlay', () => {
   it('基本的なレンダリングができる', () => {

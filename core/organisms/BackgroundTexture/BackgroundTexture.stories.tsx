@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import BackgroundTexture from './BackgroundTexture'
+import { BackgroundTexture } from './BackgroundTexture'
 import type { BackgroundTheme } from '../../constants/design'
 
 const meta: Meta<typeof BackgroundTexture> = {

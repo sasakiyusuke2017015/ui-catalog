@@ -1,6 +1,6 @@
 import React from 'react';
 
-import AlertDialog from './AlertDialog';
+import { AlertDialog } from './AlertDialog';
 
 /**
  * AlertDialog コンポーネントの Storybook 設定

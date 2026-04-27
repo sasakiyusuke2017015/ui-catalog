@@ -1,4 +1,4 @@
-import LoadingOverlay from './LoadingOverlay';
+import { LoadingOverlay } from './LoadingOverlay';
 
 import type { Meta, StoryObj } from '@storybook/react';
 

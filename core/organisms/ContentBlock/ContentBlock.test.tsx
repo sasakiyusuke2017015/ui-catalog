@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 
 
 
-import ContentBlock from './ContentBlock';
+import { ContentBlock } from './ContentBlock';
 
 describe('ContentBlock', () => {
   it('基本的なレンダリングができる', () => {

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import PasswordValidation from './PasswordValidation';
+import { PasswordValidation } from './PasswordValidation';
 
 describe('PasswordValidation', () => {
   it('showValidation=falseの場合、何も表示されない', () => {

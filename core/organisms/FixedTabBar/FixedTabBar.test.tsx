@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 
-import FixedTabBar from './FixedTabBar';
+import { FixedTabBar } from './FixedTabBar';
 
 describe('FixedTabBar', () => {
   it('基本的なレンダリングができる', () => {

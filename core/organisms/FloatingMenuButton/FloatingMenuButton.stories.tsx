@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import type { Meta } from '@storybook/react';
 
-import FloatingMenuButton from './FloatingMenuButton';
+import { FloatingMenuButton } from './FloatingMenuButton';
 
 const meta: Meta<typeof FloatingMenuButton> = {
   title: 'ナビゲーション/メニュー/FloatingMenuButton',

@@ -39,7 +39,7 @@ interface LoadingZoneProps {
   primaryBgColor?: string;
 }
 
-const LoadingZone: FC<LoadingZoneProps> = ({
+export const LoadingZone: FC<LoadingZoneProps> = ({
   variant,
   loading,
   children,
@@ -347,4 +347,3 @@ const LoadingZone: FC<LoadingZoneProps> = ({
   }
 };
 
-export default LoadingZone;

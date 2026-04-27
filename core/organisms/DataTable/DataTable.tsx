@@ -36,7 +36,7 @@ type SortOrder = 'asc' | 'desc' | null
 
 const PAGE_SIZE_OPTIONS = [25, 50, 100]
 
-const DataTable: FC<DataTableProps> = ({
+export const DataTable: FC<DataTableProps> = ({
   headers,
   rows,
   visibleColumns,
@@ -317,4 +317,3 @@ const DataTable: FC<DataTableProps> = ({
   )
 }
 
-export default DataTable

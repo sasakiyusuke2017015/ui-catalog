@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 
 
 
-import DropdownMenu from './DropdownMenu';
+import { DropdownMenu } from './DropdownMenu';
 
 describe('DropdownMenu', () => {
   it('基本的なレンダリングができる', () => {

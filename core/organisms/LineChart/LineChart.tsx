@@ -22,7 +22,7 @@ interface LineChartProps {
   className?: string;
 }
 
-const LineChart: FC<LineChartProps> = ({
+export const LineChart: FC<LineChartProps> = ({
   data,
   width = '100%',
   height = 300,
@@ -223,4 +223,3 @@ const LineChart: FC<LineChartProps> = ({
   );
 };
 
-export default LineChart;

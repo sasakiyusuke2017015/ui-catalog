@@ -1,1 +1,1 @@
-export { default as FloatingElements } from './FloatingElements'
+export { FloatingElements } from './FloatingElements'

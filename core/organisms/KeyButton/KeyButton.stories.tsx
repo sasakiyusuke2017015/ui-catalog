@@ -1,4 +1,4 @@
-import KeyButton from './KeyButton';
+import { KeyButton } from './KeyButton';
 
 /**
  * キーボタンコンポーネント

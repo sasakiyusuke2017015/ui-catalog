@@ -29,7 +29,7 @@ interface GradientOverlayProps {
   colorRanges?: ColorRange;
 }
 
-const GradientOverlay = ({
+export const GradientOverlay = ({
   background = 'linear-gradient(135deg, rgba(255,154,158,0.4), rgba(250,208,196,0.3), rgba(255,206,84,0.2))',
   maxOpacity = 1,
   delay = 0,
@@ -187,4 +187,3 @@ const GradientOverlay = ({
   );
 };
 
-export default GradientOverlay;
