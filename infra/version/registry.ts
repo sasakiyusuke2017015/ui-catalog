@@ -100,7 +100,7 @@ export const VERSION_REGISTRY = {
   LoadingZone: '1.0.0',
   RefreshButton: '1.0.0',
 
-  // --- extensions/1on1 ---
+  // 1on1 系
   AdjustmentBanner: '1.0.0',
   ChatFab: '1.0.0',
   DataCountDisplay: '1.0.0',
@@ -164,9 +164,6 @@ export const VERSION_REGISTRY = {
   // atoms (visualization)
   CountdownRing: '1.0.0',
   MathView: '1.0.0',
-
-  // --- extensions/ticker ---
-  VideoThumb: '1.0.0',
 } as const
 
 export type ComponentName = keyof typeof VERSION_REGISTRY
