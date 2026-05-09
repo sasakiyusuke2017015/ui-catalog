@@ -82,11 +82,15 @@ atoms ← molecules ← organisms ← templates
 | 方式 | 使用場所 | 理由 |
 |------|---------|------|
 | **SCSS Module** | core/ | 汎用性、他プロジェクトへの移植性、Tailwind 非依存 |
-| Tailwind/CSS-in-JS | extensions/ | プロジェクト固有、速度優先（OK） |
+| Tailwind/CSS-in-JS | core/ では禁止、親アプリの業務ゾーンでは自由 | core/ は移植性を保つため |
 
 ### absorb 時のルール
 
-外部アプリから core/ に取り込む際、**Tailwind → SCSS への変換が必須**。
+`/ui-catalog absorb` は、**親アプリの規約ゾーン（`apps/<app>/src/ui/`）からコピーで取り込む**ことを前提とする。規約ゾーンは ui-catalog 互換で書かれている前提なので、原則として変換不要。
+
+規約違反（Tailwind 直書き、ビジネスロジック混入等）が見つかった場合は、警告を出して対処を確認する（規約に合わせて修正してから取り込む / そのまま取り込んで後で develop で直す / キャンセル）。
+
+参考までに、SCSS Module の実装例：
 
 ```scss
 // core/atoms/Button/Button.module.scss
@@ -188,34 +192,43 @@ ui-catalog:animationSpeed
 
 ## 開発ワークフロー
 
-### 1. 吸収（Absorb）
+### 1. 発展（Develop）
 
-外部からコンポーネントを取り込む。
-
-```
-「apps/web の UserCard を ui-catalog に昇格して」
-「shadcn/ui の Drawer を取り込みたい」
-```
-
-**重要**: 直接 core/ の適切な層に配置。SCSS Module で実装。
-
-### 2. 発展（Develop）
-
-コンポーネントの作成・拡張・修正を行う。
+新規コンポーネントの作成、または既存の拡張・修正。`/ui-catalog develop` で実行。
 
 ```
 「ユーザー一覧を表示する UserListTable を作って」
 「DatePicker に時間選択を追加して」
 ```
 
+### 2. 吸収（Absorb）
+
+別途参照可能な親アプリの規約ゾーン（`src/ui/`）から ui-catalog に取り込む。`/ui-catalog absorb <path>` で実行。
+
+```
+/ui-catalog absorb ~/work/parent-app/apps/web/src/ui/organisms/ProfileCard
+```
+
+規約ゾーンは ui-catalog 互換で書かれている前提なので、原則として変換不要。
+
 ### 3. 洗練（Clean）
 
-コードベースをクリーンアップし、品質を上げる。
+整合性チェックと未使用コード削除。`/ui-catalog clean` で実行。
 
 ```
 「コードベースをクリーンアップして」
 「ScoreBadge の Props を汎用化して」
 ```
+
+---
+
+## 親アプリ側のガイダンス
+
+親アプリで新しい UI コンポーネントを作るときは、`apps/<app>/src/ui/` に **ui-catalog 互換の規約ゾーン**を作って書く。詳細は [README.md](../README.md#親アプリでの規約ゾーンsrcui) を参照。
+
+**汎用化価値があると判断したら**、ui-catalog 作業者へ要望を出す（GitHub Issue / Slack 等）。要望を受けた ui-catalog 作業者が `/ui-catalog absorb` または `/ui-catalog develop` で取り込む。
+
+> 親アプリ側に absorb / apply のコマンドは置かない。submodule は同期しないため、親 → ui-catalog の自動経路は提供しない方針。
 
 ---
 
@@ -316,10 +329,11 @@ const MyComponent: FC<Props> = ({ label, onAction }) => {
 - [ ] data-component 属性を追加したか
 - [ ] 操作ログ（useOperationLog）を追加したか
 
-### absorb 時（外部アプリ → core/）
+### absorb 時（親アプリの src/ui/ → core/）
 
-- [ ] **SCSS Module で実装したか**（Tailwind → SCSS 変換）
-- [ ] ビジネスロジックを完全に除去したか
+- [ ] 参照元が ui-catalog 規約に従っているか確認したか（SCSS Module、依存方向、ビジネスロジック禁止）
+- [ ] 規約違反があれば対処方針を決めたか（修正してから取り込む / そのまま取り込む / キャンセル）
+- [ ] ビジネスロジックの混入が無いか
 - [ ] Props を汎用的にしたか
 - [ ] テスト・ストーリーを追加したか
 - [ ] VERSION_REGISTRY に登録したか

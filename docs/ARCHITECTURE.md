@@ -216,6 +216,22 @@ git add packages/ui-catalog
 git commit -m "chore: bump ui-catalog"
 ```
 
+### 3. 親アプリ側で新規 UI を作る場合
+
+親アプリで新しい UI コンポーネントを作るときは、`apps/<app>/src/ui/` を **ui-catalog 互換の規約ゾーン**として運用する。詳細は [README.md](../README.md#親アプリでの規約ゾーンsrcui) を参照。
+
+**規約ゾーンの位置づけ:**
+- ディレクトリ構造は ui-catalog の `core/` と同じ（atoms / molecules / organisms / templates）
+- スタイルは SCSS Module 必須（Tailwind 禁止）
+- ビジネスロジック禁止
+- 依存方向: atoms ← molecules ← organisms ← templates
+- ESLint 縛りは `infra/eslint/parent-strict.cjs` を親側で extends
+
+**ui-catalog への昇格:**
+- 親アプリ側に absorb / apply のコマンドは置かない（submodule は同期しないため、自動経路は提供しない）
+- 汎用化価値があると判断したら、ui-catalog 作業者へ要望を出す
+- 要望を受けた ui-catalog 作業者が `/ui-catalog absorb` または `/ui-catalog develop` で取り込む
+
 **ドメイン固有の支援ファイル（hooks/types/utils）の配置:**
 
 カレンダーのように複数コンポーネントが型・hooks・utils を共有する場合:

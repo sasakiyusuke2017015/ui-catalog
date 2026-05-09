@@ -20,7 +20,7 @@ ui-catalog は **submodule 専用**。`npm publish` はしない。
 | 配布形態 | **Git Submodule + ソース直 export**（ビルド済み `dist` なし） |
 | 依存解決 | **親アプリの `node_modules` 経由**（peerDependencies で宣言） |
 | 親側の install | **submodule ディレクトリ内では走らせない**（ui-catalog の devDependencies は親に持ち込まない） |
-| ui-catalog 側での編集 | OK。**親 → ui-catalog 方向の同期はサポートしない**。ui-catalog 側で直接コミット |
+| ui-catalog 側での編集 | OK。**親 → ui-catalog の自動同期は提供しない**。ui-catalog 側で直接コミット |
 | ブランチ運用 | **`main` 一本**。プロジェクト別ブランチは持たない |
 
 > 親アプリで Storybook は不要。Storybook を立てたいときだけ ui-catalog 単独 repo として clone し、そこで `pnpm install` する。
@@ -45,6 +45,7 @@ ui-catalog/
 │   ├── version/             #   VERSION_REGISTRY
 │   ├── theme/               #   テーマ
 │   ├── storybook/           #   Storybook 設定
+│   ├── eslint/              #   親アプリ向け ESLint 設定（src/ui/ 規約ゾーン用）
 │
 └── docs/                    # 詳細ドキュメント
 ```
@@ -128,6 +129,57 @@ import { cn } from '@ui-catalog/core/utils'
 
 ---
 
+## 親アプリでの「規約ゾーン」（src/ui/）
+
+親アプリで新しい UI コンポーネントを作るときは、**`apps/<app>/src/ui/` を ui-catalog 互換の規約ゾーン**として運用することを推奨する。
+
+```
+親アプリ/
+└── apps/
+    └── web/
+        └── src/
+            ├── ui/              ← 規約ゾーン（ui-catalog 互換）
+            │   ├── atoms/
+            │   ├── molecules/
+            │   ├── organisms/
+            │   └── templates/
+            ├── features/        ← 業務ゾーン（自由）
+            └── pages/           ← 業務ゾーン（自由）
+```
+
+**規約ゾーンの縛り:**
+
+- ディレクトリ構造は ui-catalog の `core/` と同じ（atoms / molecules / organisms / templates）
+- スタイルは **SCSS Module** 必須（Tailwind / CSS-in-JS 禁止）
+- ビジネスロジック禁止（API 呼び出し、認証チェック等は props で受け取る）
+- 依存方向: atoms ← molecules ← organisms ← templates、逆方向禁止
+- import は `@ui-catalog/core/*` の公開 entry、同階層、下位階層のみ
+- 親アプリ固有モジュール（`@/*` 等）の import 禁止
+
+**ESLint で縛る:**
+
+ui-catalog が `infra/eslint/parent-strict.cjs` を提供している。親側 `.eslintrc.cjs` に override で extends する:
+
+```javascript
+// 親アプリの .eslintrc.cjs
+module.exports = {
+  overrides: [
+    {
+      files: ['apps/*/src/ui/**/*.{ts,tsx}'],
+      extends: ['./packages/ui-catalog/infra/eslint/parent-strict.cjs'],
+    },
+  ],
+}
+```
+
+**汎用化したくなったら:**
+
+`src/ui/` で書いたコンポーネントが汎用化価値ありそうだと判断したら、**ui-catalog 作業者へ要望を出す**（GitHub Issue / Slack / 合意した経路で）。要望を受けた ui-catalog 作業者が ui-catalog repo 側で取り込む（`/ui-catalog absorb` または `/ui-catalog develop`）。
+
+> 親アプリ側に absorb / apply のコマンドは置かない。submodule は同期しないため、親 → ui-catalog の自動経路は提供しない方針。
+
+---
+
 ## ui-catalog 側での開発
 
 ui-catalog 単独で clone して作業する：
@@ -144,28 +196,14 @@ pnpm storybook:localhost   # http://localhost:6006
 
 ### Claude Code コマンド
 
-| コマンド | 場所 | やること |
-|---------|------|---------|
-| `/ui-catalog` | ui-catalog | 状態診断 |
-| `/ui-catalog clean` | ui-catalog | 整合性チェック・修正 |
-| `/ui-catalog optimize` | ui-catalog | プリミティブ HTML → atoms 置換、variant 統合 |
-| `/ui-catalog absorb [path]` | **親アプリ** | 親アプリ → ui-catalog 取り込み |
-| `/ui-catalog apply [path]` | **親アプリ** | ui-catalog → 親アプリ 置換 |
+| コマンド | やること |
+|---------|---------|
+| `/ui-catalog` | 状態診断 |
+| `/ui-catalog develop` | 新規コンポーネント作成・既存改修 |
+| `/ui-catalog absorb <path>` | 別途参照可能な親アプリの src/ui/ から取り込む |
+| `/ui-catalog clean` | 整合性チェック・修正・未使用コード削除 |
 
-ui-catalog 側のコマンドは [.claude/commands/ui-catalog.md](./.claude/commands/ui-catalog.md) に同梱されている（submodule で取り込んだ親では参照されない点に注意）。
-
-**親アプリで absorb / apply を使うには：**
-
-```bash
-mkdir -p .claude/commands
-cp packages/ui-catalog/infra/commands/parent/ui-catalog.md .claude/commands/ui-catalog.md
-```
-
-> `pnpm ui:update` で submodule を更新したら、親側にコピーした定義も陳腐化する可能性がある。気になったら再 cp する。
-
-absorb / apply の詳細は [infra/commands/parent/ui-catalog.md](./infra/commands/parent/ui-catalog.md) を参照。
-
-> **安全ルール**：absorb は ui-catalog 側のファイル書き換えのみ、apply は親アプリ側のファイル書き換えのみ。**自動 commit / push はしない**。
+詳細は [.claude/commands/ui-catalog.md](./.claude/commands/ui-catalog.md) を参照。
 
 ---
 
