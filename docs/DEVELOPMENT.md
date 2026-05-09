@@ -247,8 +247,8 @@ atoms → molecules      ❌ 禁止（逆方向）
 - jotai（テーマ機能用）
 - framer-motion
 
-**注意**: Tailwind は extensions/ やアプリ側での使用を想定。
-core/ は SCSS Module で実装する。
+**注意**: Tailwind は親アプリの業務ゾーン（features / pages 等）での使用を想定。
+core/ および親アプリの規約ゾーン（src/ui/）は SCSS Module で実装する。
 
 ---
 

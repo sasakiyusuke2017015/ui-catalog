@@ -49,5 +49,5 @@ Thumbs.db
 *.wav
 *.pdf
 
-# Claude Code
-.claude/
+# Claude Code（個人設定のみ ignore、共有設定は git 管理）
+.claude/settings.local.json
