@@ -1,70 +1,22 @@
 #!/usr/bin/env node
 
 /**
- * pnpm install の postinstall で自動実行される ui-catalog セットアップスクリプト。
+ * 廃止予定スクリプト（no-op）。
  *
- * package.json の "ui-catalog" フィールドを読み、
- * 指定されたブランチ・コミットに checkout する。
- * clone は pnpm install の前に手動で行う必要がある
- * （pnpm はスクリプト実行前にワークスペース解析を行うため）。
- * このスクリプトは branch + commit の固定のみを担当する。
+ * 過去は package.json の "ui-catalog": { branch, commit } を読んで
+ * project/<name> ブランチに reset --hard していたが、
+ * project/* ブランチは廃止し main 一本に統一済み。
+ * ui-catalog の取り込みは git submodule の標準フロー
+ * （`git submodule update --remote` = `pnpm ui:update`）に統一。
  *
- * {
- *   "ui-catalog": {
- *     "branch": "project/myapp",
- *     "commit": "44a792d"
- *   }
- * }
+ * 親アプリ側で以下を削除してください:
+ *   - package.json の "ui-catalog": { ... } フィールド
+ *   - package.json の postinstall から本スクリプトの呼び出し
+ *
+ * 親アプリでの利用が無くなり次第、本ファイルは削除予定。
  */
 
-const { execSync } = require('child_process')
-const fs = require('fs')
-const path = require('path')
-
-const ROOT = process.cwd()
-const PKG_PATH = path.join(ROOT, 'package.json')
-const TARGET = path.join(ROOT, 'packages', 'ui-catalog')
-
-function run(cmd, opts = {}) {
-  console.log(`  $ ${cmd}`)
-  execSync(cmd, { stdio: 'inherit', ...opts })
-}
-
-function main() {
-  if (!fs.existsSync(PKG_PATH)) {
-    return
-  }
-
-  const pkg = JSON.parse(fs.readFileSync(PKG_PATH, 'utf-8'))
-  const config = pkg['ui-catalog']
-
-  if (!config) {
-    return
-  }
-
-  const { branch, commit } = config
-
-  if (!branch || !commit) {
-    console.error('[ui-catalog] branch, commit は必須です。')
-    process.exit(1)
-  }
-
-  console.log(`[ui-catalog] セットアップ: ${branch} @ ${commit}`)
-
-  run('git fetch origin', { cwd: TARGET })
-
-  const currentCommit = execSync('git rev-parse HEAD', { cwd: TARGET })
-    .toString()
-    .trim()
-
-  if (currentCommit.startsWith(commit)) {
-    console.log(`[ui-catalog] 既に ${commit} です。`)
-  } else {
-    run(`git checkout ${branch}`, { cwd: TARGET })
-    run(`git reset --hard ${commit}`, { cwd: TARGET })
-  }
-
-  console.log('[ui-catalog] 完了')
-}
-
-main()
+console.warn('[ui-catalog] setup-ui-catalog.cjs は廃止されました（no-op）。')
+console.warn('[ui-catalog] 親アプリの package.json から "ui-catalog" フィールドと postinstall 呼び出しを削除してください。')
+console.warn('[ui-catalog] ui-catalog の取り込みは `git submodule update --remote` または `pnpm ui:update` を使ってください。')
+process.exit(0)
