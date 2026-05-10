@@ -1,29 +1,29 @@
 # @ui-catalog/core
 
-Atomic Design ベースの汎用 UI コンポーネントライブラリ。
-**Git Submodule + ソース配布** で各プロジェクトに取り込む。
+> **このリポジトリは雛形（GitHub Template Repository）です。** 各プロジェクトは「Use this template」で複製し、独立リポジトリとして自由に育ててください。
+
+Atomic Design ベースの汎用 UI コンポーネント雛形。
 
 ---
 
 ## 配布モデル
 
-ui-catalog は **submodule 専用**。`npm publish` はしない。
+ui-catalog は **GitHub Template Repository**。`npm publish` はしない。submodule 同期もしない。
 
 ```
-親アプリ/
-└── packages/
-    └── ui-catalog/        ← この repo を submodule で取り込む（ソースのまま）
+ui-catalog (雛形 repo)
+    │
+    │ 「Use this template」で複製（履歴は引き継がない）
+    ▼
+親プロジェクト (独立 repo として自由に編集)
 ```
 
 | 観点 | この repo の方針 |
 |------|-----------------|
-| 配布形態 | **Git Submodule + ソース直 export**（ビルド済み `dist` なし） |
-| 依存解決 | **親アプリの `node_modules` 経由**（peerDependencies で宣言） |
-| 親側の install | **submodule ディレクトリ内では走らせない**（ui-catalog の devDependencies は親に持ち込まない） |
-| ui-catalog 側での編集 | OK。**親 → ui-catalog の自動同期は提供しない**。ui-catalog 側で直接コミット |
+| 配布形態 | **GitHub Template**（複製後は独立リポジトリ） |
+| 親 → ui-catalog の同期 | **提供しない**。汎用化価値があるものは ui-catalog 側で力技で取り込む |
+| ui-catalog → 親 の同期 | **提供しない**。複製時点でフォーク。以降は独立進化 |
 | ブランチ運用 | **`main` 一本**。プロジェクト別ブランチは持たない |
-
-> 親アプリで Storybook は不要。Storybook を立てたいときだけ ui-catalog 単独 repo として clone し、そこで `pnpm install` する。
 
 ---
 
@@ -45,75 +45,14 @@ ui-catalog/
 │   ├── version/             #   VERSION_REGISTRY
 │   ├── theme/               #   テーマ
 │   ├── storybook/           #   Storybook 設定
-│   ├── eslint/              #   親アプリ向け ESLint 設定（src/ui/ 規約ゾーン用）
+│   ├── eslint/              #   複製先プロジェクト向け ESLint 設定（src/ui/ 規約ゾーン用）
 │
 └── docs/                    # 詳細ドキュメント
 ```
 
 ---
 
-## 親アプリへの導入
-
-### 1. submodule 追加
-
-```bash
-git submodule add https://github.com/sasakiyusuke2017015/ui-catalog.git packages/ui-catalog
-```
-
-> ブランチ指定は不要（main 固定）。
-
-### 2. 親の `package.json`
-
-```jsonc
-{
-  "scripts": {
-    "ui:update": "git submodule update --remote packages/ui-catalog"
-  },
-  "dependencies": {
-    "@ui-catalog/core": "link:./packages/ui-catalog"
-  }
-}
-```
-
-> `link:` のパスは `package.json` から見た相対。モノレポで `apps/web` 等から参照するなら `link:../../packages/ui-catalog`。
-
-### 3. `pnpm-workspace.yaml`
-
-```yaml
-packages:
-  - 'apps/*'
-# packages/ui-catalog は workspace に含めない（link: 参照、submodule 内では install しない）
-```
-
-### 4. tsconfig / Next.js
-
-`.ts` をそのまま transpile させる：
-
-```typescript
-// next.config.ts
-const nextConfig: NextConfig = {
-  transpilePackages: ['@ui-catalog/core'],
-};
-```
-
-### 5. クローン手順（既存リポを取得する人向け）
-
-```bash
-git clone --recurse-submodules <your-repo>
-pnpm install   # 親の node_modules だけ作られる。ui-catalog 内には作られない
-```
-
-### 6. ui-catalog を最新に
-
-```bash
-pnpm ui:update   # = git submodule update --remote packages/ui-catalog
-git add packages/ui-catalog
-git commit -m "chore: bump ui-catalog"
-```
-
----
-
-## 親アプリでのインポート
+## インポート例
 
 ```typescript
 import { Button, Icon, Input } from '@ui-catalog/core/atoms'
@@ -129,60 +68,104 @@ import { cn } from '@ui-catalog/core/utils'
 
 ---
 
-## 親アプリでの「規約ゾーン」（src/ui/）
+## peerDependencies の install 方針
 
-親アプリで新しい UI コンポーネントを作るときは、**`apps/<app>/src/ui/` を ui-catalog 互換の規約ゾーン**として運用することを推奨する。
+ui-catalog は **必須 peer 4 個 / optional peer 17 個** という構造。複製先で必要なものだけ install すればよく、使わない機能の依存は入れる必要がない。
 
-```
-親アプリ/
-└── apps/
-    └── web/
-        └── src/
-            ├── ui/              ← 規約ゾーン（ui-catalog 互換）
-            │   ├── atoms/
-            │   ├── molecules/
-            │   ├── organisms/
-            │   └── templates/
-            ├── features/        ← 業務ゾーン（自由）
-            └── pages/           ← 業務ゾーン（自由）
+### 全プロジェクトで必須（4個）
+
+```bash
+pnpm add react react-dom clsx tailwind-merge
 ```
 
-**規約ゾーンの縛り:**
+### 機能別 optional（使う機能だけ install）
 
-- ディレクトリ構造は ui-catalog の `core/` と同じ（atoms / molecules / organisms / templates）
-- スタイルは **SCSS Module** 必須（Tailwind / CSS-in-JS 禁止）
-- ビジネスロジック禁止（API 呼び出し、認証チェック等は props で受け取る）
-- 依存方向: atoms ← molecules ← organisms ← templates、逆方向禁止
-- import は `@ui-catalog/core/*` の公開 entry、同階層、下位階層のみ
-- 親アプリ固有モジュール（`@/*` 等）の import 禁止
+| 使う機能 | 追加で必要な peer |
+|---|---|
+| `Animated`, `NumberTicker`, `Segment`, `BlurFade` 等のアニメーション | `framer-motion` |
+| `Calendar`, `MonthView`, `WeekView`, `EventModal` 等のカレンダー機能 | `jotai` `date-fns` |
+| `TrendChart`, `PieChart` | `recharts` |
+| `NavItem` 等のルーティング連動 | `react-router-dom` |
+| `SortableToggleList` | `@dnd-kit/core` `@dnd-kit/sortable` `@dnd-kit/utilities` |
+| `InteractiveTable` の仮想スクロール | `@tanstack/react-virtual` |
+| `MarkdownEditor` | `@codemirror/commands` `@codemirror/lang-markdown` `@codemirror/language` `@codemirror/state` `@codemirror/view` `@lezer/highlight` |
+| `MarkdownPreview` | `marked` |
+| `MathView`（数式表示） | `katex` |
 
-**ESLint で縛る:**
+例：カレンダーとアニメーションだけ使うプロジェクト：
 
-ui-catalog が `infra/eslint/parent-strict.cjs` を提供している。親側 `.eslintrc.cjs` に override で extends する:
+```bash
+pnpm add react react-dom clsx tailwind-merge framer-motion jotai date-fns
+```
+
+使わないコンポーネントを `core/` から削除すれば、その peer も不要になり、`pnpm install` で警告が出ることもない。
+
+---
+
+## 「規約ゾーン」（src/ui/）— 推奨パターン
+
+複製先プロジェクトで UI を分離管理したい場合は、`src/ui/` を**規約ゾーン**として運用することを推奨する。雛形と互換性を保てるので、後から雛形へ逆輸入しやすい。
+
+```
+src/
+├── ui/              ← 規約ゾーン（atomic 構造を維持）
+│   ├── atoms/
+│   ├── molecules/
+│   ├── organisms/
+│   └── templates/
+├── features/        ← 業務ゾーン（自由）
+└── pages/           ← 業務ゾーン（自由）
+```
+
+### ゾーン内の【違反】ルール
+
+ゾーンを設けたら、以下は機械的に守る前提。
+
+| ルール | ESLint で機械チェック |
+|---|---|
+| ディレクトリ構造（atoms/molecules/organisms/templates） | path filter で前提 |
+| 深い import 禁止（`@ui-catalog/core/*/*`） | `no-restricted-imports` |
+| プロジェクト固有モジュール（`@/*` 等）の import 禁止 | `no-restricted-imports` |
+| 依存方向違反（atoms → molecules 等） | **未実装**（カスタムルール必要） |
+| ビジネスロジック禁止（fetch / axios 等を `src/ui/` 内に書かない） | **未実装** |
+
+未実装のものは現状コードレビューで担保する。
+
+### ゾーン内の【推奨】ルール
+
+人間のレビューで判断する。プロジェクト事情で逸脱可。
+
+- スタイルは **Tailwind v4** を推奨。SCSS Module 併用も可（CSS-in-JS は避ける）
+- `core/styles/tokens.css` の Tailwind トークンを使う（直書き値より優先）
+- Storybook story を併設する
+- `data-component` 属性を付ける（devtools 連動のため）
+- 1コンポーネント 1 ディレクトリ
+- ファイル長は 200-400 行を目安
+
+### ESLint 設定の使い方
+
+`infra/eslint/parent-strict.cjs` を `.eslintrc.cjs` の override で extends する:
 
 ```javascript
-// 親アプリの .eslintrc.cjs
 module.exports = {
   overrides: [
     {
-      files: ['apps/*/src/ui/**/*.{ts,tsx}'],
-      extends: ['./packages/ui-catalog/infra/eslint/parent-strict.cjs'],
+      files: ['src/ui/**/*.{ts,tsx}'],
+      extends: ['./infra/eslint/parent-strict.cjs'],
     },
   ],
 }
 ```
 
-**汎用化したくなったら:**
+### 雛形へ逆輸入したくなったら
 
-`src/ui/` で書いたコンポーネントが汎用化価値ありそうだと判断したら、**ui-catalog 作業者へ要望を出す**（GitHub Issue / Slack / 合意した経路で）。要望を受けた ui-catalog 作業者が ui-catalog repo 側で取り込む（`/ui-catalog absorb` または `/ui-catalog develop`）。
-
-> 親アプリ側に absorb / apply のコマンドは置かない。submodule は同期しないため、親 → ui-catalog の自動経路は提供しない方針。
+複製先で書いたコンポーネントが汎用化価値ありそうだと判断したら、ui-catalog 雛形 repo 側で**手で取り込む**（コピー＆調整）。自動同期は提供しない方針。
 
 ---
 
-## ui-catalog 側での開発
+## ui-catalog 雛形側での開発
 
-ui-catalog 単独で clone して作業する：
+雛形 repo 自体を clone して作業する：
 
 ```bash
 git clone https://github.com/sasakiyusuke2017015/ui-catalog.git
@@ -191,8 +174,7 @@ pnpm install
 pnpm storybook:localhost   # http://localhost:6006
 ```
 
-変更したらそのまま `main` にコミット → push。
-親アプリ側は `pnpm ui:update` で取り込む。
+変更したらそのまま `main` にコミット → push。複製先プロジェクトには伝播しない（複製時点でフォーク済み）。
 
 ### Claude Code コマンド
 
@@ -200,38 +182,10 @@ pnpm storybook:localhost   # http://localhost:6006
 |---------|---------|
 | `/ui-catalog` | 状態診断 |
 | `/ui-catalog develop` | 新規コンポーネント作成・既存改修 |
-| `/ui-catalog absorb <path>` | 別途参照可能な親アプリの src/ui/ から取り込む |
+| `/ui-catalog absorb <path>` | 別途参照可能な複製先プロジェクトの src/ui/ から手で取り込む |
 | `/ui-catalog clean` | 整合性チェック・修正・未使用コード削除 |
 
 詳細は [.claude/commands/ui-catalog.md](./.claude/commands/ui-catalog.md) を参照。
-
----
-
-## Docker を使う場合
-
-`link:` 参照のため、`packages/ui-catalog` のソース全体を COPY する必要がある：
-
-```dockerfile
-COPY packages/ui-catalog ./packages/ui-catalog
-RUN pnpm install --frozen-lockfile
-```
-
-`docker-compose.yml` の volumes で `/app/packages/ui-catalog/node_modules` を匿名 volume で覆い、host 側と衝突させない：
-
-```yaml
-volumes:
-  - ./packages/ui-catalog:/app/packages/ui-catalog
-  - /app/packages/ui-catalog/node_modules
-```
-
----
-
-## peerDependencies の方針
-
-`react`, `framer-motion`, `jotai` などは **peerDependencies** で宣言。
-親アプリの `node_modules` のものを使う。これが submodule + ソース配布で React 二重ロードを避ける唯一の方法。
-
-`devDependencies`（Storybook、テストツール等）は **submodule ディレクトリ内で `pnpm install` を走らせない限り親に入らない**。よって安全。
 
 ---
 

@@ -2,24 +2,25 @@
 
 ## 概要
 
-ui-catalog は **Atomic Design ベースの汎用 UI コンポーネントライブラリ**。
-親アプリには **Git Submodule + ソース配布** で取り込む。
+ui-catalog は **Atomic Design ベースの汎用 UI コンポーネント雛形**。
+**GitHub Template Repository** として配布し、各プロジェクトは「Use this template」で複製してから独立進化させる。
 
 導入手順・運用方針については [README.md](../README.md) を参照してください。
 
 ### 配布モデルの要点
 
 - ブランチは `main` 一本（プロジェクト別ブランチは持たない）
-- 親 → ui-catalog の自動同期コマンドは提供しない
-- ui-catalog の更新は ui-catalog 側で直接コミット → 親側で `git submodule update --remote`
-- `core/` のコンポーネントは **SCSS Module** で実装する（Tailwind 非依存）
+- 雛形 → 複製先 / 複製先 → 雛形 の自動同期は提供しない（複製時点でフォーク）
+- 雛形の更新は雛形 repo で直接コミット。複製先には伝播しない
+- 複製先で育てたコンポーネントを雛形に逆輸入したい場合は、雛形 repo 側で手で取り込む
+- スタイルは **Tailwind v4 を主、SCSS Module を併用**（CSS-in-JS は不採用）
 
 ---
 
 ## ディレクトリ構造
 
 ```
-packages/ui-catalog/
+ui-catalog/
 ├── core/                    # 純粋UI（ビジネスロジックゼロ）
 │   ├── atoms/               #   最小単位（Button, Input, Badge, Icon 等）
 │   ├── molecules/           #   atoms の組み合わせ（FormField, MenuItem 等）
@@ -75,20 +76,25 @@ atoms ← molecules ← organisms ← templates
 
 ## スタイリング方針
 
-### core/ は SCSS Module で実装
+### Tailwind 主、SCSS Module 併用
 
-**core/ のコンポーネントは SCSS Module で実装する。**
+ui-catalog は **Tailwind v4** を主スタイル方式とする。SCSS Module は Tailwind では表現しづらいケースで併用可。CSS-in-JS は採用しない。
 
-| 方式 | 使用場所 | 理由 |
+| 方式 | 使用場所 | 備考 |
 |------|---------|------|
-| **SCSS Module** | core/ | 汎用性、他プロジェクトへの移植性、Tailwind 非依存 |
-| Tailwind/CSS-in-JS | core/ では禁止、親アプリの業務ゾーンでは自由 | core/ は移植性を保つため |
+| **Tailwind v4（推奨）** | core/、複製先の規約ゾーン両方 | `core/styles/tokens.css` の `@theme static` でトークン公開済み |
+| SCSS Module | core/、規約ゾーン両方で許容 | 複雑なネスト、擬似要素、独自アニメーション等で有用 |
+| CSS-in-JS（emotion / styled-components） | 不採用 | バンドルサイズと SSR 対応の都合 |
+
+**現状の混在状況（意図的）:**
+
+core/ には Tailwind 中心のコンポーネントと SCSS Module で書かれたコンポーネント（TabBar, Tabs, NavItem 等）が混在している。これは方針の不徹底ではなく、各コンポーネントの実装都合に応じた選択。書き換える必要はない。
 
 ### absorb 時のルール
 
-`/ui-catalog absorb` は、**親アプリの規約ゾーン（`apps/<app>/src/ui/`）からコピーで取り込む**ことを前提とする。規約ゾーンは ui-catalog 互換で書かれている前提なので、原則として変換不要。
+`/ui-catalog absorb` は、**複製先プロジェクトの規約ゾーン（`src/ui/`）からコピーで取り込む**ことを前提とする。規約ゾーンは ui-catalog 互換で書かれている前提なので、原則として変換不要。
 
-規約違反（Tailwind 直書き、ビジネスロジック混入等）が見つかった場合は、警告を出して対処を確認する（規約に合わせて修正してから取り込む / そのまま取り込んで後で develop で直す / キャンセル）。
+規約違反（プロジェクト固有モジュール import、ビジネスロジック混入等）が見つかった場合は、警告を出して対処を確認する（規約に合わせて修正してから取り込む / そのまま取り込んで後で develop で直す / キャンセル）。
 
 参考までに、SCSS Module の実装例：
 
@@ -203,10 +209,10 @@ ui-catalog:animationSpeed
 
 ### 2. 吸収（Absorb）
 
-別途参照可能な親アプリの規約ゾーン（`src/ui/`）から ui-catalog に取り込む。`/ui-catalog absorb <path>` で実行。
+別途参照可能な複製先プロジェクトの規約ゾーン（`src/ui/`）から ui-catalog 雛形に手で取り込む。`/ui-catalog absorb <path>` で実行。
 
 ```
-/ui-catalog absorb ~/work/parent-app/apps/web/src/ui/organisms/ProfileCard
+/ui-catalog absorb ~/work/some-project/src/ui/organisms/ProfileCard
 ```
 
 規約ゾーンは ui-catalog 互換で書かれている前提なので、原則として変換不要。
@@ -222,13 +228,13 @@ ui-catalog:animationSpeed
 
 ---
 
-## 親アプリ側のガイダンス
+## 複製先プロジェクトのガイダンス
 
-親アプリで新しい UI コンポーネントを作るときは、`apps/<app>/src/ui/` に **ui-catalog 互換の規約ゾーン**を作って書く。詳細は [README.md](../README.md#親アプリでの規約ゾーンsrcui) を参照。
+複製先プロジェクトで新しい UI コンポーネントを作るときは、`src/ui/` に **規約ゾーン**を作って書く。詳細は [README.md](../README.md#規約ゾーンsrcui) を参照。
 
-**汎用化価値があると判断したら**、ui-catalog 作業者へ要望を出す（GitHub Issue / Slack 等）。要望を受けた ui-catalog 作業者が `/ui-catalog absorb` または `/ui-catalog develop` で取り込む。
+**汎用化価値があると判断したら**、雛形 repo 側で**手で取り込む**（コピー＆調整）。`/ui-catalog absorb` または `/ui-catalog develop` を雛形 repo 側で実行する。
 
-> 親アプリ側に absorb / apply のコマンドは置かない。submodule は同期しないため、親 → ui-catalog の自動経路は提供しない方針。
+> 自動同期は提供しない方針。複製時点でフォーク済みのため、雛形 ↔ 複製先の伝播は人間の判断で行う。
 
 ---
 
@@ -247,8 +253,7 @@ atoms → molecules      ❌ 禁止（逆方向）
 - jotai（テーマ機能用）
 - framer-motion
 
-**注意**: Tailwind は親アプリの業務ゾーン（features / pages 等）での使用を想定。
-core/ および親アプリの規約ゾーン（src/ui/）は SCSS Module で実装する。
+**スタイリング方針:** ui-catalog は Tailwind v4 を主、SCSS Module を併用。詳細は上の「スタイリング方針」章を参照。
 
 ---
 
@@ -267,9 +272,9 @@ pnpm export-versions
 ### 初期化
 
 ```tsx
-// apps/web/src/main.tsx
+// src/main.tsx
 import { initUICatalog } from '@ui-catalog/core'
-import versions from '../../packages/ui-catalog/ui-catalog.versions.json'
+import versions from './ui-catalog.versions.json'
 
 initUICatalog(versions)
 ```
@@ -329,9 +334,9 @@ const MyComponent: FC<Props> = ({ label, onAction }) => {
 - [ ] data-component 属性を追加したか
 - [ ] 操作ログ（useOperationLog）を追加したか
 
-### absorb 時（親アプリの src/ui/ → core/）
+### absorb 時（複製先プロジェクトの src/ui/ → core/）
 
-- [ ] 参照元が ui-catalog 規約に従っているか確認したか（SCSS Module、依存方向、ビジネスロジック禁止）
+- [ ] 参照元が ui-catalog 規約に従っているか確認したか（依存方向、ビジネスロジック禁止）
 - [ ] 規約違反があれば対処方針を決めたか（修正してから取り込む / そのまま取り込む / キャンセル）
 - [ ] ビジネスロジックの混入が無いか
 - [ ] Props を汎用的にしたか

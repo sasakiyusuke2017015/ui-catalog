@@ -108,6 +108,33 @@
     },
     "marked": {
       "optional": true
+    },
+    "framer-motion": {
+      "optional": true
+    },
+    "jotai": {
+      "optional": true
+    },
+    "recharts": {
+      "optional": true
+    },
+    "react-router-dom": {
+      "optional": true
+    },
+    "date-fns": {
+      "optional": true
+    },
+    "@dnd-kit/core": {
+      "optional": true
+    },
+    "@dnd-kit/sortable": {
+      "optional": true
+    },
+    "@dnd-kit/utilities": {
+      "optional": true
+    },
+    "@tanstack/react-virtual": {
+      "optional": true
     }
   },
   "devDependencies": {
