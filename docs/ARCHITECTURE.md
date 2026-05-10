@@ -2,14 +2,14 @@
 
 ## 思想
 
-ui-catalog は **Atomic Design ベースの汎用 UI コンポーネントライブラリ**。
-親アプリには **Git Submodule + ソース配布** で取り込む。
+ui-catalog は **Atomic Design ベースの汎用 UI コンポーネント雛形**。
+**GitHub Template Repository** として配布し、各プロジェクトは「Use this template」で複製してから独立進化させる。
 
 ### 配布モデル
 
 - ブランチは `main` 一本（`project/<name>` ブランチは持たない）
-- 親 → ui-catalog の自動同期は提供しない。ui-catalog 側で直接コミットして更新する
-- 配布は TS ソース直 export（`dist` ビルドなし）。親アプリで transpile される
+- 雛形 ↔ 複製先 の自動同期は提供しない（複製時点でフォーク、独立進化）
+- ソースは TS のまま含む（`dist` ビルドなし）。複製先で transpile される
 
 ```
 ┌─────────────────────────────────────────────────────┐
@@ -36,8 +36,11 @@ ui-catalog は **Atomic Design ベースの汎用 UI コンポーネントライ
 
 ### スタイリング方針
 
-`core/` のコンポーネントは **SCSS Module** で実装する。Tailwind 非依存にすることで、
-Tailwind を使っていない親アプリにも移植できる。
+ui-catalog は **Tailwind v4 を主、SCSS Module を併用**する。
+
+- `core/styles/tokens.css` で `@theme static` ディレクティブを使い、デザイントークンを Tailwind ユーティリティとして公開
+- 各コンポーネントは Tailwind を中心に実装。複雑なネストや独自アニメーション等で SCSS Module を併用可
+- CSS-in-JS（emotion / styled-components）は不採用
 
 ---
 
@@ -202,35 +205,26 @@ pnpm storybook:localhost
 
 **コンポーネント追加時の必須作業:**
 - 適切な Atomic Design 層（atoms/molecules/organisms/templates）への配置
-- SCSS Module で実装
+- スタイルは Tailwind v4 主、SCSS Module 併用可（CSS-in-JS は不採用）
 - ビジネスロジックを混入させない
 - VERSION_REGISTRY 登録
 - Storybook story の作成
 
-### 2. 親アプリに反映
+### 2. 複製先プロジェクトでの新規 UI
 
-```bash
-# 親アプリで
-pnpm ui:update    # = git submodule update --remote packages/ui-catalog
-git add packages/ui-catalog
-git commit -m "chore: bump ui-catalog"
-```
-
-### 3. 親アプリ側で新規 UI を作る場合
-
-親アプリで新しい UI コンポーネントを作るときは、`apps/<app>/src/ui/` を **ui-catalog 互換の規約ゾーン**として運用する。詳細は [README.md](../README.md#親アプリでの規約ゾーンsrcui) を参照。
+複製先プロジェクトで新しい UI コンポーネントを作るときは、`src/ui/` を **規約ゾーン**として運用する。詳細は [README.md](../README.md#規約ゾーンsrcui) を参照。
 
 **規約ゾーンの位置づけ:**
 - ディレクトリ構造は ui-catalog の `core/` と同じ（atoms / molecules / organisms / templates）
-- スタイルは SCSS Module 必須（Tailwind 禁止）
+- スタイルは Tailwind v4 推奨、SCSS Module 併用可（CSS-in-JS は避ける）
 - ビジネスロジック禁止
 - 依存方向: atoms ← molecules ← organisms ← templates
-- ESLint 縛りは `infra/eslint/parent-strict.cjs` を親側で extends
+- ESLint 縛りは `infra/eslint/parent-strict.cjs` を `.eslintrc.cjs` で extends
 
-**ui-catalog への昇格:**
-- 親アプリ側に absorb / apply のコマンドは置かない（submodule は同期しないため、自動経路は提供しない）
-- 汎用化価値があると判断したら、ui-catalog 作業者へ要望を出す
-- 要望を受けた ui-catalog 作業者が `/ui-catalog absorb` または `/ui-catalog develop` で取り込む
+**雛形への逆輸入:**
+- 自動同期は提供しない（複製時点でフォーク済み、独立進化）
+- 汎用化価値があると判断したら、雛形 repo 側で**手で取り込む**（コピー＆調整）
+- 雛形側で `/ui-catalog absorb` または `/ui-catalog develop` を使って取り込む
 
 **ドメイン固有の支援ファイル（hooks/types/utils）の配置:**
 
@@ -278,8 +272,8 @@ import { ThemeProvider } from '@ui-catalog/core/infra/theme'
 
 - [ ] 適切な層に配置したか（atoms/molecules/organisms/templates）
 - [ ] ビジネスロジックが混入していないか
-- [ ] **SCSS Module で実装したか**
-- [ ] Tailwind / CSS-in-JS に依存していないか
+- [ ] スタイルは Tailwind v4 主、SCSS Module 併用可（CSS-in-JS は不採用）
+- [ ] `core/styles/tokens.css` のトークンを使ったか（直書き値より優先）
 - [ ] Props を汎用的にしたか（特定アプリの都合を反映していないか）
 - [ ] 操作ログ（useOperationLog）を追加したか
 - [ ] data-component 属性を追加したか
