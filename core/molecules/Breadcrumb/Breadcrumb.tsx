@@ -20,6 +20,12 @@ interface BreadcrumbProps {
   colorTheme?: ColorTheme;
   /** プライマリコントラストテキスト色 - Layout から props で渡す */
   primaryContrastText?: string;
+  /**
+   * 表示バリアント
+   * - 'default'（既定）: 区切り文字でリンクを並べる従来スタイル
+   * - 'chevron': 矢羽形のステップを連結したスタイル（border-shape 使用、Chrome 147+）
+   */
+  variant?: 'default' | 'chevron';
 }
 
 /**
@@ -31,9 +37,48 @@ export const Breadcrumb: FC<BreadcrumbProps> = ({
   separator = '>',
   className = '',
   primaryContrastText = '#ffffff', // デフォルト値（白）
+  variant = 'default',
 }) => {
   if (!items || items.length === 0) {
     return null;
+  }
+
+  if (variant === 'chevron') {
+    return (
+      <nav
+        className={[styles.breadcrumb, styles['breadcrumb--chevron'], className].filter(Boolean).join(' ')}
+        aria-label="breadcrumb"
+        data-component="breadcrumb"
+      >
+        <ol className={styles['breadcrumb__chevron-list']}>
+          {items.map((item, index) => {
+            const isLast = index === items.length - 1;
+            const isFirst = index === 0;
+            const stepClasses = [
+              styles['breadcrumb__chevron-step'],
+              isFirst && styles['breadcrumb__chevron-step--first'],
+              isLast && styles['breadcrumb__chevron-step--current'],
+            ]
+              .filter(Boolean)
+              .join(' ');
+
+            return (
+              <li key={index} className={stepClasses}>
+                {!isLast ? (
+                  <InternalLink href={item.href} showIcon={false} className={styles['breadcrumb__chevron-link']}>
+                    <span title={item.tooltip}>{item.label}</span>
+                  </InternalLink>
+                ) : (
+                  <span title={item.tooltip} aria-current="page">
+                    {item.label}
+                  </span>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      </nav>
+    );
   }
 
   // ヘッダー内で使用されるかどうかを判定

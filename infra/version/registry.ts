@@ -39,7 +39,7 @@ export const VERSION_REGISTRY = {
   Text: '1.0.0',
   TextArea: '1.0.0',
   Toggle: '1.0.0',
-  Tooltip: '1.0.0',
+  Tooltip: '1.1.0',
   Progress: '1.0.0',
 
   // adapters
@@ -59,7 +59,7 @@ export const VERSION_REGISTRY = {
   ViewModeToggle: '1.0.0',
   AlertDialog: '1.0.0',
   AuthFormCard: '1.0.0',
-  Breadcrumb: '1.0.0',
+  Breadcrumb: '1.1.0',
   CardGrid: '1.0.0',
   ConfirmDialog: '1.0.0',
   DatePicker: '1.0.0',
@@ -164,6 +164,10 @@ export const VERSION_REGISTRY = {
   // atoms (visualization)
   CountdownRing: '1.0.0',
   MathView: '1.0.0',
+
+  // border-shape components (Chrome 147+ 専用)
+  Ticket: '1.0.0',
+  ScallopedCard: '1.0.0',
 } as const
 
 export type ComponentName = keyof typeof VERSION_REGISTRY

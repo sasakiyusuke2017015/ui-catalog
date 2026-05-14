@@ -31,6 +31,7 @@ export * from './ContentBlock'
 export * from './DetailHeader'
 export * from './ToggleableSection'
 export * from './CardGrid'
+export * from './Ticket'
 
 // Forms
 export * from './AuthFormCard'
