@@ -135,6 +135,31 @@ export const WithIcon: Story = {
 }
 
 /**
+ * 矢印付き吹き出し（border-shape）
+ *
+ * border-shape の shape() で吹き出し全体を1つの輪郭として宣言しているため、
+ * box-shadow も矢印の三角部分まで追従する。Chrome / Edge 147+ 専用。
+ */
+export const WithArrowShadow: Story = {
+  args: {
+    content: 'box-shadow が矢印の形に追従します',
+    position: 'top',
+  },
+  render: (args) => (
+    <div style={{ marginTop: '80px' }}>
+      <Tooltip {...args}>
+        <button
+          className="rounded bg-indigo-500 px-4 py-2 text-white hover:bg-indigo-600"
+          style={{ boxShadow: '0 8px 16px -6px rgb(0 0 0 / 0.3)' }}
+        >
+          ホバーして影に注目
+        </button>
+      </Tooltip>
+    </div>
+  ),
+}
+
+/**
  * 全方向の比較
  */
 export const AllPositions: Story = {

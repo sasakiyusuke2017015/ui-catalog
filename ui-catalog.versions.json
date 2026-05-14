@@ -1,3 +1,10 @@
+
+> @ui-catalog/core@1.0.0 export-versions /workspaces/ui-catalog
+> npx tsx infra/version/export-versions-cli.ts
+
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+npm warn Unknown env config "npm-globalconfig". This will stop working in the next major version of npm.
+npm warn Unknown env config "_jsr-registry". This will stop working in the next major version of npm.
 {
   "Animated": "1.0.0",
   "BackButton": "1.0.0",
@@ -28,8 +35,8 @@
   "Text": "1.0.0",
   "TextArea": "1.0.0",
   "Toggle": "1.0.0",
-  "Tooltip": "1.0.0",
-  "Progress": "1.1.0",
+  "Tooltip": "1.1.0",
+  "Progress": "1.0.0",
   "RouterContext": "1.0.0",
   "AppShell": "1.0.0",
   "Footer": "1.0.0",
@@ -42,7 +49,7 @@
   "ViewModeToggle": "1.0.0",
   "AlertDialog": "1.0.0",
   "AuthFormCard": "1.0.0",
-  "Breadcrumb": "1.0.0",
+  "Breadcrumb": "1.1.0",
   "CardGrid": "1.0.0",
   "ConfirmDialog": "1.0.0",
   "DatePicker": "1.0.0",
@@ -95,18 +102,18 @@
   "InteractiveTable": "1.0.0",
   "TransferList": "1.0.0",
   "TrendChart": "1.1.0",
-  "CalendarEventCard": "1.1.0",
-  "IconLabel": "1.0.0",
-  "MonthEventCard": "1.0.0",
-  "TimeSlotRow": "1.0.0",
   "ColorPicker": "1.0.0",
   "DayOfWeekPicker": "1.0.0",
-  "EventPopover": "1.1.0",
+  "IconLabel": "1.0.0",
   "IconPicker": "1.0.0",
-  "MonthDayCell": "1.1.0",
+  "MonthEventCard": "1.0.0",
   "PillSelect": "1.0.0",
   "SpanningBar": "1.0.0",
   "TimeSelect": "1.0.0",
+  "TimeSlotRow": "1.0.0",
+  "CalendarEventCard": "1.1.0",
+  "EventPopover": "1.1.0",
+  "MonthDayCell": "1.1.0",
   "CalendarDragOverlay": "1.0.0",
   "CalendarHeader": "1.0.0",
   "DayColumn": "1.0.0",
@@ -126,5 +133,7 @@
   "FloatingElements": "1.0.0",
   "BlurFade": "1.0.0",
   "CountdownRing": "1.0.0",
-  "MathView": "1.0.0"
+  "MathView": "1.0.0",
+  "Ticket": "1.0.0",
+  "ScallopedCard": "1.0.0"
 }

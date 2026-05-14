@@ -190,3 +190,21 @@ export const SurveyInputExample = {
     ],
   },
 };
+
+/**
+ * 矢羽スタイル（border-shape, Chrome 147+ 専用）
+ *
+ * border-shape の shape() で矢羽形を要素の輪郭として宣言しているため、
+ * 矢羽の三角部分が bounding box の中に完全に収まり、間隔は gap だけで完結する。
+ * box-shadow も矢羽の輪郭に追従する。
+ */
+export const ChevronVariant = {
+  args: {
+    variant: 'chevron',
+    items: [
+      { label: 'HOME', href: '/' },
+      { label: 'プロジェクト', href: '/projects' },
+      { label: 'タスク詳細', href: '/projects/1/tasks/2' },
+    ],
+  },
+};

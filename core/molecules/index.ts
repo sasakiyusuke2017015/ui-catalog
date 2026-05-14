@@ -7,6 +7,7 @@
 // Cards & Containers
 export * from './Banner'
 export * from './Card'
+export * from './ScallopedCard'
 
 // Form
 export * from './FormField'
