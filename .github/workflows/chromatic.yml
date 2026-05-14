@@ -8,6 +8,11 @@ name: Chromatic
 #   CHROMATIC_PROJECT_TOKEN  - Chromatic プロジェクトのトークン
 #                              https://www.chromatic.com で取得し
 #                              GitHub Settings → Secrets → Actions に登録
+#
+# このファイルは GitHub Template 経由で複製先プロジェクトにもコピーされる。
+# 雛形リポジトリ自身でのみ走るよう job レベルで github.repository をガードしている。
+# 複製先で Chromatic を使う場合は、下の `if:` をコメントアウト or 自リポジトリ名に書き換え、
+# 別途 CHROMATIC_PROJECT_TOKEN を自プロジェクトの secret に設定する必要がある。
 
 on:
   push:
@@ -19,6 +24,8 @@ on:
 jobs:
   chromatic:
     name: Run Chromatic
+    # 雛形リポジトリでのみ実行。複製先では skip される（複製先利用者は必要に応じて編集）
+    if: github.repository == 'sasakiyusuke2017015/ui-catalog'
     runs-on: ubuntu-latest
     permissions:
       contents: read
